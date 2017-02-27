@@ -1,5 +1,5 @@
+# Specification 'Web of Things (WoT) Binding Templates'
 
-# Specification 'wot-binding-templates'
+Each commit here will sync it to the master, which will expose the content to http://w3c.github.io/wot-binding-templates/.
 
-This is the repository for wot-binding-templates. You're welcome to contribute! Let's make the Web rock our socks
-off!
+To make contributions, please provide pull-requests to the html file, see [github help](https://help.github.com/articles/using-pull-requests/).

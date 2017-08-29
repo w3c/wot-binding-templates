@@ -88,18 +88,31 @@
     
     <p>WoT Protocol Binding Templates contain standardized descriptions of communications metadata for the target protocols that are mapped by WoT Thing Descriptions.</p>
     
-    <p>This document describes the general architecture and processing model for Protocol Bindings, and describes a structure and vocabulary for Protocol Binding Templates that may be adapted and extended as needed to extend WoT Thing Description to new target protocols and ecosystems.</p>
+    <p>This document describes the general architecture and processing model for Protocol Bindings, and describes a structure and vocabulary for Protocol Binding Templates that may be adapted as needed to extend WoT Thing Description to new target protocols and ecosystems.</p>
     
     </section>
 
+    <section>
+    <h2>Definitions</h2>
+    [See also the general definitions and vocabulary 	https://github.com/w3c/wot-architecture/blob/master/terminology.md]
+    Binding Templates
+
+	A re-usable collection of blueprints for the communication with different IoT platforms. The blueprints includes the required vocabulary for the Thing Description to map Interactions to platform-specific messages as well as implementation notes for the required protocol stacks or dedicated communication drivers.
+
+	Protocol Binding
+
+An implementation of the mapping between Interaction in the TD Interaction Model (e.g., Property read) and specific operations of a protocol (e.g., HTTP GET).
+	</section>
+    
     <section>
     <h2>Use Cases for Protocol Bindings</h2>
     <bl>
     <li>Mapping of specific protocols to the WoT Abstract Interactions</li>
     <li>Existing device ecosystems like OCF, LWM2M/IPSO, Bluetooth, Zigbee</li>
     <li>Devices and web services modeled using interactions</li>
-    <li>HTTP, CoAP, MQTT, Websocket protocols</li>
+    <li>HTTP, CoAP, MQTT, Websocket protocols (fetch, patch)</li>
     <li>IP and non-IP transports</li>
+    <li>multi-servient synchronization, protocol adaptation and model re-composition, or adaptation in SW model</li>
     </bl>
 	</section>
     

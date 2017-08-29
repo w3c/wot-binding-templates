@@ -82,56 +82,99 @@
   </head>
   <body>
     <section id='abstract'>
-      WoT Protocol Binding Templates.
+    <p>WoT Thing Descriptions contain abstract, protocol-neutral desctiptions of interactions privoded by things and services.</p>
+    
+    <p>WoT Protocol Bindings are elements in a WoT Thing Description which perform the function of mapping the abstract interactions exposed by the Thing Description to the protocol-specific instances that are exposed by the devices and services in the target ecosystem.</p>
+    
+    <p>WoT Protocol Binding Templates contain standardized descriptions of communications metadata for the target protocols that are mapped by WoT Thing Descriptions.</p>
+    
+    <p>This document describes the general architecture and processing model for Protocol Bindings, and describes a structure and vocabulary for Protocol Binding Templates that may be adapted and extended as needed to extend WoT Thing Description to new target protocols and ecosystems.</p>
+    
     </section>
 
     <section>
-    <h2>Use Cases</h2>
+    <h2>Use Cases for Protocol Bindings</h2>
+    <bl>
+    <li>Mapping of specific protocols to the WoT Abstract Interactions</li>
+    <li>Existing device ecosystems like OCF, LWM2M/IPSO, Bluetooth, Zigbee</li>
+    <li>Devices and web services modeled using interactions</li>
+    <li>HTTP, CoAP, MQTT, Websocket protocols</li>
+    <li>IP and non-IP transports</li>
+    </bl>
 	</section>
     
     <section>
     <h2>Thing Description Architecture</h2>
+    Abstract interaction description and link pointing to instance
 	</section>
        
     <section>
-    <h2>Runtime Architecture</h2>
+    <h2>Binding Template Design</h2>
+    Extension of the "link" element in the TD to include communication instructions specific to the target protocol. Encoding in JSON serialization formats compatible with TD processing tools.
+	</section>
+    
+    <section>
+    <h2>Processing Model and Runtime Architecture</h2>
+    <bl>
+    <li>Separation of context, isolation between client and target networks</li>
+    <li>Secure communication between clients and target networks</li>
+    <li>Protocol Bindings for Exposed Thing instances</li>
+    </bl>
 	</section>
        
     <section>
     <h2>Bindings for Properties</h2>
+    Get/Set using red and write primitives, GET, PUT/POST
 	</section>
     
     <section>
     <h2>Bindings for Actions</h2>
+    <bl>
+    <li>Mapping UPDATE vs. CREATE</li>
+    <li>Protocol binidng for TD of created Action resource</li>
+    </bl>
 	</section>
     
     <section>
     <h2>Bindings for Events</h2>
+    <bl>
+    <li>Mapping of simple Observe and Subscribe vs. Created Subscription</li>
+    <li>Protocol binding for TD of created subscription resource</li>
+    </bl>
 	</section>
     
     <section>
-    <h2>Binding Template Design</h2>
+    <h2>Structure and Vocabulary for Protocol Binding Templates</h2>
+    <bl>
+    <li>Mapping of simple Observe and Subscribe vs. Created Subscription</li>
+    <li>Protocol binding for TD of created subscription resource</li>
+    </bl>
 	</section>
     
     <section>
-    <h2>Examples</h2>
+    <h2>Examples for Various Protocols and Ecosystems</h2>
+    HTTP, CoAP, MQTT, OCF, LWM2M, ?? examples
 	</section>
     
     <section>
     <h2>From the WoT WG Charter Sec. 2.3</h2>
-    While the Thing Description will provide general mechanisms to describe arbitrary protocols, to enable interoperability, the Working Group will define standard binding templates for common protocols. These standard binding templates will be created in close collaboration with the industry alliances and standards development organizations responsible for these. This includes definition of mappings from the interactions at the Thing Layer to:
+    <p>While the Thing Description will provide general mechanisms to describe arbitrary protocols, to enable interoperability, the Working Group will define standard binding templates for common protocols.</p> 
+    
+    These standard binding templates will be created in close collaboration with the industry alliances and standards development organizations responsible for these. This includes definition of mappings from the interactions at the Thing Layer to:</p>
+	<bl>
+	<li>Transfer layer communication patterns such as push, pull, pub-sub, bi-directional messaging, etc.</li>
+	<li>Specific protocols at the transfer layer, e.g., REST-based protocols such as HTTP and CoAP, pub-sub protocols such as MQTT, and raw channel-based protocols such as WebSockets</li>
+	</bl>
+	<p>The Web of Things has a multi-protocol architecture and bindings to both IP and non-IP transports (e.g., Bluetooth Low Energy) may be defined.</p>
 
-Transfer layer communication patterns such as push, pull, pub-sub, bi-directional messaging, etc.
-Specific protocols at the transfer layer, e.g., REST-based protocols such as HTTP and CoAP, pub-sub protocols such as MQTT, and raw channel-based protocols such as WebSockets
-The Web of Things has a multi-protocol architecture and bindings to both IP and non-IP transports (e.g., Bluetooth Low Energy) may be defined.
+	<p>Support for secure communications will be included, as defined by the Security and Privacy deliverable.</p>
 
-Support for secure communications will be included, as defined by the Security and Privacy deliverable.
-
-The Binding Templates deliverable is informative by nature since the intended capabilities of the Thing Description could be used to describe any protocol, even common ones, from first principles. However, interoperability will be enhanced by providing and encouraging the use of standard binding templates for common protocols when possible.
+	<p>The Binding Templates deliverable is informative by nature since the intended capabilities of the Thing Description could be used to describe any protocol, even common ones, from first principles. However, interoperability will be enhanced by providing and encouraging the use of standard binding templates for common protocols when possible.</p>
 	</section>
 	
 
   </body>
+  
   <section id='appendix'>
   <h2>Earlier Material</h2>
   
@@ -281,4 +324,5 @@ The example OCF protocol binding contains values for Resource Type (rt) and Inte
     </section>
 
   </section>
+  
 </html>

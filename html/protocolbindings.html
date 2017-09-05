@@ -86,7 +86,7 @@
     
     <p>WoT Protocol Bindings are elements in a WoT Thing Description which perform the function of mapping the abstract interactions exposed by the Thing Description to the protocol-specific instances that are exposed by the devices and services in the target ecosystem.</p>
     
-    <p>WoT Protocol Binding Templates contain standardized descriptions of communications metadata for the target protocols that are mapped by WoT Thing Descriptions.</p>
+    <p>WoT Protocol Binding Templates consist of standardized design patterns and vocabulary to describe communications metadata for the target protocols that are mapped by WoT Thing Descriptions. Information in the Protocol Binding enables the WoT Servient to construct and parse messages in the target protocol.</p>
     
     <p>This document describes the general architecture and processing model for Protocol Bindings, and describes a structure and vocabulary for Protocol Binding Templates that may be adapted as needed to extend WoT Thing Description to new target protocols and ecosystems.</p>
     
@@ -118,12 +118,66 @@ An implementation of the mapping between Interaction in the TD Interaction Model
     
     <section>
     <h2>Thing Description Architecture</h2>
-    Abstract interaction description and link pointing to instance
+    
+      <section>
+      <h3>Thing Description</h3>
+      <p>
+<a href="#fig-td-example"></a> below is an example Thing Description, illustrating two parts. The upper part contains is a description of an interaction, and the lower part is an associated link, which contains the protocol binding.
+      </p>
+      </section>
+      
+	  <figure id="fig-td-example">
+		<img src="images/td-example.png" style="width:95%"  />
+    <figcaption>Example of a Thing Description</figcaption>
+      </figure>
+      
+      <section>
+      <h3>TD Interaction Description</h3>
+      <p>
+The interaction description part of a Thing Description describes an event, action, or property interaction which is exposed by a thing. Each interaction description contains semantic annotation that describes the type of interaction and its application class, and one or more link elements containing URIs that point to the API entry points for the interaction.
+      </p>
+      </section>
+      
+	  <figure id="fig-interaction">
+		<img src="images/interaction-description.png" style="width:65%"  />
+    <figcaption>Interaction Description Part</figcaption>
+      </figure>
+      
 	</section>
        
     <section>
     <h2>Binding Template Design</h2>
-    Extension of the "link" element in the TD to include communication instructions specific to the target protocol. Encoding in JSON serialization formats compatible with TD processing tools.
+    
+    <section>
+      <h3>Protocol Adaptation</h3>
+      <p>
+Device protocols from various standards organizations have peculiar patterns for exposing the device features that the protocol uses to encapsulate and communicate information. 
+      </p>
+      <p>
+For example, OCF Resource Types expose a REST API that uses IETF concepts of Resource Type (rt) and Interface Type (if). By contrast, LWM2M/IPSO Smart Objects expose an hierarchy of object ID (collections) and resource ID (items) where the ID numbers provide the semantic identification. 
+      </p>
+      <p>
+These may all use a common communication protocol like CoAP, and representation format like CBOR or JSON, but then require special options like resource type, interface type, content-formats, data types, and payload schemas. 
+      </p>
+      </section>
+      
+        <section>
+      <h3>Protocol Binding</h3>
+      <p> 
+Protocol bindings map abstract WoT interactions to concrete protocol operations. The "link" block provides one or more links that point to entry points used to initiate the protocol operations. 
+      </p>
+      <p> 
+          Extension of the "link" element in the TD to include communication instructions specific to the target protocol. Encoding in JSON serialization formats compatible with TD processing tools.
+      </p>
+
+      </section>
+      
+	  <figure id="fig-protocol-binding">
+		<img src="images/protocol-binding-template.png" style="width:75%"  />
+    <figcaption>Protocol Binding Part</figcaption>
+      </figure>
+      
+
 	</section>
     
     <section>
@@ -145,6 +199,7 @@ An implementation of the mapping between Interaction in the TD Interaction Model
     <bl>
     <li>Mapping UPDATE vs. CREATE</li>
     <li>Protocol binidng for TD of created Action resource</li>
+    <li>Mapping of Invoke, Read Status, Modify, Cancel</li>
     </bl>
 	</section>
     
@@ -153,14 +208,16 @@ An implementation of the mapping between Interaction in the TD Interaction Model
     <bl>
     <li>Mapping of simple Observe and Subscribe vs. Created Subscription</li>
     <li>Protocol binding for TD of created subscription resource</li>
+    <li>Mapping of Subscribe, Modify Subscription, Cancel</li>
     </bl>
 	</section>
     
     <section>
     <h2>Structure and Vocabulary for Protocol Binding Templates</h2>
     <bl>
-    <li>Mapping of simple Observe and Subscribe vs. Created Subscription</li>
-    <li>Protocol binding for TD of created subscription resource</li>
+    <li>TD Structure</li>
+    <li>Link extension for Protocol Binding</li>
+    <li>Protocol Binding vocabulary</li>
     </bl>
 	</section>
     
@@ -191,107 +248,6 @@ An implementation of the mapping between Interaction in the TD Interaction Model
   <section id='appendix'>
   <h2>Earlier Material</h2>
   
-      <section>
-      <h2>Assumptions and Design Principles</h2>
-
-      <section>
-      <h3>Thing Description</h3>
-      <p>
-<a href="#fig-td-example"></a> below is an example Thing Description, illustrating two parts. The upper part contains is a description of an interaction, and the lower part is an associated link, which contains the protocol binding.
-      </p>
-      </section>
-      
-	  <figure id="fig-td-example">
-		<img src="images/td-example.png" style="width:95%"  />
-    <figcaption>Example of a Thing Description</figcaption>
-      </figure>
-      
-      <section>
-      <h3>TD Interaction Description</h3>
-      <p>
-The interaction description part of a Thing Description describes an event, action, or property interaction which is exposed by a thing. Each interaction description contains semantic annotation that describes the type of interaction and its application class, and one or more link elements containing URIs that point to the API entry points for the interaction.
-      </p>
-      </section>
-      
-	  <figure id="fig-interaction">
-		<img src="images/interaction-description.png" style="width:65%"  />
-    <figcaption>Interaction Description Part</figcaption>
-      </figure>
-      
-      <section>
-      <h3>Protocol Binding</h3>
-      <p> 
-Protocol bindings map abstract WoT interactions to concrete protocol operations. The "link" block provides one or more links that point to entry points used to initiate the protocol operations. 
-      </p>
-      </section>
-      
-	  <figure id="fig-protocol-binding">
-		<img src="images/protocol-binding-template.png" style="width:75%"  />
-    <figcaption>Protocol Binding Part</figcaption>
-      </figure>
-      
-      <section>
-      <h3>Protocol Adaptation</h3>
-      <p>
-Device protocols from various standards organizations have peculiar patterns for exposing the device features that the protocol uses to encapsulate and communicate information. 
-      </p>
-      <p>
-For example, OCF Resource Types expose a REST API that uses IETF concepts of Resource Type (rt) and Interface Type (if). By contrast, LWM2M/IPSO Smart Objects expose an hierarchy of object ID (collections) and resource ID (items) where the ID numbers provide the semantic identification. 
-      </p>
-      <p>
-These may all use a common communication protocol like CoAP, and representation format like CBOR or JSON, but then require special options like resource type, interface type, content-formats, data types, and payload schemas. 
-      </p>
-      </section>
-      
-      <section>
-      <h3>Discovery</h3>
-      <p>
-Discovery of things and features of things that map to TD interactions is outside the scope of protocol bindings as currently defined; in this specification we only cover the event, action, property part of the interaction model. 
-      </p>
-      <p>
-It is assumed that discovery of things on the connected device ecosystem results in a set of discoverable Thing Description instances, corresponding to the discovered things, and will then use the TD discovery mechanisms already defined in the W3C WoT WG/IG.
-      </p>
-      <p>
-For example, there could be a discovery process for each device ecosystem that finds new devices, creates TD instances, and publishes them to a TD directory.
-      </p>
-      </section>
-
-      <section>
-      <h3>TD Structure</h3>
-      <p> 
-Except for the link element, the interaction description has the same structure for all instances of a particular thing, regardless of the protocol binding being used. The  protocol binding template is implemented as an extension to the "link" element of the interaction pattern description. 
-      </p>
-      </section>
-
-      <section>
-      <h3>Input and output data</h3>
-      <p> 
-Input and Output Data are described in the interaction description and applied to the protocol binding using the information in the "link" element as a binding template. 
-      </p>
-      <p>
-Any data constraints imposed by the underlying ecosystem, such has range, units, resolution/granularity must be exposed by the interaction description in the inputData and outputData elements of the Inteaction Description. The implementation may provide a means to translate and convert units and scales between the WoT Scripting API and the underlying device traits.
-      </p>
-      </section>
-
-      <section>
-      <h3>Isolation</h3>
-      <p> 
-The interaction description part and protocol template ("link") part are meant to be isolated from each other and are coupled only through the inputData and outputData elements. There must be therefore consistent labeling of data elements between the interaction description and the binding template.
-      </p>
-      </section>
-
-      <section>
-      <h3>General purpose protocol driver</h3>
-      <p> 
-There needs to be enough information in the binidng template to enable a generic protocol driver to construct requests using input data elements and parse output data elements from responses. 
-      </p>
-      <p>
-For example, binding templates for RESTful protocols will look like submission forms, describing the method and options to use to construct the request, as well as a structural description or template to be used to construct and parse data payloads.
-      </p>
-      </section>
-      
-    </section>
-
     <section>
       <h2>Design Specification</h2>
       <section>

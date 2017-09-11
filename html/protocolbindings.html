@@ -176,44 +176,42 @@ The link element of a Thing Description Interaction points to a resource locatio
       <section>
       <h3>Protocol Binding</h3>
       <p> 
-          Extension of the "link" element in the TD to include communication instructions specific to the target protocol. Encoding in JSON serialization formats compatible with TD processing tools.
+      WoT Protocol Bindings consist of extensions of the "link" element in the TD to include communication instructions and metadata which are specific to the target protocol. The Protocol Bindings described in this document are encoded in JSON serialization formats compatible with TD processing tools.
       </p>
 
-      </section>
-      
 	  <figure id="fig-protocol-binding">
 		<img src="images/protocol-binding-template.png" style="width:75%"  />
     <figcaption>Protocol Binding Part</figcaption>
       </figure>
       
-
+      </section>
+      
+      <section>
+      <h3>Protocol Binding Template</h3>
+      <p> 
+      Target protocols vary considerably in semantics, but are generally expected to follow a client-server pattern, where the state transfer is done using some consistent set of messages. Requests are sent from the client to the server, and responses are returned from the server to the client. Either requests or responses, or both, may contain system state information.
+      </p>
+      <p> 
+      The binding template contains information necessary for the client, as a thing consumer, to construct and send requests to the server, and to recieve and interpret responses from the server. Some of the communication metadata types are listed below.
+      </p>
+      <bl>
+      <li>Request Method</li>
+      <li>Request Options</li>
+      <li>Serialization format for passing data</li>
+      <li>Payload schema for passing data</li>
+      </bl>
+      <p> 
+      Simple payloads may be described using the data fired constructs of the inputData and outputData elements. The payload schema constructs are needed to map simple data fields to more complex payload structures as required by the target protocols.
+      </p>
+      <p> 
+      If a protocol binding does not include any data schema mapping elements, then the data fields defined in the interaction description are to be directly serialized according to the specified media type.
+      </p>
+      
+      </section>
+      
 	</section>
     
-    <section>
-    <h2>Processing Model and Runtime Architecture</h2>
     
-      <section>
-      <h3>Separation of context, isolation between client and target networks</h3>
-      <p>
-    Servient Architecture
-      </p>
-  	  </section>
-  	  
-      <section>
-      <h3>Secure communication between clients and target networks</h3>
-      <p>
-    Target network security
-      </p>
-  	  </section>
-
-      <section>
-      <h3>Protocol Bindings for Exposed Thing instances</h3>
-      <p>
-    Exposed thing instances are associated with the TD they register. A server may expose things using a variety of design patterns, with pattern-specific protocol bindings. In cases of proxy things that re-expose consumed things, there may be TDs that are used to construct instances of exposed things. An implementation of a servient may have a common reusable set of protocol binding templates for exposed things, and may construct exposed things from TD instances that are then registered in a TD repositiry or directory.
-      </p>
-  	  </section>
-	</section>
-       
     <section>
     <h2>Bindings for Properties</h2>
     Get/Set using red and write primitives, GET, PUT/POST
@@ -244,6 +242,32 @@ The link element of a Thing Description Interaction points to a resource locatio
     <li>Protocol Binding vocabulary</li>
     </bl>
 	</section>
+
+    <section>
+    <h2>Processing Model and Runtime Architecture</h2>
+    
+      <section>
+      <h3>Separation of context, isolation between client and target networks</h3>
+      <p>
+    Servient Architecture
+      </p>
+  	  </section>
+  	  
+      <section>
+      <h3>Secure communication between clients and target networks</h3>
+      <p>
+    Target network security
+      </p>
+  	  </section>
+
+      <section>
+      <h3>Protocol Bindings for Exposed Thing instances</h3>
+      <p>
+    Exposed thing instances are associated with the TD they register. A server may expose things using a variety of design patterns, with pattern-specific protocol bindings. In cases of proxy things that re-expose consumed things, there may be TDs that are used to construct instances of exposed things. An implementation of a servient may have a common reusable set of protocol binding templates for exposed things, and may construct exposed things from TD instances that are then registered in a TD repositiry or directory.
+      </p>
+  	  </section>
+	</section>
+       
     
     <section>
     <h2>Examples for Various Protocols and Ecosystems</h2>

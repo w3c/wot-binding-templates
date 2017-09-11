@@ -101,18 +101,19 @@
 	<li>
 	Protocol Binding - An implementation of the mapping between Interaction in the TD Interaction Model (e.g., Property read) and specific operations of a protocol (e.g., HTTP GET).
 	</li>
+	</ul>
 	</section>
     
     <section>
     <h2>Use Cases for Protocol Bindings</h2>
-    <bl>
+    <ul>
     <li>Mapping of specific protocols to the WoT Abstract Interactions</li>
     <li>Existing device ecosystems like OCF, LWM2M/IPSO, Bluetooth, Zigbee</li>
     <li>Devices and web services modeled using interactions</li>
     <li>HTTP, CoAP, MQTT, Websocket protocols (fetch, patch)</li>
     <li>IP and non-IP transports</li>
-    <li>multi-servient synchronization, protocol adaptation and model re-composition, or adaptation in SW model</li>
-    </bl>
+    <li>Multi-servient synchronization, protocol adaptation and model re-composition, or adaptation in SW model</li>
+    </ul>
 	</section>
 	
     <section>
@@ -139,12 +140,19 @@ These may all use a common communication protocol like CoAP, and representation 
       <p>
 <a href="#fig-td-example"></a> below is an example Thing Description, illustrating two parts. The upper part contains is a description of an interaction, and the lower part is an associated link, which contains the protocol binding.
       </p>
-      </section>
+      <p>
+      The upper part, the Interaction Description, provides a simple, consistent structure that is easy for application logic to use and which does not change when different target protocols are included in the Protocol Binding. 
+      </p>
+      <p>
+      The lower part, the Protocol Binding, contains the communications metadata needed to specify the protocol-level interaction with the target device in its native protocol. 
+      </p>
       
 	  <figure id="fig-td-example">
 		<img src="images/td-example.png" style="width:95%"  />
     <figcaption>Example of a Thing Description</figcaption>
       </figure>
+      
+      </section>
       
       <section>
       <h3>TD Interaction Description</h3>
@@ -164,7 +172,7 @@ The interaction description part of a Thing Description describes an event, acti
       <section>
       <h3>TD Interaction Link</h3>
       <p>
-The link element of a Thing Description Interaction points to a resource location which exposes the instance of the interaction. The link may additionally specify the Media Type of the resource [see TD].
+The link element of a Thing Description Interaction points to a resource location which exposes the instance of the interaction. The link may additionally specify the Media Type of the resource and may contain additional commnications metadata items from the Protocol Binding Template.
       </p>
       </section>
             
@@ -194,18 +202,43 @@ The link element of a Thing Description Interaction points to a resource locatio
       <p> 
       The binding template contains information necessary for the client, as a thing consumer, to construct and send requests to the server, and to recieve and interpret responses from the server. Some of the communication metadata types are listed below.
       </p>
-      <bl>
+      <ul>
       <li>Request Method</li>
       <li>Request Options</li>
       <li>Serialization format for passing data</li>
       <li>Payload schema for passing data</li>
-      </bl>
+      </ul>
       <p> 
-      Simple payloads may be described using the data fired constructs of the inputData and outputData elements. The payload schema constructs are needed to map simple data fields to more complex payload structures as required by the target protocols.
+      Simple payloads may be described using the data field constructs of the inputData and outputData elements of the Interaction Descrition. The payload schema constructs are only needed when it is necesssary to map simple data fields to more complex payload structures as required by the target protocols.
       </p>
       <p> 
-      If a protocol binding does not include any data schema mapping elements, then the data fields defined in the interaction description are to be directly serialized according to the specified media type.
+      If a protocol binding does not include any inputSchema or outputSchema  mapping elements , then the data fields defined in the interaction description are to be directly serialized with the corresponding "id" values as keywords, according to the specified media type. 
       </p>
+      <p>
+      If an inputSchema or outputSchema element is included in the protocol binding, then the data fields from the Interaction Description are mapped by "id" value into corresponding fields of the schema template in the protocol binding. See [tbd] for examples of data field mapping to schema templates.
+      </p>
+      
+        <pre class="example">
+          "inputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer"
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string"
+                      }
+                  }
+              ],
+              "required": ["id"]
+          }
+        </pre>
+
       
       </section>
       
@@ -219,28 +252,28 @@ The link element of a Thing Description Interaction points to a resource locatio
     
     <section>
     <h2>Bindings for Actions</h2>
-    <bl>
+    <ul>
     <li>Mapping UPDATE vs. CREATE</li>
     <li>Protocol binidng for TD of created Action resource</li>
     <li>Mapping of Invoke, Read Status, Modify, Cancel</li>
-    </bl>
+    </ul>
 	</section>
     
     <section>
     <h2>Bindings for Events</h2>
-    <bl>
+    <ul>
     <li>Mapping of simple Observe and Subscribe vs. Created Subscription</li>
     <li>Protocol binding for TD of created subscription resource</li>
     <li>Mapping of Subscribe, Modify Subscription, Cancel</li>
-    </bl>
+    </ul>
 	</section>
     
     <section>
     <h2>Structure and Vocabulary for Protocol Binding Templates</h2>
-    <bl>
+    <ul>
     <li>TD Structure</li>
     <li>Protocol Binding vocabulary</li>
-    </bl>
+    </ul>
 	</section>
 
     <section>
@@ -279,10 +312,10 @@ The link element of a Thing Description Interaction points to a resource locatio
     <p>While the Thing Description will provide general mechanisms to describe arbitrary protocols, to enable interoperability, the Working Group will define standard binding templates for common protocols.</p> 
     
     These standard binding templates will be created in close collaboration with the industry alliances and standards development organizations responsible for these. This includes definition of mappings from the interactions at the Thing Layer to:</p>
-	<bl>
+	<ul>
 	<li>Transfer layer communication patterns such as push, pull, pub-sub, bi-directional messaging, etc.</li>
 	<li>Specific protocols at the transfer layer, e.g., REST-based protocols such as HTTP and CoAP, pub-sub protocols such as MQTT, and raw channel-based protocols such as WebSockets</li>
-	</bl>
+	</ul>
 	<p>The Web of Things has a multi-protocol architecture and bindings to both IP and non-IP transports (e.g., Bluetooth Low Energy) may be defined.</p>
 
 	<p>Support for secure communications will be included, as defined by the Security and Privacy deliverable.</p>

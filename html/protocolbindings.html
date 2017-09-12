@@ -107,7 +107,7 @@
     <section>
     <h2>Use Cases for Protocol Bindings</h2>
     <ul>
-    <li>Mapping of specific protocols to the WoT Abstract Interactions</li>
+    <li>Mapping of the WoT Abstract Interactions to specific protocols</li>
     <li>Existing device ecosystems like OCF, LWM2M/IPSO, Bluetooth, Zigbee</li>
     <li>Devices and web services modeled using interactions</li>
     <li>HTTP, CoAP, MQTT, Websocket protocols (fetch, patch)</li>
@@ -146,80 +146,20 @@ These may all use a common communication protocol like CoAP, and representation 
       <p>
       The lower part, the Protocol Binding, contains the communications metadata needed to specify the protocol-level interaction with the target device in its native protocol. 
       </p>
-      
-	  <figure id="fig-td-example">
-		<img src="images/td-example.png" style="width:95%"  />
-    <figcaption>Example of a Thing Description</figcaption>
-      </figure>
-      
-      </section>
-      
-      <section>
-      <h3>TD Interaction Description</h3>
-      <p>
-The interaction description part of a Thing Description describes an event, action, or property interaction which is exposed by a thing. Each interaction description contains semantic annotation that describes the type of interaction and its application class, and one or more link elements containing URIs that point to the API entry points for the interaction.
-      </p>
-      <p>
-      Each interaction description contains an inputData element, an outputData element, or both. These elements describe the data parameters passed to or retrieved from the resource when the interactions are invoked. The inputData and outputData descriptions may contain value type and value constraint information which is derived from the types and constraints of the underlying protocols and data models.
-      </p>
-      
-	  <figure id="fig-interaction">
-		<img src="images/interaction-description.png" style="width:65%"  />
-    <figcaption>Interaction Description Part</figcaption>
-      </figure>
-      </section>
 
-      <section>
-      <h3>TD Interaction Link</h3>
-      <p>
-The link element of a Thing Description Interaction points to a resource location which exposes the instance of the interaction. The link may additionally specify the Media Type of the resource and may contain additional commnications metadata items from the Protocol Binding Template.
-      </p>
-      </section>
-            
-	</section>
-       
-    <section>
-    <h2>Binding Template Design</h2>
-    
-      <section>
-      <h3>Protocol Binding</h3>
-      <p> 
-      WoT Protocol Bindings consist of extensions of the "link" element in the TD to include communication instructions and metadata which are specific to the target protocol. The Protocol Bindings described in this document are encoded in JSON serialization formats compatible with TD processing tools.
-      </p>
+<pre class="example" title="Thing Description Example">
+  {
+    "@context": ["http://w3c.github.io/wot/w3c-wot-td-context.jsonld"],
+    "@type": ["Thing"],
+    "name": "ExampleThing",
+    "interaction": [
 
-	  <figure id="fig-protocol-binding">
-		<img src="images/protocol-binding-template.png" style="width:75%"  />
-    <figcaption>Protocol Binding Part</figcaption>
-      </figure>
-      
-      </section>
-      
-      <section>
-      <h3>Protocol Binding Template</h3>
-      <p> 
-      Target protocols vary considerably in semantics, but are generally expected to follow a client-server pattern, where the state transfer is done using some consistent set of messages. Requests are sent from the client to the server, and responses are returned from the server to the client. Either requests or responses, or both, may contain system state information.
-      </p>
-      <p> 
-      The binding template contains information necessary for the client, as a thing consumer, to construct and send requests to the server, and to recieve and interpret responses from the server. Some of the communication metadata types are listed below.
-      </p>
-      <ul>
-      <li>Request Method</li>
-      <li>Request Options</li>
-      <li>Serialization format for passing data</li>
-      <li>Payload schema for passing data</li>
-      </ul>
-      <p> 
-      Simple payloads may be described using the data field constructs of the inputData and outputData elements of the Interaction Descrition. The payload schema constructs are only needed when it is necesssary to map simple data fields to more complex payload structures as required by the target protocols.
-      </p>
-      <p> 
-      If a protocol binding does not include any inputSchema or outputSchema  mapping elements , then the data fields defined in the interaction description are to be directly serialized with the corresponding "id" values as keywords, according to the specified media type. 
-      </p>
-      <p>
-      If an inputSchema or outputSchema element is included in the protocol binding, then the data fields from the Interaction Description are mapped by "id" value into corresponding fields of the schema template in the protocol binding. See [tbd] for examples of data field mapping to schema templates.
-      </p>
-      
-        <pre class="example">
-          "inputData": {
+  ====Interaction Description====          
+  
+        {
+            "@type": ["Property"],
+            "name": "status",
+            "outputData": {
               "type": "object",
               "fields": [
                   {
@@ -234,14 +174,225 @@ The link element of a Thing Description Interaction points to a resource locatio
                         "type": "string"
                       }
                   }
-              ],
-              "required": ["id"]
+              ]
           }
-        </pre>
+
+          
+            
+  ========Protocol Binding=======          
+
+            "link": [{
+                "href": "http://10.0.0.17:8080/status",
+                "mediaType": "application/json"
+            }]
+        }
+    ]
+  }
+ </pre>
+
+      </section>
+      
+      <section>
+      <h3>TD Interaction Description</h3>
+      <p>
+The interaction description part of a Thing Description describes an event, action, or property interaction which is exposed by a thing. Each interaction description contains semantic annotation that describes the type of interaction and its application class, and one or more link elements containing URIs that point to the API entry points for the interaction.
+      </p>
+      <p>
+      Each interaction description contains an inputData element, or an outputData element, or both. These elements describe the data parameters passed to or retrieved from the resource when the interactions are invoked. The inputData and outputData descriptions may contain value type and value constraint information which is derived from the types and constraints of the underlying protocols and data models.
+      </p>
+      
+<pre class="example" title="Output Data Element Example">
+            "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 7
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string",
+                        "maxLength": 12
+                      }
+                  }
+              ]
+            }
+ </pre>
 
       
       </section>
+
+      <section>
+      <h3>TD Interaction Link</h3>
+      <p>
+The link element of a Thing Description Interaction points to a resource location which exposes the instance of the interaction. The link may additionally specify the Media Type of the resource and may contain additional commnications metadata items from the Protocol Binding Template.
+      </p>
+        <pre class="example">
+         "link": [
+            {
+              "href": "http://10.0.0.17:8080/status",
+              "mediaType": "application/json"
+            }
+          ]
+        </pre>
       
+      </section>
+            
+	</section>
+       
+    <section>
+    <h2>Binding Template Design</h2>
+    
+      <section>
+      <h3>Protocol Binding</h3>
+      <p> 
+      WoT Protocol Bindings consist of extensions of the "link" element in the TD to include communication instructions and metadata which are specific to the target protocol. The Protocol Bindings described in this document are encoded in JSON serialization formats compatible with TD processing tools.
+      </p>
+
+      </section>
+      
+      <section>
+      <h3>Protocol Binding Template</h3>
+      <p> 
+      Target protocols vary considerably in semantics, but are generally expected to follow a client-server pattern, where the state transfer is done using some consistent set of messages. Requests are sent from the client to the server, and responses are returned from the server to the client. Either requests or responses, or both, may contain system state information.
+      </p>
+      <p> 
+      The binding template contains information necessary for the client, as a thing consumer, to construct and send requests to the server, and to recieve and interpret responses from the server. Some of the communication metadata types are listed below.
+      </p>
+      <ul>
+      <li>Media type</li>
+      <li>Payload schema</li>
+      <li>Request Method</li>
+      <li>Request Options</li>
+      </ul>
+      </section>
+
+      <section>
+      <h3>Media Type</h3>
+      <p> 
+      Media Type specifies the serialization format and other constraints on the data and interaction models of the target protocol. An example is "application/ocf+cbor". There may also be a numeric code, for example CoAP content-format codes. 
+      </p>
+      </section>
+      <section>
+      <h3>Payload Schema</h3>
+      <p> 
+      Simple payloads may be described using the data field constructs of the inputData and outputData elements of the Interaction Descrition. The payload schema constructs of the Protocol Binding, inputSchema  and outputSchema, are only needed when it is necesssary to map simple data fields to more complex payload structures as required by the target protocols.
+      </p>
+      <p> 
+      If a protocol binding does not include any inputSchema or outputSchema  mapping elements , then the data fields defined in the interaction description are to be directly serialized with the corresponding "name" values as keywords, according to the specified media type. See example.
+      </p>
+      
+        <pre class="example" title="Simple Protocol Binding Example">
+          "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 7
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string",
+                        "maxLength": 12
+                      }
+                  }
+              ]
+          }
+          "link": [
+            {
+              "href": "http://10.0.0.17:8080/status",
+              "mediaType": "application/json"
+            }
+          ]
+        </pre>
+        
+       <p>
+      In the transmitted or expected representation, the keywords "id" and "name" are used as they appear in the Interaction Description.
+      </p>
+
+        <pre class="example" title="Expected Representation">
+          {
+            "id": 3,
+            "name": "test"
+          }
+        </pre>
+
+       <p>
+      If an inputSchema or outputSchema element is included in the protocol binding, then the data fields from the Interaction Description are mapped by "name" into corresponding fields of the schema template in the protocol binding. See example.
+      </p>
+      
+        <pre class="example" title="Protocol Binding With Output Schema">
+          "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 7
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string",
+                        "maxLength": 12
+                      }
+                  }
+              ]
+          }
+          "link": [
+            {
+              "href": "http://10.0.0.17:8080/thing/interaction",
+              "mediaType": "application/json",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "s_id": {{id}},
+                  "s_name": {{name}}
+                }
+              }
+            }
+          ] 
+        </pre>
+       <p>
+      In the transmitted or expected representation, the keywords "s_id" and s_state" are used to construct the payload and the values corresponding to "id" and "name" in the Interaction Description are used.
+      </p>
+
+        <pre class="example" title="Expected Representation ">
+          {
+            "s_id": 3,
+            "s_name": "test"
+          }
+        </pre>
+
+      </section>
+      
+      <section>
+      <h3>Request Method</h3>
+      <p> 
+      Request Method specifies which method to use in the target protocol to transmit the request. GET and PUT are examples of request methods in the HTTP protocol.
+      </p>
+      </section>
+
+      <section>
+      <h3>Request Options</h3>
+      <p> 
+      Request Options specify any protoc-specific options required to be included with the request. For example, CoAP header options are specified as request options in the protocol binding. 
+      </p>
+      </section>
+           
 	</section>
     
     
@@ -300,7 +451,15 @@ The link element of a Thing Description Interaction points to a resource locatio
       </p>
   	  </section>
 	</section>
-       
+	
+    <section>
+    <h2>Security Considerations</h2> 
+    <ul>
+    <li>Security endpoint for target protocol</li>
+    <li>Isolation from target protocol</li>
+    <li>Leaking information about target devices</li>
+    </ul>
+	</section>
     
     <section>
     <h2>Examples for Various Protocols and Ecosystems</h2>

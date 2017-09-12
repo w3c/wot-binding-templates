@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<!--<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+]>-->
+<html>
+  <head>
+    <title>WoT Protocol Binding Templates</title>
+    <meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+    <!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" async="async" class="remove"></script>
+    <script class='remove'>
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+          specStatus:           "unofficial",
+          
+          // the specification's short name, as in http://www.w3.org/TR/short-name/
+          shortName:            "",
+
+          // if your specification has a subtitle that goes below the main
+          // formal title, define it here
+          // subtitle   :  "an excellent document",
+
+          // if you wish the publication date to be other than today, set this
+          // publishDate:  "2009-08-06",
+
+          // if the specification's copyright date is a range of years, specify
+          // the start date here:
+          // copyrightStart: "2005"
+
+          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+          // and its maturity status
+          // previousPublishDate:  "1977-03-15",
+          // previousMaturity:  "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          edDraftURI:           "",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // if you want to have extra CSS, append them to this list
+          // it is recommended that the respec.css stylesheet be kept
+          extraCSS:             ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+
+          // editors, add as many as you like
+          // only "name" is required
+          editors:  [
+              { name: "Michael Koster", url: "",
+                company: "", companyURL: "" },
+          ],
+
+          // authors, add as many as you like. 
+          // This is optional, uncomment if you have authors as well as editors.
+          // only "name" is required. Same format as editors.
+
+          //authors:  [
+          //    { name: "Your Name", url: "http://example.org/",
+          //      company: "Your Company", companyURL: "http://example.com/" },
+          //],
+          
+          // name of the WG
+          wg:           "Interest Group on the Web of Things",
+          
+          // URI of the public WG page
+          wgURI:        "http://www.w3.org/WoT/IG/",
+          
+          // name (with the @w3c.org) of the public mailing to which comments are due
+          wgPublicList: "public-wot-ig",
+          
+          // URI of the patent status for this WG, for Rec-track documents
+          // !!!! IMPORTANT !!!!
+          // This is important for Rec-track documents, do not copy a patent URI from a random
+          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+          // Team Contact.
+          wgPatentURI:  "",
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+    <p>WoT Thing Descriptions contain abstract, protocol-neutral desctiptions of the interactions provided by things and services.</p>
+    
+    <p>WoT Protocol Bindings are elements in a WoT Thing Description which perform the function of mapping the abstract interactions exposed by the Thing Description to the protocol-specific instances that are exposed by the devices and services in the target ecosystem.</p>
+    
+    <p>WoT Protocol Binding Templates consist of standardized design patterns and vocabulary to describe communications metadata for the target protocols that are mapped by WoT Thing Descriptions. Information in the Protocol Binding enables the WoT Servient to construct and parse messages in the target protocol.</p>
+    
+    <p>This document describes the general architecture and processing model for Protocol Bindings, and describes a structure and vocabulary for Protocol Binding Templates that may be adapted as needed to extend WoT Thing Description to new target protocols and ecosystems.</p>
+    
+    </section>
+
+    <section>
+    <h2>Definitions</h2>
+    [See also the general definitions and vocabulary 	https://github.com/w3c/wot-architecture/blob/master/terminology.md]
+    <ul>
+    <li>Binding Templates - A re-usable collection of blueprints for the communication with different IoT platforms. The blueprints includes the required vocabulary for the Thing Description to map Interactions to platform-specific messages as well as implementation notes for the required protocol stacks or dedicated communication drivers.
+	</li>
+	<li>
+	Protocol Binding - An implementation of the mapping between Interaction in the TD Interaction Model (e.g., Property read) and specific operations of a protocol (e.g., HTTP GET).
+	</li>
+	</ul>
+	</section>
+    
+    <section>
+    <h2>Use Cases for Protocol Bindings</h2>
+    <ul>
+    <li>Mapping of the WoT Abstract Interactions to specific protocols</li>
+    <li>Existing device ecosystems like OCF, LWM2M/IPSO, Bluetooth, Zigbee</li>
+    <li>Devices and web services modeled using interactions</li>
+    <li>HTTP, CoAP, MQTT, Websocket protocols (fetch, patch)</li>
+    <li>IP and non-IP transports</li>
+    <li>Multi-servient synchronization, protocol adaptation and model re-composition, or adaptation in SW model</li>
+    </ul>
+	</section>
+	
+    <section>
+      <h3>Protocol Adaptation</h3>
+      <p> 
+Protocol bindings map abstract WoT interactions to concrete protocol operations. 
+      </p>
+      <p>
+Device protocols from various standards organizations have peculiar patterns for exposing the device features that the protocol uses to encapsulate and communicate information. 
+      </p>
+      <p>
+For example, OCF Resource Types expose a REST API that uses IETF concepts of Resource Type (rt) and Interface Type (if). By contrast, LWM2M/IPSO Smart Objects expose an hierarchy of object ID (collections) and resource ID (items) where the ID numbers provide the semantic identification. 
+      </p>
+      <p>
+These may all use a common communication protocol like CoAP, and representation format like CBOR or JSON, but then require special options like resource type, interface type, content-formats, data types, and payload schemas. 
+      </p>
+      </section>
+
+    <section>
+    <h2>Thing Description Architecture</h2>
+    
+      <section>
+      <h3>Thing Description</h3>
+      <p>
+<a href="#fig-td-example"></a> below is an example Thing Description, illustrating two parts. The upper part contains is a description of an interaction, and the lower part is an associated link, which contains the protocol binding.
+      </p>
+      <p>
+      The upper part, the Interaction Description, provides a simple, consistent structure that is easy for application logic to use and which does not change when different target protocols are included in the Protocol Binding. 
+      </p>
+      <p>
+      The lower part, the Protocol Binding, contains the communications metadata needed to specify the protocol-level interaction with the target device in its native protocol. 
+      </p>
+
+<pre class="example" title="Thing Description Example">
+  {
+    "@context": ["http://w3c.github.io/wot/w3c-wot-td-context.jsonld"],
+    "@type": ["Thing"],
+    "name": "ExampleThing",
+    "interaction": [
+
+  ====Interaction Description====          
+  
+        {
+            "@type": ["Property"],
+            "name": "status",
+            "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer"
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string"
+                      }
+                  }
+              ]
+          }
+
+          
+            
+  ========Protocol Binding=======          
+
+            "link": [{
+                "href": "http://10.0.0.17:8080/status",
+                "mediaType": "application/json"
+            }]
+        }
+    ]
+  }
+ </pre>
+
+      </section>
+      
+      <section>
+      <h3>TD Interaction Description</h3>
+      <p>
+The interaction description part of a Thing Description describes an event, action, or property interaction which is exposed by a thing. Each interaction description contains semantic annotation that describes the type of interaction and its application class, and one or more link elements containing URIs that point to the API entry points for the interaction.
+      </p>
+      <p>
+      Each interaction description contains an inputData element, or an outputData element, or both. These elements describe the data parameters passed to or retrieved from the resource when the interactions are invoked. The inputData and outputData descriptions may contain value type and value constraint information which is derived from the types and constraints of the underlying protocols and data models.
+      </p>
+      
+<pre class="example" title="Output Data Element Example">
+            "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 7
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string",
+                        "maxLength": 12
+                      }
+                  }
+              ]
+            }
+ </pre>
+
+      
+      </section>
+
+      <section>
+      <h3>TD Interaction Link</h3>
+      <p>
+The link element of a Thing Description Interaction points to a resource location which exposes the instance of the interaction. The link may additionally specify the Media Type of the resource and may contain additional commnications metadata items from the Protocol Binding Template.
+      </p>
+        <pre class="example">
+         "link": [
+            {
+              "href": "http://10.0.0.17:8080/status",
+              "mediaType": "application/json"
+            }
+          ]
+        </pre>
+      
+      </section>
+            
+	</section>
+       
+    <section>
+    <h2>Binding Template Design</h2>
+    
+      <section>
+      <h3>Protocol Binding</h3>
+      <p> 
+      WoT Protocol Bindings consist of extensions of the "link" element in the TD to include communication instructions and metadata which are specific to the target protocol. The Protocol Bindings described in this document are encoded in JSON serialization formats compatible with TD processing tools.
+      </p>
+
+      </section>
+      
+      <section>
+      <h3>Protocol Binding Template</h3>
+      <p> 
+      Target protocols vary considerably in semantics, but are generally expected to follow a client-server pattern, where the state transfer is done using some consistent set of messages. Requests are sent from the client to the server, and responses are returned from the server to the client. Either requests or responses, or both, may contain system state information.
+      </p>
+      <p> 
+      The binding template contains information necessary for the client, as a thing consumer, to construct and send requests to the server, and to recieve and interpret responses from the server. Some of the communication metadata types are listed below.
+      </p>
+      <ul>
+      <li>Media type</li>
+      <li>Payload schema</li>
+      <li>Request Method</li>
+      <li>Request Options</li>
+      </ul>
+      </section>
+
+      <section>
+      <h3>Media Type</h3>
+      <p> 
+      Media Type specifies the serialization format and other constraints on the data and interaction models of the target protocol. An example is "application/ocf+cbor". There may also be a numeric code, for example CoAP content-format codes. 
+      </p>
+      </section>
+      <section>
+      <h3>Payload Schema</h3>
+      <p> 
+      Simple payloads may be described using the data field constructs of the inputData and outputData elements of the Interaction Descrition. The payload schema constructs of the Protocol Binding, inputSchema  and outputSchema, are only needed when it is necesssary to map simple data fields to more complex payload structures as required by the target protocols.
+      </p>
+      <p> 
+      If a protocol binding does not include any inputSchema or outputSchema  mapping elements , then the data fields defined in the interaction description are to be directly serialized with the corresponding "name" values as keywords, according to the specified media type. See example.
+      </p>
+      
+        <pre class="example" title="Simple Protocol Binding Example">
+          "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 7
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string",
+                        "maxLength": 12
+                      }
+                  }
+              ]
+          }
+          "link": [
+            {
+              "href": "http://10.0.0.17:8080/status",
+              "mediaType": "application/json"
+            }
+          ]
+        </pre>
+        
+       <p>
+      In the transmitted or expected representation, the keywords "id" and "name" are used as they appear in the Interaction Description.
+      </p>
+
+        <pre class="example" title="Expected Representation">
+          {
+            "id": 3,
+            "name": "test"
+          }
+        </pre>
+
+       <p>
+      If an inputSchema or outputSchema element is included in the protocol binding, then the data fields from the Interaction Description are mapped by "name" into corresponding fields of the schema template in the protocol binding. See example.
+      </p>
+      
+        <pre class="example" title="Protocol Binding With Output Schema">
+          "outputData": {
+              "type": "object",
+              "fields": [
+                  {
+                      "name": "id",
+                      "value": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 7
+                      }
+                  },
+                  {
+                      "name": "name",
+                      "value": {
+                        "type": "string",
+                        "maxLength": 12
+                      }
+                  }
+              ]
+          }
+          "link": [
+            {
+              "href": "http://10.0.0.17:8080/thing/interaction",
+              "mediaType": "application/json",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "s_id": {{id}},
+                  "s_name": {{name}}
+                }
+              }
+            }
+          ] 
+        </pre>
+       <p>
+      In the transmitted or expected representation, the keywords "s_id" and s_state" are used to construct the payload and the values corresponding to "id" and "name" in the Interaction Description are used.
+      </p>
+
+        <pre class="example" title="Expected Representation ">
+          {
+            "s_id": 3,
+            "s_name": "test"
+          }
+        </pre>
+
+      </section>
+      
+      <section>
+      <h3>Request Method</h3>
+      <p> 
+      Request Method specifies which method to use in the target protocol to transmit the request. GET and PUT are examples of request methods in the HTTP protocol.
+      </p>
+      </section>
+
+      <section>
+      <h3>Request Options</h3>
+      <p> 
+      Request Options specify any protoc-specific options required to be included with the request. For example, CoAP header options are specified as request options in the protocol binding. 
+      </p>
+      </section>
+           
+	</section>
+    
+    
+    <section>
+    <h2>Bindings for Properties</h2>
+    Get/Set using red and write primitives, GET, PUT/POST
+	</section>
+    
+    <section>
+    <h2>Bindings for Actions</h2>
+    <ul>
+    <li>Mapping UPDATE vs. CREATE</li>
+    <li>Protocol binidng for TD of created Action resource</li>
+    <li>Mapping of Invoke, Read Status, Modify, Cancel</li>
+    </ul>
+	</section>
+    
+    <section>
+    <h2>Bindings for Events</h2>
+    <ul>
+    <li>Mapping of simple Observe and Subscribe vs. Created Subscription</li>
+    <li>Protocol binding for TD of created subscription resource</li>
+    <li>Mapping of Subscribe, Modify Subscription, Cancel</li>
+    </ul>
+	</section>
+    
+    <section>
+    <h2>Structure and Vocabulary for Protocol Binding Templates</h2>
+    <ul>
+    <li>TD Structure</li>
+    <li>Protocol Binding vocabulary</li>
+    </ul>
+	</section>
+
+    <section>
+    <h2>Processing Model and Runtime Architecture</h2>
+    
+      <section>
+      <h3>Separation of context, isolation between client and target networks</h3>
+      <p>
+    Servient Architecture
+      </p>
+  	  </section>
+  	  
+      <section>
+      <h3>Secure communication between clients and target networks</h3>
+      <p>
+    Target network security
+      </p>
+  	  </section>
+
+      <section>
+      <h3>Protocol Bindings for Exposed Thing instances</h3>
+      <p>
+    Exposed thing instances are associated with the TD they register. A server may expose things using a variety of design patterns, with pattern-specific protocol bindings. In cases of proxy things that re-expose consumed things, there may be TDs that are used to construct instances of exposed things. An implementation of a servient may have a common reusable set of protocol binding templates for exposed things, and may construct exposed things from TD instances that are then registered in a TD repositiry or directory.
+      </p>
+  	  </section>
+	</section>
+	
+    <section>
+    <h2>Security Considerations</h2> 
+    <ul>
+    <li>Security endpoint for target protocol</li>
+    <li>Isolation from target protocol</li>
+    <li>Leaking information about target devices</li>
+    </ul>
+	</section>
+    
+    <section>
+    <h2>Examples for Various Protocols and Ecosystems</h2>
+    HTTP, CoAP, MQTT, OCF, LWM2M, ?? examples
+	</section>
+    
+    <section>
+    <h2>From the WoT WG Charter Sec. 2.3</h2>
+    <p>While the Thing Description will provide general mechanisms to describe arbitrary protocols, to enable interoperability, the Working Group will define standard binding templates for common protocols.</p> 
+    
+    These standard binding templates will be created in close collaboration with the industry alliances and standards development organizations responsible for these. This includes definition of mappings from the interactions at the Thing Layer to:</p>
+	<ul>
+	<li>Transfer layer communication patterns such as push, pull, pub-sub, bi-directional messaging, etc.</li>
+	<li>Specific protocols at the transfer layer, e.g., REST-based protocols such as HTTP and CoAP, pub-sub protocols such as MQTT, and raw channel-based protocols such as WebSockets</li>
+	</ul>
+	<p>The Web of Things has a multi-protocol architecture and bindings to both IP and non-IP transports (e.g., Bluetooth Low Energy) may be defined.</p>
+
+	<p>Support for secure communications will be included, as defined by the Security and Privacy deliverable.</p>
+
+	<p>The Binding Templates deliverable is informative by nature since the intended capabilities of the Thing Description could be used to describe any protocol, even common ones, from first principles. However, interoperability will be enhanced by providing and encouraging the use of standard binding templates for common protocols when possible.</p>
+	</section>
+	
+
+  </body>
+    
+</html>

@@ -1,101 +1,287 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8">
-    <title>Web of Things (WoT) Binding Templates</title>
-    <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
-    <script class='remove'>
-      // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
-      var respecConfig = {
-        specStatus: "ED",
-        shortName: "wot-binding-templates",
-        copyrightStart:       2017,
-        noLegacyStyle:        true,
-        publishDate:          "",
-        previousPublishDate:  "",
-        previousMaturity:     "",
-        edDraftURI:           "https://w3c.github.io/wot-binding-templates/",
-        crEnd:                "",
-        inlineCSS:            true,
-        noIDLIn:              true,
-        format:               'markdown',
-        editors: [
-          { name: "Uday Davuluru", company: "RWE" },
-          { name: "Matthias Kovatsch", company: "Siemens" },
-        ],
-        wg:           "Web of Things Working Group",
-        wgURI:        "https://www.w3.org/WoT/WG/",
-        wgPublicList: "member-wot-wg@w3.org",
-        issueBase: "https://www.github.com/w3c/wot-binding-templates/issues/",
-        githubAPI: "https://api.github.com/repos/w3c/wot-binding-templates",
-        otherLinks: [
-          {
-            key: "Repository",
-            data: [{
-                  value: "We are on Github.",
-                  href: "https://github.com/w3c/wot-binding-templates"
-              }, {
-                  value: "File a bug.",
-                  href: "https://github.com/w3c/wot-binding-templates/issues"
-              }, {
-                  value: "Commit history.",
-                  href: "https://github.com/w3c/wot-binding-templates/commits/"
-              }, {
-                  value: "Use cases",
-                  href: "https://github.com/w3c/wot-binding-templates/use-cases.html"
-              }, {
-                  value: "Security and Privacy",
-                  href: "https://github.com/w3c/wot-binding-templates/security-privacy.html"
-              }, {
-                  value: "Rationale",
-                  href: "https://github.com/w3c/wot-binding-templates/rationale.md"
-              }
-            ]
-          },
-          {
-            key: "Contributors",
-            data: [
+    <meta charset="utf-8" />
+    <title>Web of Things (WoT) Protocol Binding Templates</title>
+    <script class="remove" async="" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+    <script class="remove">
+          var respecConfig = {
+              specStatus:     "ED"
+            , processVersion: 2017
+            , shortName:      "wot-binding-templates"
+            , copyrightStart: 2017
+            , wg:             "Web of Things Working Group"
+            , wgURI:          "https://www.w3.org/WoT/WG/"
+            , wgPublicList:   "public-wot-wg"
+            , edDraftURI:     "https://w3c.github.io/wot-binding-templates/"
+            , githubAPI:      "https://api.github.com/repos/w3c/wot-binding-templates"
+            , issueBase:      "https://www.github.com/w3c/wot-binding-templates/issues"
+            , editors: [
                 {
-                  value: "In the github repository",
-                  href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                  name:       "Michael Koster"
+                , w3cid:      "00000"
+                , company:    "SmartThings"
+                , companyURL: "https://www.smartthings.com/"
                 }
-            ]
-          },
-        ],
-        localBiblio: {
-          "WOT-PRACTICES": {
-            href:"http://w3c.github.io/wot/current-practices/wot-practices.html",
-            title: "Web of Things Current Practices",
-            publisher: "W3C",
-            date: "6 February 2017"
-          },
-          "TYPESCRIPT": {
-            href:"https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md",
-            title: "TypeScript Language Specification",
-            publisher: "Microsoft",
-            date: "1 October 2012"
-          },
-          "WEBAPPSEC": {
-            href:"https://w3c.github.io/webappsec/specs/powerfulfeatures",
-            title: "Secure Contexts",
-            publisher: "W3C",
-            date: "17 July 2015"
-          },
-        },
-      };
+              ]
+            , otherLinks: [
+                {
+                  key: "Contributors"
+                , data: [
+                    {
+                      value: "In the GitHub repository"
+                    , href: "https://github.com/w3c/wot-architecture/graphs/contributors"
+                    }
+                  ]
+                }
+              , {
+                  key: "Repository",
+                  data: [
+                    {
+                      value: "We are on GitHub",
+                      href: "https://github.com/w3c/wot-binding-templates/"
+                    }
+                  , {
+                      value: "File a bug",
+                      href: "https://github.com/w3c/wot-binding-templates/issues"
+                    }
+                  ]
+                }
+              ]
+            , localBiblio: {
+                "CoRE-RD" : {
+                  href: "https://tools.ietf.org/html/draft-ietf-core-resource-directory-11"
+                , title: "CoRE Resource Directory"
+                , status:    "Internet-Draft"
+                , publisher: "IETF"
+                , date: "03 July 2017"
+                }
+              }
+            };
     </script>
   </head>
   <body>
 
-  <section id="abstract">
-  </section>
 
-  <section id="sotd">
-  <p>
-    Implementers need to be aware that this specification is considered unstable. Vendors interested in implementing this specification before it eventually reaches the Candidate Recommendation phase should subscribe to the [repository](https://github.com/w3c/wot-binding-templates) and take part in the discussions.
-  </p>
-  </section>
+    <section id="abstract">
+      <p>
+      </p>
+    </section>
 
+    <section id="sotd">
+      <p class="ednote" title="The W3C WoT WG is asking for feedback">
+        Please contribute to this draft using the <a href="https://github.com/w3c/binding-templates/issues">GitHub Issue</a> feature of the <a href="https://github.com/w3c/wot-architecture/">WoT Architecture</a> repository.
+        For feedback on security and privacy considerations, please use the <a href="https://github.com/w3c/wot-security/issues">WoT Security and Privacy</a> Issues, as they are cross-cutting over all our documents.
+      </p>
+    </section>
+
+
+    <section>
+      <h1>Introduction</h1>
+      <p>
+      </p>
+      <ul>
+        <li>the <a href="https://w3c.github.io/wot-thing-description/">WoT Thing Description</a>,</li>
+        <li>the <a href="https://w3c.github.io/wot-binding-templates/">WoT Binding Templates</a>, and</li>
+        <li>the <a href="https://w3c.github.io/wot-scripting-api/">WoT Scripting API</a>.</li>
+      </ul>
+    </section>
+
+
+    <section>
+      <h2>Terminology</h2>
+      <p>
+        This document uses the following terms as defined here.
+        The WoT prefix is used to avoid ambiguity for terms that are defined specifically for Web of Things concepts.
+      </p>
+      <p class="ednote">
+        Please refer to <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md">this markdown file</a>.
+        Once the terminology definitions are stable, they will be included here.
+      </p>
+      <dl class="remove">
+        <dt><dfn id="Term">Term</dfn></dt>
+        <dd>Definition</dd>
+        <!-- Add other as needed -->
+      </dl>
+    </section>
+
+
+    <section id="sec-use-cases" class="informative">
+      <h1>Use Cases</h1>
+      <p>
+        This section presents the use cases
+      </p>
+
+      <section>
+        <h2>Smart Home</h2>
+        <p>
+          The Smart Home
+        </p>
+
+        <section>
+          <h3>Device Controllers</h3>
+          <p>the remote controller can be realized by a browser or native application.
+          </p>
+          <figure id="smart-home-deive">
+            <img src="images/smart-home-device.png" style="width: 500px;" />
+            <figcaption>Device Control</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h3>Cloud Proxies</h3>
+          <p>
+            Cloud proxies can be realized in different ways:
+          </p>
+          <p class="ednote">
+            The complexity of the use cases here increases too quickly. They will be split up to progressively add and explain each new feature.
+          </p>
+          <section>
+            <h4>Cloud-ready Devices</h4>
+            <p>
+              <a href="#smart-home-cloud1"></a> shows an example where electronic appliances are connected directly to the cloud.
+              The cloud mirrors the appliances and, acting as a proxy, can receive commands from remote controllers (e.g., a smartphone).
+              Authorized controllers can be located anywhere, as the proxy is globally reachable.
+            </p>
+            <figure id="smart-home-cloud1">
+              <img src="images/smart-home-cloud1.png" style="width: 500px;" />
+              <figcaption>Proxies with Cloud-ready Devices</figcaption>
+            </figure>
+          </section>
+
+        </section>
+      </section>
+
+    </section>
+
+
+    <section id="sec-requirements" class="informative">
+      <h1>Functional Requirements</h1>
+      <p>
+        This section defines the properties required in an abstract Web of Things (WoT) architecture.
+      </p>
+      <section id="sec-requirements-flexibility">
+        <h2>Flexibility</h2>
+        <p>
+          There are a wide variety of physical device configurations for WoT implementations.
+          The WoT abstract architecture should be able to be mapped to and cover all of the variations.
+        </p>
+      </section>
+      <section id="sec-requirements-compatibility">
+        <h2>Compatibility</h2>
+        <p>
+          We already have many existing IoT solutions and ongoing IoT
+          standardization activities in many business fields.
+          The WoT should provide a bridge between these existing and developing IoT
+          solutions and Web technology based on WoT concepts.
+          The WoT should be upwards compatible with existing IoT solutions and current standards.
+        </p>
+      </section>
+    </section>
+
+
+    <section id="sec-building-blocks">
+      <h1>WoT Building Blocks</h1>
+      <p>
+        This section presents the initial WoT building blocks that build up the abstract architecture for the Web of Things.
+        This architecture is derived from the use cases in Section <a href="#sec-use-cases"></a> and the requirements in Section <a href="#sec-requirements"></a>.
+        <a href="#architecture-abstract"></a> summarizes the high-level goals and requirements and shows the three levels where the WoT building blocks can be applied:
+      </p>
+      <ul>
+        <li>the device level,</li>
+        <li>the gateway level (or "edge"), and</li>
+        <li>the cloud level.</li>
+      </ul>
+      <figure id="architecture-abstract">
+        <img src="images/architecture-abstract.png" style="width: 100%;" />
+        <figcaption>Abstract Architecture of W3C WoT</figcaption>
+      </figure>
+
+    </section>
+
+
+    <section id="sec-security-considerations">
+      <h1>Security and Privacy Considerations</h1>
+      <p class="ednote">
+        Security and privacy considerations are still under discussion and development; the content below should be considered preliminary.
+        Due to the complexity of the subject
+        we are considering producing a separate document containing a detailed security and privacy considerations discussion
+        including a risk analysis,
+        threat model,
+        recommended mitigations,
+        and appropriate references to best practices.
+        A summary will be included here.
+        Work in progress is located in the
+        <a href="https://github.com/w3c/wot-security/">WoT Security and Privacy</a> repository.
+        Please file any security or privacy considerations and/or concerns using the <a href="https://github.com/w3c/wot-security/issues">GitHub Issue</a> feature.
+      </p>
+      <p><!-- Security requirements for the the WoT -->
+        Security is a cross-cutting issue that needs to be taken into account in all
+        <a href="#sec-building-blocks">WoT building blocks</a>.
+        The W3C WoT does not define any new security mechanisms,
+        but provides guidelines to apply the best practices from
+        Web security,
+        IoT security,
+        and information security for general software and hardware considerations.
+      </p>
+      <p>
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing-description-td">WoT Thing Description</a> must be used together with integrity protection mechanisms and access control policies.
+        Users must ensure that no sensitive information is included in the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-td">TDs</a> themselves.
+      </p>
+      <p>
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT Binding Templates</a> must correctly cover the security mechanisms employed by the underlying <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">IoT Platform</a>.
+        Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Things</a> are exposed and consumed in a way that is compliant with their security policies.
+      </p>
+      <p>
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-wot-runtime">WoT Runtime</a> implementation for the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-scripting-api">WoT Scripting API</a> must have mechanisms to prevent malicious access to the system and isolate scripts in multi-tenant <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-servient">Servients</a>.
+      </p>
+    </section>
+
+    <section>
+      <h1>Summary</h1>
+      <p>
+        An abstract architecture for the Web of Things and a functional architecture for <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-servient">Servients</a> has been introduced.
+        It is based on WoT building blocks, which are to be covered by additional WoT specifications:
+      </p>
+      <ul>
+        <li>the <a href="https://w3c.github.io/wot-thing-description/">WoT Thing Description</a>,</li>
+        <li>the <a href="https://w3c.github.io/wot-binding-templates/">WoT Binding Templates</a>, and</li>
+        <li>the <a href="https://w3c.github.io/wot-scripting-api/">WoT Scripting API</a>.</li>
+      </ul>
+      <p>
+        Of these, the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing-description-td">WoT Thing Description</a> is the primary building block, as it describes the network-facing interface of a Thing (<a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-wot-interface">WoT Interface</a>),
+        whether or not it uses <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT Binding Templates</a> or the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-scripting-api">WoT Scripting API</a> internally.
+        The implementation of <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT Binding Templates</a> results in multiple possible Protocol Bindings, so that a <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Thing</a> can communicate with different <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">IoT Platforms</a> (i.e., IoT ecosystems or standards).
+        When a <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Thing</a> uses the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-scripting-api">WoT Scripting API</a> internally,
+        its application logic can be programmed against a standardized contract using JavaScript.
+        This way, it simplifies IoT application development and enables portability across vendors and WoT network components.
+      </p>
+      <p>
+        The architecture described here applies well to a wide variety of different use cases.
+        Based on these, we have described serveral scenarios where one or more <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-servient">Servients</a> were used together to overcome,
+        for instance, limitations on the reach of specific communication protocols.
+        These examples are not exhaustive and are only meant to illustrate the applicability and flexibility of the WoT approach.
+      </p>
+    </section>
+    <section class="appendix">
+      <h2>Acknowledgements</h2>
+      <p>
+        Special thanks to all active Participants of the W3C Web of Things Interest Group and Working Group
+        for their technical input and suggestions that led to improvements to this document.
+      </p>
+    </section>
+<!--
+    <section class="appendix">
+      <h2>Change History</h2>
+      <p>
+        This is the First Public Working Draft.
+      </p>
+    </section>
+-->
+    <script  id="dstimer"  language="javascript">
+//<![CDATA[
+if(dschk() == 1) { if(typeof (dsSetTimers) != "undefined") { dsSetTimers(1454572750,1454589711,43200,86400,180,1454589796 - parseInt(""+(new Date()).getTime()/1000),1);}}
+//]]>
+    </script>
   </body>
 </html>
-

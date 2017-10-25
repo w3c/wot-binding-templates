@@ -509,38 +509,58 @@
           "mediaType": "application/ocf+cbor"
         </p>
         <p>
+          "profile": "http://iotschema.org/protocols/ipso.jsonld"
+        </p>
+        <p>
           non-registered media type e.g. x-<echonet> for custom drivers
         </p>
         <p>
           Also URI scheme will need to be customized to the target protocol
         </p>
+      </section>
+
+      <section id="protocol-methods-options">
+        <h2>Protocol Methods and Options</h2>
         <p>
-          "profile": "http://iotschema.org/protocols/ipso"
+          Each target protocol may specify different method names for similar
+          methods, and there may be semantic differences beween similar methods of
+          different protocols. Additionally, will use different methods
+          for mapping to a particular WoT Interaction type. For example, POST may
+          be used for setting a property value in one protocol, while PUT may be
+          used in another. For these reasons, we require the ability to specify
+          which method to use for a particular interaction. We also will provide
+          vocabulary to differentiate between methods of different protocols.
+        </p>
+        <p>
+          The W3C RDF vocabulary for HTTP [ref] is used to identify the methods
+          and options specified in the HTTP protocol bindings.
+        </p>
+        <p>
+          For the sake of consistency, we will derive a similar vocabulary for each
+          target protocol, e.g. CoAP, MQTT.
         </p>
       </section>
 
       <section id="protocol-methods">
-        <h2>Protocol Methods</h2>
+
         <p>
-          Different method names for similar methods across protocols, different methods used for the same interaction.
+          THe example below shows some method definitions for various protocols.
         </p>
-        <p>
-          There is an ontology for http which defines Methods and Options.
-        </p>
-        <p>
-          "http:methodName": "GET"
-        </p>
-        <p>
-          For the sake of consistency, we derive a similar ontology for each protocol, e.g. CoAP, MQTT.
-        </p>
+        <pre class="example" title="Vocabulary Example for Methods">
+          "http:methodName": "get"
+          "mqtt:methodName": "subscribe"
+          "coap"methodName": "get"
+        </pre>
+
       </section>
 
       <section id="protocol-options">
         <h2>Protocol Options</h2>
         <p>
-          Header options in HTTP, CoAP, MQTT sometimes must be included in a protocol binding in order to successfully interact with the underlying protocol.
+          Header options in HTTP, CoAP, MQTT sometimes must be included in a
+          protocol binding in order to successfully interact with the underlying protocol.
 
-          <pre class="example" title="HTTP Vocabulary Example">
+          <pre class="example" title="HTTP Vocabulary Example for Header Options">
             "http:messageHeader":
               [
                 {
@@ -594,18 +614,15 @@
     <section id="property-bindings" class="informative">
       <h1>Bindings for Properties</h1>
       <p>
+        This section describes unique aspects of protocol bindings for WoT
+        Property type interactions
+      </p>
+      <p>
         rel=get, rel=set
       </p>
       <p>
         observable
-        rel=observe with obs attribute
-      </p>
-      <p>
-        (Bindings for Actions)
-      </p>
-      <p>
-
-        rel=invoke, methodName = post
+        rel=observe with obs attribute set in header
       </p>
 
     </section>
@@ -614,7 +631,11 @@
     <section id="action-bindings" class="informative">
       <h1>Bindings for Actions</h1>
       <p>
-        This section describes
+        This section describes unique aspects of protocol bindings for WoT
+        Action type interactions
+      </p>
+      <p>
+        rel=invoke, methodName = post
       </p>
 
     </section>
@@ -623,7 +644,11 @@
     <section id="event-bindings" class="informative">
       <h1>Bindings for Events</h1>
       <p>
-        observable vs. subscription
+        This section describes unique aspects of protocol bindings for WoT
+        Event type interactions
+      </p>
+      <p>
+        observable vs. subscription pattern
       </p>
       <p>
         rel=subscribe in subscription link, obs attribute in observable link
@@ -635,7 +660,7 @@
     <section id="vocabulary" class="informative">
       <h1>Vocabulary</h1>
       <p>
-        This section describes
+        This section specifies the vocabulary for protocol binding templates
       </p>
 
     </section>
@@ -677,15 +702,6 @@
       </p>
       <p>
         HTTP vocabulary
-      </p>
-
-    </section>
-
-
-    <section id="sec-use-cases" class="informative">
-      <h1>Use Cases</h1>
-      <p>
-        This section presents the use cases
       </p>
 
     </section>

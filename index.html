@@ -65,11 +65,10 @@
 
     <section id="abstract">
       <p>
-        W3C Web of Things enables interaction with, and orchestration
-        of, connected things at web scale.
-        The common abstract interaction model exposed by WoT Thing Description
-        enables applications to scale and evolve independently of the connected
-        things.
+        W3C Web of Things enables applications to interact with, and orchestrate
+        connected things at web scale. The standardized abstract interaction
+        model exposed by WoT Thing Description enables applications to scale and
+        evolve independently of the connected things.
       </p>
       <p>
         Many network level protocols and standards for connected things have
@@ -468,6 +467,11 @@
                             "max": 1.0
                           }
                         }
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "fields": [
                         {
                           "name": "n",
                           "value": "5002"
@@ -503,20 +507,29 @@
       <section id="media-types">
         <h2>Media Types</h2>
         <p>
-          Define the serialization details and other rules
+          Media Types define the serialization details and other rules for processing
+          the payloads. The media type is used to select a serializer/deserializer
+          and to select an additional set of rules and constraints for the protocol
+          driver.
         </p>
         <p>
-          "mediaType": "application/ocf+cbor"
+          For example, the mediaType "application/ocf+cbor" indicates that CBOR
+          serialization is used, but also that OCF rules and namespaces
+          apply to the processing of the representations.
         </p>
         <p>
-          "profile": "http://iotschema.org/protocols/ipso.jsonld"
+          Additionally, there may be a profile which points to a URI for
+          further description, for example a link with
+          profile=http://iotschema.org/protocols/ipso.jsonld indicates that the
+          target representation follows a set of additional constraints which are
+          further defined at the URI in the profile attribute's value.
         </p>
         <p>
-          non-registered media type e.g. x-<echonet> for custom drivers
+          Some special protocol drivers may be invoked by using a non-registered
+          media type e.g. x-<echonet> along with a custom URI scheme and its own
+          set of protocol methods and options defined for that URI scheme.
         </p>
-        <p>
-          Also URI scheme will need to be customized to the target protocol
-        </p>
+
       </section>
 
       <section id="protocol-methods-options">
@@ -542,14 +555,16 @@
       </section>
 
       <section id="protocol-methods">
+        <h2>Protocol Methods</h2>
 
         <p>
-          THe example below shows some method definitions for various protocols.
+          The example below shows some method definitions for various protocols.
         </p>
+
         <pre class="example" title="Vocabulary Example for Methods">
           "http:methodName": "get"
           "mqtt:methodName": "subscribe"
-          "coap"methodName": "get"
+          "coap:methodName": "get"
         </pre>
 
       </section>
@@ -558,54 +573,75 @@
         <h2>Protocol Options</h2>
         <p>
           Header options in HTTP, CoAP, MQTT sometimes must be included in a
-          protocol binding in order to successfully interact with the underlying protocol.
-
-          <pre class="example" title="HTTP Vocabulary Example for Header Options">
-            "http:messageHeader":
-              [
-                {
-                  "http:fieldName": "Accept",
-                  "http:fieldValue": "application/json"
-                },
-                {
-                  "http:fieldName": "Transfer-Encoding",
-                  "http:fieldValue": "chunked"
-                }
-              ]
-          </pre>
-
-          Note: different links in a binding may need different header constructions
-
+          protocol binding in order to successfully interact with the underlying
+          protocol. The example below shows the structure of the definiton for
+          http header options, according to the W3C HTTP Vocabulary in RDF.
         </p>
+
+        <pre class="example" title="HTTP Vocabulary Example for Header Options">
+          "http:messageHeader":
+            [
+              {
+                "http:fieldName": "Accept",
+                "http:fieldValue": "application/json"
+              },
+              {
+                "http:fieldName": "Transfer-Encoding",
+                "http:fieldValue": "chunked"
+              }
+            ]
+        </pre>
+
+          Note: different links in a binding may need different header constructions,
+          therefore the messageHeader construct is an extension of the TD element "link".
+
       </section>
 
     </section>
 
+
+    <section id="return-location">
+      <h2>Returned Location Information</h2>
+
+      <p>
+        Sometimes an interaction returns information in the form of a header
+        option or special payload back to the client when a long running operation
+        such a a subscription or certain type of action is invoked. This can be
+        the form of a created resource or handle.
+      </p>
+
+    </section>
+
+
     <section id="processing-model" class="informative">
       <h1>Processing Model and Runtime</h1>
       <p>
-        inputData, outputData, value scaling are performed in the application
-        library or adaptation layer
+        This section describes the processing model for Protocol Bindings with
+        respect to the abstract WoT Interactions provided by the Scripting API.
+      </p>
+      <p>
+        inputData and outputData elements are processed and value scaling is
+        performed in the application library or adaptation layer
       </p>
       <p>
         link href, method, options, and mediaType are processed in a driver
         context isolated from the application
       </p>
       <p>
-        Application fills in the inputData and sends with the link contents to
-        the protocol driver
+        The application, or a protocol adaptation layer, fills in the inputData
+        and sends it along with the selected link contents to the protocol driver
+        or, in the case of get, recieves a payload form the protocol driver and
+        uses outputData to extract the field values of interest.
       </p>
       <p>
-        Separate link operation completed in the protocol driver
+        The separation of execution context between the application and the protocol
+        driver enables isolation of faut domains and isolation of security domains.
       </p>
       <p>
-        Binding for Secure communications, security
+        ( discuss binding for Secure communications, security binding )
       </p>
       <p>
-        Binding for Exposed Thing
-      </p>
-      <p>
-        This section describes
+        ( discuss binding for Proxy Thing and Exposed Thing )
       </p>
 
     </section>
@@ -618,11 +654,27 @@
         Property type interactions
       </p>
       <p>
-        rel=get, rel=set
+        The abstract methods exposed for the Property Interaction are getproperty
+        setproperty. These are mapped by using link relations that describe
+        the abstract method, resulting in a semantic interpretatoin similar to
+        HTML form submission.
       </p>
+      <pre class="example" title="Example use of link relation for Property">
+        <p>
+          For example a link having href=/example/level, rel=wot:setProperty, and
+          coap:methodName=coap:post conveys the statement:
+        </p>
+        <p>
+          To do a setProperty of the subject Property (context of the link),
+          perform a post on the resource at the target URI /example/level.
+        </p>
+      </pre>
       <p>
-        observable
-        rel=observe with obs attribute set in header
+        Properties may be observable, defined by the the TD keyword "observable".
+        If there is an observe link and a retrieve link, the observe link may be
+        indicated by including rel=wot:observe in the link. The observe link may
+        also specify header options to use, for example CoAP obs=0 in the header
+        to start observation.
       </p>
 
     </section>
@@ -632,10 +684,29 @@
       <h1>Bindings for Actions</h1>
       <p>
         This section describes unique aspects of protocol bindings for WoT
-        Action type interactions
+        Action type interactions.
       </p>
       <p>
-        rel=invoke, methodName = post
+        The abstract methods on Actions are invokeAction, modifyAction, and
+        cancelAction.In the same way that the abstract methods on properties are
+        mapped using link relations, the abstract methods of actions are also
+        mapped.
+      </p>
+      <pre class="example" title="Example use of link relation for Action">
+        <p>
+          For example a link with href=/example/levelaction, rel=wot:invokeAction,
+          and coap:methodName=coap:post conveys the statement:
+        </p>
+        <p>
+          To do an invokeAction of the subject Action (context of the link),
+          perform a post on the resource at /example/levelaction.
+        </p>
+      </pre>
+      <p>
+        If the Action returns a handle to a created item, the protocol
+        binding may indicate the manner in which the location or handle of the
+        item is returned to the client by using the "expects" item in the link
+        to describe the returned information.
       </p>
 
     </section>
@@ -645,15 +716,46 @@
       <h1>Bindings for Events</h1>
       <p>
         This section describes unique aspects of protocol bindings for WoT
-        Event type interactions
+        Event type interactions.
       </p>
       <p>
-        observable vs. subscription pattern
+        The abstract methods on Events are subscribeEvent, unsubscribeEvent, and
+        observe.
+        The subscribeEvent operation returns a location or resource URI from which
+        events may be obtained, either by observation or some other method.
       </p>
       <p>
-        rel=subscribe in subscription link, obs attribute in observable link
+        By contrast, the MQTT subscribe operation is more like an observe of a
+        pre-defined or yet-to-be defined item, also known as a topic.
       </p>
-
+      <p>
+        The binding for Events allows either pre-defined URIs to observable or
+        pubsub resources, or the pattern of subscription creation which returns
+        an observable or pubsub URI.
+      </p>
+      <p>
+        If the binding offers a subscription, there will be a link with
+        rel=wot:subscribeEvent
+      </p>
+      <p>
+        If the binding offers an observable Event resource from which events are
+        obtained directly, there will be a link with rel=wot:observe
+      </p>
+      <pre class="example" title="Example use of link relation for Action">
+        <p>
+          For example a link having href=/example/levelevent, rel=wot:subscribeEvent,
+          and coap:methodName=coap:post conveys the statement:
+        </p>
+        <p>
+          To do a subscribeEvent of the subject Event (context of the link),
+          perform a post on the resource at /example/levelevent.
+        </p>
+      </pre>
+      <p>
+        If the Event supports subscription, the protocol binding may indicate the
+        manner in which the location of the event source is returned to the client
+        by using the "expects" item in the link to describe the returned information.
+      </p>
     </section>
 
 
@@ -666,15 +768,15 @@
     </section>
 
     <section id="binding-examples" class="informative">
-      <h1>Examples of protocol bindings</h1>
+      <h1>Examples of Thing Descriptions including protocol bindings</h1>
       <p>
-        OCF light and motion sensor
+        OCF light and motion sensor using CoAP on LAN
       </p>
       <p>
-        LWM2M+IPSO over MQTT
+        LWM2M+IPSO environmental sensor from MQTT brokers, LAN and cloud
       </p>
       <p>
-        SmartThings Endpoint API
+        SmartThings Endpoint API using HTTP cloud-to-cloud
       </p>
 
     </section>

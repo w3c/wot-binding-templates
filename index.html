@@ -1,101 +1,872 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8">
-    <title>Web of Things (WoT) Binding Templates</title>
-    <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
-    <script class='remove'>
-      // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
-      var respecConfig = {
-        specStatus: "ED",
-        shortName: "wot-binding-templates",
-        copyrightStart:       2017,
-        noLegacyStyle:        true,
-        publishDate:          "",
-        previousPublishDate:  "",
-        previousMaturity:     "",
-        edDraftURI:           "https://w3c.github.io/wot-binding-templates/",
-        crEnd:                "",
-        inlineCSS:            true,
-        noIDLIn:              true,
-        format:               'markdown',
-        editors: [
-          { name: "Uday Davuluru", company: "RWE" },
-          { name: "Matthias Kovatsch", company: "Siemens" },
-        ],
-        wg:           "Web of Things Working Group",
-        wgURI:        "https://www.w3.org/WoT/WG/",
-        wgPublicList: "member-wot-wg@w3.org",
-        issueBase: "https://www.github.com/w3c/wot-binding-templates/issues/",
-        githubAPI: "https://api.github.com/repos/w3c/wot-binding-templates",
-        otherLinks: [
-          {
-            key: "Repository",
-            data: [{
-                  value: "We are on Github.",
-                  href: "https://github.com/w3c/wot-binding-templates"
-              }, {
-                  value: "File a bug.",
-                  href: "https://github.com/w3c/wot-binding-templates/issues"
-              }, {
-                  value: "Commit history.",
-                  href: "https://github.com/w3c/wot-binding-templates/commits/"
-              }, {
-                  value: "Use cases",
-                  href: "https://github.com/w3c/wot-binding-templates/use-cases.html"
-              }, {
-                  value: "Security and Privacy",
-                  href: "https://github.com/w3c/wot-binding-templates/security-privacy.html"
-              }, {
-                  value: "Rationale",
-                  href: "https://github.com/w3c/wot-binding-templates/rationale.md"
-              }
-            ]
-          },
-          {
-            key: "Contributors",
-            data: [
+    <meta charset="utf-8" />
+    <title>Web of Things (WoT) Protocol Binding Templates</title>
+    <script class="remove" async="" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+    <script class="remove">
+          var respecConfig = {
+              specStatus:     "ED"
+            , processVersion: 2017
+            , shortName:      "wot-binding-templates"
+            , copyrightStart: 2017
+            , wg:             "Web of Things Working Group"
+            , wgURI:          "https://www.w3.org/WoT/WG/"
+            , wgPublicList:   "public-wot-wg"
+            , edDraftURI:     "https://w3c.github.io/wot-binding-templates/"
+            , githubAPI:      "https://api.github.com/repos/w3c/wot-binding-templates"
+            , issueBase:      "https://www.github.com/w3c/wot-binding-templates/issues"
+            , editors: [
                 {
-                  value: "In the github repository",
-                  href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                  name:       "Michael Koster"
+                , w3cid:      "00000"
+                , company:    "SmartThings"
+                , companyURL: "https://www.smartthings.com/"
                 }
-            ]
-          },
-        ],
-        localBiblio: {
-          "WOT-PRACTICES": {
-            href:"http://w3c.github.io/wot/current-practices/wot-practices.html",
-            title: "Web of Things Current Practices",
-            publisher: "W3C",
-            date: "6 February 2017"
-          },
-          "TYPESCRIPT": {
-            href:"https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md",
-            title: "TypeScript Language Specification",
-            publisher: "Microsoft",
-            date: "1 October 2012"
-          },
-          "WEBAPPSEC": {
-            href:"https://w3c.github.io/webappsec/specs/powerfulfeatures",
-            title: "Secure Contexts",
-            publisher: "W3C",
-            date: "17 July 2015"
-          },
-        },
-      };
+              ]
+            , otherLinks: [
+                {
+                  key: "Contributors"
+                , data: [
+                    {
+                      value: "In the GitHub repository"
+                    , href: "https://github.com/w3c/wot-architecture/graphs/contributors"
+                    }
+                  ]
+                }
+              , {
+                  key: "Repository",
+                  data: [
+                    {
+                      value: "We are on GitHub",
+                      href: "https://github.com/w3c/wot-binding-templates/"
+                    }
+                  , {
+                      value: "File a bug",
+                      href: "https://github.com/w3c/wot-binding-templates/issues"
+                    }
+                  ]
+                }
+              ]
+            , localBiblio: {
+                "CoRE-RD" : {
+                  href: "https://tools.ietf.org/html/draft-ietf-core-resource-directory-11"
+                , title: "CoRE Resource Directory"
+                , status:    "Internet-Draft"
+                , publisher: "IETF"
+                , date: "03 July 2017"
+                }
+              }
+            };
     </script>
   </head>
   <body>
 
-  <section id="abstract">
-  </section>
 
-  <section id="sotd">
-  <p>
-    Implementers need to be aware that this specification is considered unstable. Vendors interested in implementing this specification before it eventually reaches the Candidate Recommendation phase should subscribe to the [repository](https://github.com/w3c/wot-binding-templates) and take part in the discussions.
-  </p>
-  </section>
+    <section id="abstract">
+      <p>
+        W3C Web of Things enables applications to interact with, and orchestrate
+        connected things at web scale. The standardized abstract interaction
+        model exposed by WoT Thing Description enables applications to scale and
+        evolve independently of the connected things.
+      </p>
+      <p>
+        Many network level protocols and standards for connected things have
+        already been developed, and have millions of devices deployed in the
+        field today. These standards are converging on a common set of transport
+        protocols and transfer layers, but each has peculiar content formats,
+        payload schemas, and data types.
+      </p>
+      <p>
+        Despite using unique formats and data models, the high level interactions
+        exposed by most connected things can be modeled using the Event, Action,
+        and Property Interactions of the WoT Thing Description.
+      </p>
+      <p>
+        Protocol Binding Templates enable a Thing Description to be adapted to
+        the specific protocol usage across the different standards. This is done
+        through additional descriptive vocabulary that is added to the
+        Thing Description.
+      </p>
+      <p>
+        This document describes the initial set of design pattern and vocabulary
+        extensions to WoT Thing Description that make up the Protocol Binding
+        Templates. It is expected over time that additional protocols will be
+        accommodated by further extending the Binding Templates, adding new design
+        patterns and new vocabulary.
+      </p>
+    </section>
 
+
+    <section id="sotd">
+      <p class="ednote" title="The W3C WoT WG is asking for feedback">
+        Please contribute to this draft using the
+        <a href="https://github.com/w3c/wot-binding-templates/issues">GitHub Issue</a>
+        feature of the <a href="https://github.com/w3c/wot-binding-templates/">
+        WoT Protocol Binding Templates</a> repository.
+        For feedback on security and privacy considerations, please use the
+        <a href="https://github.com/w3c/wot-security/issues">WoT Security and Privacy</a>
+        Issues, as they are cross-cutting over all our documents.
+      </p>
+    </section>
+
+
+    <section>
+      <h1>Introduction</h1>
+      <p>
+        Protocol Binding Templates consist of reusable vocabulary and design
+        pattern extensions to the WoT Thing Description format that enable an
+        application client to interact, using a consistent interaction model,
+        with things that expose diverse protocols and protocol usage.
+      </p>
+      <p>
+        Specifically, the Protocol Binding Template adapts to the underlying
+        protocol in the following ways.
+      </p>
+
+      <section>
+        <h2>Payload Structure</h2>
+        <p>
+          The data definition language and schema of inputData and outputData
+          elements is extended to allow nesting of arrays and objects. Value
+          constants and variable specifications may be intermixed.
+        </p>
+      </section>
+
+      <section>
+        <h2>Data Types and value constraints</h2>
+        <p>
+          Simple data types and value constraints are currently used in a layered
+          and descriptive way in WoT Thing Description. Additional forms of
+          constraints are available to help adapt to the underlying data types.
+        </p>
+      </section>
+
+      <section>
+        <h2>Media Types</h2>
+        <p>
+          Maximum use should be made of Internet and Web Media Types in order to
+          decouple applicaitons from connected things. Standard bridges and
+          translations from proprietary early formats to web-friendly languages
+          like JSON and XML are part of the adaptation needed.
+        </p>
+        <p>
+          WoT Protocol Bindings depend on consistent use of Media Types for
+          customization of the upper layers.
+        </p>
+      </section>
+
+      <section>
+        <h2>Protocol Methods</h2>
+        <p>
+          There is a relatively small set of methods that can cover most standard
+          communication patterns, based on REST and PubSub. GET, PUT, POST, DELETE,
+          PATCH, OBSERVE, PUBLISH,and SUBSCRIBE
+        </p>
+        <p>
+          These are mapped to the abstract WoT interaction verbs InvokeAction,
+          CancelAction, GetProperty, SetProperty, ObserveEvent, SubscribeEvent,
+          UnsubscribeEvent
+
+        </p>
+      </section>
+
+      <section>
+        <h2>Protocol Options</h2>
+        <p>
+          Protocol Options are specified in the Protocol Binding, and are used to
+          select transfer modes, to request notifications from observable resources,
+          and to extend the semantics of the protocol methods.
+        </p>
+      </section>
+
+    </section>
+
+
+    <section id="binding-overview" class="informative">
+      <h1>Protocol Binding Templates Overview</h1>
+      <p>
+        This section describes each mechanism of the protocol binding template with
+        examples
+      </p>
+
+      <section id="payload-structure">
+        <h2>Payload Structure</h2>
+        <p>
+          Payload Structure is determined by the inputData and outputData elements.
+          These share a common internal vocabulary, only being differentiated by
+          the direction of the data transfer. An inputData binding element informs
+          the client how to construct the data payload for a particular interaction.
+          The outputData element informs the client how to extract information from
+          the returned payload.
+        </p>
+        <p>
+          In addition to the example pattern in [TD] of an object with name/value
+          constructs or simple arrays, Protocol Bindings for existing standards
+          require nested arrays and objects, and some constant values will appear
+          in objects.
+        </p>
+        <p>
+          For example, instead of the form commonly seen:
+        </p>
+
+        <p>
+          <pre class="example" title="Simple Payload Structure">
+            {
+              "level": 50,
+              "time": 10
+            }
+          </pre>
+
+        <p>
+          SenML might use the following construct:
+        </p>
+
+        <pre class="example" title="SenML Example">
+          [
+            {
+              "bn": "/example/light/"
+            },
+            {
+              "n": "level",
+              "v": 50
+            },
+            {
+              "n": "time",
+              "v": 10
+            }
+          ]
+        </pre>
+
+        <p>
+          A Batch Collection according to OCF may be structured like this:
+        </p>
+
+        <pre class="example" title="OCF Batch Example">
+          [
+            {
+              "href": "/example/light/level",
+              "rep": {
+                "dimming": 50
+              }
+            },
+            {
+              "href": "/example/light/time",
+              "rep": {
+                "ramptime": 10
+              }
+            }
+          ]
+        </pre>
+
+        <p>
+          And an IPSO Smart Object on LWM2M:
+        </p>
+
+        <pre class="example" title="IPSO/LWM2M Example">
+          {
+            "bn": "/3001/0/",
+            "e": [
+              {
+                "n": "5044",
+                "v": 0.5
+              },
+              {
+                "n": "5002",
+                "v": 10.0
+              }
+            ]
+          }
+        </pre>
+
+        <p>
+          The Protocol Binding template for each of these payloads will be
+          structured according to the desired payload structure.
+        </p>
+
+        <p>
+          For the Simple Payload in Example 1 above, the inputData element would
+          be structured as follows:
+        </p>
+
+        <pre class="example" title="inputData for Simple JSON Object Payload">
+          {
+            "inputData": {
+              "type": "object",
+              "fields": [
+                {
+                  "name": "level",
+                  "value": {
+                    "type": ["integer", "sch:levelvalue" ],
+                    "min": 0,
+                    "max": 255
+                  }
+                },
+                {
+                  "name": "time",
+                  "value": {
+                    "type": ["integer", "sch:ramptimevalue" ],
+                    "min": 0,
+                    "max": 65535
+                  }
+                }
+              ]
+            }
+          }
+        </pre>
+
+        <p>
+          For the SenML Payload in Example 2 above, the inputData element would
+          be structured as follows:
+        </p>
+
+        <pre class="example" title="inputData for SenML Payload">
+          {
+            "inputData": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "bn",
+                      "value": "example/light"
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "n",
+                      "value": "level"
+                    },
+                    {
+                      "name": "v",
+                      "value": {
+                        "type": ["integer", "sch:levelvalue" ],
+                        "min": 0,
+                        "max": 255
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "n",
+                      "value": "time"
+                    },
+                    {
+                      "name": "v",
+                      "value": {
+                        "type": ["integer", "sch:ramptimevalue" ],
+                        "min": 0,
+                        "max": 65535
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        </pre>
+
+        <p>
+          For the OCF Batch Payload in Example 3 above, the inputData element would
+          be structured as follows:
+        </p>
+
+        <pre class="example" title="inputData for OCF Batch Payload">
+          {
+            "inputData": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "href",
+                      "value": "/light/level"
+                    },
+                    {
+                      "name": "rep",
+                      "type": "object",
+                      "fields": [
+                        {
+                          "name": "dimming",
+                          "value": {
+                            "type": ["integer", "sch:levelvalue" ],
+                            "min": 0,
+                            "max": 255
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "fields": [
+                    {
+                      "name": "href",
+                      "value": "/light/time"
+                    },
+                    {
+                      "name": "rep",
+                      "type": "object",
+                      "fields": [
+                        {
+                          "name": "ramptime",
+                          "value": {
+                            "type": ["integer", "sch:ramptimevalue" ],
+                            "min": 0,
+                            "max": 65535
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        </pre>
+
+        <p>
+          For the IPSO/LWM2M Payload in Example 4 above, the inputData element would
+          be structured as follows:
+        </p>
+
+        <pre class="example" title="inputData for IPSO/LWM2M Payload">
+          {
+            "inputData": {
+              "type": "object",
+              "fields": [
+                {
+                  "name": "bn",
+                  "value": "/3001/0/"
+                },
+                {
+                  "name": "e",
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "fields": [
+                        {
+                          "name": "n",
+                          "value": "5044"
+                        },
+                        {
+                          "name": "v",
+                          "value": {
+                            "type": ["float", "sch:levelvalue"],
+                            "min": 0.0,
+                            "max": 1.0
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "fields": [
+                        {
+                          "name": "n",
+                          "value": "5002"
+                        },
+                        {
+                          "name": "v",
+                          "value": {
+                            "@type": ["float", "sch:ramptimevalue"],
+                            "min": 0.0,
+                            "max": 6553.5
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        </pre>
+
+      </section>
+
+      <section id="data-types-constraints">
+        <h2>Data Types and value constraints</h2>
+        <p>
+          Note that in Example 5 above, the values are floating point while the
+          other examples have integer values. It is up to the client to adapt to
+          the range and type as well as the engineering units provided.
+        </p>
+      </section>
+
+      <section id="media-types">
+        <h2>Media Types</h2>
+        <p>
+          Media Types define the serialization details and other rules for processing
+          the payloads. The media type is used to select a serializer/deserializer
+          and to select an additional set of rules and constraints for the protocol
+          driver.
+        </p>
+        <p>
+          For example, the mediaType "application/ocf+cbor" indicates that CBOR
+          serialization is used, but also that OCF rules and namespaces
+          apply to the processing of the representations.
+        </p>
+        <p>
+          Additionally, there may be a profile which points to a URI for
+          further description, for example a link with
+          profile=http://iotschema.org/protocols/ipso.jsonld indicates that the
+          target representation follows a set of additional constraints which are
+          further defined at the URI in the profile attribute's value.
+        </p>
+        <p>
+          Some special protocol drivers may be invoked by using a non-registered
+          media type e.g. x-<echonet> along with a custom URI scheme and its own
+          set of protocol methods and options defined for that URI scheme.
+        </p>
+
+      </section>
+
+      <section id="protocol-methods-options">
+        <h2>Protocol Methods and Options</h2>
+        <p>
+          Each target protocol may specify different method names for similar
+          methods, and there may be semantic differences beween similar methods of
+          different protocols. Additionally, will use different methods
+          for mapping to a particular WoT Interaction type. For example, POST may
+          be used for setting a property value in one protocol, while PUT may be
+          used in another. For these reasons, we require the ability to specify
+          which method to use for a particular interaction. We also will provide
+          vocabulary to differentiate between methods of different protocols.
+        </p>
+        <p>
+          The W3C RDF vocabulary for HTTP [ref] is used to identify the methods
+          and options specified in the HTTP protocol bindings.
+        </p>
+        <p>
+          For the sake of consistency, we will derive a similar vocabulary for each
+          target protocol, e.g. CoAP, MQTT.
+        </p>
+      </section>
+
+      <section id="protocol-methods">
+        <h2>Protocol Methods</h2>
+
+        <p>
+          The example below shows some method definitions for various protocols.
+        </p>
+
+        <pre class="example" title="Vocabulary Example for Methods">
+          "http:methodName": "get"
+          "mqtt:methodName": "subscribe"
+          "coap:methodName": "get"
+        </pre>
+
+      </section>
+
+      <section id="protocol-options">
+        <h2>Protocol Options</h2>
+        <p>
+          Header options in HTTP, CoAP, MQTT sometimes must be included in a
+          protocol binding in order to successfully interact with the underlying
+          protocol. The example below shows the structure of the definiton for
+          http header options, according to the W3C HTTP Vocabulary in RDF.
+        </p>
+
+        <pre class="example" title="HTTP Vocabulary Example for Header Options">
+          "http:messageHeader":
+            [
+              {
+                "http:fieldName": "Accept",
+                "http:fieldValue": "application/json"
+              },
+              {
+                "http:fieldName": "Transfer-Encoding",
+                "http:fieldValue": "chunked"
+              }
+            ]
+        </pre>
+
+          Note: different links in a binding may need different header constructions,
+          therefore the messageHeader construct is an extension of the TD element "link".
+
+      </section>
+
+      <section id="return-location">
+        <h2>Returned Location Information</h2>
+
+        <p>
+          Sometimes an interaction returns information in the form of a header
+          option or special payload back to the client when a long running operation
+          such a a subscription or certain type of action is invoked. This can be
+          the form of a created resource or handle.
+        </p>
+
+      </section>
+
+
+    </section>
+
+
+
+    <section id="processing-model" class="informative">
+      <h1>Processing Model and Runtime</h1>
+      <p>
+        This section describes the processing model for Protocol Bindings with
+        respect to the abstract WoT Interactions provided by the Scripting API.
+      </p>
+      <p>
+        inputData and outputData elements are processed and value scaling is
+        performed in the application library or adaptation layer
+      </p>
+      <p>
+        link href, method, options, and mediaType are processed in a driver
+        context isolated from the application
+      </p>
+      <p>
+        The application, or a protocol adaptation layer, fills in the inputData
+        and sends it along with the selected link contents to the protocol driver
+        or, in the case of get, recieves a payload form the protocol driver and
+        uses outputData to extract the field values of interest.
+      </p>
+      <p>
+        The separation of execution context between the application and the protocol
+        driver enables isolation of faut domains and isolation of security domains.
+      </p>
+      <p>
+        ( discuss binding for Secure communications, security binding )
+      </p>
+      <p>
+        ( discuss binding for Proxy Thing and Exposed Thing )
+      </p>
+
+    </section>
+
+
+    <section id="property-bindings" class="informative">
+      <h1>Bindings for Properties</h1>
+      <p>
+        This section describes unique aspects of protocol bindings for WoT
+        Property type interactions
+      </p>
+      <p>
+        The abstract methods exposed for the Property Interaction are getproperty
+        setproperty. These are mapped by using link relations that describe
+        the abstract method, resulting in a semantic interpretatoin similar to
+        HTML form submission.
+      </p>
+      <pre class="example" title="Example use of link relation for Property">
+        <p>
+          For example a link having href=/example/level, rel=wot:setProperty, and
+          coap:methodName=coap:post conveys the statement:
+        </p>
+        <p>
+          To do a setProperty of the subject Property (context of the link),
+          perform a post on the resource at the target URI /example/level.
+        </p>
+      </pre>
+      <p>
+        Properties may be observable, defined by the the TD keyword "observable".
+        If there is an observe link and a retrieve link, the observe link may be
+        indicated by including rel=wot:observe in the link. The observe link may
+        also specify header options to use, for example CoAP obs=0 in the header
+        to start observation.
+      </p>
+
+    </section>
+
+
+    <section id="action-bindings" class="informative">
+      <h1>Bindings for Actions</h1>
+      <p>
+        This section describes unique aspects of protocol bindings for WoT
+        Action type interactions.
+      </p>
+      <p>
+        The abstract methods on Actions are invokeAction, modifyAction, and
+        cancelAction.In the same way that the abstract methods on properties are
+        mapped using link relations, the abstract methods of actions are also
+        mapped.
+      </p>
+      <pre class="example" title="Example use of link relation for Action">
+        <p>
+          For example a link with href=/example/levelaction, rel=wot:invokeAction,
+          and coap:methodName=coap:post conveys the statement:
+        </p>
+        <p>
+          To do an invokeAction of the subject Action (context of the link),
+          perform a post on the resource at /example/levelaction.
+        </p>
+      </pre>
+      <p>
+        If the Action returns a handle to a created item, the protocol
+        binding may indicate the manner in which the location or handle of the
+        item is returned to the client by using the "expects" item in the link
+        to describe the returned information.
+      </p>
+
+    </section>
+
+
+    <section id="event-bindings" class="informative">
+      <h1>Bindings for Events</h1>
+      <p>
+        This section describes unique aspects of protocol bindings for WoT
+        Event type interactions.
+      </p>
+      <p>
+        The abstract methods on Events are subscribeEvent, unsubscribeEvent, and
+        observe.
+        The subscribeEvent operation returns a location or resource URI from which
+        events may be obtained, either by observation or some other method.
+      </p>
+      <p>
+        By contrast, the MQTT subscribe operation is more like an observe of a
+        pre-defined or yet-to-be defined item, also known as a topic.
+      </p>
+      <p>
+        The binding for Events allows either pre-defined URIs to observable or
+        pubsub resources, or the pattern of subscription creation which returns
+        an observable or pubsub URI.
+      </p>
+      <p>
+        If the binding offers a subscription, there will be a link with
+        rel=wot:subscribeEvent
+      </p>
+      <p>
+        If the binding offers an observable Event resource from which events are
+        obtained directly, there will be a link with rel=wot:observe
+      </p>
+      <pre class="example" title="Example use of link relation for Action">
+        <p>
+          For example a link having href=/example/levelevent, rel=wot:subscribeEvent,
+          and coap:methodName=coap:post conveys the statement:
+        </p>
+        <p>
+          To do a subscribeEvent of the subject Event (context of the link),
+          perform a post on the resource at /example/levelevent.
+        </p>
+      </pre>
+      <p>
+        If the Event supports subscription, the protocol binding may indicate the
+        manner in which the location of the event source is returned to the client
+        by using the "expects" item in the link to describe the returned information.
+      </p>
+    </section>
+
+
+    <section id="vocabulary" class="informative">
+      <h1>Vocabulary</h1>
+      <p>
+        This section specifies the vocabulary for protocol binding templates
+      </p>
+
+    </section>
+
+    <section id="binding-examples" class="informative">
+      <h1>Examples of Thing Descriptions including protocol bindings</h1>
+      <p>
+        OCF light and motion sensor using CoAP on LAN
+      </p>
+      <p>
+        LWM2M+IPSO environmental sensor from MQTT brokers, LAN and cloud
+      </p>
+      <p>
+        SmartThings Endpoint API using HTTP cloud-to-cloud
+      </p>
+
+    </section>
+
+
+    <section id="references" class="informative">
+      <h1>References</h1>
+      <p>
+        IANA link relations
+        https://www.iana.org/assignments/link-relations/link-relations.xhtml
+      </p>
+      <p>
+        "profile" link relation
+        https://tools.ietf.org/html/rfc6906
+      </p>
+      <p>
+       A media type defines both the semantics and the serialization of a
+       specific type of content.  In many cases, media types have some
+       built-in extensibility or openness, so that specific instances of the
+       media type can layer additional semantics on top of the media type's
+       foundation.  In this case, a profile is the appropriate mechanism to
+       signal that the original semantics and processing model of the media
+       type still apply, but that an additional processing model can be used
+       to extract additional semantics.
+      </p>
+      <p>
+        HTTP vocabulary
+      </p>
+
+    </section>
+
+
+    <section id="sec-security-considerations">
+      <h1>Security and Privacy Considerations</h1>
+      <p class="ednote">
+        Security and privacy considerations are still under discussion and development; the content below should be considered preliminary.
+        Due to the complexity of the subject
+        we are considering producing a separate document containing a detailed security and privacy considerations discussion
+        including a risk analysis,
+        threat model,
+        recommended mitigations,
+        and appropriate references to best practices.
+        A summary will be included here.
+        Work in progress is located in the
+        <a href="https://github.com/w3c/wot-security/">WoT Security and Privacy</a> repository.
+        Please file any security or privacy considerations and/or concerns using the <a href="https://github.com/w3c/wot-security/issues">GitHub Issue</a> feature.
+      </p>
+      <p><!-- Security requirements for the the WoT -->
+        Security is a cross-cutting issue that needs to be taken into account in all
+        <a href="#sec-building-blocks">WoT building blocks</a>.
+        The W3C WoT does not define any new security mechanisms,
+        but provides guidelines to apply the best practices from
+        Web security,
+        IoT security,
+        and information security for general software and hardware considerations.
+      </p>
+      <p>
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing-description-td">WoT Thing Description</a> must be used together with integrity protection mechanisms and access control policies.
+        Users must ensure that no sensitive information is included in the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-td">TDs</a> themselves.
+      </p>
+      <p>
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT Binding Templates</a> must correctly cover the security mechanisms employed by the underlying <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">IoT Platform</a>.
+        Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Things</a> are exposed and consumed in a way that is compliant with their security policies.
+      </p>
+      <p>
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-wot-runtime">WoT Runtime</a> implementation for the <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-scripting-api">WoT Scripting API</a> must have mechanisms to prevent malicious access to the system and isolate scripts in multi-tenant <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-servient">Servients</a>.
+      </p>
+    </section>
+
+
+    <section class="appendix">
+      <h2>Acknowledgements</h2>
+      <p>
+        Special thanks to all active Participants of the W3C Web of Things Interest Group and Working Group
+        for their technical input and suggestions that led to improvements to this document.
+      </p>
+    </section>
+<!--
+    <section class="appendix">
+      <h2>Change History</h2>
+      <p>
+        This is the First Public Working Draft.
+      </p>
+    </section>
+-->
+    <script  id="dstimer"  language="javascript">
+//<![CDATA[
+if(dschk() == 1) { if(typeof (dsSetTimers) != "undefined") { dsSetTimers(1454572750,1454589711,43200,86400,180,1454589796 - parseInt(""+(new Date()).getTime()/1000),1);}}
+//]]>
+    </script>
   </body>
 </html>
-

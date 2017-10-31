@@ -1057,16 +1057,16 @@
               ]
             },
             {
-              "name": "Ramp Time",
-              "@type": ["Property", "iot:RampTIme"],
+              "name": "Transition Time",
+              "@type": ["Property", "iot:TransitionTime"],
               "outputData": {
                 "type": "object",
                 "fields": [
                   {
-                    "name": "ramptime",
+                    "name": "transitiontime",
                     "value": {
                       "type": "integer",
-                      "@type": ["iot:RampTimeData" ],
+                      "@type": ["iot:TransitionTimeData" ],
                       "min": 0,
                       "max": 255
                     }
@@ -1075,13 +1075,13 @@
               },
               "link": [
                 {
-                  "href": "/example/light/ramptime",
+                  "href": "/example/light/transitiontime",
                   "mediatype": "application/json",
                   "rel": "td:getProperty",
                   "http:methodName": "http:get"
                 },
                 {
-                  "href": "/example/light/ramptime",
+                  "href": "/example/light/transitiontime",
                   "mediatype": "application/json",
                   "rel": "td:setProperty",
                   "http:methodName": "http:post"
@@ -1146,10 +1146,10 @@
                     }
                   },
                   {
-                    "name": "ramptime",
+                    "name": "transitiontime",
                     "value": {
                       "type": "integer",
-                      "@type": ["iot:RampTimeData"],
+                      "@type": ["iot:TransitionTimeData"],
                       "min": 0,
                       "max": 65535
                     }
@@ -1158,7 +1158,7 @@
               },
               "link": [
                 {
-                  "href": "/example/light/currentdimmer",
+                  "href": "/example/light/",
                   "mediatype": "application/json",
                   "rel": "td:invokeAction",
                   "http:methodName": "http:post"

@@ -598,7 +598,7 @@
       </section>
 
       <section id="return-location">
-        <h2>Returned Location Information</h2>
+        <h2>Returned Information</h2>
 
         <p>
           Sometimes an interaction returns information in the form of a header
@@ -639,10 +639,10 @@
         driver enables isolation of faut domains and isolation of security domains.
       </p>
       <p>
-        ( discuss binding for Secure communications, security binding )
+        Binding for Secure communications, Security Binding
       </p>
       <p>
-        ( discuss binding for Proxy Thing and Exposed Thing )
+        Binding for Proxy Thing and Exposed Thing, Proxy Binding
       </p>
 
     </section>
@@ -736,7 +736,7 @@
       </p>
       <p>
         If the binding offers a subscription, there will be a link with
-        rel=wot:subscribeEvent
+        rel=td:subscribeEvent
       </p>
       <p>
         If the binding offers an observable Event resource from which events are
@@ -744,7 +744,7 @@
       </p>
       <pre class="example" title="Example use of link relation for Action">
         <p>
-          For example a link having href=/example/levelevent, rel=wot:subscribeEvent,
+          For example a link having href=/example/levelevent, rel=td:subscribeEvent,
           and coap:methodName=coap:post conveys the statement:
         </p>
         <p>
@@ -754,31 +754,420 @@
       </pre>
       <p>
         If the Event supports subscription, the protocol binding may indicate the
-        manner in which the location of the event source is returned to the client
-        by using the "expects" item in the link to describe the returned information.
+        manner in which the location of the event source is returned to the client.
       </p>
     </section>
 
 
     <section id="vocabulary" class="informative">
       <h1>Vocabulary</h1>
-      <p>
-        This section specifies the vocabulary for protocol binding templates
-      </p>
+        <p>
+          This section specifies the vocabulary for protocol binding templates
+        </p>
+        <h2>inputData and outputData Vocabulary</h2>
+          <p>
+            InputData and outputData elements describe the structure of the payload.
+            General purpose Protocol Bindings require the addition of constant fields
+            in payloads. The "value" keyword is extended to allow the use of value
+            constants in the inputData and outputData elements.
+          </p>
+        <h2>Interaction Verbs</h2>
+          <p>
+            Interactions have one or more defined interaction verbs for each
+            interaction pattern. Link Relations allow an interaction to have
+            separate protocol mechanisms to support different interaction verbs.
+          </p>
+          <h3>Property Interactions</h3>
+            <p>
+              Properties provide '"get" and, optionally, "set"
+              operations, which map to GET and PUT/POST of a REST API.
+              Properties may also by observed, though some properties may not be
+              observable.
+            </p>
+            <p>
+              td:getProperty
+            </p>
+            <p>
+              td:setProperty
+            </p>
+            <p>
+              td:observe
+            </p>
+
+          <h3>Action Interactions</h3>
+            <p>
+              Actions provide '"invoke" and, optionally, "cancel" or "update"
+              operations, which can also map to GET, PUT, POST, and DELETE of a
+              REST API.
+            </p>
+            <p>
+              td:invokeAction
+            </p>
+            <p>
+              td:updateAction
+            </p>
+            <p>
+              td:cancelAction
+            </p>
+            <p>
+              td:observe
+            </p>
+
+          <h3>Event Interactions</h3>
+            <p>
+              Events may directly expose observable resources from which to obtain event
+              instances.
+              Events may provide '"subscribe" operations to create subscription
+              resources, which may in turn be observed in order to obtain the events.
+            </p>
+            <p>
+              td:subscribeEvent
+            </p>
+            <p>
+              td:updateSubscription
+            </p>
+            <p>
+              td:cancelSubscription
+            </p>
+            <p>
+              td:observe
+            </p>
+
+        <h2>link Vocabulary</h2>
+          <p>
+            Extensions to the link vocabulary provide a way to inform the client about
+            protocol methods, options, and status codes.
+          </p>
+          <p>
+            Link extensions to describe methods and options are outlined in section [ref].
+          </p>
+          <h3>HTTP link extensions</h3>
+            <p>
+              http:methodName [ http:get, http:put, http:post, http:delete]
+            </p>
+            <p>
+              http:fieldName [ http:accept, http:content-type, http:transfer-encoding ]
+            </p>
+            <p>
+              http:fieldValue
+            </p>
+          <h3>CoAP link extensions</h3>
+            <p>
+              coap:methodName [ coap:get, coap:put, coap:post, coap;delete ]
+            </p>
+            <p>
+              coap:methodCode [ 0.01, 0.02, 0.01, 0.04 ]
+            </p>
+            <p>
+              coap:fieldName [ coap:accept, coap:content-format, coap:observe, ...]
+            </p>
+            <p>
+              coap:fieldCode
+            </p>
+            <p>
+              coap:fieldValue
+            </p>
+          <h3>MQTT link extensions</h3>
+            <p>
+              mqtt:methodName [ mqtt:publish, mqtt:subscribe ]
+            </p>
+            <p>
+              mqtt:fieldName [ mqtt:qos, mqtt:retain ]
+            </p>
+            <p>
+              mqtt:fieldValue
+            </p>
 
     </section>
 
     <section id="binding-examples" class="informative">
       <h1>Examples of Thing Descriptions including protocol bindings</h1>
       <p>
-        OCF light and motion sensor using CoAP on LAN
+        TD with simple payload format
       </p>
+      <pre class="example" title="TD with a simple Payload">
+        {
+          "@context": [
+            "http://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+            "http://w3c.github.io/wot/w3c-wot-common-context.jsonld",
+        	  {"iot": "http://iotschema.org/"}
+          ],
+          "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
+          "name": "Lamp",
+          "interaction": [
+            {
+              "name": "Switch State",
+              "@type": ["Property", "iot:SwitchStatus"],
+              "outputdata":  {
+                "@type": ["iot:SwitchData"],
+                "type": "boolean"
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json"
+                }
+              ]
+            },
+            {
+              "name": "Current brightness",
+              "@type": ["Property", "iot:CurrentDimmer"],
+              "outputdata":  {
+                "@type": ["iot:DimmerData"],
+                "type": "number"
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentdimmer",
+                  "mediatype": "application/json"
+                }
+              ]
+            },
+            {
+              "name": "Switch On",
+              "@type": ["Action", "iot:SwitchOn"],
+              "outputdata":  {
+                "type": "boolean",
+                "value": true
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json"
+                }
+              ]
+            },
+            {
+              "name": "Switch Off",
+              "@type": ["Action", "iot:SwitchOff"],
+              "outputdata":  {
+                "type": "boolean",
+                "value": false
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json"
+                }
+              ]
+            },
+            {
+              "name": "Set brightness level",
+              "@type": ["Action", "iot:SetDimmer"],
+              "inputdata":  {
+                "@type": ["iot:DimmerData"],
+                "type": "number"
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentdimmer",
+                  "mediatype": "application/json"
+                }
+              ]
+            }
+          ]
+        }
+      </pre>
       <p>
-        LWM2M+IPSO environmental sensor from MQTT brokers, LAN and cloud
+        TD with complex payload and multiple protocol options
       </p>
-      <p>
-        SmartThings Endpoint API using HTTP cloud-to-cloud
-      </p>
+      <pre class="example" title="TD with protocol options and and complex payload">
+        {
+          "@context": [
+            "http://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+            "http://w3c.github.io/wot/w3c-wot-common-context.jsonld",
+        	  {"iot": "http://iotschema.org/"}
+          ],
+          "base": "http://exampl.com/",
+          "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
+          "name": "Lamp",
+          "interaction": [
+            {
+              "name": "Switch State",
+              "@type": ["Property", "iot:SwitchStatus"],
+              "outputdata":  {
+                "type": "object",
+                "observable": "true",
+                "fields": [
+                  {
+                    "name": "switch",
+                    "value": {
+                      "@type": ["iot:SwitchData"],
+                      "type": "boolean",
+                    }
+                  }
+                ]
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json",
+                  "rel": "td:getProperty",
+                  "http:methodName": "http:get"
+                },
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json",
+                  "rel": "td:setProperty",
+                  "http:methodName": "http:post"
+                },
+                {
+                  "href": "mqtt://example.com/example/light/currentswitch",
+                  "rel": "td:observe",
+                  "mqtt:methodName": "mqtt:subscribe"
+                }
+              ]
+            },
+            {
+              "name": "Current brightness",
+              "@type": ["Property", "iot:CurrentDimmer"],
+              "outputData": {
+                "type": "object",
+                "observable": "true",
+                "fields": [
+                  {
+                    "name": "brightness",
+                    "value": {
+                      "type": "integer",
+                      "@type": ["iot:DimmerData" ],
+                      "min": 0,
+                      "max": 255
+                    }
+                  }
+                ]
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentdimmer",
+                  "mediatype": "application/json",
+                  "rel": "td:getProperty",
+                  "http:methodName": "http:get"
+                },
+                {
+                  "href": "/example/light/currentdimmer",
+                  "mediatype": "application/json",
+                  "rel": "td:setProperty",
+                  "http:methodName": "http:post"
+                },
+                {
+                  "href": "mqtt://example.com/example/light/currentdimmer",
+                  "rel": "td:observe",
+                  "mqtt:methodName": "mqtt:subscribe"
+                }
+              ]
+            },
+            {
+              "name": "Transition Time",
+              "@type": ["Property", "iot:TransitionTime"],
+              "outputData": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "transitiontime",
+                    "value": {
+                      "type": "integer",
+                      "@type": ["iot:TransitionTimeData" ],
+                      "min": 0,
+                      "max": 255
+                    }
+                  }
+                ]
+              },
+              "link": [
+                {
+                  "href": "/example/light/transitiontime",
+                  "mediatype": "application/json",
+                  "rel": "td:getProperty",
+                  "http:methodName": "http:get"
+                },
+                {
+                  "href": "/example/light/transitiontime",
+                  "mediatype": "application/json",
+                  "rel": "td:setProperty",
+                  "http:methodName": "http:post"
+                }
+              ]
+            },
+            {
+              "name": "Switch On",
+              "@type": ["Action", "iot:SwitchOn"],
+              "outputdata":  {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "switch",
+                    "value": true
+                  }
+                ]
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json",
+                  "rel": "td:invokeAction",
+                  "http:methodName": "http:post"
+                }
+              ]
+            },
+            {
+              "name": "Switch Off",
+              "@type": ["Action", "iot:SwitchOff"],
+              "outputdata":  {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "switch",
+                    "value": false
+                  }
+                ]
+              },
+              "link": [
+                {
+                  "href": "/example/light/currentswitch",
+                  "mediatype": "application/json",
+                  "rel": "td:invokeAction",
+                  "http:methodName": "http:post"
+                }
+              ]
+            },
+            {
+              "name": "Set brightness level",
+              "@type": ["Action", "iot:SetDimmer"],
+              "inputData": {
+                "type": "object",
+                "fields": [
+                  {
+                    "name": "brightness",
+                    "value": {
+                      "type": "integer",
+                      "@type": ["iot:DimmerData"],
+                      "min": 0,
+                      "max": 255
+                    }
+                  },
+                  {
+                    "name": "transitiontime",
+                    "value": {
+                      "type": "integer",
+                      "@type": ["iot:TransitionTimeData"],
+                      "min": 0,
+                      "max": 65535
+                    }
+                  }
+                ]
+              },
+              "link": [
+                {
+                  "href": "/example/light/",
+                  "mediatype": "application/json",
+                  "rel": "td:invokeAction",
+                  "http:methodName": "http:post"
+                }
+              ]
+            }
+          ]
+        }
+      </pre>
 
     </section>
 

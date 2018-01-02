@@ -118,10 +118,13 @@
         application client to interact, using a consistent interaction model,
         with things that expose diverse protocols and protocol usage.
       </p>
-      <p>
-        Specifically, the Protocol Binding Template adapts to the underlying
-        protocol in the following ways.
-      </p>
+
+      <section>
+        <h2>Protocol Adaptation</h2>
+          <p>
+            Protocol Binding Templates enable clients to adapt to the underlying
+            protocol and API constructions in the following ways.
+          </p>
 
       <section>
         <h2>Payload Structure</h2>
@@ -132,51 +135,47 @@
         </p>
       </section>
 
-      <section>
-        <h2>Data Types and value constraints</h2>
-        <p>
-          Simple data types and value constraints are currently used in a layered
-          and descriptive way in WoT Thing Description. Additional forms of
-          constraints are available to help adapt to the underlying data types.
-        </p>
-      </section>
+        <section>
+          <h2>Data Types and value constraints</h2>
+          <p>
+            Simple data types and value constraints are currently used in a layered
+            and descriptive way in WoT Thing Description. Additional forms of
+            constraints are available to help adapt to the underlying data types.
+          </p>
+        </section>
 
-      <section>
-        <h2>Media Types</h2>
-        <p>
-          Maximum use should be made of Internet and Web Media Types in order to
-          decouple applicaitons from connected things. Standard bridges and
-          translations from proprietary early formats to web-friendly languages
-          like JSON and XML are part of the adaptation needed.
-        </p>
-        <p>
-          WoT Protocol Bindings depend on consistent use of Media Types for
-          customization of the upper layers.
-        </p>
-      </section>
+        <section>
+          <h2>Media Types</h2>
+          <p>
+            Maximum use should be made of Internet and Web Media Types in order to
+            decouple applicaitons from connected things. Standard bridges and
+            translations from proprietary early formats to web-friendly languages
+            like JSON and XML are part of the adaptation needed.
+          </p>
+          <p>
+            WoT Protocol Bindings depend on consistent use of Media Types for
+            customization of the upper layers.
+          </p>
+        </section>
 
-      <section>
-        <h2>Protocol Methods</h2>
-        <p>
-          There is a relatively small set of methods that can cover most standard
-          communication patterns, based on REST and PubSub. GET, PUT, POST, DELETE,
-          PATCH, OBSERVE, PUBLISH,and SUBSCRIBE
-        </p>
-        <p>
-          These are mapped to the abstract WoT interaction verbs InvokeAction,
-          CancelAction, GetProperty, SetProperty, ObserveEvent, SubscribeEvent,
-          UnsubscribeEvent
-
-        </p>
-      </section>
-
-      <section>
-        <h2>Protocol Options</h2>
-        <p>
-          Protocol Options are specified in the Protocol Binding, and are used to
-          select transfer modes, to request notifications from observable resources,
-          and to extend the semantics of the protocol methods.
-        </p>
+        <section>
+          <h2>Protocol Methods and Options</h2>
+          <p>
+            There is a relatively small set of methods that can cover most standard
+            communication patterns, based on REST and PubSub. GET, PUT, POST, DELETE,
+            PATCH, OBSERVE, PUBLISH,and SUBSCRIBE
+          </p>
+          <p>
+            These are mapped to the abstract WoT interaction verbs InvokeAction,
+            CancelAction, GetProperty, SetProperty, ObserveEvent, SubscribeEvent,
+            UnsubscribeEvent
+          </p>
+          <p>
+            Protocol Options are specified in the Protocol Binding, and are used to
+            select transfer modes, to request notifications from observable resources,
+            and to extend the semantics of the protocol methods.
+          </p>
+        </section>
       </section>
 
     </section>
@@ -522,8 +521,8 @@
           between the client and server for the interaction.
         </p>
 
-        <section id="relations-types">
-          <h2>relations Types</h2>
+        <section id="relation-types">
+          <h2>Relation Types</h2>
           <p>
             Form Relation Types describe the expected result of performing the operation
             described by the form.
@@ -545,6 +544,7 @@
             The vocabulary in section 5 lists the recommended set of form relations,
             and the full TDs in section 6 contain example uses of form relation types.
           </p>
+        </section>
 
         <section id="media-types">
           <h2>Media Types</h2>
@@ -604,7 +604,7 @@
 
             "mqtt:methodName": "subscribe"
 
-            "coap:methodNumber": "0.01"
+            "coap:methodCode": "0.01"
           </pre>
 
           <p>
@@ -636,12 +636,21 @@
 
         <section id="return-information">
           <h2>Returned Information</h2>
-
           <p>
-            Sometimes an interaction returns information in the form of a header
+            An interaction may return information in the form of a header
             option or special payload back to the client when a long running operation
             such a a subscription or certain type of action is invoked. This can be
             the form of a created resource or handle.
+          </p>
+        </section>
+
+        <section id="created-items">
+          <h2>Forms for Created Items</h2>
+          <p>
+            An interaction may create a new item, such as an event subscription.
+            A form template for interacting with the created item may be included in the
+            protocol binding, with the URI of each item to be obtained via returned
+            information (see above) when the item is created.
           </p>
         </section>
 
@@ -800,119 +809,129 @@
         <p>
           This section specifies the vocabulary for protocol binding templates
         </p>
-        <h2>inputData and outputData Vocabulary</h2>
-          <p>
-            InputData and outputData elements describe the structure of the payload.
-            General purpose Protocol Bindings require the addition of constant fields
-            in payloads. The "value" keyword is extended to allow the use of value
-            constants in the inputData and outputData elements.
-          </p>
-        <h2>Interaction Verbs</h2>
-          <p>
-            Interactions have one or more defined interaction verbs for each
-            interaction pattern. Form Relations allow an interaction to have
-            separate protocol mechanisms to support different interaction verbs.
-          </p>
-          <h3>Property Interactions</h3>
+        <section>
+          <h2>inputData and outputData Vocabulary</h2>
             <p>
-              Properties provide '"get" and, optionally, "set"
-              operations, which map to GET and PUT/POST of a REST API.
-              Properties may also by observed, though some properties may not be
-              observable.
+              InputData and outputData elements describe the structure of the payload.
+              General purpose Protocol Bindings require the addition of constant fields
+              in payloads. The "value" keyword is extended to allow the use of value
+              constants in the inputData and outputData elements.
             </p>
-            <p>
-              td:getProperty
-            </p>
-            <p>
-              td:setProperty
-            </p>
-            <p>
-              td:observe
-            </p>
+        </section>
 
-          <h3>Action Interactions</h3>
+        <section>
+          <h2>Interaction Verbs</h2>
             <p>
-              Actions provide '"invoke" and, optionally, "cancel" or "update"
-              operations, which can also map to GET, PUT, POST, and DELETE of a
-              REST API.
+              Interactions have one or more defined interaction verbs for each
+              interaction pattern. Form Relations allow an interaction to have
+              separate protocol mechanisms to support different interaction verbs.
             </p>
-            <p>
-              td:invokeAction
-            </p>
-            <p>
-              td:updateAction
-            </p>
-            <p>
-              td:cancelAction
-            </p>
-            <p>
-              td:observe
-            </p>
+          <section>
+            <h3>Property Interactions</h3>
+              <p>
+                Properties provide '"get" and, optionally, "set"
+                operations, which map to GET and PUT/POST of a REST API.
+                Properties may also by observed, though some properties may not be
+                observable.
+              </p>
+              <p>
+                getProperty
+              </p>
+              <p>
+                setProperty
+              </p>
+              <p>
+                observe
+              </p>
+            </section>
 
-          <h3>Event Interactions</h3>
-            <p>
-              Events may directly expose observable resources from which to obtain event
-              instances.
-              Events may provide '"subscribe" operations to create subscription
-              resources, which may in turn be observed in order to obtain the events.
-            </p>
-            <p>
-              td:subscribeEvent
-            </p>
-            <p>
-              td:updateSubscription
-            </p>
-            <p>
-              td:cancelSubscription
-            </p>
-            <p>
-              td:observe
-            </p>
+          <section>
+            <h3>Action Interactions</h3>
+              <p>
+                Actions provide '"invoke" and, optionally, "cancel" or "update"
+                operations, which can also map to GET, PUT, POST, and DELETE of a
+                REST API.
+              </p>
+              <p>
+                invokeAction
+              </p>
+              <p>
+                updateAction
+              </p>
+              <p>
+                cancelAction
+              </p>
+              <p>
+                observe
+              </p>
+          </section>
 
-        <h2>Form Vocabulary</h2>
-          <p>
-            Extensions to the form vocabulary provide a way to inform the client about
-            protocol methods, options, and status codes.
-          </p>
-          <p>
-            Form extensions to describe methods and options are outlined in section [ref].
-          </p>
-          <h3>HTTP form extensions</h3>
+          <section>
+            <h3>Event Interactions</h3>
+              <p>
+                Events may directly expose observable resources from which to obtain event
+                instances.
+                Events may provide '"subscribe" operations to create subscription
+                resources, which may in turn be observed in order to obtain the events.
+              </p>
+              <p>
+                subscribeEvent
+              </p>
+              <p>
+                updateSubscription
+              </p>
+              <p>
+                cancelSubscription
+              </p>
+              <p>
+                observe
+              </p>
+            </section>
+          </section>
+
+          <section>
+          <h2>Form Vocabulary</h2>
             <p>
-              http:methodName [ http:get, http:put, http:post, http:delete]
+              Extensions to the form vocabulary provide a way to inform the client about
+              protocol methods, options, and status codes.
             </p>
-            <p>
-              http:fieldName [ http:accept, http:content-type, http:transfer-encoding ]
-            </p>
-            <p>
-              http:fieldValue
-            </p>
-          <h3>CoAP form extensions</h3>
-            <p>
-              coap:methodName [ coap:get, coap:put, coap:post, coap;delete ]
-            </p>
-            <p>
-              coap:methodCode [ 0.01, 0.02, 0.01, 0.04 ]
-            </p>
-            <p>
-              coap:fieldName [ coap:accept, coap:content-format, coap:observe, ...]
-            </p>
-            <p>
-              coap:fieldCode
-            </p>
-            <p>
-              coap:fieldValue
-            </p>
-          <h3>MQTT form extensions</h3>
-            <p>
-              mqtt:methodName [ mqtt:publish, mqtt:subscribe ]
-            </p>
-            <p>
-              mqtt:fieldName [ mqtt:qos, mqtt:retain ]
-            </p>
-            <p>
-              mqtt:fieldValue
-            </p>
+            <section>
+              <h3>HTTP form extensions</h3>
+                <p>
+                  http:methodName [ get, put, post, delete ]
+                </p>
+                <p>
+                  http:fieldName [ accept, content-type, transfer-encoding ]
+                </p>
+                <p>
+                  http:fieldValue
+                </p>
+            </section>
+            <section>
+              <h3>CoAP form extensions</h3>
+                <p>
+                  coap:methodCode [ 0.01, 0.02, 0.01, 0.04 ]
+                </p>
+                <p>
+                  coap:optionCode
+                </p>
+                <p>
+                  coap:optionValue
+                </p>
+            </section>
+            <section>
+              <h3>MQTT form extensions</h3>
+                <p>
+                  mqtt:methodName [ publish, subscribe ]
+                </p>
+                <p>
+                  mqtt:optionName [ qos, retain ]
+                </p>
+                <p>
+                  mqtt:optionValue
+                </p>
+            </section>
+          </section>
 
     </section>
 

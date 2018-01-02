@@ -754,7 +754,7 @@
         </p>
         <pre class="example" title="Example use of form relation for Events">
           <p>
-            For example a form having href=/example/levelevent, rel=td:subscribeEvent,
+            For example a form having href=/example/levelevent, rel=subscribeEvent,
             and http:methodName=post conveys the statement:
           </p>
           <p>
@@ -896,9 +896,13 @@
               protocol methods, options, and status codes.
             </p>
             <section>
-              <h3>HTTP form extensions</h3>
+              <h3>HTTP form vocabulary</h3>
                 <p>
-                  http:methodName [ get, put, post, delete ]
+                  http:methodName [ "GET", "PUT", "POST", "DELETE"]
+                </p>
+                <p>
+                  http:MessageHeader
+                  example: [ {"http:fieldName": "accept", "http:fieldValue": "text/plain"} ]
                 </p>
                 <p>
                   http:fieldName [ accept, content-type, transfer-encoding ]
@@ -908,9 +912,13 @@
                 </p>
             </section>
             <section>
-              <h3>CoAP form extensions</h3>
+              <h3>CoAP form vocabulary</h3>
                 <p>
-                  coap:methodCode [ 0.01, 0.02, 0.01, 0.04 ]
+                  coap:methodCode [ "0.01", "0.02", "0.03", "0.04" ]
+                </p>
+                <p>
+                  coap:options
+                  example: [ { "coap:optionCode": 6, "coap:optionValue": 49 } ]
                 </p>
                 <p>
                   coap:optionCode
@@ -919,10 +927,15 @@
                   coap:optionValue
                 </p>
             </section>
+
             <section>
-              <h3>MQTT form extensions</h3>
+              <h3>MQTT form vocabulary</h3>
                 <p>
-                  mqtt:methodName [ publish, subscribe ]
+                  mqtt:methodName [ "PUBLISH", "SUBSCRIBE" ]
+                </p>
+                <p>
+                  mqtt:options
+                  example: [ {  "mqtt:optionName": "qos", "mqtt:optionValue": 1 }]
                 </p>
                 <p>
                   mqtt:optionName [ qos, retain ]

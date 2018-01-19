@@ -301,7 +301,7 @@
             {
               "inputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "level",
                     "@type": ["sch:levelvalue],
@@ -330,10 +330,10 @@
             {
               "inputData": {
                 "type": "array",
-                "items": [
+                "item": [
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "bn",
                         "const": "example/light"
@@ -342,7 +342,7 @@
                   },
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "n",
                         "const": "level"
@@ -358,7 +358,7 @@
                   },
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "n",
                         "const": "time"
@@ -386,7 +386,7 @@
             {
               "inputData": {
                 "type": "array",
-                "items": [
+                "item": [
                   {
                     "type": "object",
                     "fields": [
@@ -397,7 +397,7 @@
                       {
                         "name": "rep",
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "dimming",
                             "@type": ["sch:levelvalue"],
@@ -411,7 +411,7 @@
                   },
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "href",
                         "const": "/light/time"
@@ -419,7 +419,7 @@
                       {
                         "name": "rep",
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "ramptime",
                             "@type": ["sch:ramptimevalue"],
@@ -445,7 +445,7 @@
             {
               "inputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "bn",
                     "const": "/3001/0/"
@@ -453,10 +453,10 @@
                   {
                     "name": "e",
                     "type": "array",
-                    "items": [
+                    "item": [
                       {
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "n",
                             "const": "5044"
@@ -472,7 +472,7 @@
                       },
                       {
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "n",
                             "const": "5002"
@@ -1050,7 +1050,7 @@
               "outputdata":  {
                 "type": "object",
                 "observable": "true",
-                "fields": [
+                "field": [
                   {
                     "name": "switch",
                     "@type": ["iot:SwitchData"],
@@ -1084,7 +1084,7 @@
               "outputData": {
                 "type": "object",
                 "observable": "true",
-                "fields": [
+                "field": [
                   {
                     "name": "brightness",
                     "type": "integer",
@@ -1119,7 +1119,7 @@
               "@type": ["Property", "iot:TransitionTime"],
               "outputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "transitiontime",
                     "type": "integer",
@@ -1149,7 +1149,7 @@
               "@type": ["Action", "iot:SwitchOn"],
               "outputdata":  {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "switch",
                     "const": true
@@ -1170,7 +1170,7 @@
               "@type": ["Action", "iot:SwitchOff"],
               "outputdata":  {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "switch",
                     "const": false
@@ -1191,7 +1191,7 @@
               "@type": ["Action", "iot:SetDimmer"],
               "inputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "brightness",
                     "type": "integer",

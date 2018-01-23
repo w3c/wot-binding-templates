@@ -139,9 +139,9 @@
           </p>
           <p>
             The protocol methods are mapped to the abstract WoT Interaction verbs
-            ReadProperty, WriteProperty, ObserveProperty, InvokeAction,
-            SubscribeEvent, UnsubscribeEvent.
-            <!-- CancelAction is still undefined -->
+            readProperty, writeProperty, observeProperty, invokeAction,
+            subscribeEvent, unsubscribeEvent.
+            <!-- modifyAction, cancelAction is still undefined -->
           </p>
           <p>
             Possible protocol options are also specified in the Protocol Binding.
@@ -316,22 +316,20 @@
             {
               "inputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "level",
-                    "value": {
-                      "type": ["integer", "sch:levelvalue" ],
-                      "min": 0,
-                      "max": 255
-                    }
+                    "@type": ["sch:levelvalue],
+                    "type": "integer",
+                    "min": 0,
+                    "max": 255
                   },
                   {
                     "name": "time",
-                    "value": {
-                      "type": ["integer", "sch:ramptimevalue" ],
-                      "min": 0,
-                      "max": 65535
-                    }
+                    "@type": ["sch:ramptimevalue"],
+                    "type": "integer",
+                    "min": 0,
+                    "max": 65535
                   }
                 ]
               }
@@ -347,47 +345,45 @@
             {
               "inputData": {
                 "type": "array",
-                "items": [
+                "item": [
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "bn",
-                        "value": "example/light"
+                        "const": "example/light"
                       }
                     ]
                   },
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "n",
-                        "value": "level"
+                        "const": "level"
                       },
                       {
                         "name": "v",
-                        "value": {
-                          "type": ["integer", "sch:levelvalue" ],
-                          "min": 0,
-                          "max": 255
-                        }
+                        "@type": ["sch:levelvalue"],
+                        "type": "integer",
+                        "min": 0,
+                        "max": 255
                       }
                     ]
                   },
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "n",
-                        "value": "time"
+                        "const": "time"
                       },
                       {
                         "name": "v",
-                        "value": {
-                          "type": ["integer", "sch:ramptimevalue" ],
-                          "min": 0,
-                          "max": 65535
-                        }
+                        "@type": ["sch:ramptimevalue"],
+                        "type": "integer",
+                        "min": 0,
+                        "max": 65535
                       }
                     ]
                   }
@@ -405,25 +401,24 @@
             {
               "inputData": {
                 "type": "array",
-                "items": [
+                "item": [
                   {
                     "type": "object",
                     "fields": [
                       {
                         "name": "href",
-                        "value": "/light/level"
+                        "const": "/light/level"
                       },
                       {
                         "name": "rep",
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "dimming",
-                            "value": {
-                              "type": ["integer", "sch:levelvalue" ],
-                              "min": 0,
-                              "max": 255
-                            }
+                            "@type": ["sch:levelvalue"],
+                            "type": "integer",
+                            "min": 0,
+                            "max": 255
                           }
                         ]
                       }
@@ -431,22 +426,21 @@
                   },
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "href",
-                        "value": "/light/time"
+                        "const": "/light/time"
                       },
                       {
                         "name": "rep",
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "ramptime",
-                            "value": {
-                              "type": ["integer", "sch:ramptimevalue" ],
-                              "min": 0,
-                              "max": 65535
-                            }
+                            "@type": ["sch:ramptimevalue"],
+                            "type":"integer",
+                            "min": 0,
+                            "max": 65535
                           }
                         ]
                       }
@@ -466,46 +460,44 @@
             {
               "inputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "bn",
-                    "value": "/3001/0/"
+                    "const": "/3001/0/"
                   },
                   {
                     "name": "e",
                     "type": "array",
-                    "items": [
+                    "item": [
                       {
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "n",
-                            "value": "5044"
+                            "const": "5044"
                           },
                           {
                             "name": "v",
-                            "value": {
-                              "type": ["float", "sch:levelvalue"],
-                              "min": 0.0,
-                              "max": 1.0
-                            }
+                            "@type": ["sch:levelvalue"],
+                            "type": "float",
+                            "min": 0.0,
+                            "max": 1.0
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "fields": [
+                        "field": [
                           {
                             "name": "n",
-                            "value": "5002"
+                            "const": "5002"
                           },
                           {
                             "name": "v",
-                            "value": {
-                              "@type": ["float", "sch:ramptimevalue"],
-                              "min": 0.0,
-                              "max": 6553.5
-                            }
+                            "@type": ["sch:ramptimevalue"],
+                            "type": ["float"],
+                            "min": 0.0,
+                            "max": 6553.5
                           }
                         ]
                       }
@@ -543,21 +535,21 @@
             described by the form.
           </p>
           <p>
-            For example, the Property interaction allows get and set operations. The
-            protocol binding may contain a form for the get operation and a different
-            form for the set operation. The value of the "rel" attribute of the form
+            For example, the Property interaction allows read and write operations. The
+            protocol binding may contain a form for the read operation and a different
+            form for the write operation. The value of the "rel" attribute of the form
             indicates which form is which and allows the client to select the correct
             form for the oeration required.
           </p>
 
           <pre class="example" title="Form Relation Typess">
-            "rel": "getProperty"
-            "rel": "setProperty"
+            "rel": "readProperty"
+            "rel": "writeProperty"
           </pre>
 
           <p>
             The vocabulary in section 5 lists the recommended set of form relations,
-            and the full TDs in section 6 contain example uses of form relation types.
+            and the full TD examples in section 6 contain example uses of form relation types.
           </p>
         </section>
 
@@ -688,18 +680,18 @@
           WoT Property type interactions.
         </p>
         <p>
-          The abstract methods exposed for the Property Interaction are getproperty
-          setproperty. These are mapped by using form relations that describe
+          The abstract methods exposed for the Property Interaction are readProperty
+          writeProperty. These are mapped by using form relations that describe
           the abstract method, resulting in a semantic interpretatoin similar to
           HTML form submission.
         </p>
         <pre class="example" title="Example use of form relation for Property">
           <p>
-            For example a form having href=/example/level, rel=setProperty, and
+            For example a form having href=/example/level, rel=writeProperty, and
             http:methodName=post conveys the statement:
           </p>
           <p>
-            To do a setProperty of the subject Property (context of the form),
+            To do a writeProperty of the subject Property (context of the form),
             perform a post on the resource at the target URI /example/level.
           </p>
         </pre>
@@ -720,7 +712,7 @@
         </p>
         <p>
           The abstract methods on Actions are invokeAction, modifyAction, and
-          cancelAction.In the same way that the abstract methods on properties are
+          cancelAction. In the same way that the abstract methods on properties are
           mapped using form relations, the abstract methods of actions are also
           mapped.
         </p>
@@ -792,12 +784,12 @@
         respect to the abstract WoT Interactions provided by the Scripting API.
       </p>
       <p>
-        inputData and outputData elements are processed and value scaling is
-        performed in the application library or adaptation layer
+        inputData and outputData elements are processed, and value scaling is
+        performed, in the application library or adaptation layer.
       </p>
       <p>
-        form href, method, options, and mediaType are processed in a driver
-        context isolated from the application
+        Form elements href, method, options, and mediaType are processed in a driver
+        context isolated from the application.
       </p>
       <p>
         The application, or a protocol adaptation layer, fills in the inputData
@@ -844,7 +836,7 @@
           <section>
             <h3>Property Interactions</h3>
               <p>
-                Properties provide '"get" and, optionally, "set"
+                Properties provide '"read" and, optionally, "write"
                 operations, which map to GET and PUT/POST of a REST API.
                 Properties may also by observed, though some properties may not be
                 observable.
@@ -1010,8 +1002,9 @@
               "name": "Switch On",
               "@type": ["Action", "iot:SwitchOn"],
               "outputdata":  {
+                "@type": iot:SwitchData,
                 "type": "boolean",
-                "value": true
+                "const": true
               },
               "form": [
                 {
@@ -1024,8 +1017,9 @@
               "name": "Switch Off",
               "@type": ["Action", "iot:SwitchOff"],
               "outputdata":  {
-                "type": "boolean",
-                "value": false
+              "@type": iot:SwitchData,
+              "type": "boolean",
+              "const": false
               },
               "form": [
                 {
@@ -1071,13 +1065,11 @@
               "outputdata":  {
                 "type": "object",
                 "observable": "true",
-                "fields": [
+                "field": [
                   {
                     "name": "switch",
-                    "value": {
-                      "@type": ["iot:SwitchData"],
-                      "type": "boolean",
-                    }
+                    "@type": ["iot:SwitchData"],
+                    "type": "boolean",
                   }
                 ]
               },
@@ -1085,13 +1077,13 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediatype": "application/json",
-                  "rel": "td:getProperty",
+                  "rel": "td:readProperty",
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/currentswitch",
                   "mediatype": "application/json",
-                  "rel": "td:setProperty",
+                  "rel": "td:writeProperty",
                   "http:methodName": "http:post"
                 },
                 {
@@ -1107,15 +1099,13 @@
               "outputData": {
                 "type": "object",
                 "observable": "true",
-                "fields": [
+                "field": [
                   {
                     "name": "brightness",
-                    "value": {
-                      "type": "integer",
-                      "@type": ["iot:DimmerData" ],
-                      "min": 0,
-                      "max": 255
-                    }
+                    "type": "integer",
+                    "@type": ["iot:DimmerData" ],
+                    "min": 0,
+                    "max": 255
                   }
                 ]
               },
@@ -1123,13 +1113,13 @@
                 {
                   "href": "/example/light/currentdimmer",
                   "mediatype": "application/json",
-                  "rel": "td:getProperty",
+                  "rel": "td:readProperty",
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/currentdimmer",
                   "mediatype": "application/json",
-                  "rel": "td:setProperty",
+                  "rel": "td:writeProperty",
                   "http:methodName": "http:post"
                 },
                 {
@@ -1144,15 +1134,13 @@
               "@type": ["Property", "iot:TransitionTime"],
               "outputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "transitiontime",
-                    "value": {
-                      "type": "integer",
-                      "@type": ["iot:TransitionTimeData" ],
-                      "min": 0,
-                      "max": 255
-                    }
+                    "type": "integer",
+                    "@type": ["iot:TransitionTimeData" ],
+                    "min": 0,
+                    "max": 255
                   }
                 ]
               },
@@ -1160,13 +1148,13 @@
                 {
                   "href": "/example/light/transitiontime",
                   "mediatype": "application/json",
-                  "rel": "td:getProperty",
+                  "rel": "td:readProperty",
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/transitiontime",
                   "mediatype": "application/json",
-                  "rel": "td:setProperty",
+                  "rel": "td:writeProperty",
                   "http:methodName": "http:post"
                 }
               ]
@@ -1176,10 +1164,10 @@
               "@type": ["Action", "iot:SwitchOn"],
               "outputdata":  {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "switch",
-                    "value": true
+                    "const": true
                   }
                 ]
               },
@@ -1197,10 +1185,10 @@
               "@type": ["Action", "iot:SwitchOff"],
               "outputdata":  {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "switch",
-                    "value": false
+                    "const": false
                   }
                 ]
               },
@@ -1218,24 +1206,20 @@
               "@type": ["Action", "iot:SetDimmer"],
               "inputData": {
                 "type": "object",
-                "fields": [
+                "field": [
                   {
                     "name": "brightness",
-                    "value": {
-                      "type": "integer",
-                      "@type": ["iot:DimmerData"],
-                      "min": 0,
-                      "max": 255
-                    }
+                    "type": "integer",
+                    "@type": ["iot:DimmerData"],
+                    "min": 0,
+                    "max": 255
                   },
                   {
                     "name": "transitiontime",
-                    "value": {
-                      "type": "integer",
-                      "@type": ["iot:TransitionTimeData"],
-                      "min": 0,
-                      "max": 65535
-                    }
+                    "type": "integer",
+                    "@type": ["iot:TransitionTimeData"],
+                    "min": 0,
+                    "max": 65535
                   }
                 ]
               },

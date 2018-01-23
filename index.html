@@ -64,35 +64,35 @@
 
     <section id="abstract">
       <p>
-        W3C Web of Things enables applications to interact with, and orchestrate
-        connected things at web scale. The standardized abstract interaction
-        model exposed by WoT Thing Description enables applications to scale and
-        evolve independently of the connected things.
+        W3C Web of Things enables applications to interact with and orchestrate
+        connected Things at Web scale. The standardized abstract interaction
+        model exposed by the WoT Thing Description enables applications to scale and
+        evolve independently of the individual Things.
       </p>
       <p>
-        Many network level protocols and standards for connected things have
+        Many network-level protocols and standards for connected Things have
         already been developed, and have millions of devices deployed in the
         field today. These standards are converging on a common set of transport
         protocols and transfer layers, but each has peculiar content formats,
         payload schemas, and data types.
       </p>
       <p>
-        Despite using unique formats and data models, the high level interactions
-        exposed by most connected things can be modeled using the Event, Action,
-        and Property Interactions of the WoT Thing Description.
+        Despite using unique formats and data models, the high-level interactions
+        exposed by most connected things can be modeled using the Property, Action,
+        and Event interaction patterns of the WoT Thing Description.
       </p>
       <p>
         Protocol Binding Templates enable a Thing Description to be adapted to
         the specific protocol usage across the different standards. This is done
-        through additional descriptive vocabulary that is added to the
+        through additional descriptive vocabulary that is used in the
         Thing Description.
       </p>
       <p>
         This document describes the initial set of design pattern and vocabulary
-        extensions to WoT Thing Description that make up the Protocol Binding
+        extensions to the WoT Thing Description that make up the Protocol Binding
         Templates. It is expected over time that additional protocols will be
-        accommodated by further extending the Binding Templates, adding new design
-        patterns and new vocabulary.
+        accommodated by further extending the Binding Templates, adding new
+        vocabulary and new design patterns.
       </p>
     </section>
 
@@ -116,41 +116,49 @@
         Protocol Binding Templates consist of reusable vocabulary and design
         pattern extensions to the WoT Thing Description format that enable an
         application client to interact, using a consistent interaction model,
-        with things that expose diverse protocols and protocol usage.
+        with Things that expose diverse protocols and protocol usage.
       </p>
 
       <section>
         <h2>Protocol Adaptation</h2>
-          <p>
-            Protocol Binding Templates enable clients to adapt to the underlying
-            protocol and API constructions in the following ways.
-          </p>
-
-      <section>
-        <h2>Payload Structure</h2>
         <p>
-          The data definition language and schema of inputData and outputData
-          elements is extended to allow nesting of arrays and objects. Value
-          constants and variable specifications may be intermixed.
+          Protocol Binding Templates enable clients to adapt to the underlying
+          protocol and network-facing API constructions. Once the base protocol
+          (e.g., HTTP, CoAP, MQTT, etc.) is identified, the following adaptions
+          specifiy the particular use within the given Platform.
         </p>
-      </section>
 
         <section>
-          <h2>Data Types and value constraints</h2>
+          <h3>Protocol Methods and Options</h3>
           <p>
-            Simple data types and value constraints are currently used in a layered
-            and descriptive way in WoT Thing Description. Additional forms of
-            constraints are available to help adapt to the underlying data types.
+            Most protocols have a relatively small set of methods that define
+            the message type, the semantic intention of the message. As a starting
+            point, a superset of REST and PubSub can cover most standard
+            communication patterns. Common methods are GET, PUT, POST, DELETE,
+            PATCH, PUBLISH, and SUBSCRIBE.
+          </p>
+          <p>
+            The protocol methods are mapped to the abstract WoT Interaction verbs
+            ReadProperty, WriteProperty, ObserveProperty, InvokeAction,
+            SubscribeEvent, UnsubscribeEvent.
+            <!-- CancelAction is still undefined -->
+          </p>
+          <p>
+            Possible protocol options are also specified in the Protocol Binding.
+            They are used to select transfer modes, to request notifications from
+            observable resources, or otherwise extend the semantics of the protocol
+            methods.
           </p>
         </section>
 
         <section>
-          <h2>Media Types</h2>
+          <h3>Media Types</h3>
           <p>
-            Maximum use should be made of Internet and Web Media Types in order to
-            decouple applicaitons from connected things. Standard bridges and
-            translations from proprietary early formats to web-friendly languages
-            like JSON and XML are part of the adaptation needed.
+            Maximum use should be made of IANA-registered Media Types (e.g.,
+            <code>application/json</code>) in order to decouple applications from
+            connected Things. Standard bridges and translations from proprietary
+            formats to Web-friendly languages such as JSON and XML are part of the
+            adaptation needed.
           </p>
           <p>
             WoT Protocol Bindings depend on consistent use of Media Types for
@@ -159,27 +167,34 @@
         </section>
 
         <section>
-          <h2>Protocol Methods and Options</h2>
+          <h3>Payload Structure</h3>
           <p>
-            There is a relatively small set of methods that can cover most standard
-            communication patterns, based on REST and PubSub. GET, PUT, POST, DELETE,
-            PATCH, OBSERVE, PUBLISH,and SUBSCRIBE
+            Data serialized to a standard Media Type still remains in a structure
+            specific to the Platform data model and needs to be understood by
+            clients (cf. various types of JSON documents).
           </p>
           <p>
-            These are mapped to the abstract WoT interaction verbs InvokeAction,
-            CancelAction, GetProperty, SetProperty, ObserveEvent, SubscribeEvent,
-            UnsubscribeEvent
+            The data definition language and schema of <code>inputData</code>
+            and <code>outputData</code> elements allows for describing arbitrary
+            structures by nesting of arrays and objects. Value constants and
+            variable specifications may be intermixed.
           </p>
+        </section>
+
+        <section>
+          <h3>Data Types and Value Constraints</h3>
           <p>
-            Protocol Options are specified in the Protocol Binding, and are used to
-            select transfer modes, to request notifications from observable resources,
-            and to extend the semantics of the protocol methods.
+            Simple data types and value constraints are currently used in a layered
+            and descriptive way in WoT Thing Description. Additional forms of
+            constraints are available to help adapt to the underlying data types.
+            A Platform-specific 8-bit unsigned integer, for instance, can be defined
+            as Integer with a minimum of 0 and maximum of 255; the system-specific
+            representation (e.g., exact number of bits) on server and client is not
+            relevant for interoperability.
           </p>
         </section>
       </section>
-
     </section>
-
 
     <section id="binding-overview" class="informative">
       <h1>Protocol Binding Templates Overview</h1>

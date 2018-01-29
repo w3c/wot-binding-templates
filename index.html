@@ -539,10 +539,10 @@
             protocol binding may contain a form for the read operation and a different
             form for the write operation. The value of the "rel" attribute of the form
             indicates which form is which and allows the client to select the correct
-            form for the oeration required.
+            form for the operation required.
           </p>
 
-          <pre class="example" title="Form Relation Typess">
+          <pre class="example" title="Form Relation Types">
             "rel": "readProperty"
             "rel": "writeProperty"
           </pre>
@@ -585,7 +585,7 @@
           <h2>Protocol Methods and Options</h2>
           <p>
             Each target protocol may specify different method names for similar
-            methods, and there may be semantic differences beween similar methods of
+            methods, and there may be semantic differences between similar methods of
             different protocols. Additionally, will use different methods
             for mapping to a particular WoT Interaction type. For example, POST may
             be used for setting a property value in one protocol, while PUT may be
@@ -617,7 +617,7 @@
           <p>
             Header options in HTTP, CoAP, MQTT sometimes must be included in a
             protocol binding in order to successfully interact with the underlying
-            protocol. The example below shows the structure of the definiton for
+            protocol. The example below shows the structure of the definition for
             http header options, according to the W3C HTTP Vocabulary in RDF.
           </p>
 
@@ -646,7 +646,7 @@
           <p>
             An interaction may return information in the form of a header
             option or special payload back to the client when a long running operation
-            such a a subscription or certain type of action is invoked. This can be
+            such a subscription or certain type of action is invoked. This can be
             the form of a created resource or handle.
           </p>
         </section>
@@ -682,7 +682,7 @@
         <p>
           The abstract methods exposed for the Property Interaction are readProperty
           writeProperty. These are mapped by using form relations that describe
-          the abstract method, resulting in a semantic interpretatoin similar to
+          the abstract method, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
         <pre class="example" title="Example use of form relation for Property">
@@ -696,7 +696,7 @@
           </p>
         </pre>
         <p>
-          Properties may be observable, defined by the the TD keyword "observable".
+          Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
           indicated by including rel=observe in the form. The observe form may
           also specify header options to use, for example CoAP observe option=0
@@ -794,12 +794,12 @@
       <p>
         The application, or a protocol adaptation layer, fills in the inputData
         and sends it along with the selected form contents to the protocol driver
-        or, in the case of get, recieves a payload form the protocol driver and
+        or, in the case of get, receives a payload form the protocol driver and
         uses outputData to extract the field values of interest.
       </p>
       <p>
         The separation of execution context between the application and the protocol
-        driver enables isolation of faut domains and isolation of security domains.
+        driver enables isolation of fault domains and isolation of security domains.
       </p>
       <p>
         Binding for Secure communications, Security Binding
@@ -1048,7 +1048,7 @@
       <p>
         TD with complex payload and multiple protocol options
       </p>
-      <pre class="example" title="TD with protocol options and and complex payload">
+      <pre class="example" title="TD with protocol options and complex payload">
         {
           "@context": [
             "http://w3c.github.io/wot/w3c-wot-td-context.jsonld",

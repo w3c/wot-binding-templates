@@ -321,15 +321,15 @@
                     "name": "level",
                     "@type": ["sch:levelvalue],
                     "type": "integer",
-                    "min": 0,
-                    "max": 255
+                    "minimum": 0,
+                    "maximum": 255
                   },
                   {
                     "name": "time",
                     "@type": ["sch:ramptimevalue"],
                     "type": "integer",
-                    "min": 0,
-                    "max": 65535
+                    "minimum": 0,
+                    "maximum": 65535
                   }
                 ]
               }
@@ -351,6 +351,7 @@
                     "field": [
                       {
                         "name": "bn",
+                        "type": "string",
                         "const": "example/light"
                       }
                     ]
@@ -360,14 +361,15 @@
                     "field": [
                       {
                         "name": "n",
+                        "type": "string",
                         "const": "level"
                       },
                       {
                         "name": "v",
                         "@type": ["sch:levelvalue"],
                         "type": "integer",
-                        "min": 0,
-                        "max": 255
+                        "minimum": 0,
+                        "maximum": 255
                       }
                     ]
                   },
@@ -376,14 +378,15 @@
                     "field": [
                       {
                         "name": "n",
+                        "type": "string",
                         "const": "time"
                       },
                       {
                         "name": "v",
                         "@type": ["sch:ramptimevalue"],
                         "type": "integer",
-                        "min": 0,
-                        "max": 65535
+                        "minimum": 0,
+                        "maximum": 65535
                       }
                     ]
                   }
@@ -407,6 +410,7 @@
                     "fields": [
                       {
                         "name": "href",
+                        "type": "string",
                         "const": "/light/level"
                       },
                       {
@@ -417,8 +421,8 @@
                             "name": "dimming",
                             "@type": ["sch:levelvalue"],
                             "type": "integer",
-                            "min": 0,
-                            "max": 255
+                            "minimum": 0,
+                            "maximum": 255
                           }
                         ]
                       }
@@ -429,6 +433,7 @@
                     "field": [
                       {
                         "name": "href",
+                        "type": "string",
                         "const": "/light/time"
                       },
                       {
@@ -439,8 +444,8 @@
                             "name": "ramptime",
                             "@type": ["sch:ramptimevalue"],
                             "type":"integer",
-                            "min": 0,
-                            "max": 65535
+                            "minimum": 0,
+                            "maximum": 65535
                           }
                         ]
                       }
@@ -463,6 +468,7 @@
                 "field": [
                   {
                     "name": "bn",
+                    "type": "string",
                     "const": "/3001/0/"
                   },
                   {
@@ -474,14 +480,15 @@
                         "field": [
                           {
                             "name": "n",
+                            "type": "string",
                             "const": "5044"
                           },
                           {
                             "name": "v",
                             "@type": ["sch:levelvalue"],
                             "type": "float",
-                            "min": 0.0,
-                            "max": 1.0
+                            "minimum": 0.0,
+                            "maximum": 1.0
                           }
                         ]
                       },
@@ -490,14 +497,15 @@
                         "field": [
                           {
                             "name": "n",
+                            "type": "string",
                             "const": "5002"
                           },
                           {
                             "name": "v",
                             "@type": ["sch:ramptimevalue"],
                             "type": ["float"],
-                            "min": 0.0,
-                            "max": 6553.5
+                            "minimum": 0.0,
+                            "maximum": 6553.5
                           }
                         ]
                       }
@@ -968,6 +976,7 @@
         	  {"iot": "http://iotschema.org/"}
           ],
           "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
+          "base": "http://example.com",
           "name": "Lamp",
           "interaction": [
             {
@@ -1055,7 +1064,7 @@
             "http://w3c.github.io/wot/w3c-wot-common-context.jsonld",
         	  {"iot": "http://iotschema.org/"}
           ],
-          "base": "http://exampl.com/",
+          "base": "http://example.com/",
           "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
           "name": "Lamp",
           "interaction": [
@@ -1104,8 +1113,8 @@
                     "name": "brightness",
                     "type": "integer",
                     "@type": ["iot:DimmerData" ],
-                    "min": 0,
-                    "max": 255
+                    "minimum": 0,
+                    "maximum": 255
                   }
                 ]
               },
@@ -1139,8 +1148,8 @@
                     "name": "transitiontime",
                     "type": "integer",
                     "@type": ["iot:TransitionTimeData" ],
-                    "min": 0,
-                    "max": 255
+                    "minimum": 0,
+                    "maximum": 255
                   }
                 ]
               },
@@ -1167,6 +1176,7 @@
                 "field": [
                   {
                     "name": "switch",
+                    "type": "boolean",
                     "const": true
                   }
                 ]
@@ -1188,6 +1198,7 @@
                 "field": [
                   {
                     "name": "switch",
+                    "type": "boolean",
                     "const": false
                   }
                 ]
@@ -1211,15 +1222,15 @@
                     "name": "brightness",
                     "type": "integer",
                     "@type": ["iot:DimmerData"],
-                    "min": 0,
-                    "max": 255
+                    "minimum": 0,
+                    "maximum": 255
                   },
                   {
                     "name": "transitiontime",
                     "type": "integer",
                     "@type": ["iot:TransitionTimeData"],
-                    "min": 0,
-                    "max": 65535
+                    "minimum": 0,
+                    "maximum": 65535
                   }
                 ]
               },

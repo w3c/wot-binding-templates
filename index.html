@@ -319,7 +319,7 @@
                 "field": [
                   {
                     "name": "level",
-                    "@type": ["sch:levelvalue],
+                    "@type": ["sch:levelvalue"],
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 255
@@ -345,52 +345,54 @@
             {
               "inputData": {
                 "type": "array",
-                "item": [
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "bn",
-                        "type": "string",
-                        "const": "example/light"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "n",
-                        "type": "string",
-                        "const": "level"
-                      },
-                      {
-                        "name": "v",
-                        "@type": ["sch:levelvalue"],
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 255
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "n",
-                        "type": "string",
-                        "const": "time"
-                      },
-                      {
-                        "name": "v",
-                        "@type": ["sch:ramptimevalue"],
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 65535
-                      }
-                    ]
-                  }
-                ]
+                "item": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "bn",
+                          "type": "string",
+                          "const": "example/light"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "n",
+                          "type": "string",
+                          "const": "level"
+                        },
+                        {
+                          "name": "v",
+                          "@type": ["sch:levelvalue"],
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 255
+                        }
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "n",
+                          "type": "string",
+                          "const": "time"
+                        },
+                        {
+                          "name": "v",
+                          "@type": ["sch:ramptimevalue"],
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 65535
+                        }
+                      ]
+                    }
+                  ]
+                }
               }
             }
           </pre>
@@ -404,54 +406,56 @@
             {
               "inputData": {
                 "type": "array",
-                "item": [
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "href",
-                        "type": "string",
-                        "const": "/light/level"
-                      },
-                      {
-                        "name": "rep",
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "dimming",
-                            "@type": ["sch:levelvalue"],
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "href",
-                        "type": "string",
-                        "const": "/light/time"
-                      },
-                      {
-                        "name": "rep",
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "ramptime",
-                            "@type": ["sch:ramptimevalue"],
-                            "type":"integer",
-                            "minimum": 0,
-                            "maximum": 65535
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "item": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "href",
+                          "type": "string",
+                          "const": "/light/level"
+                        },
+                        {
+                          "name": "rep",
+                          "type": "object",
+                          "field": [
+                            {
+                              "name": "dimming",
+                              "@type": ["sch:levelvalue"],
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 255
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "href",
+                          "type": "string",
+                          "const": "/light/time"
+                        },
+                        {
+                          "name": "rep",
+                          "type": "object",
+                          "field": [
+                            {
+                              "name": "ramptime",
+                              "@type": ["sch:ramptimevalue"],
+                              "type":"integer",
+                              "minimum": 0,
+                              "maximum": 65535
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
               }
             }
           </pre>

@@ -407,7 +407,7 @@
                 "item": [
                   {
                     "type": "object",
-                    "fields": [
+                    "field": [
                       {
                         "name": "href",
                         "type": "string",
@@ -503,7 +503,7 @@
                           {
                             "name": "v",
                             "@type": ["sch:ramptimevalue"],
-                            "type": ["float"],
+                            "type": "float",
                             "minimum": 0.0,
                             "maximum": 6553.5
                           }
@@ -648,28 +648,6 @@
           </p>
 
         </section>
-
-        <section id="return-information">
-          <h2>Returned Information</h2>
-          <p>
-            An interaction may return information in the form of a header
-            option or special payload back to the client when a long running operation
-            such a subscription or certain type of action is invoked. This can be
-            the form of a created resource or handle.
-          </p>
-        </section>
-
-        <section id="created-items">
-          <h2>Forms for Created Items</h2>
-          <p>
-            An interaction may create a new item, such as an event subscription.
-            A form template for interacting with the created item may be included in the
-            protocol binding, with the URI of each item to be obtained via returned
-            information (see above) when the item is created.
-          </p>
-        </section>
-
-      </section>
 
     </section>
 
@@ -971,8 +949,8 @@
       <pre class="example" title="TD with a simple Payload">
         {
           "@context": [
-            "http://w3c.github.io/wot/w3c-wot-td-context.jsonld",
-            "http://w3c.github.io/wot/w3c-wot-common-context.jsonld",
+            "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+            "https://w3c.github.io/wot/w3c-wot-common-context.jsonld",
         	  {"iot": "http://iotschema.org/"}
           ],
           "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
@@ -982,10 +960,12 @@
             {
               "name": "Switch State",
               "@type": ["Property", "iot:SwitchStatus"],
-              "outputdata":  {
+              "outputData":  {
                 "@type": ["iot:SwitchData"],
                 "type": "boolean"
               },
+              "writable": false,
+              "observable": false,
               "form": [
                 {
                   "href": "/example/light/currentswitch",
@@ -996,10 +976,12 @@
             {
               "name": "Current brightness",
               "@type": ["Property", "iot:CurrentDimmer"],
-              "outputdata":  {
+              "outputData":  {
                 "@type": ["iot:DimmerData"],
                 "type": "number"
               },
+              "writable": false,
+              "observable": false,
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
@@ -1010,8 +992,8 @@
             {
               "name": "Switch On",
               "@type": ["Action", "iot:SwitchOn"],
-              "outputdata":  {
-                "@type": iot:SwitchData,
+              "outputData":  {
+                "@type": ["iot:SwitchData"],
                 "type": "boolean",
                 "const": true
               },
@@ -1025,10 +1007,10 @@
             {
               "name": "Switch Off",
               "@type": ["Action", "iot:SwitchOff"],
-              "outputdata":  {
-              "@type": iot:SwitchData,
-              "type": "boolean",
-              "const": false
+              "outputData":  {
+                "@type": ["iot:SwitchData"],
+                "type": "boolean",
+                "const": false
               },
               "form": [
                 {
@@ -1040,7 +1022,7 @@
             {
               "name": "Set brightness level",
               "@type": ["Action", "iot:SetDimmer"],
-              "inputdata":  {
+              "inputData":  {
                 "@type": ["iot:DimmerData"],
                 "type": "number"
               },
@@ -1060,8 +1042,8 @@
       <pre class="example" title="TD with protocol options and complex payload">
         {
           "@context": [
-            "http://w3c.github.io/wot/w3c-wot-td-context.jsonld",
-            "http://w3c.github.io/wot/w3c-wot-common-context.jsonld",
+            "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+            "https://w3c.github.io/wot/w3c-wot-common-context.jsonld",
         	  {"iot": "http://iotschema.org/"}
           ],
           "base": "http://example.com/",
@@ -1071,9 +1053,8 @@
             {
               "name": "Switch State",
               "@type": ["Property", "iot:SwitchStatus"],
-              "outputdata":  {
+              "outputData":  {
                 "type": "object",
-                "observable": "true",
                 "field": [
                   {
                     "name": "switch",
@@ -1082,6 +1063,8 @@
                   }
                 ]
               },
+              "writable": true,
+              "observable": true,
               "form": [
                 {
                   "href": "/example/light/currentswitch",
@@ -1107,7 +1090,6 @@
               "@type": ["Property", "iot:CurrentDimmer"],
               "outputData": {
                 "type": "object",
-                "observable": "true",
                 "field": [
                   {
                     "name": "brightness",
@@ -1118,6 +1100,8 @@
                   }
                 ]
               },
+              "writable": true,
+              "observable": true,
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
@@ -1153,6 +1137,8 @@
                   }
                 ]
               },
+              "writable": true,
+              "observable": false,
               "form": [
                 {
                   "href": "/example/light/transitiontime",
@@ -1171,7 +1157,7 @@
             {
               "name": "Switch On",
               "@type": ["Action", "iot:SwitchOn"],
-              "outputdata":  {
+              "outputData":  {
                 "type": "object",
                 "field": [
                   {
@@ -1193,7 +1179,7 @@
             {
               "name": "Switch Off",
               "@type": ["Action", "iot:SwitchOff"],
-              "outputdata":  {
+              "outputData":  {
                 "type": "object",
                 "field": [
                   {

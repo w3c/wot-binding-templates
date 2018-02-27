@@ -174,9 +174,9 @@
             clients (cf. various types of JSON documents).
           </p>
           <p>
-            The data definition language and schema of <code>inputData</code>
-            and <code>outputData</code> elements allows for describing arbitrary
-            structures by nesting of arrays and objects. Value constants and
+            The data definition language of <code>dataSchema</code>
+            elements, described in [TD], allows for describing arbitrary
+            structures by nesting of arrays and objects. Constants and
             variable specifications may be intermixed.
           </p>
         </section>
@@ -203,34 +203,28 @@
         examples.
       </p>
 
-      <section id="Data Elements">
-        <h2>Data Elements</h2>
+      <section id="Data Schema">
+        <h2>Data Schema</h2>
         <p>
-          The inputData and outputData elements describe the payload structure and
+          The dataSchema elements describe the payload structure and
           data items that are passed between client and server during interactions.
-          The naming is from the perspective of the server; therefore inputData are
-          sent from client to server, and outputData are returned from server to
-          client in responses.
         </p>
 
         <section id="payload-structure">
           <h2>Payload Structure</h2>
           <p>
-            Payload Structure is determined by the inputData and outputData elements.
-            These share a common internal vocabulary, only being differentiated by
-            the direction of the data transfer. An inputData binding element informs
-            the client how to construct the data payload for a particular interaction.
-            The outputData element informs the client how to extract information from
-            the returned payload.
+            Payload Structure is determined by the dataSchema elements. [TD] describes
+            the use of the dataSchema keywords "schema", "inputSchema", and outputSchema
+            in the examples contained in this document.
           </p>
           <p>
             In addition to the example pattern in [TD] of an object with name/value
             constructs or simple arrays, Protocol Bindings for existing standards
-            require nested arrays and objects, and some constant values will appear
-            in objects.
+            may require nested arrays and objects, and some constant values to
+            be specified.
           </p>
           <p>
-            For example, instead of the form commonly seen:
+            For example, a simple payload structure may use a map:
           </p>
 
           <p>
@@ -283,7 +277,7 @@
           </pre>
 
           <p>
-            And an IPSO Smart Object on LWM2M:
+            And an IPSO Smart Object on LWM2M might look like the following:
           </p>
 
           <pre class="example" title="IPSO/LWM2M Example">
@@ -308,28 +302,32 @@
           </p>
 
           <p>
-            For the Simple Payload in Example 1 above, the inputData element would
+            For the Simple Payload in Example 1 above, the data schema element would
             be structured as follows:
           </p>
 
-          <pre class="example" title="inputData for Simple JSON Object Payload">
+          <pre class="example" title="data Schema for Simple JSON Object Payload">
             {
-              "inputData": {
+              "schema": {
                 "type": "object",
                 "field": [
                   {
                     "name": "level",
                     "@type": ["sch:levelvalue],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 255
+                    "schema": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    }
                   },
                   {
                     "name": "time",
                     "@type": ["sch:ramptimevalue"],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 65535
+                    "schema": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 65535
+                    }
                   }
                 ]
               }
@@ -337,13 +335,13 @@
           </pre>
 
           <p>
-            For the SenML Payload in Example 2 above, the inputData element would
+            For the SenML Payload in Example 2 above, the dataSchema element would
             be structured as follows:
           </p>
 
-          <pre class="example" title="inputData for SenML Payload">
+          <pre class="example" title="dataSchema for SenML Payload">
             {
-              "inputData": {
+              "schema": {
                 "type": "array",
                 "item": [
                   {
@@ -351,8 +349,10 @@
                     "field": [
                       {
                         "name": "bn",
-                        "type": "string",
-                        "const": "example/light"
+                        "schema": {
+                          "type": "string",
+                          "const": "example/light"
+                        }
                       }
                     ]
                   },
@@ -361,15 +361,19 @@
                     "field": [
                       {
                         "name": "n",
-                        "type": "string",
-                        "const": "level"
+                        "schema": {
+                          "type": "string",
+                          "const": "level"
+                        }
                       },
                       {
                         "name": "v",
                         "@type": ["sch:levelvalue"],
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 255
+                        "schema": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 255
+                        }
                       }
                     ]
                   },
@@ -378,15 +382,19 @@
                     "field": [
                       {
                         "name": "n",
-                        "type": "string",
-                        "const": "time"
+                        "schema": {
+                          "type": "string",
+                          "const": "time"
+                        }
                       },
                       {
                         "name": "v",
                         "@type": ["sch:ramptimevalue"],
-                        "type": "integer",
-                        "minimum": 0,
-                        "maximum": 65535
+                        "schema": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 65535
+                        }
                       }
                     ]
                   }
@@ -396,13 +404,13 @@
           </pre>
 
           <p>
-            For the OCF Batch Payload in Example 3 above, the inputData element would
+            For the OCF Batch Payload in Example 3 above, the dataSchema element would
             be structured as follows:
           </p>
 
-          <pre class="example" title="inputData for OCF Batch Payload">
+          <pre class="example" title="dataSchema for OCF Batch Payload">
             {
-              "inputData": {
+              "schema": {
                 "type": "array",
                 "item": [
                   {
@@ -410,8 +418,10 @@
                     "fields": [
                       {
                         "name": "href",
-                        "type": "string",
-                        "const": "/light/level"
+                        "schema": {
+                          "type": "string",
+                          "const": "/light/level"
+                        }
                       },
                       {
                         "name": "rep",
@@ -420,9 +430,11 @@
                           {
                             "name": "dimming",
                             "@type": ["sch:levelvalue"],
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
+                            "schema": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 255
+                            }
                           }
                         ]
                       }
@@ -433,21 +445,27 @@
                     "field": [
                       {
                         "name": "href",
-                        "type": "string",
-                        "const": "/light/time"
+                        "schema": {
+                          "type": "string",
+                          "const": "/light/time"
+                        }
                       },
                       {
                         "name": "rep",
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "ramptime",
-                            "@type": ["sch:ramptimevalue"],
-                            "type":"integer",
-                            "minimum": 0,
-                            "maximum": 65535
-                          }
-                        ]
+                        "schema": {
+                          "type": "object",
+                          "field": [
+                            {
+                              "name": "ramptime",
+                              "@type": ["sch:ramptimevalue"],
+                              "schema": {
+                                "type":"integer",
+                                "minimum": 0,
+                                "maximum": 65535
+                              }
+                            }
+                          ]
+                        }
                       }
                     ]
                   }
@@ -457,19 +475,21 @@
           </pre>
 
           <p>
-            For the IPSO/LWM2M Payload in Example 4 above, the inputData element would
+            For the IPSO/LWM2M Payload in Example 4 above, the dataSchema element would
             be structured as follows:
           </p>
 
-          <pre class="example" title="inputData for IPSO/LWM2M Payload">
+          <pre class="example" title="dataSchema for IPSO/LWM2M Payload">
             {
-              "inputData": {
+              "schema": {
                 "type": "object",
                 "field": [
                   {
                     "name": "bn",
-                    "type": "string",
-                    "const": "/3001/0/"
+                    "schema": {
+                      "type": "string",
+                      "const": "/3001/0/"
+                    }
                   },
                   {
                     "name": "e",
@@ -480,15 +500,19 @@
                         "field": [
                           {
                             "name": "n",
-                            "type": "string",
-                            "const": "5044"
+                            "schema": {
+                              "type": "string",
+                              "const": "5044"
+                            }
                           },
                           {
                             "name": "v",
                             "@type": ["sch:levelvalue"],
-                            "type": "float",
-                            "minimum": 0.0,
-                            "maximum": 1.0
+                            "schema": {
+                              "type": "float",
+                              "minimum": 0.0,
+                              "maximum": 1.0
+                            }
                           }
                         ]
                       },
@@ -497,15 +521,19 @@
                         "field": [
                           {
                             "name": "n",
-                            "type": "string",
-                            "const": "5002"
+                            "schema": {
+                              "type": "string",
+                              "const": "5002"
+                            }
                           },
                           {
                             "name": "v",
                             "@type": ["sch:ramptimevalue"],
-                            "type": ["float"],
-                            "minimum": 0.0,
-                            "maximum": 6553.5
+                            "schema": {
+                              "type": "float",
+                              "minimum": 0.0,
+                              "maximum": 6553.5
+                            }
                           }
                         ]
                       }
@@ -688,8 +716,8 @@
           WoT Property type interactions.
         </p>
         <p>
-          The abstract methods exposed for the Property Interaction are readProperty
-          writeProperty. These are mapped by using form relations that describe
+          The abstract methods exposed for the Property Interaction are readProperty,
+          writeProperty, and observe. These are mapped by using form relations that describe
           the abstract method, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
@@ -792,18 +820,19 @@
         respect to the abstract WoT Interactions provided by the Scripting API.
       </p>
       <p>
-        inputData and outputData elements are processed, and value scaling is
+        dataSchema elements are processed, and value scaling is
         performed, in the application library or adaptation layer.
       </p>
       <p>
-        Form elements href, method, options, and mediaType are processed in a driver
-        context isolated from the application.
+        Form elements that specify href, method, options, and mediaType are
+        processed in a driver context which is isolated from the application.
       </p>
       <p>
-        The application, or a protocol adaptation layer, fills in the inputData
+        The application, or a protocol adaptation layer, constructs an instance of
+        the appropriate dataSchema element
         and sends it along with the selected form contents to the protocol driver
         or, in the case of get, receives a payload form the protocol driver and
-        uses outputData to extract the field values of interest.
+        uses the appropriate dataSchema element to extract the field values of interest.
       </p>
       <p>
         The separation of execution context between the application and the protocol
@@ -825,12 +854,14 @@
           This section specifies the vocabulary for protocol binding templates
         </p>
         <section>
-          <h2>inputData and outputData Vocabulary</h2>
+          <h2>dataSchema Vocabulary</h2>
             <p>
-              InputData and outputData elements describe the structure of the payload.
-              General purpose Protocol Bindings require the addition of constant fields
-              in payloads. The "value" keyword is extended to allow the use of value
-              constants in the inputData and outputData elements.
+              dataSchema elements describe the structure of the payload. The dataSchema
+              vocabulary is described in [TD]. Properties and Events define a "schema"
+              for data transfer in either direction. Actions may define "inputSchema"
+              for actuation data being sent to the resource using, for example, POST or
+              PUT, and "outputSchema" for result or status data being returned from
+              the Action resource.
             </p>
         </section>
 
@@ -975,34 +1006,36 @@
             "http://w3c.github.io/wot/w3c-wot-common-context.jsonld",
         	  {"iot": "http://iotschema.org/"}
           ],
-          "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
+          "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
           "base": "http://example.com",
           "name": "Lamp",
           "interaction": [
             {
               "name": "Switch State",
               "@type": ["Property", "iot:SwitchStatus"],
-              "outputdata":  {
+              "schema":  {
                 "@type": ["iot:SwitchData"],
                 "type": "boolean"
               },
               "form": [
                 {
                   "href": "/example/light/currentswitch",
+                  "rel": ["readData", "writeData"],
                   "mediatype": "application/json"
                 }
               ]
             },
             {
               "name": "Current brightness",
-              "@type": ["Property", "iot:CurrentDimmer"],
-              "outputdata":  {
-                "@type": ["iot:DimmerData"],
+              "@type": ["Property", "iot:CurrentLevel"],
+              "schema":  {
+                "@type": ["iot:LevelData"],
                 "type": "number"
               },
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
+                  "rel": ["readData", "writeData"],
                   "mediatype": "application/json"
                 }
               ]
@@ -1010,14 +1043,14 @@
             {
               "name": "Switch On",
               "@type": ["Action", "iot:SwitchOn"],
-              "outputdata":  {
-                "@type": iot:SwitchData,
+              "inputSchema":  {
                 "type": "boolean",
                 "const": true
               },
               "form": [
                 {
                   "href": "/example/light/currentswitch",
+                  "rel": ["invokeAction"],
                   "mediatype": "application/json"
                 }
               ]
@@ -1025,28 +1058,29 @@
             {
               "name": "Switch Off",
               "@type": ["Action", "iot:SwitchOff"],
-              "outputdata":  {
-              "@type": iot:SwitchData,
-              "type": "boolean",
-              "const": false
+              "inputSchema":  {
+                "type": "boolean",
+                "const": false
               },
               "form": [
                 {
                   "href": "/example/light/currentswitch",
+                  "rel": ["invokeAction"],
                   "mediatype": "application/json"
                 }
               ]
             },
             {
               "name": "Set brightness level",
-              "@type": ["Action", "iot:SetDimmer"],
-              "inputdata":  {
-                "@type": ["iot:DimmerData"],
+              "@type": ["Action", "iot:SetLevel"],
+              "inputSchema":  {
+                "@type": ["iot:LevelData"],
                 "type": "number"
               },
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
+                  "rel": ["invokeAction"],
                   "mediatype": "application/json"
                 }
               ]
@@ -1065,20 +1099,22 @@
         	  {"iot": "http://iotschema.org/"}
           ],
           "base": "http://example.com/",
-          "@type": [ "Thing", "iot:Light", "iot:Dimmer", "iot:BinarySwitch" ],
+          "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
           "name": "Lamp",
           "interaction": [
             {
               "name": "Switch State",
               "@type": ["Property", "iot:SwitchStatus"],
-              "outputdata":  {
+              "schema":  {
                 "type": "object",
                 "observable": "true",
                 "field": [
                   {
                     "name": "switch",
                     "@type": ["iot:SwitchData"],
-                    "type": "boolean",
+                    "schema": {
+                      "type": "boolean"
+                    }
                   }
                 ]
               },
@@ -1086,35 +1122,37 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediatype": "application/json",
-                  "rel": "td:readProperty",
+                  "rel": ["readProperty"],
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/currentswitch",
                   "mediatype": "application/json",
-                  "rel": "td:writeProperty",
+                  "rel": ["writeProperty"],
                   "http:methodName": "http:post"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
-                  "rel": "td:observe",
+                  "rel": ["observe"],
                   "mqtt:methodName": "mqtt:subscribe"
                 }
               ]
             },
             {
               "name": "Current brightness",
-              "@type": ["Property", "iot:CurrentDimmer"],
-              "outputData": {
+              "@type": ["Property", "iot:CurrentLevel"],
+              "schema": {
                 "type": "object",
                 "observable": "true",
                 "field": [
                   {
                     "name": "brightness",
-                    "type": "integer",
-                    "@type": ["iot:DimmerData" ],
-                    "minimum": 0,
-                    "maximum": 255
+                    "@type": ["iot:LevelData" ],
+                    "schema": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    }
                   }
                 ]
               },
@@ -1122,18 +1160,18 @@
                 {
                   "href": "/example/light/currentdimmer",
                   "mediatype": "application/json",
-                  "rel": "td:readProperty",
+                  "rel": ["readProperty"],
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/currentdimmer",
                   "mediatype": "application/json",
-                  "rel": "td:writeProperty",
+                  "rel": ["writeProperty"],
                   "http:methodName": "http:post"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
-                  "rel": "td:observe",
+                  "rel": ["observe"],
                   "mqtt:methodName": "mqtt:subscribe"
                 }
               ]
@@ -1141,15 +1179,17 @@
             {
               "name": "Transition Time",
               "@type": ["Property", "iot:TransitionTime"],
-              "outputData": {
+              "schema": {
                 "type": "object",
                 "field": [
                   {
                     "name": "transitiontime",
-                    "type": "integer",
                     "@type": ["iot:TransitionTimeData" ],
-                    "minimum": 0,
-                    "maximum": 255
+                    "schema": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    }
                   }
                 ]
               },
@@ -1157,13 +1197,13 @@
                 {
                   "href": "/example/light/transitiontime",
                   "mediatype": "application/json",
-                  "rel": "td:readProperty",
+                  "rel": ["readProperty"],
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/transitiontime",
                   "mediatype": "application/json",
-                  "rel": "td:writeProperty",
+                  "rel": ["writeProperty"],
                   "http:methodName": "http:post"
                 }
               ]
@@ -1171,13 +1211,15 @@
             {
               "name": "Switch On",
               "@type": ["Action", "iot:SwitchOn"],
-              "outputdata":  {
+              "inputSchema":  {
                 "type": "object",
                 "field": [
                   {
                     "name": "switch",
-                    "type": "boolean",
-                    "const": true
+                    "schema":{
+                      "type": "boolean",
+                      "const": true
+                    }
                   }
                 ]
               },
@@ -1185,7 +1227,7 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediatype": "application/json",
-                  "rel": "td:invokeAction",
+                  "rel": ["invokeAction"],
                   "http:methodName": "http:post"
                 }
               ]
@@ -1193,13 +1235,15 @@
             {
               "name": "Switch Off",
               "@type": ["Action", "iot:SwitchOff"],
-              "outputdata":  {
+              "inputSchema":  {
                 "type": "object",
                 "field": [
                   {
                     "name": "switch",
-                    "type": "boolean",
-                    "const": false
+                    "schema": {
+                      "type": "boolean",
+                      "const": false
+                    }
                   }
                 ]
               },
@@ -1207,30 +1251,34 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediatype": "application/json",
-                  "rel": "td:invokeAction",
+                  "rel": ["invokeAction"],
                   "http:methodName": "http:post"
                 }
               ]
             },
             {
               "name": "Set brightness level",
-              "@type": ["Action", "iot:SetDimmer"],
-              "inputData": {
+              "@type": ["Action", "iot:SetLevel"],
+              "inputSchema": {
                 "type": "object",
                 "field": [
                   {
                     "name": "brightness",
-                    "type": "integer",
-                    "@type": ["iot:DimmerData"],
-                    "minimum": 0,
-                    "maximum": 255
+                    "@type": ["iot:LevelData"],
+                    "schema": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    }
                   },
                   {
                     "name": "transitiontime",
-                    "type": "integer",
                     "@type": ["iot:TransitionTimeData"],
-                    "minimum": 0,
-                    "maximum": 65535
+                    "schema": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 65535
+                    }
                   }
                 ]
               },
@@ -1238,7 +1286,7 @@
                 {
                   "href": "/example/light/",
                   "mediatype": "application/json",
-                  "rel": "td:invokeAction",
+                  "rel": ["invokeAction"],
                   "http:methodName": "http:post"
                 }
               ]

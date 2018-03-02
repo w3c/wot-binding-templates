@@ -681,6 +681,23 @@ LevelData<!DOCTYPE html>
             Note: different forms in a binding may need different header constructions,
             therefore the <code>headers</code> construct is an extension of the TD "form" element.
           </p>
+          <p>
+            Protocols may have defined sub-protocols that can be used for some interaction
+            types. For example, to recieve asynchronous notifications using http, some
+            servers may support long polling, EventSource, or a simple non-multiplexed
+            websocket protocol.
+
+            The "subProtocol" item may be defined in a form instance to indicate the
+            use of one of these protocols, for example:
+            <pre class="example" title="subProtocol">
+              {
+              "subProtocol": "LongPoll"
+              }
+            </pre>
+
+            </thead>
+          </p>
+
 
         </section>
 
@@ -961,6 +978,14 @@ LevelData<!DOCTYPE html>
                   mqtt:optionValue
                 </p>
             </section>
+
+            <section>
+              <h3>subProtocol form vocabulary</h3>
+                <p>
+                  subProtocol [ "LongPoll", "EventSource", "WebSocket" ]
+                </p>
+            </section>
+
           </section>
 
     </section>

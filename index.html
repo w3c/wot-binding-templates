@@ -975,7 +975,12 @@ LevelData<!DOCTYPE html>
           "@context": [
             "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
             "https://w3c.github.io/wot/w3c-wot-common-context.jsonld",
-        	  {"iot": "http://iotschema.org/"}
+        	  {
+              "iot": "http://iotschema.org/",
+              "http": "http://iotschema.org/protocol/http",
+              "coap": "http://iotschema.org/protocol/coap",
+              "mqtt": "http://iotschema.org/protocol/mqtt"
+            }
           ],
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
           "base": "http://example.com",
@@ -994,7 +999,7 @@ LevelData<!DOCTYPE html>
                 {
                   "href": "/example/light/currentswitch",
                   "rel": ["readData", "writeData"],
-                  "mediatype": "application/json"
+                  "mediaType": "application/json"
                 }
               ]
             },
@@ -1011,7 +1016,7 @@ LevelData<!DOCTYPE html>
                 {
                   "href": "/example/light/currentdimmer",
                   "rel": ["readData", "writeData"],
-                  "mediatype": "application/json"
+                  "mediaType": "application/json"
                 }
               ]
             },
@@ -1026,7 +1031,7 @@ LevelData<!DOCTYPE html>
                 {
                   "href": "/example/light/currentswitch",
                   "rel": ["invokeAction"],
-                  "mediatype": "application/json"
+                  "mediaType": "application/json"
                 }
               ]
             },
@@ -1041,7 +1046,7 @@ LevelData<!DOCTYPE html>
                 {
                   "href": "/example/light/currentswitch",
                   "rel": ["invokeAction"],
-                  "mediatype": "application/json"
+                  "mediaType": "application/json"
                 }
               ]
             },
@@ -1056,7 +1061,7 @@ LevelData<!DOCTYPE html>
                 {
                   "href": "/example/light/currentdimmer",
                   "rel": ["invokeAction"],
-                  "mediatype": "application/json"
+                  "mediaType": "application/json"
                 }
               ]
             }
@@ -1071,7 +1076,12 @@ LevelData<!DOCTYPE html>
           "@context": [
             "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
             "https://w3c.github.io/wot/w3c-wot-common-context.jsonld",
-        	  {"iot": "http://iotschema.org/"}
+            {
+              "iot": "http://iotschema.org/",
+              "http": "http://iotschema.org/protocol/http",
+              "coap": "http://iotschema.org/protocol/coap",
+              "mqtt": "http://iotschema.org/protocol/mqtt"
+            }
           ],
           "base": "http://example.com/",
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
@@ -1097,13 +1107,13 @@ LevelData<!DOCTYPE html>
               "form": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["readProperty"],
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/currentswitch",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["writeProperty"],
                   "http:methodName": "http:post"
                 },
@@ -1136,13 +1146,13 @@ LevelData<!DOCTYPE html>
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["readProperty"],
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/currentdimmer",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["writeProperty"],
                   "http:methodName": "http:post"
                 },
@@ -1175,13 +1185,13 @@ LevelData<!DOCTYPE html>
               "form": [
                 {
                   "href": "/example/light/transitiontime",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["readProperty"],
                   "http:methodName": "http:get"
                 },
                 {
                   "href": "/example/light/transitiontime",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["writeProperty"],
                   "http:methodName": "http:post"
                 }
@@ -1205,7 +1215,7 @@ LevelData<!DOCTYPE html>
               "form": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["invokeAction"],
                   "http:methodName": "http:post"
                 }
@@ -1229,7 +1239,7 @@ LevelData<!DOCTYPE html>
               "form": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["invokeAction"],
                   "http:methodName": "http:post"
                 }
@@ -1264,7 +1274,7 @@ LevelData<!DOCTYPE html>
               "form": [
                 {
                   "href": "/example/light/",
-                  "mediatype": "application/json",
+                  "mediaType": "application/json",
                   "rel": ["invokeAction"],
                   "http:methodName": "http:post"
                 }

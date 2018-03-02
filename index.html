@@ -415,64 +415,66 @@
             {
               "schema": {
                 "type": "array",
-                "item": [
-                  {
-                    "type": "object",
-                    "fields": [
-                      {
-                        "name": "href",
-                        "schema": {
-                          "type": "string",
-                          "const": "/light/level"
-                        }
-                      },
-                      {
-                        "name": "rep",
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "dimming",
-                            "@type": ["sch:levelvalue"],
-                            "schema": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 255
-                            }
+                "item": {
+                  allOf: [
+                    {
+                      "type": "object",
+                      "fields": [
+                        {
+                          "name": "href",
+                          "schema": {
+                            "type": "string",
+                            "const": "/light/level"
                           }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "href",
-                        "schema": {
-                          "type": "string",
-                          "const": "/light/time"
-                        }
-                      },
-                      {
-                        "name": "rep",
-                        "schema": {
+                        },
+                        {
+                          "name": "rep",
                           "type": "object",
                           "field": [
                             {
-                              "name": "ramptime",
-                              "@type": ["sch:ramptimevalue"],
+                              "name": "dimming",
+                              "@type": ["sch:levelvalue"],
                               "schema": {
-                                "type":"integer",
+                                "type": "integer",
                                 "minimum": 0,
-                                "maximum": 65535
+                                "maximum": 255
                               }
                             }
                           ]
                         }
-                      }
-                    ]
-                  }
-                ]
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "href",
+                          "schema": {
+                            "type": "string",
+                            "const": "/light/time"
+                          }
+                        },
+                        {
+                          "name": "rep",
+                          "schema": {
+                            "type": "object",
+                            "field": [
+                              {
+                                "name": "ramptime",
+                                "@type": ["sch:ramptimevalue"],
+                                "schema": {
+                                  "type":"integer",
+                                  "minimum": 0,
+                                  "maximum": 65535
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
               }
             }
           </pre>

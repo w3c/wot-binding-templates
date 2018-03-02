@@ -344,62 +344,64 @@
             {
               "schema": {
                 "type": "array",
-                "item": [
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "bn",
-                        "schema": {
-                          "type": "string",
-                          "const": "example/light"
+                "item": {
+                  allOf: [
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "bn",
+                          "schema": {
+                            "type": "string",
+                            "const": "example/light"
+                          }
                         }
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "n",
-                        "schema": {
-                          "type": "string",
-                          "const": "level"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "n",
+                          "schema": {
+                            "type": "string",
+                            "const": "level"
+                          }
+                        },
+                        {
+                          "name": "v",
+                          "@type": ["sch:levelvalue"],
+                          "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                          }
                         }
-                      },
-                      {
-                        "name": "v",
-                        "@type": ["sch:levelvalue"],
-                        "schema": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 255
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "field": [
+                        {
+                          "name": "n",
+                          "schema": {
+                            "type": "string",
+                            "const": "time"
+                          }
+                        },
+                        {
+                          "name": "v",
+                          "@type": ["sch:ramptimevalue"],
+                          "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 65535
+                          }
                         }
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "n",
-                        "schema": {
-                          "type": "string",
-                          "const": "time"
-                        }
-                      },
-                      {
-                        "name": "v",
-                        "@type": ["sch:ramptimevalue"],
-                        "schema": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 65535
-                        }
-                      }
-                    ]
-                  }
-                ]
+                      ]
+                    }
+                  ]
+                }
               }
             }
           </pre>
@@ -659,7 +661,7 @@
           </p>
 
           <pre class="example" title="HTTP Vocabulary Example for Header Options">
-            "http:messageHeader":
+            "http:headers":
               [
                 {
                   "http:fieldName": "Accept",
@@ -673,7 +675,7 @@
           </pre>
           <p>
             Note: different forms in a binding may need different header constructions,
-            therefore the messageHeader construct is an extension of the TD "form" element.
+            therefore the <code>headers</code> construct is an extension of the TD "form" element.
           </p>
 
         </section>
@@ -912,7 +914,7 @@
                   http:methodName [ "GET", "PUT", "POST", "DELETE"]
                 </p>
                 <p>
-                  http:MessageHeader
+                  http:headers
                   example: [ {"http:fieldName": "accept", "http:fieldValue": "text/plain"} ]
                 </p>
                 <p>

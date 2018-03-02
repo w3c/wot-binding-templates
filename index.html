@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+LevelData<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
@@ -314,7 +314,7 @@
                 "field": [
                   {
                     "name": "level",
-                    "@type": ["sch:levelvalue],
+                    "@type": ["iot:LevelData],
                     "schema": {
                       "type": "integer",
                       "minimum": 0,
@@ -323,7 +323,7 @@
                   },
                   {
                     "name": "time",
-                    "@type": ["sch:ramptimevalue"],
+                    "@type": ["iot:TransitionTimeData"],
                     "schema": {
                       "type": "integer",
                       "minimum": 0,
@@ -370,7 +370,7 @@
                         },
                         {
                           "name": "v",
-                          "@type": ["sch:levelvalue"],
+                          "@type": ["iot:LevelData"],
                           "schema": {
                             "type": "integer",
                             "minimum": 0,
@@ -391,7 +391,7 @@
                         },
                         {
                           "name": "v",
-                          "@type": ["sch:ramptimevalue"],
+                          "@type": ["iot:TransitionTimeData"],
                           "schema": {
                             "type": "integer",
                             "minimum": 0,
@@ -433,7 +433,7 @@
                           "field": [
                             {
                               "name": "dimming",
-                              "@type": ["sch:levelvalue"],
+                              "@type": ["iot:LevelData"],
                               "schema": {
                                 "type": "integer",
                                 "minimum": 0,
@@ -461,7 +461,7 @@
                             "field": [
                               {
                                 "name": "ramptime",
-                                "@type": ["sch:ramptimevalue"],
+                                "@type": ["iot:TransitionTimeData"],
                                 "schema": {
                                   "type":"integer",
                                   "minimum": 0,
@@ -512,7 +512,7 @@
                           },
                           {
                             "name": "v",
-                            "@type": ["sch:levelvalue"],
+                            "@type": ["iot:LevelData"],
                             "schema": {
                               "type": "number",
                               "minimum": 0.0,
@@ -533,7 +533,7 @@
                           },
                           {
                             "name": "v",
-                            "@type": ["sch:ramptimevalue"],
+                            "@type": ["iot:TransitionTimeData"],
                             "schema": {
                               "type": "number",
                               "minimum": 0.0,

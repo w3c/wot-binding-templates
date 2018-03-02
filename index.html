@@ -344,7 +344,7 @@ LevelData<!DOCTYPE html>
             {
               "schema": {
                 "type": "array",
-                "item": {
+                "items": {
                   "allOf": [
                     {
                       "type": "object",
@@ -415,7 +415,7 @@ LevelData<!DOCTYPE html>
             {
               "schema": {
                 "type": "array",
-                "item": {
+                "items": {
                   "allOf": [
                     {
                       "type": "object",
@@ -499,50 +499,52 @@ LevelData<!DOCTYPE html>
                   {
                     "name": "e",
                     "type": "array",
-                    "item": [
-                      {
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "n",
-                            "schema": {
-                              "type": "string",
-                              "const": "5044"
+                    "items": {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "field": [
+                            {
+                              "name": "n",
+                              "schema": {
+                                "type": "string",
+                                "const": "5044"
+                              }
+                            },
+                            {
+                              "name": "v",
+                              "@type": ["iot:LevelData"],
+                              "schema": {
+                                "type": "number",
+                                "minimum": 0.0,
+                                "maximum": 1.0
+                              }
                             }
-                          },
-                          {
-                            "name": "v",
-                            "@type": ["iot:LevelData"],
-                            "schema": {
-                              "type": "number",
-                              "minimum": 0.0,
-                              "maximum": 1.0
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "field": [
+                            {
+                              "name": "n",
+                              "schema": {
+                                "type": "string",
+                                "const": "5002"
+                              }
+                            },
+                            {
+                              "name": "v",
+                              "@type": ["iot:TransitionTimeData"],
+                              "schema": {
+                                "type": "number",
+                                "minimum": 0.0,
+                                "maximum": 6553.5
+                              }
                             }
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "n",
-                            "schema": {
-                              "type": "string",
-                              "const": "5002"
-                            }
-                          },
-                          {
-                            "name": "v",
-                            "@type": ["iot:TransitionTimeData"],
-                            "schema": {
-                              "type": "number",
-                              "minimum": 0.0,
-                              "maximum": 6553.5
-                            }
-                          }
-                        ]
-                      }
-                    ]
+                          ]
+                        }
+                      ]
+                    }
                   }
                 ]
               }

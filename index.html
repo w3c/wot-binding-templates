@@ -1,4 +1,4 @@
-LevelData<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
@@ -650,11 +650,11 @@ LevelData<!DOCTYPE html>
           </p>
 
           <pre class="example" title="Vocabulary Example for Methods">
-            "http:methodName": "get"
+            "http:methodName": "GET"
 
-            "mqtt:methodName": "subscribe"
+            "mqtt:commandCode": 8
 
-            "coap:methodCode": "0.01"
+            "coap:methodCode": 1
           </pre>
 
           <p>
@@ -726,11 +726,11 @@ LevelData<!DOCTYPE html>
         <pre class="example" title="Example use of form relation for Property">
           <p>
             For example a form having href=/example/level, rel=writeProperty, and
-            http:methodName=post conveys the statement:
+            http:methodName=POST conveys the statement:
           </p>
           <p>
             To do a writeProperty of the subject Property (context of the form),
-            perform a post on the resource at the target URI /example/level.
+            perform a POST on the resource at the target URI /example/level.
           </p>
         </pre>
         <p>
@@ -757,11 +757,11 @@ LevelData<!DOCTYPE html>
         <pre class="example" title="Example use of form relation for Action">
           <p>
             For example a form with href=/example/levelaction, rel=invokeAction,
-            and http:methodName=post conveys the statement:
+            and http:methodName=POST conveys the statement:
           </p>
           <p>
             To do an invokeAction of the subject Action (context of the form),
-            perform a post on the resource at /example/levelaction.
+            perform a POST on the resource at /example/levelaction.
           </p>
         </pre>
         <p>
@@ -800,7 +800,7 @@ LevelData<!DOCTYPE html>
         <pre class="example" title="Example use of form relation for Events">
           <p>
             For example a form having href=/example/levelevent, rel=subscribeEvent,
-            and http:methodName=post conveys the statement:
+            and http:methodName=POST conveys the statement:
           </p>
           <p>
             To do a subscribeEvent of the subject Event (context of the form),
@@ -948,24 +948,24 @@ LevelData<!DOCTYPE html>
             <section>
               <h3>CoAP form vocabulary</h3>
                 <p>
-                  coap:methodCode [ "0.01", "0.02", "0.03", "0.04" ]
+                  coap:methodCode [ 1, 2, 3, 4 ]
                 </p>
                 <p>
                   coap:options
                   example: [ { "coap:optionCode": 6, "coap:optionValue": 49 } ]
                 </p>
                 <p>
-                  coap:optionCode
+                  coap:optionCode [ 0..65535 ]
                 </p>
                 <p>
-                  coap:optionValue
+                  coap:optionValue [ any type ]
                 </p>
             </section>
 
             <section>
               <h3>MQTT form vocabulary</h3>
                 <p>
-                  mqtt:methodName [ "PUBLISH", "SUBSCRIBE" ]
+                  mqtt:commandCode [ 3, 8, 10 ]
                 </p>
                 <p>
                   mqtt:options
@@ -975,14 +975,19 @@ LevelData<!DOCTYPE html>
                   mqtt:optionName [ qos, retain ]
                 </p>
                 <p>
-                  mqtt:optionValue
+                  mqtt:optionValue (qos) [ 0, 1, 2, 3 ]
+                  mqtt:optionValue (retain) [ 0, 1 ]
                 </p>
             </section>
 
             <section>
               <h3>subProtocol form vocabulary</h3>
                 <p>
-                  subProtocol [ "LongPoll", "EventSource", "WebSocket" ]
+                  subProtocol [ "LongPoll", "EventSource" ]
+                </p>
+                <p>
+                  subProtocol values for websockets are registered by IANA:
+                  <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>Websocket Subprotocols</a>
                 </p>
             </section>
 
@@ -1134,18 +1139,18 @@ LevelData<!DOCTYPE html>
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
                   "rel": ["readProperty"],
-                  "http:methodName": "http:get"
+                  "http:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
                   "rel": ["writeProperty"],
-                  "http:methodName": "http:post"
+                  "http:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
                   "rel": ["observe"],
-                  "mqtt:methodName": "mqtt:subscribe"
+                  "mqtt:commandCode": 8
                 }
               ]
             },
@@ -1173,18 +1178,18 @@ LevelData<!DOCTYPE html>
                   "href": "/example/light/currentdimmer",
                   "mediaType": "application/json",
                   "rel": ["readProperty"],
-                  "http:methodName": "http:get"
+                  "http:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentdimmer",
                   "mediaType": "application/json",
                   "rel": ["writeProperty"],
-                  "http:methodName": "http:post"
+                  "http:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
                   "rel": ["observe"],
-                  "mqtt:methodName": "mqtt:subscribe"
+                  "mqtt:commandCode": 8
                 }
               ]
             },
@@ -1212,13 +1217,13 @@ LevelData<!DOCTYPE html>
                   "href": "/example/light/transitiontime",
                   "mediaType": "application/json",
                   "rel": ["readProperty"],
-                  "http:methodName": "http:get"
+                  "http:methodName": "GET"
                 },
                 {
                   "href": "/example/light/transitiontime",
                   "mediaType": "application/json",
                   "rel": ["writeProperty"],
-                  "http:methodName": "http:post"
+                  "http:methodName": "POST"
                 }
               ]
             },
@@ -1242,7 +1247,7 @@ LevelData<!DOCTYPE html>
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
                   "rel": ["invokeAction"],
-                  "http:methodName": "http:post"
+                  "http:methodName": "POST"
                 }
               ]
             },
@@ -1266,7 +1271,7 @@ LevelData<!DOCTYPE html>
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
                   "rel": ["invokeAction"],
-                  "http:methodName": "http:post"
+                  "http:methodName": "POST"
                 }
               ]
             },
@@ -1301,7 +1306,7 @@ LevelData<!DOCTYPE html>
                   "href": "/example/light/",
                   "mediaType": "application/json",
                   "rel": ["invokeAction"],
-                  "http:methodName": "http:post"
+                  "http:methodName": "POST"
                 }
               ]
             }
@@ -1315,12 +1320,11 @@ LevelData<!DOCTYPE html>
     <section id="references" class="informative">
       <h1>References</h1>
       <p>
-        IANA link relations
-        https://www.iana.org/assignments/link-relations/link-relations.xhtml
+        <a href=https://www.iana.org/assignments/link-relations/link-relations.xhtml>IANA link relations</a>
       </p>
       <p>
-        "profile" relation
-        https://tools.ietf.org/html/rfc6906
+        <a href=https://tools.ietf.org/html/rfc6906>"profile" relation</a>
+
       </p>
       <p>
        A media type defines both the semantics and the serialization of a
@@ -1333,8 +1337,13 @@ LevelData<!DOCTYPE html>
        to extract additional semantics.
       </p>
       <p>
-        HTTP vocabulary
+        <a href=https://www.w3.org/TR/HTTP-in-RDF10/>HTTP vocabulary</a>
       </p>
+      <p>
+
+        <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>IANA Registry for Websocket Subprotocols</a>
+      </p>
+
 
     </section>
 

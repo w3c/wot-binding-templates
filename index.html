@@ -127,6 +127,13 @@
           (e.g., HTTP, CoAP, MQTT, etc.) is identified, the following adaptions
           specifiy the particular use within the given Platform.
         </p>
+        <p class="ednote" title="The W3">
+          This document contains examples of Protocol Bindings for HTTP, CoAP,
+          and MQTT. Other prococols may be added, following the same design style,
+          and using payload mappings that can be expressed as JSON compatible
+          entities. Future extensions to other payload definition formats  are
+          also contemplated.
+        </p>
 
         <section>
           <h3>Protocol Methods and Options</h3>
@@ -135,7 +142,7 @@
             the message type, the semantic intention of the message. As a starting
             point, a superset of REST and PubSub can cover most standard
             communication patterns. Common methods are GET, PUT, POST, DELETE,
-            PATCH, PUBLISH, and SUBSCRIBE.
+            OBSERVE, PUBLISH, and SUBSCRIBE.
           </p>
           <p>
             The protocol methods are mapped to the abstract WoT Interaction verbs
@@ -344,62 +351,60 @@
             {
               "schema": {
                 "type": "array",
-                "items": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "field": [
-                        {
-                          "name": "bn",
-                          "schema": {
-                            "type": "string",
-                            "const": "example/light"
-                          }
+                "items": [
+                  {
+                    "type": "object",
+                    "field": [
+                      {
+                        "name": "bn",
+                        "schema": {
+                          "type": "string",
+                          "const": "example/light"
                         }
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "field": [
-                        {
-                          "name": "n",
-                          "schema": {
-                            "type": "string",
-                            "const": "level"
-                          }
-                        },
-                        {
-                          "name": "v",
-                          "@type": ["iot:LevelData"],
-                          "schema": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                          }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "field": [
+                      {
+                        "name": "n",
+                        "schema": {
+                          "type": "string",
+                          "const": "level"
                         }
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "field": [
-                        {
-                          "name": "n",
-                          "schema": {
-                            "type": "string",
-                            "const": "time"
-                          }
-                        },
-                        {
-                          "name": "v",
-                          "@type": ["iot:TransitionTimeData"],
-                          "schema": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 65535
-                          }
+                      },
+                      {
+                        "name": "v",
+                        "@type": ["iot:LevelData"],
+                        "schema": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 255
                         }
-                      ]
-                    }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "field": [
+                      {
+                        "name": "n",
+                        "schema": {
+                          "type": "string",
+                          "const": "time"
+                        }
+                      },
+                      {
+                        "name": "v",
+                        "@type": ["iot:TransitionTimeData"],
+                        "schema": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 65535
+                        }
+                      }
+                    ]
                   ]
                 }
               }
@@ -415,64 +420,62 @@
             {
               "schema": {
                 "type": "array",
-                "items": {
-                  "allOf": [
-                    {
-                      "type": "object",
-                      "field": [
-                        {
-                          "name": "href",
-                          "schema": {
-                            "type": "string",
-                            "const": "/light/level"
+                "items": [
+                  {
+                    "type": "object",
+                    "field": [
+                      {
+                        "name": "href",
+                        "schema": {
+                          "type": "string",
+                          "const": "/light/level"
+                        }
+                      },
+                      {
+                        "name": "rep",
+                        "type": "object",
+                        "field": [
+                          {
+                            "name": "dimming",
+                            "@type": ["iot:LevelData"],
+                            "schema": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 255
+                            }
                           }
-                        },
-                        {
-                          "name": "rep",
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "field": [
+                      {
+                        "name": "href",
+                        "schema": {
+                          "type": "string",
+                          "const": "/light/time"
+                        }
+                      },
+                      {
+                        "name": "rep",
+                        "schema": {
                           "type": "object",
                           "field": [
                             {
-                              "name": "dimming",
-                              "@type": ["iot:LevelData"],
+                              "name": "ramptime",
+                              "@type": ["iot:TransitionTimeData"],
                               "schema": {
-                                "type": "integer",
+                                "type":"integer",
                                 "minimum": 0,
-                                "maximum": 255
+                                "maximum": 65535
                               }
                             }
                           ]
                         }
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "field": [
-                        {
-                          "name": "href",
-                          "schema": {
-                            "type": "string",
-                            "const": "/light/time"
-                          }
-                        },
-                        {
-                          "name": "rep",
-                          "schema": {
-                            "type": "object",
-                            "field": [
-                              {
-                                "name": "ramptime",
-                                "@type": ["iot:TransitionTimeData"],
-                                "schema": {
-                                  "type":"integer",
-                                  "minimum": 0,
-                                  "maximum": 65535
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    }
+                      }
+                    ]
                   ]
                 }
               }
@@ -499,50 +502,48 @@
                   {
                     "name": "e",
                     "type": "array",
-                    "items": {
-                      "allOf": [
-                        {
-                          "type": "object",
-                          "field": [
-                            {
-                              "name": "n",
-                              "schema": {
-                                "type": "string",
-                                "const": "5044"
-                              }
-                            },
-                            {
-                              "name": "v",
-                              "@type": ["iot:LevelData"],
-                              "schema": {
-                                "type": "number",
-                                "minimum": 0.0,
-                                "maximum": 1.0
-                              }
+                    "items": [
+                      {
+                        "type": "object",
+                        "field": [
+                          {
+                            "name": "n",
+                            "schema": {
+                              "type": "string",
+                              "const": "5044"
                             }
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "field": [
-                            {
-                              "name": "n",
-                              "schema": {
-                                "type": "string",
-                                "const": "5002"
-                              }
-                            },
-                            {
-                              "name": "v",
-                              "@type": ["iot:TransitionTimeData"],
-                              "schema": {
-                                "type": "number",
-                                "minimum": 0.0,
-                                "maximum": 6553.5
-                              }
+                          },
+                          {
+                            "name": "v",
+                            "@type": ["iot:LevelData"],
+                            "schema": {
+                              "type": "number",
+                              "minimum": 0.0,
+                              "maximum": 1.0
                             }
-                          ]
-                        }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "field": [
+                          {
+                            "name": "n",
+                            "schema": {
+                              "type": "string",
+                              "const": "5002"
+                            }
+                          },
+                          {
+                            "name": "v",
+                            "@type": ["iot:TransitionTimeData"],
+                            "schema": {
+                              "type": "number",
+                              "minimum": 0.0,
+                              "maximum": 6553.5
+                            }
+                          }
+                        ]
                       ]
                     }
                   }
@@ -749,8 +750,8 @@
           Action type interactions.
         </p>
         <p>
-          The abstract methods on Actions are invokeAction, modifyAction, and
-          cancelAction. In the same way that the abstract methods on properties are
+          The abstract method on Actions is invokeAction. In the same way that
+          the abstract methods on properties are
           mapped using form relations, the abstract methods of actions are also
           mapped.
         </p>
@@ -764,12 +765,6 @@
             perform a POST on the resource at /example/levelaction.
           </p>
         </pre>
-        <p>
-          If the Action returns a handle to a created item, the protocol
-          binding may indicate the manner in which the location or handle of the
-          item is returned to the client by using the "expects" item in the form
-          to describe the returned information.
-        </p>
       </section>
 
       <section id="event-bindings" class="informative">
@@ -779,15 +774,14 @@
           Event type interactions.
         </p>
         <p>
-          The abstract methods on Events are subscribeEvent, unsubscribeEvent, and
-          observe.
+          The abstract methods on Events are subscribeEvent and unsubscribeEvent.
           The subscribeEvent operation returns a location or resource URI from which
-          events may be obtained, either by observation or some other method.
+          events may be obtained, either by observation or some other method,
+          depending on the transfer protocol.
         </p>
         <p>
-          The binding for Events allows either pre-defined URIs to observable or
-          pubsub resources, or the pattern of subscription creation which returns
-          an observable or pubsub URI.
+          The binding for Events allows pre-defined URIs to observable resources,
+          or pubsub topica encoded in URI.
         </p>
         <p>
           If the binding offers a subscription, there will be a form with
@@ -795,22 +789,21 @@
         </p>
         <p>
           If the binding offers an observable Event resource from which events are
-          obtained directly, there will be a form with rel=wot:observe
+          obtained, there will be a form which describes the required transfer layer
+          operation, for example CoAP Observe or HTTP Long Polling.
         </p>
         <pre class="example" title="Example use of form relation for Events">
           <p>
-            For example a form having href=/example/levelevent, rel=subscribeEvent,
-            and http:methodName=POST conveys the statement:
+            For example, a form having href=mqtt://0m2m.net/example/levelevent,
+            rel=subscribeEvent,
+            and mqtt:methodCode=8 conveys the statement:
           </p>
           <p>
             To do a subscribeEvent of the subject Event (context of the form),
-            perform a post on the resource at /example/levelevent.
+            perform an MQTT SUBSCRIBE (code 8) on the topic /example/levelevent
+            on the broker at mqtt://0m2m.net using the default MQTT port.
           </p>
         </pre>
-        <p>
-          If the Event supports subscription, the protocol binding may indicate the
-          manner in which the location of the event source is returned to the client.
-        </p>
       </section>
 
     </section>
@@ -822,8 +815,8 @@
         respect to the abstract WoT Interactions provided by the Scripting API.
       </p>
       <p>
-        <code>DataSchema</code> elements are processed, and value scaling is
-        performed, in the application library or adaptation layer.
+        <code>DataSchema</code> elements (see Section 2.1) are processed, and
+        value scaling is performed, in the application library or adaptation layer.
       </p>
       <p>
         Form elements that specify href, method, options, and mediaType are
@@ -840,11 +833,17 @@
         The separation of execution context between the application and the protocol
         driver enables isolation of fault domains and isolation of security domains.
       </p>
-      <p>
-        Binding for Secure communications, Security Binding
+      <p class="ednote" title="Multiple Security Bindings">
+        Additional information in the Thing Description may be considered part
+        of the Protocol Binding, relating to security protocols. There is currently
+        a single declaration of security bindings for each TD instance, with
+        no defined way to indicate a different security protocol for each form
+        element, which may specify a different transfer protocol.
       </p>
       <p>
-        Binding for Proxy Thing and Exposed Thing, Proxy Binding
+        Protocol Bindings may be used by proxies, where a Consumed Thing has its
+        Protocol Binding, and the corresponding Exposed Thing may have a different
+        Protocol Binding.
       </p>
     </section>
 
@@ -897,9 +896,8 @@
           <section>
             <h3>Action Interactions</h3>
               <p>
-                Actions provide '"invoke" and, optionally, "cancel" or "update"
-                operations, which can also map to GET, PUT, POST, and DELETE of a
-                REST API.
+                Actions provide '"invoke" operations, which can map to PUT, POST,
+                or PUBLISH operations.
               </p>
               <p>
                 invokeAction
@@ -911,14 +909,12 @@
               <p>
                 Events may directly expose observable resources from which to obtain event
                 instances.
-                Events may provide '"subscribe" operations to create subscription
-                resources, which may in turn be observed in order to obtain the events.
               </p>
               <p>
                 subscribeEvent
               </p>
               <p>
-                cancelSubscription
+                unsubscribeEvent
               </p>
             </section>
           </section>
@@ -1028,7 +1024,7 @@
               "form": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["readData", "writeData"],
+                  "rel": ["readProperty", "writeData"],
                   "mediaType": "application/json"
                 }
               ]
@@ -1045,7 +1041,7 @@
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["readData", "writeData"],
+                  "rel": ["readProperty", "writeData"],
                   "mediaType": "application/json"
                 }
               ]

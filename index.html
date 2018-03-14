@@ -127,7 +127,7 @@
           (e.g., HTTP, CoAP, MQTT, etc.) is identified, the following adaptions
           specifiy the particular use within the given Platform.
         </p>
-        <p class="ednote" title="The W3">
+        <p class="ednote" title="Additional Protocol Bindings">
           This document contains examples of Protocol Bindings for HTTP, CoAP,
           and MQTT. Other prococols may be added, following the same design style,
           and using payload mappings that can be expressed as JSON compatible
@@ -142,7 +142,7 @@
             the message type, the semantic intention of the message. As a starting
             point, a superset of REST and PubSub can cover most standard
             communication patterns. Common methods are GET, PUT, POST, DELETE,
-            OBSERVE, PUBLISH, and SUBSCRIBE.
+            PUBLISH, and SUBSCRIBE.
           </p>
           <p>
             The protocol methods are mapped to the abstract WoT Interaction verbs
@@ -720,7 +720,7 @@
         </p>
         <p>
           The abstract methods exposed for the Property Interaction are readProperty,
-          writeProperty, and observe. These are mapped by using form relations that describe
+          writeProperty, and observeProperty. These are mapped by using form relations that describe
           the abstract method, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
@@ -737,7 +737,7 @@
         <p>
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
-          indicated by including rel=observe in the form. The observe form may
+          indicated by including rel=observeProperty in the form. The observe form may
           also specify header options to use, for example CoAP observe option=0
           in the header to start observation.
         </p>
@@ -1024,7 +1024,7 @@
               "form": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["readProperty", "writeData"],
+                  "rel": ["readProperty", "writeProperty"],
                   "mediaType": "application/json"
                 }
               ]
@@ -1041,7 +1041,7 @@
               "form": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["readProperty", "writeData"],
+                  "rel": ["readProperty", "writeProperty"],
                   "mediaType": "application/json"
                 }
               ]
@@ -1145,7 +1145,7 @@
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
-                  "rel": ["observe"],
+                  "rel": ["observeProperty"],
                   "mqtt:commandCode": 8
                 }
               ]
@@ -1184,7 +1184,7 @@
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
-                  "rel": ["observe"],
+                  "rel": ["observeProperty"],
                   "mqtt:commandCode": 8
                 }
               ]

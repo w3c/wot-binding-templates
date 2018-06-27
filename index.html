@@ -221,9 +221,12 @@
         <section id="payload-structure">
           <h2>Payload Structure</h2>
           <p>
-            Payload Structure is determined by the DataSchema elements. [TD] describes
-            the use of the <code>DataSchema</code> keywords "schema", "inputSchema", and outputSchema
-            in the examples contained in this document.
+            Payload Structure is determined by the <code>DataSchema</code> elements. DataSchema elements
+            are indicated by the <code>type</code> keyword in an Interaction Description with associated
+            JSON Schema validation keywords. The additional keywords <code>input</code> and
+            <code>output</code> are used to provide two different schemas when data
+            might be exchanged in both directions, such as in the case of invoking an Action
+            when status information is returned.
           </p>
           <p>
             In addition to the example pattern in [TD] of an object with name/value
@@ -310,34 +313,26 @@
           </p>
 
           <p>
-            For the Simple Payload in Example 1 above, the data schema element would
+            For the Simple Payload in Example 1 above, the <code>DataSchema</code> element would
             be structured as follows:
           </p>
 
-          <pre class="example" title="data Schema for Simple JSON Object Payload">
+          <pre class="example" title="DataSchema for Simple JSON Object Payload">
             {
-              "schema": {
-                "type": "object",
-                "field": [
-                  {
-                    "name": "level",
-                    "@type": ["iot:LevelData],
-                    "schema": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 255
-                    }
-                  },
-                  {
-                    "name": "time",
-                    "@type": ["iot:TransitionTimeData"],
-                    "schema": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 65535
-                    }
-                  }
-                ]
+              "type": "object",
+              "properties": {
+                "level": {
+                  "@type": ["iot:LevelData"],
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                },
+                "time": {
+                  "@type": ["iot:TransitionTimeData"],
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535
+                }
               }
             }
           </pre>
@@ -349,65 +344,48 @@
 
           <pre class="example" title="DataSchema for SenML Payload">
             {
-              "schema": {
-                "type": "array",
-                "items": [
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "bn",
-                        "schema": {
-                          "type": "string",
-                          "const": "example/light"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "n",
-                        "schema": {
-                          "type": "string",
-                          "const": "level"
-                        }
-                      },
-                      {
-                        "name": "v",
-                        "@type": ["iot:LevelData"],
-                        "schema": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 255
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "n",
-                        "schema": {
-                          "type": "string",
-                          "const": "time"
-                        }
-                      },
-                      {
-                        "name": "v",
-                        "@type": ["iot:TransitionTimeData"],
-                        "schema": {
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 65535
-                        }
-                      }
-                    ]
-                  ]
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "bn": {
+                      "type": "string",
+                      "const": "example/light"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "n": {
+                      "type": "string",
+                      "const": "level"
+                    },
+                    "v": {
+                      "@type": ["iot:LevelData"],
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "n": {
+                      "type": "string",
+                      "const": "time"
+                    },
+                    "v": {
+                      "@type": ["iot:TransitionTimeData"],
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 65535
+                    }
+                  }
                 }
-              }
+              ]
             }
           </pre>
 
@@ -418,67 +396,49 @@
 
           <pre class="example" title="DataSchema for OCF Batch Payload">
             {
-              "schema": {
-                "type": "array",
-                "items": [
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "href",
-                        "schema": {
-                          "type": "string",
-                          "const": "/light/level"
-                        }
-                      },
-                      {
-                        "name": "rep",
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "dimming",
-                            "@type": ["iot:LevelData"],
-                            "schema": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 255
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "field": [
-                      {
-                        "name": "href",
-                        "schema": {
-                          "type": "string",
-                          "const": "/light/time"
-                        }
-                      },
-                      {
-                        "name": "rep",
-                        "schema": {
-                          "type": "object",
-                          "field": [
-                            {
-                              "name": "ramptime",
-                              "@type": ["iot:TransitionTimeData"],
-                              "schema": {
-                                "type":"integer",
-                                "minimum": 0,
-                                "maximum": 65535
-                              }
-                            }
-                          ]
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "const": "/light/level"
+                    },
+                    "rep": {
+                      "type": "object",
+                      "properties": {
+                        "dimming": {
+                          "@type": ["iot:LevelData"],
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 255
                         }
                       }
-                    ]
-                  ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "href": {
+                      "type": "string",
+                      "const": "/light/time"
+                    },
+                    "rep": {
+                      "type": "object",
+                      "properties": {
+                        "ramptime": {
+                          "@type": ["iot:TransitionTimeData"],
+                          "type":"integer",
+                          "minimum": 0,
+                          "maximum": 65535
+                        }
+                      }
+                    }
+                  }
                 }
-              }
+              ]
             }
           </pre>
 
@@ -489,65 +449,47 @@
 
           <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
             {
-              "schema": {
-                "type": "object",
-                "field": [
-                  {
-                    "name": "bn",
-                    "schema": {
-                      "type": "string",
-                      "const": "/3001/0/"
+              "type": "object",
+              "properties": {
+                "bn": {
+                  "type": "string",
+                  "const": "/3001/0/"
+                },
+                "e": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "n": {
+                          "type": "string",
+                          "const": "5044"
+                        },
+                        "v": {
+                          "@type": ["iot:LevelData"],
+                          "type": "number",
+                          "minimum": 0.0,
+                          "maximum": 1.0
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "Properties": {
+                        "n": {
+                          "type": "string",
+                          "const": "5002"
+                        },
+                        "v": {
+                          "@type": ["iot:TransitionTimeData"],
+                          "type": "number",
+                          "minimum": 0.0,
+                          "maximum": 6553.5
+                        }
+                      }
                     }
-                  },
-                  {
-                    "name": "e",
-                    "type": "array",
-                    "items": [
-                      {
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "n",
-                            "schema": {
-                              "type": "string",
-                              "const": "5044"
-                            }
-                          },
-                          {
-                            "name": "v",
-                            "@type": ["iot:LevelData"],
-                            "schema": {
-                              "type": "number",
-                              "minimum": 0.0,
-                              "maximum": 1.0
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "field": [
-                          {
-                            "name": "n",
-                            "schema": {
-                              "type": "string",
-                              "const": "5002"
-                            }
-                          },
-                          {
-                            "name": "v",
-                            "@type": ["iot:TransitionTimeData"],
-                            "schema": {
-                              "type": "number",
-                              "minimum": 0.0,
-                              "maximum": 6553.5
-                            }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                ]
+                  ]
+                }
               }
             }
           </pre>
@@ -565,9 +507,9 @@
       </section>
 
       <section id="form-element">
-        <h2>Form Element</h2>
+        <h2>Forms Element</h2>
         <p>
-          The "form" element contains the URI pointing to an instance of the interaction
+          The "forms" element contains the URI pointing to an instance of the interaction
           and descriptions of the protocol settings and options expected to be used when
           between the client and server for the interaction.
         </p>
@@ -998,30 +940,22 @@
       </p>
       <pre class="example" title="TD with a simple Payload">
         {
-          "@context": [
-            "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
-            "https://w3c.github.io/wot/w3c-wot-common-context.jsonld",
-        	  {
-              "iot": "http://iotschema.org/",
-              "http": "http://iotschema.org/protocol/http",
-              "coap": "http://iotschema.org/protocol/coap",
-              "mqtt": "http://iotschema.org/protocol/mqtt"
-            }
-          ],
-          "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
+          "@context": {
+            "iot": "http://iotschema.org/",
+            "http": "http://iotschema.org/protocol/http",
+            "coap": "http://iotschema.org/protocol/coap",
+            "mqtt": "http://iotschema.org/protocol/mqtt"
+          },
+          "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitchCapability" ],
           "base": "http://example.com",
           "name": "Lamp",
-          "interaction": [
-            {
-              "name": "Switch State",
-              "@type": ["Property", "iot:SwitchStatus"],
-              "schema":  {
-                "@type": ["iot:SwitchData"],
-                "type": "boolean"
-              },
-              "writable": false,
+          "properties": {
+            "switchstate": {
+              "@type": ["iot:SwitchStatus", "iot:SwitchData"],
+              "type": "boolean",
+              "writable": true,
               "observable": false,
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentswitch",
                   "rel": ["readProperty", "writeProperty"],
@@ -1029,31 +963,28 @@
                 }
               ]
             },
-            {
-              "name": "Current brightness",
-              "@type": ["Property", "iot:CurrentLevel"],
-              "schema":  {
-                "@type": ["iot:LevelData"],
-                "type": "number"
-              },
-              "writable": false,
+            "brightness": {
+              "@type": ["iot:CurrentLevel", "iot:LevelData"],
+              "type": "number",
+              "writable": true,
               "observable": false,
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentdimmer",
                   "rel": ["readProperty", "writeProperty"],
                   "mediaType": "application/json"
                 }
               ]
-            },
-            {
-              "name": "Switch On",
-              "@type": ["Action", "iot:SwitchOn"],
-              "inputSchema":  {
+            }
+          },
+          "actions": {
+            "switchon": {
+              "@type": ["iot:SwitchOnAction"],
+              "input":  {
                 "type": "boolean",
                 "const": true
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentswitch",
                   "rel": ["invokeAction"],
@@ -1061,14 +992,13 @@
                 }
               ]
             },
-            {
-              "name": "Switch Off",
-              "@type": ["Action", "iot:SwitchOff"],
-              "inputSchema":  {
+            "switchoff": {
+              "@type": ["iot:SwitchOff"],
+              "input":  {
                 "type": "boolean",
                 "const": false
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentswitch",
                   "rel": ["invokeAction"],
@@ -1076,14 +1006,13 @@
                 }
               ]
             },
-            {
-              "name": "Set brightness level",
-              "@type": ["Action", "iot:SetLevel"],
-              "inputSchema":  {
+            "setbrightness": {
+              "@type": ["iot:SetLevelAction"],
+              "input":  {
                 "@type": ["iot:LevelData"],
                 "type": "number"
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentdimmer",
                   "rel": ["invokeAction"],
@@ -1091,7 +1020,7 @@
                 }
               ]
             }
-          ]
+          }
         }
       </pre>
       <p>
@@ -1099,38 +1028,28 @@
       </p>
       <pre class="example" title="TD with protocol options and complex payload">
         {
-          "@context": [
-            "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
-            "https://w3c.github.io/wot/w3c-wot-common-context.jsonld",
-            {
+          "@context": {
               "iot": "http://iotschema.org/",
               "http": "http://iotschema.org/protocol/http",
               "coap": "http://iotschema.org/protocol/coap",
               "mqtt": "http://iotschema.org/protocol/mqtt"
-            }
-          ],
+          },
           "base": "http://example.com/",
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
           "name": "Lamp",
-          "interaction": [
-            {
-              "name": "Switch State",
-              "@type": ["Property", "iot:SwitchStatus"],
-              "schema":  {
-                "type": "object",
-                "field": [
-                  {
-                    "name": "switch",
-                    "@type": ["iot:SwitchData"],
-                    "schema": {
-                      "type": "boolean"
-                    }
-                  }
-                ]
+          "properties": {
+            "switchstate": {
+              "@type": ["iot:SwitchStatus"],
+              "type": "object",
+              "properties": {
+                "switch": {
+                  "@type": ["iot:SwitchData"],
+                  "type": "boolean"
+                }
               },
               "writable": true,
               "observable": true,
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
@@ -1150,26 +1069,20 @@
                 }
               ]
             },
-            {
-              "name": "Current brightness",
-              "@type": ["Property", "iot:CurrentLevel"],
-              "schema": {
-                "type": "object",
-                "field": [
-                  {
-                    "name": "brightness",
-                    "@type": ["iot:LevelData" ],
-                    "schema": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 255
-                    }
-                  }
-                ]
+            "brightness": {
+              "@type": ["iot:CurrentLevel"],
+              "type": "object",
+              "properties": {
+                "brightness": {
+                  "@type": ["iot:LevelData" ],
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                }
               },
               "writable": true,
               "observable": true,
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentdimmer",
                   "mediaType": "application/json",
@@ -1189,26 +1102,20 @@
                 }
               ]
             },
-            {
-              "name": "Transition Time",
-              "@type": ["Property", "iot:TransitionTime"],
-              "schema": {
-                "type": "object",
-                "field": [
-                  {
-                    "name": "transitiontime",
-                    "@type": ["iot:TransitionTimeData" ],
-                    "schema": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 255
-                    }
-                  }
-                ]
+            "transitiontime": {
+              "@type": ["iot:TransitionTime"],
+              "type": "object",
+              "properties": {
+                "transitiontime": {
+                  "@type": ["iot:TransitionTimeData" ],
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255
+                }
               },
               "writable": true,
               "observable": false,
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/transitiontime",
                   "mediaType": "application/json",
@@ -1222,23 +1129,20 @@
                   "http:methodName": "POST"
                 }
               ]
-            },
-            {
-              "name": "Switch On",
-              "@type": ["Action", "iot:SwitchOn"],
-              "inputSchema":  {
+            }
+          },
+          "actions": {
+            "switchon": {
+              "@type": ["iot:SwitchOnAction"],
+              "input":  {
                 "type": "object",
-                "field": [
-                  {
-                    "name": "switch",
-                    "schema":{
-                      "type": "boolean",
-                      "const": true
-                    }
-                  }
-                ]
+                "properties": {
+                  "name": "switch",
+                  "type": "boolean",
+                  "const": true
+                }
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
@@ -1247,22 +1151,18 @@
                 }
               ]
             },
-            {
-              "name": "Switch Off",
-              "@type": ["Action", "iot:SwitchOff"],
-              "inputSchema":  {
+            "switchoff": {
+              "@type": ["iot:SwitchOffAction"],
+              "input": {
                 "type": "object",
-                "field": [
-                  {
-                    "name": "switch",
-                    "schema": {
-                      "type": "boolean",
-                      "const": false
-                    }
+                "properties": {
+                  "switch": {
+                    "type": "boolean",
+                    "const": false
                   }
-                ]
+                }
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
@@ -1271,31 +1171,25 @@
                 }
               ]
             },
-            {
-              "name": "Set brightness level",
-              "@type": ["Action", "iot:SetLevel"],
-              "inputSchema": {
+            "setbrightness": {
+              "label": "Set Brightness Level",
+              "@type": ["iot:SetLevelAction"],
+              "input": {
                 "type": "object",
-                "field": [
-                  {
-                    "name": "brightness",
+                "properties": {
+                  "brightness": {
                     "@type": ["iot:LevelData"],
-                    "schema": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 255
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
                     }
                   },
-                  {
-                    "name": "transitiontime",
+                  "transitiontime": {
                     "@type": ["iot:TransitionTimeData"],
-                    "schema": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 65535
-                    }
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535
                   }
-                ]
               },
               "form": [
                 {
@@ -1306,7 +1200,7 @@
                 }
               ]
             }
-          ]
+          }
         }
       </pre>
 

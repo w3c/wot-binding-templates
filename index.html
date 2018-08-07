@@ -146,9 +146,9 @@
           </p>
           <p>
             The protocol methods are mapped to the abstract WoT Interaction verbs
-            <code>readProperty</code>, <code>writeProperty</code>,
-            <code>observeProperty</code>, <code>invokeAction</code>,
-            <code>subscribeEvent</code>, <code>unsubscribeEvent</code>.
+            <code>readproperty</code>, <code>writeproperty</code>,
+            <code>observeproperty</code>, <code>invokeaction</code>,
+            <code>subscribeevent</code>, <code>unsubscribeevent</code>.
             <!-- modifyAction, cancelAction is still undefined -->
           </p>
           <p>
@@ -529,8 +529,8 @@
           </p>
 
           <pre class="example" title="Form Relation Types">
-            "rel": "readProperty"
-            "rel": "writeProperty"
+            "rel": "readproperty"
+            "rel": "writeproperty"
           </pre>
 
           <p>
@@ -661,25 +661,25 @@
           WoT Property type interactions.
         </p>
         <p>
-          The abstract methods exposed for the Property Interaction are readProperty,
-          writeProperty, and observeProperty. These are mapped by using form relations that describe
+          The abstract methods exposed for the Property Interaction are readproperty,
+          writeproperty, and observeproperty. These are mapped by using form relations that describe
           the abstract method, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
         <pre class="example" title="Example use of form relation for Property">
           <p>
-            For example a form having href=/example/level, rel=writeProperty, and
+            For example a form having href=/example/level, rel=writeproperty, and
             http:methodName=POST conveys the statement:
           </p>
           <p>
-            To do a writeProperty of the subject Property (context of the form),
+            To do a writeproperty of the subject Property (context of the form),
             perform a POST on the resource at the target URI /example/level.
           </p>
         </pre>
         <p>
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
-          indicated by including rel=observeProperty in the form. The observe form may
+          indicated by including rel=observeproperty in the form. The observe form may
           also specify header options to use, for example CoAP observe option=0
           in the header to start observation.
         </p>
@@ -692,18 +692,18 @@
           Action type interactions.
         </p>
         <p>
-          The abstract method on Actions is invokeAction. In the same way that
+          The abstract method on Actions is invokeaction. In the same way that
           the abstract methods on properties are
           mapped using form relations, the abstract methods of actions are also
           mapped.
         </p>
         <pre class="example" title="Example use of form relation for Action">
           <p>
-            For example a form with href=/example/levelaction, rel=invokeAction,
+            For example a form with href=/example/levelaction, rel=invokeaction,
             and http:methodName=POST conveys the statement:
           </p>
           <p>
-            To do an invokeAction of the subject Action (context of the form),
+            To do an invokeaction of the subject Action (context of the form),
             perform a POST on the resource at /example/levelaction.
           </p>
         </pre>
@@ -716,8 +716,8 @@
           Event type interactions.
         </p>
         <p>
-          The abstract methods on Events are subscribeEvent and unsubscribeEvent.
-          The subscribeEvent operation returns a location or resource URI from which
+          The abstract methods on Events are subscribeevent and unsubscribeevent.
+          The subscribeevent operation returns a location or resource URI from which
           events may be obtained, either by observation or some other method,
           depending on the transfer protocol.
         </p>
@@ -727,7 +727,7 @@
         </p>
         <p>
           If the binding offers a subscription, there will be a form with
-          rel=subscribeEvent
+          rel=subscribeevent
         </p>
         <p>
           If the binding offers an observable Event resource from which events are
@@ -737,11 +737,11 @@
         <pre class="example" title="Example use of form relation for Events">
           <p>
             For example, a form having href=mqtt://0m2m.net/example/levelevent,
-            rel=subscribeEvent,
+            rel=subscribeevent,
             and mqtt:methodCode=8 conveys the statement:
           </p>
           <p>
-            To do a subscribeEvent of the subject Event (context of the form),
+            To do a subscribeevent of the subject Event (context of the form),
             perform an MQTT SUBSCRIBE (code 8) on the topic /example/levelevent
             on the broker at mqtt://0m2m.net using the default MQTT port.
           </p>
@@ -825,13 +825,13 @@
                 observable.
               </p>
               <p>
-                readProperty
+                readproperty
               </p>
               <p>
-                writeProperty
+                writeproperty
               </p>
               <p>
-                observeProperty
+                observeproperty
               </p>
             </section>
 
@@ -842,7 +842,7 @@
                 or PUBLISH operations.
               </p>
               <p>
-                invokeAction
+                invokeaction
               </p>
           </section>
 
@@ -853,10 +853,10 @@
                 instances.
               </p>
               <p>
-                subscribeEvent
+                subscribeevent
               </p>
               <p>
-                unsubscribeEvent
+                unsubscribeevent
               </p>
             </section>
           </section>
@@ -890,10 +890,10 @@
                 </p>
                 <p>
                   coap:options
-                  example: [ { "coap:optionCode": 6, "coap:optionValue": 49 } ]
+                  example: [ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]
                 </p>
                 <p>
-                  coap:optionCode [ 0..65535 ]
+                  coap:optionNumber [ 0..65535 ]
                 </p>
                 <p>
                   coap:optionValue [ any type ]
@@ -910,11 +910,25 @@
                   example: [ {  "mqtt:optionName": "qos", "mqtt:optionValue": 1 }]
                 </p>
                 <p>
-                  mqtt:optionName [ qos, retain ]
+                  mqtt:optionName [ qos, retain, dup ]
+                </p>
+                <p>
+                  mqtt:qos Quality of service level as number (0=at most once, 1=at least once, 2=exactly once)
+                </p>
+                <p>
+                  mqtt:retain Retain flag as boolean. If true, the broker will store the last retained message and the corresponding QoS for that topic
+                </p>
+                <p>
+                  mqtt:dup Duplicate flag for duplicated delivery
                 </p>
                 <p>
                   mqtt:optionValue (qos) [ 0, 1, 2, 3 ]
+                </p>
+                <p>
                   mqtt:optionValue (retain) [ 0, 1 ]
+                </p>
+                <p>
+                  mqtt:optionValue (dup) [ 0, 1 ]
                 </p>
             </section>
 
@@ -958,7 +972,7 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["readProperty", "writeProperty"],
+                  "rel": ["readproperty", "writeproperty"],
                   "mediaType": "application/json"
                 }
               ]
@@ -971,7 +985,7 @@
               "forms": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["readProperty", "writeProperty"],
+                  "rel": ["readproperty", "writeproperty"],
                   "mediaType": "application/json"
                 }
               ]
@@ -987,7 +1001,7 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["invokeAction"],
+                  "rel": ["invokeaction"],
                   "mediaType": "application/json"
                 }
               ]
@@ -1001,7 +1015,7 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["invokeAction"],
+                  "rel": ["invokeaction"],
                   "mediaType": "application/json"
                 }
               ]
@@ -1015,7 +1029,7 @@
               "forms": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["invokeAction"],
+                  "rel": ["invokeaction"],
                   "mediaType": "application/json"
                 }
               ]
@@ -1053,18 +1067,18 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
-                  "rel": ["readProperty"],
+                  "rel": ["readproperty"],
                   "http:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
-                  "rel": ["writeProperty"],
+                  "rel": ["writeproperty"],
                   "http:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
-                  "rel": ["observeProperty"],
+                  "rel": ["observeproperty"],
                   "mqtt:commandCode": 8
                 }
               ]
@@ -1086,18 +1100,18 @@
                 {
                   "href": "/example/light/currentdimmer",
                   "mediaType": "application/json",
-                  "rel": ["readProperty"],
+                  "rel": ["readproperty"],
                   "http:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentdimmer",
                   "mediaType": "application/json",
-                  "rel": ["writeProperty"],
+                  "rel": ["writeproperty"],
                   "http:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
-                  "rel": ["observeProperty"],
+                  "rel": ["observeproperty"],
                   "mqtt:commandCode": 8
                 }
               ]
@@ -1119,13 +1133,13 @@
                 {
                   "href": "/example/light/transitiontime",
                   "mediaType": "application/json",
-                  "rel": ["readProperty"],
+                  "rel": ["readproperty"],
                   "http:methodName": "GET"
                 },
                 {
                   "href": "/example/light/transitiontime",
                   "mediaType": "application/json",
-                  "rel": ["writeProperty"],
+                  "rel": ["writeproperty"],
                   "http:methodName": "POST"
                 }
               ]
@@ -1146,7 +1160,7 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
-                  "rel": ["invokeAction"],
+                  "rel": ["invokeaction"],
                   "http:methodName": "POST"
                 }
               ]
@@ -1166,7 +1180,7 @@
                 {
                   "href": "/example/light/currentswitch",
                   "mediaType": "application/json",
-                  "rel": ["invokeAction"],
+                  "rel": ["invokeaction"],
                   "http:methodName": "POST"
                 }
               ]
@@ -1195,7 +1209,7 @@
                 {
                   "href": "/example/light/",
                   "mediaType": "application/json",
-                  "rel": ["invokeAction"],
+                  "rel": ["invokeaction"],
                   "http:methodName": "POST"
                 }
               ]

@@ -935,10 +935,14 @@
             <section>
               <h3>subProtocol form vocabulary</h3>
                 <p>
-                  subProtocol [ "LongPoll", "EventSource" ]
+                  subProtocol [ "LongPoll" ]
                 </p>
                 <p>
-                  subProtocol values for websockets are registered by IANA:
+                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event
+                  delivery.
+                </p>
+                <p>
+                  Additional subProtocol values, which are registered by IANA, may be used for websockets:
                   <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>Websocket Subprotocols</a>
                 </p>
             </section>

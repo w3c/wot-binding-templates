@@ -558,15 +558,15 @@
             driver.
           </p>
           <p>
-            For example, the mediaType "application/ocf+cbor" indicates that CBOR
+            For example, the media type <code>application/ocf+cbor</code> indicates that CBOR
             serialization is used, but also that OCF rules and namespaces
             apply to the processing of the representations.
           </p>
           <p>
-            Additionally, there may be a profile which points to a URI for
-            further description, for example a form with
-            profile=http://iotschema.org/protocols/ipso.jsonld indicates that the
-            target representation follows a set of additional encoding rules and
+            Additionally, there may be a <code>profile</code> [[!RFC6906]],
+            which points to a URI for further description.
+            For example, a form with <code>"profile": "http://iotschema.org/protocols/ipso.jsonld"</code>
+            indicates that the target representation follows a set of additional encoding rules and
             constraints which are further defined at the URI by the profile
             attribute's value.
           </p>
@@ -581,16 +581,16 @@
           <h2>Protocol Methods and Options</h2>
           <p>
             Each target protocol may specify different method names for similar
-            methods, and there may be semantic differences between similar methods of
-            different protocols. Additionally, will use different methods
-            for mapping to a particular WoT Interaction type. For example, POST may
-            be used for setting a property value in one protocol, while PUT may be
+            operations, and there may be semantic differences between similar method names of
+            different protocols. Additionally, platforms may use different methods
+            for realizing a particular WoT Interaction Pattern. For example, POST may
+            be used for writing a Property value in one platforms, while PUT may be
             used in another. For these reasons, we require the ability to specify
-            which method to use for a particular interaction. We also will provide
+            which method to use for a particular Interaction. We also will provide
             vocabulary to differentiate between methods of different protocols.
           </p>
           <p>
-            The W3C RDF vocabulary for HTTP [ref] is used to identify the methods
+            The W3C RDF vocabulary for HTTP [[HTTP-in-RDF10]] is used to identify the methods
             and options specified in the HTTP protocol bindings.
           </p>
           <p>
@@ -632,32 +632,29 @@
           </pre>
           <p>
             Note: different forms in a binding may need different header constructions,
-            therefore the <code>headers</code> construct is an extension of the TD "form" element.
+            therefore the <code>http:headers</code> construct is an extension of the TD "form" element.
           </p>
           <p>
             Protocols may have defined sub-protocols that can be used for some interaction
             types. For example, to recieve asynchronous notifications using http, some
             servers may support long polling, EventSource, or a simple non-multiplexed
-            websocket protocol.
+            WebSocket protocol.
 
-            The "subProtocol" item may be defined in a form instance to indicate the
-            use of one of these protocols, for example:
-            <pre class="example" title="subProtocol">
-              {
-              "subProtocol": "LongPoll"
-              }
-            </pre>
-
-            </thead>
+            The <code>subProtocol</code> field may be defined in a form instance to indicate the
+            use of one of these protocols, for example Long Polling with its special use of HTTP:
           </p>
-
+          <pre class="example" title="subProtocol">
+            {
+            "subProtocol": "LongPoll"
+            }
+          </pre>
 
         </section>
 
     </section>
 
 
-    <section id="Interaction Types" class="informative">
+    <section id="sec-interaction-pattterns" class="informative">
       <h1>Interaction Patterns</h1>
       <p>
         This section describes unique aspects of protocol bindings for the three
@@ -700,14 +697,12 @@
       <section id="action-bindings" class="informative">
         <h2>Bindings for Actions</h2>
         <p>
-          This section describes unique aspects of protocol bindings for WoT
-          Action type interactions.
+          This section describes unique aspects of protocol bindings for Actions.
         </p>
         <p>
-          The abstract method on Actions is invokeaction. In the same way that
-          the abstract methods on properties are
-          mapped using form relations, the abstract methods of actions are also
-          mapped.
+          The abstract operation on Actions is <code>invokeaction</code>.
+          In the same way that the abstract operations on Properties are mapped using form relation typess,
+          the abstract operation of Actions is also mapped.
         </p>
         <pre class="example" title="Example use of form relation for Action">
           {
@@ -726,21 +721,18 @@
         <h2>Bindings for Events</h2>
         <p>
           This section describes unique aspects of protocol bindings for WoT
-          Event type interactions.
+          Event Interaction Patterns.
         </p>
         <p>
-          The abstract methods on Events are subscribeevent and unsubscribeevent.
-          The subscribeevent operation returns a location or resource URI from which
-          events may be obtained, either by observation or some other method,
-          depending on the transfer protocol.
+          The abstract operations on Events are <code>subscribeevent</code> and <code>unsubscribeevent</code>.
+          The <code>subscribeevent</code> operation may directly enable event instance delivery
+          from the pre-defined URI to observable resources or pubsub topics encoded in URIs.
+          Alternatively, it may return a location or resource URI from which event instance may be obtained,
+          either by observation or some other mechanism, depending on the transfer protocol.
         </p>
         <p>
-          The binding for Events allows pre-defined URIs to observable resources,
-          or pubsub topica encoded in URI.
-        </p>
-        <p>
-          If the binding offers a subscription, there will be a form with
-          rel=subscribeevent
+          Usually, the <code>unsubscribeevent</code> only occurs when the transfer protocol has no implicit
+          unsubscribe operation such as closing the connection. Examples are Webhooks that require particular unsubscribe requests.
         </p>
         <p>
           If the binding offers an observable Event resource from which events are
@@ -923,7 +915,7 @@
             <p>
               Extensions to the TD core vocabulary can inform the client about
               protocol-specific message configurations such as methods, options, and status codes.
-              The vocabulary comes from existing Linked Data vocabulary such as the HTTP Vocabulary in RDF 1.0 [[?HTTP-in-RDF10]].
+              The vocabulary comes from existing Linked Data vocabulary such as the HTTP Vocabulary in RDF 1.0 [[HTTP-in-RDF10]].
             </p>
             <p class="ednote" title="Protocol Vocabulary Definitions">
               The WoT Working Group is investigating good ways to also provide COAP and MQTT Vocabulary in RDF.
@@ -1398,37 +1390,6 @@
           }
         }
       </pre>
-
-    </section>
-
-
-    <section id="references" class="informative">
-      <h1>References</h1>
-      <p>
-        <a href=https://www.iana.org/assignments/link-relations/link-relations.xhtml>IANA link relations</a>
-      </p>
-      <p>
-        <a href=https://tools.ietf.org/html/rfc6906>"profile" relation</a>
-
-      </p>
-      <p>
-       A media type defines both the semantics and the serialization of a
-       specific type of content.  In many cases, media types have some
-       built-in extensibility or openness, so that specific instances of the
-       media type can layer additional semantics on top of the media type's
-       foundation.  In this case, a profile is the appropriate mechanism to
-       signal that the original semantics and processing model of the media
-       type still apply, but that an additional processing model can be used
-       to extract additional semantics.
-      </p>
-      <p>
-        <a href=https://www.w3.org/TR/HTTP-in-RDF10/>HTTP vocabulary</a>
-      </p>
-      <p>
-
-        <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>IANA Registry for Websocket Subprotocols</a>
-      </p>
-
 
     </section>
 

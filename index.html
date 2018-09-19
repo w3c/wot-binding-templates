@@ -49,7 +49,17 @@
                 }
               ]
             , localBiblio: {
-                "CoRE-RD" : {
+                "WOT-TD" : {
+                  title: "Web of Things (WoT) Thing Description"
+                , href: "https://w3c.github.io/wot-thing-description/"
+                , authors:  [
+                    "Sebastian Kaebisch",
+                    "Takuki Kamiya"
+                  ]
+                , publisher: "W3C"
+                , date: "09 September 2018"
+                }
+              , "CoRE-RD" : {
                   href: "https://tools.ietf.org/html/draft-ietf-core-resource-directory-11"
                 , title: "CoRE Resource Directory"
                 , status:    "Internet-Draft"
@@ -214,22 +224,22 @@
       <section id="Data Schema">
         <h2>Data Schema</h2>
         <p>
-          The <code>DataSchema</code> elements describe the payload structure and
+          A data schema describes the payload structure and included
           data items that are passed between client and server during interactions.
         </p>
 
         <section id="payload-structure">
           <h2>Payload Structure</h2>
           <p>
-            Payload Structure is determined by the <code>DataSchema</code> elements. DataSchema elements
-            are indicated by the <code>type</code> keyword in an Interaction Description with associated
+            Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
+            DataSchema elements are indicated by the <code>type</code> keyword in an Interaction Description with associated
             JSON Schema validation keywords. The additional keywords <code>input</code> and
             <code>output</code> are used to provide two different schemas when data
             might be exchanged in both directions, such as in the case of invoking an Action
             when status information is returned.
           </p>
           <p>
-            In addition to the example pattern in [TD] of an object with name/value
+            In addition to the example pattern in [[!WOT-TD]] of an object with name/value
             constructs or simple arrays, Protocol Bindings for existing standards
             may require nested arrays and objects, and some constant values to
             be specified.
@@ -509,7 +519,7 @@
       <section id="form-element">
         <h2>Forms Element</h2>
         <p>
-          The "forms" element contains the URI pointing to an instance of the interaction
+          The form elements contain the URI pointing to an instance of the interaction
           and descriptions of the protocol settings and options expected to be used when
           between the client and server for the interaction.
         </p>
@@ -562,7 +572,7 @@
           </p>
           <p>
             Some special protocol drivers may be invoked by using a non-registered
-            media type e.g. x-<echonet> along with a custom URI scheme and its own
+            media type (e.g., <code>x-<echonet></code>) along with a custom URI scheme and its own
             set of protocol methods and options defined for that URI scheme.
           </p>
         </section>
@@ -648,34 +658,36 @@
 
 
     <section id="Interaction Types" class="informative">
-      <h1>Interaction Types</h1>
+      <h1>Interaction Patterns</h1>
       <p>
         This section describes unique aspects of protocol bindings for the three
-        WoT interaction types.
+        WoT Interaction Patterns.
       </p>
 
       <section id="property-bindings">
         <h2>Bindings for Properties</h2>
         <p>
           This section describes unique aspects of protocol bindings for
-          WoT Property type interactions.
+          WoT Property interactions.
         </p>
         <p>
-          The abstract methods exposed for the Property Interaction are readproperty,
-          writeproperty, and observeproperty. These are mapped by using form relations that describe
-          the abstract method, resulting in a semantic interpretation similar to
+          The abstract operations exposed for Properties are <code>readproperty</code>,
+          <code>writeproperty</code>, and <code>observeproperty</code>.
+          These are mapped by using form relations that describe how
+          the abstract operation is performed, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
         <pre class="example" title="Example use of form relation for Property">
-          <p>
-            For example a form having href=/example/level, rel=writeproperty, and
-            http:methodName=POST conveys the statement:
-          </p>
-          <p>
-            To do a writeproperty of the subject Property (context of the form),
-            perform a POST on the resource at the target URI /example/level.
-          </p>
+          {
+            "rel": "writeproperty",
+            "href": "/example/level",
+            "http:methodName": "POST"
+          }
         </pre>
+        <p>
+          The form element in the example above conveys the statement: <i>"To do a <code>writeproperty</code> of the subject Property (context of the form),
+          perform a <code>POST</code> on the resource at the target URI <code>/example/level</code>."</i>
+        </p>
         <p>
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
@@ -698,15 +710,16 @@
           mapped.
         </p>
         <pre class="example" title="Example use of form relation for Action">
-          <p>
-            For example a form with href=/example/levelaction, rel=invokeaction,
-            and http:methodName=POST conveys the statement:
-          </p>
-          <p>
-            To do an invokeaction of the subject Action (context of the form),
-            perform a POST on the resource at /example/levelaction.
-          </p>
+          {
+            "rel": "invokeaction",
+            "href": "/example/levelaction",
+            "http:methodName": "POST"
+          }
         </pre>
+        <p>
+          The form element in the example above conveys the statement: <i>"To do an <code>invokeaction</code> of the subject Action (context of the form),
+          perform a <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
+        </p>
       </section>
 
       <section id="event-bindings" class="informative">
@@ -735,17 +748,16 @@
           operation, for example CoAP Observe or HTTP Long Polling.
         </p>
         <pre class="example" title="Example use of form relation for Events">
-          <p>
-            For example, a form having href=mqtt://0m2m.net/example/levelevent,
-            rel=subscribeevent,
-            and mqtt:methodCode=8 conveys the statement:
-          </p>
-          <p>
-            To do a subscribeevent of the subject Event (context of the form),
-            perform an MQTT SUBSCRIBE (code 8) on the topic /example/levelevent
-            on the broker at mqtt://0m2m.net using the default MQTT port.
-          </p>
+          {
+            "rel": "subscribeevent",
+            "href": "mqtt://wot.example.com/levelevent",
+            "mqtt:methodCode": 8
+          }
         </pre>
+        <p>
+          The form element in the example above conveys the statement: <i>"To do an <code>subscribeevent</code> of the subject Event (context of the form),
+          perform an <code>MQTT SUBSCRIBE</code> (code 8) on the topic <code>/levelevent</code> on the broker at <code>wot.example.com</code> using the default MQTT port."</i>
+        </p>
       </section>
 
     </section>
@@ -794,157 +806,322 @@
     <section id="vocabulary" class="informative">
       <h1>Vocabulary</h1>
         <p>
-          This section specifies the vocabulary for protocol binding templates
+          This section summerizes the vocabulary used for protocol binding templates.
+          The vocabulary is defined in other documents, in particular the WoT Thing Description [[!WOT-TD]]
         </p>
         <section>
           <h2><code>DataSchema</code> Vocabulary</h2>
             <p>
               <code>DataSchema</code> elements describe the structure of the payload.
-              The <code>DataSchema</code>
-              vocabulary is described in [TD]. Properties and Events define a "schema"
-              for data transfer in either direction. Actions may define "inputSchema"
-              for actuation data being sent to the resource using, for example, POST or
-              PUT, and "outputSchema" for result or status data being returned from
-              the Action resource.
+              The <code>DataSchema</code> class and vocabulary is defined in [[!WOT-TD]].
+              Properties and Events directly implement the <code>DataSchema</code> class
+              (i.e., they contain the corresponding fields such as <code>type</code>),
+              which describes the data transfer in either direction.
+              Actions may define an <code>input</code> data schema for actuation data being sent to the Action
+              and/or an <code>output</code> data schema for result or status data being returned from
+              the Action.
             </p>
         </section>
 
         <section>
-          <h2>Interaction Verbs</h2>
+          <h2>Form Relation Type Vocabulary</h2>
             <p>
-              Interactions have one or more defined interaction verbs for each
-              interaction pattern. Form Relations allow an interaction to have
-              separate protocol mechanisms to support different interaction verbs.
+              Each interaction pattern has associated form relation types
+              that are used to select the form element corresponding to the intended interaction,
+              reading a Property vs writing a Property vs observing a Property.
             </p>
           <section>
-            <h3>Property Interactions</h3>
+            <h3>Property Forms</h3>
               <p>
-                Properties provide '"read" and, optionally, "write"
+                Properties provide "read" and, optionally, "write"
                 operations, which map to GET and PUT/POST of a REST API.
-                Properties may also by observed, though some properties may not be
-                observable.
+                Properties may also by observed, though some properties may not be observable.
               </p>
-              <p>
-                readproperty
-              </p>
-              <p>
-                writeproperty
-              </p>
-              <p>
-                observeproperty
-              </p>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th><code>rel</code> Term</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>readproperty</code></td>
+                    <td>Read a Property.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                  <tr>
+                    <td><code>writeproperty</code></td>
+                    <td>Write a Property. Requires <code>writable</code> to be set to <code>true</code>.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                  <tr>
+                    <td><code>observeproperty</code></td>
+                    <td>Observe a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
 
           <section>
-            <h3>Action Interactions</h3>
+            <h3>Action Forms</h3>
               <p>
-                Actions provide '"invoke" operations, which can map to PUT, POST,
-                or PUBLISH operations.
+                Actions only provide "invoke" operations.
+                For completeness, there is also a form relation type defined.
               </p>
-              <p>
-                invokeaction
-              </p>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th><code>rel</code> Term</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>invokeaction</code></td>
+                    <td>Invoke an Action.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                </tbody>
+              </table>
           </section>
 
           <section>
-            <h3>Event Interactions</h3>
+            <h3>Event Forms</h3>
               <p>
-                Events may directly expose observable resources from which to obtain event
-                instances.
+                Events describe subscription endpoints from which to event instances can be received.
               </p>
-              <p>
-                subscribeevent
-              </p>
-              <p>
-                unsubscribeevent
-              </p>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th><code>rel</code> Term</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>subscribeevent</code></td>
+                    <td>Subscribe to an Event.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                  <tr>
+                    <td><code>unsubscribeevent</code></td>
+                    <td>Unsubscribe drom an Event.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
           </section>
 
           <section>
-          <h2>Form Vocabulary</h2>
+          <h2>Protocol Vocabulary</h2>
             <p>
-              Extensions to the form vocabulary provide a way to inform the client about
-              protocol methods, options, and status codes.
+              Extensions to the TD core vocabulary can inform the client about
+              protocol-specific message configurations such as methods, options, and status codes.
+              The vocabulary comes from existing Linked Data vocabulary such as the HTTP Vocabulary in RDF 1.0 [[?HTTP-in-RDF10]].
             </p>
+            <p class="ednote" title="Protocol Vocabulary Definitions">
+              The WoT Working Group is investigating good ways to also provide COAP and MQTT Vocabulary in RDF.
+              If the WG will publish corresponding WG Notes is still subject to discussion.
+            </p>
+            
             <section>
-              <h3>HTTP form vocabulary</h3>
-                <p>
-                  http:methodName [ "GET", "PUT", "POST", "DELETE"]
-                </p>
-                <p>
-                  http:headers
-                  example: [ {"http:fieldName": "accept", "http:fieldValue": "text/plain"} ]
-                </p>
-                <p>
-                  http:fieldName [ accept, content-type, transfer-encoding ]
-                </p>
-                <p>
-                  http:fieldValue
-                </p>
+              <h3>HTTP Vocabulary</h3>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Mandatory</th>
+                    <th>Default value</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>http:methodName</code></td>
+                    <td>HTTP method name (Literal).</td>
+                    <td>no</td>
+                    <td>
+                      <p><code>readproperty</code>: <code>"GET"</code></p>
+                      <p><code>writeproperty</code>: <code>"PUT"</code></p>
+                      <p><code>invokeaction</code>: <code>"POST"</code></p>
+                    </td>
+                    <td>
+                      <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                      <p>(one of <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, <code>"DELETE"</code>, <code>"PATCH"</code>)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>http:headers</code></td>
+                    <td>HTTP headers sent with the message.</td>
+                    <td>no</td>
+                    <td>.</td>
+                    <td>
+                      array of <a href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>http:MessageHeader</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>http:fieldName</code></td>
+                    <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
+                    <td>yes (within <code>http:headers</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>http:fieldValue</code></td>
+                    <td>Header value (Literal).</td>
+                    <td>yes (within <code>http:headers</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
+            
             <section>
-              <h3>CoAP form vocabulary</h3>
-                <p>
-                  coap:methodCode [ 1, 2, 3, 4 ]
-                </p>
-                <p>
-                  coap:options
-                  example: [ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]
-                </p>
-                <p>
-                  coap:optionNumber [ 0..65535 ]
-                </p>
-                <p>
-                  coap:optionValue [ any type ]
-                </p>
+              <h3>CoAP Vocabulary</h3>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Mandatory</th>
+                    <th>Default value</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>coap:methodCode</code></td>
+                    <td>CoAP method code (Literal).</td>
+                    <td>no</td>
+                    <td>
+                      <p><code>readproperty</code>: <code>1</code></p>
+                      <p><code>writeproperty</code>: <code>3</code></p>
+                      <p><code>observeproperty</code>: <code>1</code></p>
+                      <p><code>invokeaction</code>: <code>2</code></p>
+                    </td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                      <p>(one of <code>1</code> (GET), <code>2</code> (POST), <code>3</code> (PUT), <code>4</code> (DELETE), <code>5</code> (FETCH), <code>6</code> (PATCH), <code>7</code> (iPATCH))</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>coap:options</code></td>
+                    <td>CoAP options sent with the message, e.g., <code>[ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]</code>.</td>
+                    <td>no</td>
+                    <td>.</td>
+                    <td>
+                      array of <code>coap:MessageOption</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>coap:optionNumber</code></td>
+                    <td>Option number (Literal), see <a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE Parameters</a>.</td>
+                    <td>yes (within <code>coap:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>coap:optionValue</code></td>
+                    <td>Header value (Literal).</td>
+                    <td>yes (within <code>coap:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
 
             <section>
-              <h3>MQTT form vocabulary</h3>
-                <p>
-                  mqtt:commandCode [ 3, 8, 10 ]
-                </p>
-                <p>
-                  mqtt:options
-                  example: [ {  "mqtt:optionName": "qos", "mqtt:optionValue": 1 }]
-                </p>
-                <p>
-                  mqtt:optionName [ qos, retain, dup ]
-                </p>
-                <p>
-                  mqtt:qos Quality of service level as number (0=at most once, 1=at least once, 2=exactly once)
-                </p>
-                <p>
-                  mqtt:retain Retain flag as boolean. If true, the broker will store the last retained message and the corresponding QoS for that topic
-                </p>
-                <p>
-                  mqtt:dup Duplicate flag for duplicated delivery
-                </p>
-                <p>
-                  mqtt:optionValue (qos) [ 0, 1, 2, 3 ]
-                </p>
-                <p>
-                  mqtt:optionValue (retain) [ 0, 1 ]
-                </p>
-                <p>
-                  mqtt:optionValue (dup) [ 0, 1 ]
-                </p>
+              <h3>MQTT Vocabulary</h3>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Mandatory</th>
+                    <th>Default value</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>mqtt:commandCode</code></td>
+                    <td>MQTT Control Packet type (Literal).</td>
+                    <td>no</td>
+                    <td>
+                      <p><code>readproperty</code>: <code>8</code></p>
+                      <p><code>writeproperty</code>: <code>3</code></p>
+                      <p><code>observeproperty</code>: <code>8</code></p>
+                      <p><code>invokeaction</code>: <code>3</code></p>
+                      <p><code>subscribeevent</code>: <code>8</code></p>
+                      <p><code>unsubscribeevent</code>: <code>10</code></p>
+                    </td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                      <p>(one of <code>3</code> (PUBLISH), <code>8</code> (SUBSCRIBE), <code>10</code> (UNSUBSCRIBE))</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>mqtt:options</code></td>
+                    <td>MQTT options sent with the message, e.g., <code>[ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]</code>.</td>
+                    <td>no</td>
+                    <td>.</td>
+                    <td>
+                      array of <a href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>http:MessageHeader</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>mqtt:optionName</code></td>
+                    <td>Option name (Literal).</td>
+                    <td>yes (within <code>mqtt:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                      <p>(one of <code>"qos"</code>, <code>"retain"</code>, <code>"dup"</code>)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>mqtt:optionValue</code></td>
+                    <td>Header value (Literal).</td>
+                    <td>yes (within <code>mqtt:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
 
             <section>
-              <h3>subProtocol form vocabulary</h3>
-                <p>
-                  subProtocol [ "LongPoll" ]
-                </p>
-                <p>
-                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event
-                  delivery.
-                </p>
-                <p>
-                  Additional subProtocol values, which are registered by IANA, may be used for websockets:
-                  <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>Websocket Subprotocols</a>
-                </p>
+              <h3><code>subProtocol</code> Vocabulary</h3>
+              <p>
+                The <code>subProtocol</code> field is defined in [[!WOT-TD]].
+              </p>
+              <p>
+                Currently, there is only the value <code>"LongPoll"</code> defined for HTTP.
+                It can be used for asynchronous event delivery or observing Properties.
+              </p>
+              <p>
+                For WebSockets, the IANA-registered <a href="https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">Websocket Subprotocols</a>
+                may be used.
+              </p>
             </section>
 
           </section>
@@ -960,7 +1137,7 @@
         {
           "@context": {
             "iot": "http://iotschema.org/",
-            "http": "http://iotschema.org/protocol/http",
+            "http": "http://www.w3.org/2011/http#",
             "coap": "http://iotschema.org/protocol/coap",
             "mqtt": "http://iotschema.org/protocol/mqtt"
           },
@@ -1209,7 +1386,7 @@
                     "maximum": 65535
                   }
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/",
                   "mediaType": "application/json",
@@ -1272,8 +1449,7 @@
         Please file any security or privacy considerations and/or concerns using the <a href="https://github.com/w3c/wot-security/issues">GitHub Issue</a> feature.
       </p>
       <p><!-- Security requirements for the the WoT -->
-        Security is a cross-cutting issue that needs to be taken into account in all
-        <a href="#sec-building-blocks">WoT building blocks</a>.
+        Security is a cross-cutting issue that needs to be taken into account in all WoT building blocks.
         The W3C WoT does not define any new security mechanisms,
         but provides guidelines to apply the best practices from
         Web security,

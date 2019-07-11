@@ -22,6 +22,12 @@
                 , w3cid:      "00000"
                 , company:    "SmartThings"
                 , companyURL: "https://www.smartthings.com/"
+                },
+                {
+                  name:       "Ege Korkan"
+                , w3cid:      "110131"
+                , company:    "Siemens AG"
+                , companyURL: "https://www.siemens.com/"
                 }
               ]
             , otherLinks: [
@@ -30,7 +36,7 @@
                 , data: [
                     {
                       value: "In the GitHub repository"
-                    , href: "https://github.com/w3c/wot-architecture/graphs/contributors"
+                    , href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
                     }
                   ]
                 }
@@ -514,41 +520,41 @@
           between the client and server for the interaction.
         </p>
 
-        <section id="relation-types">
-          <h2>Relation Types</h2>
+        <section id="operation-types">
+          <h2>Operation Types</h2>
           <p>
-            Form Relation Types describe the expected result of performing the operation
+            Form Operation Types describe the expected result of performing the operation
             described by the form.
           </p>
           <p>
             For example, the Property interaction allows read and write operations. The
             protocol binding may contain a form for the read operation and a different
-            form for the write operation. The value of the "rel" attribute of the form
+            form for the write operation. The value of the "op" attribute of the form
             indicates which form is which and allows the client to select the correct
             form for the operation required.
           </p>
 
-          <pre class="example" title="Form Relation Types">
-            "rel": "readproperty"
-            "rel": "writeproperty"
+          <pre class="example" title="Form Operation Types">
+            "op": "readproperty"
+            "op": "writeproperty"
           </pre>
 
           <p>
-            The vocabulary in section 5 lists the recommended set of form relations,
-            and the full TD examples in section 6 contain example uses of form relation types.
+            The vocabulary in section 5 lists the recommended set of form operations,
+            and the full TD examples in section 6 contain example uses of form operations types.
           </p>
         </section>
 
         <section id="media-types">
-          <h2>Media Types</h2>
+          <h2>Content Types</h2>
           <p>
-            Media Types define the serialization details and other rules for processing
-            the payloads. The media type is used to select a serializer/deserializer
+            Content Types define the serialization details and other rules for processing
+            the payloads. The content type is used to select a serializer/deserializer
             and to select an additional set of rules and constraints for the protocol
             driver.
           </p>
           <p>
-            For example, the mediaType "application/ocf+cbor" indicates that CBOR
+            For example, the contentType "application/ocf+cbor" indicates that CBOR
             serialization is used, but also that OCF rules and namespaces
             apply to the processing of the representations.
           </p>
@@ -562,7 +568,7 @@
           </p>
           <p>
             Some special protocol drivers may be invoked by using a non-registered
-            media type e.g. x-<echonet> along with a custom URI scheme and its own
+            content type e.g. x-<echonet> along with a custom URI scheme and its own
             set of protocol methods and options defined for that URI scheme.
           </p>
         </section>
@@ -593,7 +599,7 @@
           </p>
 
           <pre class="example" title="Vocabulary Example for Methods">
-            "http:methodName": "GET"
+            "htv:methodName": "GET"
 
             "mqtt:commandCode": 8
 
@@ -608,15 +614,15 @@
           </p>
 
           <pre class="example" title="HTTP Vocabulary Example for Header Options">
-            "http:headers":
+            "htv:headers":
               [
                 {
-                  "http:fieldName": "Accept",
-                  "http:fieldValue": "application/json"
+                  "htv:fieldName": "Accept",
+                  "htv:fieldValue": "application/json"
                 },
                 {
-                  "http:fieldName": "Transfer-Encoding",
-                  "http:fieldValue": "chunked"
+                  "htv:fieldName": "Transfer-Encoding",
+                  "htv:fieldValue": "chunked"
                 }
               ]
           </pre>
@@ -634,7 +640,7 @@
             use of one of these protocols, for example:
             <pre class="example" title="subProtocol">
               {
-              "subProtocol": "LongPoll"
+                "subprotocol": "longpoll"
               }
             </pre>
 
@@ -662,14 +668,14 @@
         </p>
         <p>
           The abstract methods exposed for the Property Interaction are readproperty,
-          writeproperty, and observeproperty. These are mapped by using form relations that describe
+          writeproperty, and observeproperty. These are mapped by using form operations that describe
           the abstract method, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
         <pre class="example" title="Example use of form relation for Property">
           <p>
-            For example a form having href=/example/level, rel=writeproperty, and
-            http:methodName=POST conveys the statement:
+            For example a form having href=/example/level, op=writeproperty, and
+            htv:methodName=POST conveys the statement:
           </p>
           <p>
             To do a writeproperty of the subject Property (context of the form),
@@ -679,7 +685,7 @@
         <p>
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
-          indicated by including rel=observeproperty in the form. The observe form may
+          indicated by including op=observeproperty in the form. The observe form may
           also specify header options to use, for example CoAP observe option=0
           in the header to start observation.
         </p>
@@ -694,13 +700,13 @@
         <p>
           The abstract method on Actions is invokeaction. In the same way that
           the abstract methods on properties are
-          mapped using form relations, the abstract methods of actions are also
+          mapped using form operations, the abstract methods of actions are also
           mapped.
         </p>
-        <pre class="example" title="Example use of form relation for Action">
+        <pre class="example" title="Example use of form operation for Action">
           <p>
-            For example a form with href=/example/levelaction, rel=invokeaction,
-            and http:methodName=POST conveys the statement:
+            For example a form with href=/example/levelaction, op=invokeaction,
+            and htv:methodName=POST conveys the statement:
           </p>
           <p>
             To do an invokeaction of the subject Action (context of the form),
@@ -723,21 +729,21 @@
         </p>
         <p>
           The binding for Events allows pre-defined URIs to observable resources,
-          or pubsub topica encoded in URI.
+          or pubsub topic encoded in URI.
         </p>
         <p>
           If the binding offers a subscription, there will be a form with
-          rel=subscribeevent
+          op=subscribeevent
         </p>
         <p>
           If the binding offers an observable Event resource from which events are
           obtained, there will be a form which describes the required transfer layer
           operation, for example CoAP Observe or HTTP Long Polling.
         </p>
-        <pre class="example" title="Example use of form relation for Events">
+        <pre class="example" title="Example use of form operation for Events">
           <p>
             For example, a form having href=mqtt://0m2m.net/example/levelevent,
-            rel=subscribeevent,
+            op=subscribeevent,
             and mqtt:methodCode=8 conveys the statement:
           </p>
           <p>
@@ -761,7 +767,7 @@
         value scaling is performed, in the application library or adaptation layer.
       </p>
       <p>
-        Form elements that specify href, method, options, and mediaType are
+        Form elements that specify href, method, options, and contentType are
         processed in a driver context which is isolated from the application.
       </p>
       <p>
@@ -802,9 +808,9 @@
               <code>DataSchema</code> elements describe the structure of the payload.
               The <code>DataSchema</code>
               vocabulary is described in [TD]. Properties and Events define a "schema"
-              for data transfer in either direction. Actions may define "inputSchema"
+              for data transfer in either direction. Actions may define "input"
               for actuation data being sent to the resource using, for example, POST or
-              PUT, and "outputSchema" for result or status data being returned from
+              PUT, and "output" for result or status data being returned from
               the Action resource.
             </p>
         </section>
@@ -813,7 +819,7 @@
           <h2>Interaction Verbs</h2>
             <p>
               Interactions have one or more defined interaction verbs for each
-              interaction pattern. Form Relations allow an interaction to have
+              interaction pattern. Form Operations allow an interaction to have
               separate protocol mechanisms to support different interaction verbs.
             </p>
           <section>
@@ -870,17 +876,17 @@
             <section>
               <h3>HTTP form vocabulary</h3>
                 <p>
-                  http:methodName [ "GET", "PUT", "POST", "DELETE"]
+                  htv:methodName [ "GET", "PUT", "POST", "DELETE"]
                 </p>
                 <p>
-                  http:headers
-                  example: [ {"http:fieldName": "accept", "http:fieldValue": "text/plain"} ]
+                  htv:headers
+                  example: [ {"htv:fieldName": "accept", "htv:fieldValue": "text/plain"} ]
                 </p>
                 <p>
-                  http:fieldName [ accept, content-type, transfer-encoding ]
+                  htv:fieldName [ accept, content-type, transfer-encoding ]
                 </p>
                 <p>
-                  http:fieldValue
+                  htv:fieldValue
                 </p>
             </section>
             <section>
@@ -956,47 +962,57 @@
       <p>
         TD with simple payload format
       </p>
-      <pre class="example" title="TD with a simple Payload">
+      <pre class="example" title="TD with a Simple Payload">
         {
-          "@context": {
-            "iot": "http://iotschema.org/",
-            "http": "http://iotschema.org/protocol/http",
-            "coap": "http://iotschema.org/protocol/coap",
-            "mqtt": "http://iotschema.org/protocol/mqtt"
-          },
+          "@context": [
+            "https://www.w3.org/2019/wot/td/v1",
+            {
+              "iot": "http://iotschema.org/",
+              "coap": "http://iotschema.org/protocol/coap",
+              "mqtt": "http://iotschema.org/protocol/mqtt"
+            }
+          ],
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitchCapability" ],
           "base": "http://example.com",
-          "name": "Lamp",
+          "title": "Lamp",
+          "id": "urn:dev:ops:32473-WoTLamp-1234",
+          "securityDefinitions": {"basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+          }},
+          "security": ["basic_sc"],
           "properties": {
-            "switchstate": {
+            "switchState": {
               "@type": ["iot:SwitchStatus", "iot:SwitchData"],
               "type": "boolean",
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": false,
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["readproperty", "writeproperty"],
-                  "mediaType": "application/json"
+                  "op": ["readproperty", "writeproperty"],
+                  "contentType": "application/json"
                 }
               ]
             },
             "brightness": {
               "@type": ["iot:CurrentLevel", "iot:LevelData"],
               "type": "number",
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": false,
               "forms": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["readproperty", "writeproperty"],
-                  "mediaType": "application/json"
+                  "op": ["readproperty", "writeproperty"],
+                  "contentType": "application/json"
                 }
               ]
             }
           },
           "actions": {
-            "switchon": {
+            "switchOn": {
               "@type": ["iot:SwitchOnAction"],
               "input":  {
                 "type": "boolean",
@@ -1005,12 +1021,12 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["invokeaction"],
-                  "mediaType": "application/json"
+                  "op": ["invokeaction"],
+                  "contentType": "application/json"
                 }
               ]
             },
-            "switchoff": {
+            "switchOff": {
               "@type": ["iot:SwitchOff"],
               "input":  {
                 "type": "boolean",
@@ -1019,12 +1035,12 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["invokeaction"],
-                  "mediaType": "application/json"
+                  "op": ["invokeaction"],
+                  "contentType": "application/json"
                 }
               ]
             },
-            "setbrightness": {
+            "setBrightness": {
               "@type": ["iot:SetLevelAction"],
               "input":  {
                 "@type": ["iot:LevelData"],
@@ -1033,8 +1049,8 @@
               "forms": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["invokeaction"],
-                  "mediaType": "application/json"
+                  "op": ["invokeaction"],
+                  "contentType": "application/json"
                 }
               ]
             }
@@ -1046,17 +1062,25 @@
       </p>
       <pre class="example" title="TD with protocol options and complex payload">
         {
-          "@context": {
+          "@context": [
+            "https://www.w3.org/2019/wot/td/v1",
+            {
               "iot": "http://iotschema.org/",
-              "http": "http://iotschema.org/protocol/http",
               "coap": "http://iotschema.org/protocol/coap",
               "mqtt": "http://iotschema.org/protocol/mqtt"
-          },
+            }
+          ],
           "base": "http://example.com/",
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
-          "name": "Lamp",
+          "title": "Lamp",
+          "id": "urn:dev:ops:32473-WoTLamp-1234",
+          "securityDefinitions": {"basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+          }},
+          "security": ["basic_sc"],
           "properties": {
-            "switchstate": {
+            "switchState": {
               "@type": ["iot:SwitchStatus"],
               "type": "object",
               "properties": {
@@ -1065,24 +1089,25 @@
                   "type": "boolean"
                 }
               },
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": true,
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["readproperty"],
-                  "http:methodName": "GET"
+                  "contentType": "application/json",
+                  "op": ["readproperty"],
+                  "htv:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["writeproperty"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["writeproperty"],
+                  "htv:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
-                  "rel": ["observeproperty"],
+                  "op": ["observeproperty"],
                   "mqtt:commandCode": 8
                 }
               ]
@@ -1098,59 +1123,61 @@
                   "maximum": 255
                 }
               },
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": true,
               "forms": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "mediaType": "application/json",
-                  "rel": ["readproperty"],
-                  "http:methodName": "GET"
+                  "contentType": "application/json",
+                  "op": ["readproperty"],
+                  "htv:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentdimmer",
-                  "mediaType": "application/json",
-                  "rel": ["writeproperty"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["writeproperty"],
+                  "htv:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
-                  "rel": ["observeproperty"],
+                  "op": ["observeproperty"],
                   "mqtt:commandCode": 8
                 }
               ]
             },
-            "transitiontime": {
+            "transitionTime": {
               "@type": ["iot:TransitionTime"],
               "type": "object",
               "properties": {
-                "transitiontime": {
+                "transitionTime": {
                   "@type": ["iot:TransitionTimeData" ],
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 255
                 }
               },
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": false,
               "forms": [
                 {
                   "href": "/example/light/transitiontime",
-                  "mediaType": "application/json",
-                  "rel": ["readproperty"],
-                  "http:methodName": "GET"
+                  "contentType": "application/json",
+                  "op": ["readproperty"],
+                  "htv:methodName": "GET"
                 },
                 {
                   "href": "/example/light/transitiontime",
-                  "mediaType": "application/json",
-                  "rel": ["writeproperty"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["writeproperty"],
+                  "htv:methodName": "POST"
                 }
               ]
             }
           },
           "actions": {
-            "switchon": {
+            "switchOn": {
               "@type": ["iot:SwitchOnAction"],
               "input":  {
                 "type": "object",
@@ -1163,13 +1190,13 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["invokeaction"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["invokeaction"],
+                  "htv:methodName": "POST"
                 }
               ]
             },
-            "switchoff": {
+            "switchOff": {
               "@type": ["iot:SwitchOffAction"],
               "input": {
                 "type": "object",
@@ -1183,13 +1210,13 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["invokeaction"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["invokeaction"],
+                  "htv:methodName": "POST"
                 }
               ]
             },
-            "setbrightness": {
+            "setBrightness": {
               "label": "Set Brightness Level",
               "@type": ["iot:SetLevelAction"],
               "input": {
@@ -1202,7 +1229,7 @@
                     "maximum": 255
                     }
                   },
-                  "transitiontime": {
+                  "transitionTime": {
                     "@type": ["iot:TransitionTimeData"],
                     "type": "integer",
                     "minimum": 0,
@@ -1212,9 +1239,9 @@
               "form": [
                 {
                   "href": "/example/light/",
-                  "mediaType": "application/json",
-                  "rel": ["invokeaction"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["invokeaction"],
+                  "htv:methodName": "POST"
                 }
               ]
             }

@@ -523,7 +523,7 @@
         <section id="operation-types">
           <h2>Operation Types</h2>
           <p>
-            Form Operation Types describe the expected result of performing the operation
+            Form Operation Types describe the intended semantics of performing the operation
             described by the form.
           </p>
           <p>
@@ -1182,7 +1182,6 @@
               "input":  {
                 "type": "object",
                 "properties": {
-                  "name": "switch",
                   "type": "boolean",
                   "const": true
                 }
@@ -1199,12 +1198,8 @@
             "switchOff": {
               "@type": ["iot:SwitchOffAction"],
               "input": {
-                "type": "object",
-                "properties": {
-                  "switch": {
                     "type": "boolean",
                     "const": false
-                  }
                 }
               },
               "forms": [
@@ -1236,7 +1231,7 @@
                     "maximum": 65535
                   }
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/",
                   "contentType": "application/json",

@@ -504,9 +504,10 @@
         <section id="data-types-constraints">
           <h2>Data Types and value constraints</h2>
           <p>
-            Note that in Example 5 above, the values are floating point while the
-            other examples have integer values. It is up to the client to adapt to
-            the range and type as well as the engineering units provided.
+            Note that in Example 5 above, the values are floating point (<code>double</code>) while the
+            other examples have integer values. 
+            In general, clients should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
+            This means that a client sending the payload of the Example 5, should use floating points in the payload. 
           </p>
         </section>
 

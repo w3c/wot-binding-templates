@@ -210,6 +210,59 @@
       </section>
     </section>
 
+<section id="terminology" class="normative"> 
+  <h2>Terminology</h2>
+
+    <p>The fundamental WoT terminology such as
+      <dfn>Thing</dfn>,
+      <dfn>Consumer</dfn>,
+      <dfn>Thing Description</dfn> (<dfn>TD</dfn>),
+      <dfn>Interaction Model</dfn>,
+      <dfn>Interaction Affordance</dfn>,
+      <dfn>Property</dfn>,
+      <dfn>Action</dfn>,
+      <dfn>Event</dfn>,
+      <dfn>Protocol Binding</dfn>,
+      <dfn>Servient</dfn>,
+      <dfn>WoT Interface</dfn>,
+      <dfn>WoT Runtime</dfn>,
+      etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
+      of the WoT Architecture specification [[WOT-ARCHITECTURE]].
+    </p>
+    
+    <p>
+      In addition, this specification introduces the following definitions:
+    </p>
+
+  <dl>
+    <dt>
+      <dfn id="dfn-context-ext">TD Context Extension</dfn>
+    </dt>
+    <dd>
+      A mechanism to extend <a>Thing Descriptions</a> with additional <a>Vocabulary
+        Terms</a>. It is the basis for semantic annotations and extensions to core
+      mechanisms such as Protocol Bindings, Security Schemes, and Data Schemas.
+    </dd>
+    <dt>
+      <dfn id="dfn-vocab">Vocabulary</dfn>
+    </dt>
+    <dd>
+      A collection of <a>Vocabulary Terms</a>, identified by a namespace IRI.
+    </dd>
+    <dt>
+      <dfn id="dfn-term">Term</dfn>
+      and
+      <dfn id="dfn-vocab-term">Vocabulary Term</dfn>
+    </dt>
+    <dd>
+      A character string. When a <a>Term</a> is part of a <a>Vocabulary</a>, i.e., prefixed by
+      a namespace IRI, it is called a <a>Vocabulary Term</a>. For the sake of readability,
+      <a>Vocabulary Terms</a> present in this document are always written in a compact
+      form and not as full IRIs.
+    </dd>
+  </dl>
+</section>
+
     <section id="binding-overview" class="informative">
       <h1>Protocol Binding Templates Overview</h1>
       <p>
@@ -504,9 +557,10 @@
         <section id="data-types-constraints">
           <h2>Data Types and value constraints</h2>
           <p>
-            Note that in Example 5 above, the values are floating point while the
-            other examples have integer values. It is up to the client to adapt to
-            the range and type as well as the engineering units provided.
+            Note that in Example 5 above, the values are floating point (<code>double</code>) while the
+            other examples have integer values. 
+            In general, clients should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
+            This means that a client sending the payload of the Example 5 should use floating points in the payload. 
           </p>
         </section>
 
@@ -523,7 +577,7 @@
         <section id="operation-types">
           <h2>Operation Types</h2>
           <p>
-            Form Operation Types describe the expected result of performing the operation
+            Form Operation Types describe the intended semantics of performing the operation
             described by the form.
           </p>
           <p>
@@ -557,14 +611,6 @@
             For example, the contentType "application/ocf+cbor" indicates that CBOR
             serialization is used, but also that OCF rules and namespaces
             apply to the processing of the representations.
-          </p>
-          <p>
-            Additionally, there may be a profile which points to a URI for
-            further description, for example a form with
-            profile=http://iotschema.org/protocols/ipso.jsonld indicates that the
-            target representation follows a set of additional encoding rules and
-            constraints which are further defined at the URI by the profile
-            attribute's value.
           </p>
           <p>
             Some special protocol drivers may be invoked by using a non-registered
@@ -632,14 +678,15 @@
           </p>
           <p>
             Protocols may have defined sub-protocols that can be used for some interaction
-            types. For example, to recieve asynchronous notifications using http, some
-            servers may support long polling, EventSource, or a simple non-multiplexed
-            websocket protocol.
+            types. For example, to receive asynchronous notifications using http, some
+            servers may support long polling (<code>longpoll</code>), <a href="https://www.w3.org/TR/websub/">WebSub</a> (<code>websub</code>) and <a href="https://www.w3.org/TR/eventsource/">Server-Sent Events</a> (<code>sse</code>).
 
-            The "subProtocol" item may be defined in a form instance to indicate the
+            The "subprotocol" item may be defined in a form instance to indicate the
             use of one of these protocols, for example:
-            <pre class="example" title="subProtocol">
+            <pre class="example" title="subprotocol">
               {
+                "op": "subscribeevent",
+                "href": "https://mylamp.example.com/overheating",
                 "subprotocol": "longpoll"
               }
             </pre>
@@ -939,16 +986,15 @@
             </section>
 
             <section>
-              <h3>subProtocol form vocabulary</h3>
+              <h3>subprotocol form vocabulary</h3>
                 <p>
-                  subProtocol [ "LongPoll" ]
+                  subprotocol [ "longpoll" ]
                 </p>
                 <p>
-                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event
-                  delivery.
+                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event delivery.
                 </p>
                 <p>
-                  Additional subProtocol values, which are registered by IANA, may be used for websockets:
+                  Additional subprotocol values, which are registered by IANA, may be used for websockets:
                   <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>Websocket Subprotocols</a>
                 </p>
             </section>
@@ -959,6 +1005,14 @@
 
     <section id="binding-examples" class="informative">
       <h1>Examples of Thing Descriptions including protocol bindings</h1>
+
+      <p>
+        The following TD examples uses a fictional CoAP and MQTT Protocol Bindings, as no such Protocol Binding is available at the time of writing this specification. 
+        These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and <code>http://www.example.org/mqtt-binding#</code>, respectively. 
+        The supplemented <code>cov:methodName</code> member instructs the client which CoAP method has to be applied (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code 0.02, or <code>iPATCH</code> for CoAP Method Code 0.07).
+        The supplemented mqv:commandCode member instructs the client which MQTT command has to be applied (e.g., <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
+      </p>
+
       <p>
         TD with simple payload format
       </p>
@@ -968,8 +1022,8 @@
             "https://www.w3.org/2019/wot/td/v1",
             {
               "iot": "http://iotschema.org/",
-              "coap": "http://iotschema.org/protocol/coap",
-              "mqtt": "http://iotschema.org/protocol/mqtt"
+              "cov": "http://www.example.org/coap-binding#"
+              "mqv": "http://www.example.org/mqtt-binding#"
             }
           ],
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitchCapability" ],
@@ -1004,7 +1058,7 @@
               "observable": false,
               "forms": [
                 {
-                  "href": "/example/light/currentdimmer",
+                  "href": "coap://example.com/example/light/currentdimmer",
                   "op": ["readproperty", "writeproperty"],
                   "contentType": "application/json"
                 }
@@ -1066,8 +1120,8 @@
             "https://www.w3.org/2019/wot/td/v1",
             {
               "iot": "http://iotschema.org/",
-              "coap": "http://iotschema.org/protocol/coap",
-              "mqtt": "http://iotschema.org/protocol/mqtt"
+              "cov": "http://www.example.org/coap-binding#"
+              "mqv": "http://www.example.org/mqtt-binding#"
             }
           ],
           "base": "http://example.com/",
@@ -1108,7 +1162,7 @@
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
                   "op": ["observeproperty"],
-                  "mqtt:commandCode": 8
+                  "mqv:commandCode": 8
                 }
               ]
             },
@@ -1128,10 +1182,10 @@
               "observable": true,
               "forms": [
                 {
-                  "href": "/example/light/currentdimmer",
+                  "href": "coap://example.com/example/light/currentdimmer",
                   "contentType": "application/json",
                   "op": ["readproperty"],
-                  "htv:methodName": "GET"
+                  "cov:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentdimmer",
@@ -1142,7 +1196,7 @@
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
                   "op": ["observeproperty"],
-                  "mqtt:commandCode": 8
+                  "mqv:commandCode": 8
                 }
               ]
             },
@@ -1182,7 +1236,6 @@
               "input":  {
                 "type": "object",
                 "properties": {
-                  "name": "switch",
                   "type": "boolean",
                   "const": true
                 }
@@ -1199,12 +1252,8 @@
             "switchOff": {
               "@type": ["iot:SwitchOffAction"],
               "input": {
-                "type": "object",
-                "properties": {
-                  "switch": {
                     "type": "boolean",
                     "const": false
-                  }
                 }
               },
               "forms": [
@@ -1217,7 +1266,7 @@
               ]
             },
             "setBrightness": {
-              "label": "Set Brightness Level",
+              "title": "Set Brightness Level",
               "@type": ["iot:SetLevelAction"],
               "input": {
                 "type": "object",
@@ -1236,7 +1285,7 @@
                     "maximum": 65535
                   }
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/",
                   "contentType": "application/json",
@@ -1251,9 +1300,78 @@
 
     </section>
 
-
     <section id="references" class="informative">
-      <h1>References</h1>
+          <h1>References</h1>
+
+    <dl class="bibliography">
+      <dt id="bib-http-in-rdf10">[HTTP-in-RDF10
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.w3.org/TR/HTTP-in-RDF10/"><cite>HTTP Vocabulary in RDF 1.0</cite></a>. Johannes Koch; Carlos
+        A. Velasco; Philip Ackermann. W3C. 2 February 2017. W3C Note. URL: <a
+          href="https://www.w3.org/TR/HTTP-in-RDF10/">https://www.w3.org/TR/HTTP-in-RDF10/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-iana-media-types">[IANA-MEDIA-TYPES
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.iana.org/assignments/media-types/"><cite>Media Types</cite></a>. IANA. URL: <a
+          href="https://www.iana.org/assignments/media-types/">https://www.iana.org/assignments/media-types/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-iana-uri-schemes">[IANA-URI-SCHEMES
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml"><cite>Uniform Resource Identifier (URI)
+            Schemes</cite></a>. IANA. URL: <a
+          href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml">https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-json-ld11">[JSON-LD11
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.w3.org/TR/json-ld11/"><cite>JSON-LD 1.1</cite></a>. Gregg Kellogg; Pierre-Antoine Champin.
+        W3C. 14 July 2019. W3C Working Draft. URL: <a
+          href="https://www.w3.org/TR/json-ld11/">https://www.w3.org/TR/json-ld11/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-json-schema">[JSON-SCHEMA
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://tools.ietf.org/html/draft-handrews-json-schema-validation-01"><cite>JSON Schema Validation: A
+            Vocabulary for Structural Validation of JSON</cite></a>. Austin Wright; Henry Andrews; Geraint Luff. IETF. 19
+        March 2018. Internet-Draft. URL: <a
+          href="https://tools.ietf.org/html/draft-handrews-json-schema-validation-01">https://tools.ietf.org/html/draft-handrews-json-schema-validation-01</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-mqtt">[MQTT
+        <!---0.165880%-->]</dt>
+      <dd><a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html"><cite>MQTT Version 3.1.1</cite></a>. Andrew
+        Banks; Rahul Gupta. OASIS. 10 December 2015. OASIS Standard Incorporating Approved Errata 01. URL: <a
+          href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-openapi">[OPENAPI
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://swagger.io/specification/"><cite>OpenAPI Specification: Version 3.0.1</cite></a>. Darrel Miller;
+        Jason Harmon; Jeremy Whitlock; Kris Hahn; Marsh Gardiner; Mike Ralphson; Rob Dolin; Ron Ratovsky; Tony Tam. OpenAPI
+        Initiative, Linux Foundation. 7 December 2017. URL: <a
+          href="https://swagger.io/specification/">https://swagger.io/specification/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-rfc7231">[RFC7231
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://httpwg.org/specs/rfc7231.html"><cite>Hypertext Transfer Protocol (HTTP/1.1): Semantics and
+            Content</cite></a>. R. Fielding, Ed.; J. Reschke, Ed.. IETF. June 2014. Proposed Standard. URL: <a
+          href="https://httpwg.org/specs/rfc7231.html">https://httpwg.org/specs/rfc7231.html</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-wot-security-guidelines">[WOT-SECURITY-GUIDELINES
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://w3c.github.io/wot-security/"><cite>Web of Things (WoT) Security and Privacy
+            Guidelines</cite></a>. ; Michael McCool; Elena Reshetova. W3C. March 2019. URL: <a
+          href="https://w3c.github.io/wot-security/">https://w3c.github.io/wot-security/</a>
+        <!---0.165880%-->
+      </dd>
+      <!---0.165880%-->
+    </dl>
+
+
       <p>
         <a href=https://www.iana.org/assignments/link-relations/link-relations.xhtml>IANA link relations</a>
       </p>
@@ -1270,9 +1388,6 @@
        signal that the original semantics and processing model of the media
        type still apply, but that an additional processing model can be used
        to extract additional semantics.
-      </p>
-      <p>
-        <a href=https://www.w3.org/TR/HTTP-in-RDF10/>HTTP vocabulary</a>
       </p>
       <p>
 

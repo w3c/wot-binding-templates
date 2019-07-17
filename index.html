@@ -632,14 +632,15 @@
           </p>
           <p>
             Protocols may have defined sub-protocols that can be used for some interaction
-            types. For example, to recieve asynchronous notifications using http, some
-            servers may support long polling, EventSource, or a simple non-multiplexed
-            websocket protocol.
+            types. For example, to receive asynchronous notifications using http, some
+            servers may support long polling (<code>longpoll</code>), <a href="https://www.w3.org/TR/websub/">WebSub</a> (<code>websub</code>) and <a href="https://www.w3.org/TR/eventsource/">Server-Sent Events</a> (<code>sse</code>).
 
-            The "subProtocol" item may be defined in a form instance to indicate the
+            The "subprotocol" item may be defined in a form instance to indicate the
             use of one of these protocols, for example:
-            <pre class="example" title="subProtocol">
+            <pre class="example" title="subprotocol">
               {
+                "op": "subscribeevent",
+                "href": "https://mylamp.example.com/overheating",
                 "subprotocol": "longpoll"
               }
             </pre>
@@ -939,16 +940,15 @@
             </section>
 
             <section>
-              <h3>subProtocol form vocabulary</h3>
+              <h3>subprotocol form vocabulary</h3>
                 <p>
-                  subProtocol [ "LongPoll" ]
+                  subprotocol [ "longpoll" ]
                 </p>
                 <p>
-                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event
-                  delivery.
+                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event delivery.
                 </p>
                 <p>
-                  Additional subProtocol values, which are registered by IANA, may be used for websockets:
+                  Additional subprotocol values, which are registered by IANA, may be used for websockets:
                   <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>Websocket Subprotocols</a>
                 </p>
             </section>

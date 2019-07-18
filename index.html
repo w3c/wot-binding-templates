@@ -60,7 +60,10 @@
                 , href: "https://w3c.github.io/wot-thing-description/"
                 , authors:  [
                     "Sebastian Kaebisch",
-                    "Takuki Kamiya"
+                    "Takuki Kamiya",
+                    "Michael McCool",
+                    "Victor Charpenay",
+                    "Matthias Kovatsch"
                   ]
                 , publisher: "W3C"
                 , date: "09 September 2018"
@@ -658,9 +661,9 @@
           <pre class="example" title="Vocabulary Example for Methods">
             "htv:methodName": "GET"
 
-            "mqtt:commandCode": 8
+            "mqv:commandCode": 8
 
-            "coap:methodCode": 1
+            "cov:methodCode": 1
           </pre>
 
           <p>
@@ -685,7 +688,7 @@
           </pre>
           <p>
             Note: different forms in a binding may need different header constructions,
-            therefore the <code>http:headers</code> construct is an extension of the TD "form" element.
+            therefore the <code>htv:headers</code> construct is an extension of the TD "form" element.
           </p>
           <p>
             Protocols may have defined sub-protocols that can be used for some interaction
@@ -731,7 +734,7 @@
           the abstract operation is performed, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
-        <pre class="example" title="Example use of form relation for Property">
+        <pre class="example" title="Example use of form operation for Property">
           {
             "op": "writeproperty",
             "href": "/example/level",
@@ -763,7 +766,7 @@
           In the same way that the abstract operations on Properties are mapped using form operation types,
           the abstract operation of Actions is also mapped.
         </p>
-        <pre class="example" title="Example use of form relation for Action">
+        <pre class="example" title="Example use of form operation for Action">
           {
             "op": "invokeaction",
             "href": "/example/levelaction",
@@ -802,11 +805,11 @@
           operation, for example CoAP Observe or HTTP Long Polling.
         </p>
 
-        <pre class="example" title="Example use of form relation for Events">
+        <pre class="example" title="Example use of form operation for Events">
           {
-            "rel": "subscribeevent",
+            "op": "subscribeevent",
             "href": "mqtt://wot.example.com/levelevent",
-            "mqtt:methodCode": 8
+            "mqv:methodCode": 8
           }
 
         </pre>
@@ -881,7 +884,7 @@
         </section>
 
         <section>
-          <h2>Form Relation Type Vocabulary</h2>
+          <h2>Form Operation Type Vocabulary</h2>
             <p>
 
               Each interaction pattern has associated form operation types
@@ -899,7 +902,7 @@
               <table class="def">
                 <thead>
                   <tr>
-                    <th><code>rel</code> Term</th>
+                    <th><code>op</code> Term</th>
                     <th>Description</th>
                     <th>Type</th>
                   </tr>
@@ -928,12 +931,12 @@
             <h3>Action Forms</h3>
               <p>
                 Actions only provide "invoke" operations.
-                For completeness, there is also a form relation type defined.
+                For completeness, there is also a form operation type defined.
               </p>
               <table class="def">
                 <thead>
                   <tr>
-                    <th><code>rel</code> Term</th>
+                    <th><code>op</code> Term</th>
                     <th>Description</th>
                     <th>Type</th>
                   </tr>
@@ -956,7 +959,7 @@
               <table class="def">
                 <thead>
                   <tr>
-                    <th><code>rel</code> Term</th>
+                    <th><code>op</code> Term</th>
                     <th>Description</th>
                     <th>Type</th>
                   </tr>
@@ -1063,7 +1066,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>coap:methodCode</code></td>
+                    <td><code>cov:methodCode</code></td>
                     <td>CoAP method code (Literal).</td>
                     <td>no</td>
                     <td>
@@ -1078,27 +1081,27 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><code>coap:options</code></td>
-                    <td>CoAP options sent with the message, e.g., <code>[ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]</code>.</td>
+                    <td><code>cov:options</code></td>
+                    <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 } ]</code>.</td>
                     <td>no</td>
                     <td>.</td>
                     <td>
-                      array of <code>coap:MessageOption</code>
+                      array of <code>cov:MessageOption</code>
                     </td>
                   </tr>
                   <tr>
-                    <td><code>coap:optionNumber</code></td>
+                    <td><code>cov:optionNumber</code></td>
                     <td>Option number (Literal), see <a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE Parameters</a>.</td>
-                    <td>yes (within <code>coap:options</code>)</td>
+                    <td>yes (within <code>cov:options</code>)</td>
                     <td>.</td>
                     <td>
                       <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
                     </td>
                   </tr>
                   <tr>
-                    <td><code>coap:optionValue</code></td>
+                    <td><code>cov:optionValue</code></td>
                     <td>Header value (Literal).</td>
-                    <td>yes (within <code>coap:options</code>)</td>
+                    <td>yes (within <code>cov:options</code>)</td>
                     <td>.</td>
                     <td>
                       <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
@@ -1122,7 +1125,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><code>mqtt:commandCode</code></td>
+                    <td><code>mqv:commandCode</code></td>
                     <td>MQTT Control Packet type (Literal).</td>
                     <td>no</td>
                     <td>
@@ -1139,8 +1142,8 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><code>mqtt:options</code></td>
-                    <td>MQTT options sent with the message, e.g., <code>[ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]</code>.</td>
+                    <td><code>mqv:options</code></td>
+                    <td>MQTT options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 } ]</code>.</td>
                     <td>no</td>
                     <td>.</td>
                     <td>
@@ -1148,9 +1151,9 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><code>mqtt:optionName</code></td>
+                    <td><code>mqv:optionName</code></td>
                     <td>Option name (Literal).</td>
-                    <td>yes (within <code>mqtt:options</code>)</td>
+                    <td>yes (within <code>mqv:options</code>)</td>
                     <td>.</td>
                     <td>
                       <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
@@ -1158,9 +1161,9 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><code>mqtt:optionValue</code></td>
+                    <td><code>mqv:optionValue</code></td>
                     <td>Header value (Literal).</td>
-                    <td>yes (within <code>mqtt:options</code>)</td>
+                    <td>yes (within <code>mqv:options</code>)</td>
                     <td>.</td>
                     <td>
                       <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>

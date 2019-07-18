@@ -577,6 +577,97 @@
           </p>
         </section>
 
+        <section id="mapping-to-xml-schema">
+          <h2>Mapping to XML Schema</h2>
+        In the previous section, examples showed what data whose value type is described using the type system look like when serialized to XML in parallel to corresponding JSON serializations.
+        
+        This section describes how type definitions described using the type system can be mapped to XML schema definitions by using the same examples. Given these type definitions, providing the mapping to XML schema allows XML tools to directly validate serialized XML data, for example. The XML structure for which this mapping is designed is based on EXI4JSON [exi-for-json].
+
+        <section id="mapping-to-xml-schema-object">
+          <h2>Object Definition to XML Schema</h2>
+
+          Shown below is the type system object definition given for the <code>input</code> in Section Object. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of type <code>string</code>) where <code>id</code> is required to be present.
+          <pre class="example" title="JSON Schema description of an Action input">
+            {
+                "type": "object",
+                "field": [
+                    {
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "required": [
+                    "id"
+                ]
+            }
+          </pre>
+          When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code> definition), the above <code>object</code> definition transforms to the following XML Schema element definition.
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with an anonymous object">
+            <xs:element name="object" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+              <xs:complexType>
+                <xs:all>
+                  <xs:element name="id">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="integer" type="xs:integer" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="name" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="string" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:all>
+              </xs:complexType>
+            </xs:element>
+          </pre>
+
+          Otherwise (i.e. the <code>object</code> is a member of another <code>object</code> definition, thus has a name), the object definition transforms to the following XML schema element definition. Note <code>$name</code> represents the name of the <code>object</code>, and needs to be replaced by the actual name of the <code>object</code>.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous object">
+            <xs:element name="$name" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="object">
+                    <xs:complexType>
+                      <xs:all>
+                        <xs:element name="id">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="integer" type="xs:integer" />
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="name" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="string" type="xs:string" />
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:all>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </pre>
+
+        </section>
+
+      </section>
+
       </section>
 
       <section id="form-element">

@@ -22,6 +22,12 @@
                 , w3cid:      "00000"
                 , company:    "SmartThings"
                 , companyURL: "https://www.smartthings.com/"
+                },
+                {
+                  name:       "Ege Korkan"
+                , w3cid:      "110131"
+                , company:    "Siemens AG"
+                , companyURL: "https://www.siemens.com/"
                 }
               ]
             , otherLinks: [
@@ -30,7 +36,7 @@
                 , data: [
                     {
                       value: "In the GitHub repository"
-                    , href: "https://github.com/w3c/wot-architecture/graphs/contributors"
+                    , href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
                     }
                   ]
                 }
@@ -49,7 +55,20 @@
                 }
               ]
             , localBiblio: {
-                "CoRE-RD" : {
+                "WOT-TD" : {
+                  title: "Web of Things (WoT) Thing Description"
+                , href: "https://w3c.github.io/wot-thing-description/"
+                , authors:  [
+                    "Sebastian Kaebisch",
+                    "Takuki Kamiya",
+                    "Michael McCool",
+                    "Victor Charpenay",
+                    "Matthias Kovatsch"
+                  ]
+                , publisher: "W3C"
+                , date: "09 September 2018"
+                }
+              , "CoRE-RD" : {
                   href: "https://tools.ietf.org/html/draft-ietf-core-resource-directory-11"
                 , title: "CoRE Resource Directory"
                 , status:    "Internet-Draft"
@@ -204,6 +223,59 @@
       </section>
     </section>
 
+<section id="terminology" class="normative"> 
+  <h2>Terminology</h2>
+
+    <p>The fundamental WoT terminology such as
+      <dfn>Thing</dfn>,
+      <dfn>Consumer</dfn>,
+      <dfn>Thing Description</dfn> (<dfn>TD</dfn>),
+      <dfn>Interaction Model</dfn>,
+      <dfn>Interaction Affordance</dfn>,
+      <dfn>Property</dfn>,
+      <dfn>Action</dfn>,
+      <dfn>Event</dfn>,
+      <dfn>Protocol Binding</dfn>,
+      <dfn>Servient</dfn>,
+      <dfn>WoT Interface</dfn>,
+      <dfn>WoT Runtime</dfn>,
+      etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
+      of the WoT Architecture specification [[WOT-ARCHITECTURE]].
+    </p>
+    
+    <p>
+      In addition, this specification introduces the following definitions:
+    </p>
+
+  <dl>
+    <dt>
+      <dfn id="dfn-context-ext">TD Context Extension</dfn>
+    </dt>
+    <dd>
+      A mechanism to extend <a>Thing Descriptions</a> with additional <a>Vocabulary
+        Terms</a>. It is the basis for semantic annotations and extensions to core
+      mechanisms such as Protocol Bindings, Security Schemes, and Data Schemas.
+    </dd>
+    <dt>
+      <dfn id="dfn-vocab">Vocabulary</dfn>
+    </dt>
+    <dd>
+      A collection of <a>Vocabulary Terms</a>, identified by a namespace IRI.
+    </dd>
+    <dt>
+      <dfn id="dfn-term">Term</dfn>
+      and
+      <dfn id="dfn-vocab-term">Vocabulary Term</dfn>
+    </dt>
+    <dd>
+      A character string. When a <a>Term</a> is part of a <a>Vocabulary</a>, i.e., prefixed by
+      a namespace IRI, it is called a <a>Vocabulary Term</a>. For the sake of readability,
+      <a>Vocabulary Terms</a> present in this document are always written in a compact
+      form and not as full IRIs.
+    </dd>
+  </dl>
+</section>
+
     <section id="binding-overview" class="informative">
       <h1>Protocol Binding Templates Overview</h1>
       <p>
@@ -214,22 +286,22 @@
       <section id="Data Schema">
         <h2>Data Schema</h2>
         <p>
-          The <code>DataSchema</code> elements describe the payload structure and
+          A data schema describes the payload structure and included
           data items that are passed between client and server during interactions.
         </p>
 
         <section id="payload-structure">
           <h2>Payload Structure</h2>
           <p>
-            Payload Structure is determined by the <code>DataSchema</code> elements. DataSchema elements
-            are indicated by the <code>type</code> keyword in an Interaction Description with associated
+            Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
+            DataSchema elements are indicated by the <code>type</code> keyword in an Interaction Description with associated
             JSON Schema validation keywords. The additional keywords <code>input</code> and
             <code>output</code> are used to provide two different schemas when data
             might be exchanged in both directions, such as in the case of invoking an Action
             when status information is returned.
           </p>
           <p>
-            In addition to the example pattern in [TD] of an object with name/value
+            In addition to the example pattern in [[!WOT-TD]] of an object with name/value
             constructs or simple arrays, Protocol Bindings for existing standards
             may require nested arrays and objects, and some constant values to
             be specified.
@@ -498,9 +570,10 @@
         <section id="data-types-constraints">
           <h2>Data Types and value constraints</h2>
           <p>
-            Note that in Example 5 above, the values are floating point while the
-            other examples have integer values. It is up to the client to adapt to
-            the range and type as well as the engineering units provided.
+            Note that in Example 5 above, the values are floating point (<code>double</code>) while the
+            other examples have integer values. 
+            In general, clients should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
+            This means that a client sending the payload of the Example 5 should use floating points in the payload. 
           </p>
         </section>
 
@@ -509,60 +582,53 @@
       <section id="form-element">
         <h2>Forms Element</h2>
         <p>
-          The "forms" element contains the URI pointing to an instance of the interaction
+          The form elements contain the URI pointing to an instance of the interaction
           and descriptions of the protocol settings and options expected to be used when
           between the client and server for the interaction.
         </p>
 
-        <section id="relation-types">
-          <h2>Relation Types</h2>
+        <section id="operation-types">
+          <h2>Operation Types</h2>
           <p>
-            Form Relation Types describe the expected result of performing the operation
+            Form Operation Types describe the intended semantics of performing the operation
             described by the form.
           </p>
           <p>
             For example, the Property interaction allows read and write operations. The
             protocol binding may contain a form for the read operation and a different
-            form for the write operation. The value of the "rel" attribute of the form
+            form for the write operation. The value of the "op" attribute of the form
             indicates which form is which and allows the client to select the correct
             form for the operation required.
           </p>
 
-          <pre class="example" title="Form Relation Types">
-            "rel": "readproperty"
-            "rel": "writeproperty"
+          <pre class="example" title="Form Operation Types">
+            "op": "readproperty"
+            "op": "writeproperty"
           </pre>
 
           <p>
-            The vocabulary in section 5 lists the recommended set of form relations,
-            and the full TD examples in section 6 contain example uses of form relation types.
+            The vocabulary in section 5 lists the recommended set of form operations,
+            and the full TD examples in section 6 contain example uses of form operations types.
           </p>
         </section>
 
         <section id="media-types">
-          <h2>Media Types</h2>
+          <h2>Content Types</h2>
           <p>
-            Media Types define the serialization details and other rules for processing
-            the payloads. The media type is used to select a serializer/deserializer
+            Content Types define the serialization details and other rules for processing
+            the payloads. The content type is used to select a serializer/deserializer
             and to select an additional set of rules and constraints for the protocol
             driver.
           </p>
           <p>
-            For example, the mediaType "application/ocf+cbor" indicates that CBOR
+
+            For example, the media type <code>application/ocf+cbor</code> indicates that CBOR
             serialization is used, but also that OCF rules and namespaces
             apply to the processing of the representations.
           </p>
           <p>
-            Additionally, there may be a profile which points to a URI for
-            further description, for example a form with
-            profile=http://iotschema.org/protocols/ipso.jsonld indicates that the
-            target representation follows a set of additional encoding rules and
-            constraints which are further defined at the URI by the profile
-            attribute's value.
-          </p>
-          <p>
             Some special protocol drivers may be invoked by using a non-registered
-            media type e.g. x-<echonet> along with a custom URI scheme and its own
+            media type (e.g., <code>x-<echonet></code>) along with a custom URI scheme and its own
             set of protocol methods and options defined for that URI scheme.
           </p>
         </section>
@@ -571,16 +637,16 @@
           <h2>Protocol Methods and Options</h2>
           <p>
             Each target protocol may specify different method names for similar
-            methods, and there may be semantic differences between similar methods of
-            different protocols. Additionally, will use different methods
-            for mapping to a particular WoT Interaction type. For example, POST may
-            be used for setting a property value in one protocol, while PUT may be
+            operations, and there may be semantic differences between similar method names of
+            different protocols. Additionally, platforms may use different methods
+            for realizing a particular WoT Interaction Pattern. For example, POST may
+            be used for writing a Property value in one platforms, while PUT may be
             used in another. For these reasons, we require the ability to specify
-            which method to use for a particular interaction. We also will provide
+            which method to use for a particular Interaction. We also will provide
             vocabulary to differentiate between methods of different protocols.
           </p>
           <p>
-            The W3C RDF vocabulary for HTTP [ref] is used to identify the methods
+            The W3C RDF vocabulary for HTTP [[HTTP-in-RDF10]] is used to identify the methods
             and options specified in the HTTP protocol bindings.
           </p>
           <p>
@@ -593,11 +659,11 @@
           </p>
 
           <pre class="example" title="Vocabulary Example for Methods">
-            "http:methodName": "GET"
+            "htv:methodName": "GET"
 
-            "mqtt:commandCode": 8
+            "mqv:commandCode": 8
 
-            "coap:methodCode": 1
+            "cov:methodCode": 1
           </pre>
 
           <p>
@@ -608,78 +674,82 @@
           </p>
 
           <pre class="example" title="HTTP Vocabulary Example for Header Options">
-            "http:headers":
+            "htv:headers":
               [
                 {
-                  "http:fieldName": "Accept",
-                  "http:fieldValue": "application/json"
+                  "htv:fieldName": "Accept",
+                  "htv:fieldValue": "application/json"
                 },
                 {
-                  "http:fieldName": "Transfer-Encoding",
-                  "http:fieldValue": "chunked"
+                  "htv:fieldName": "Transfer-Encoding",
+                  "htv:fieldValue": "chunked"
                 }
               ]
           </pre>
           <p>
             Note: different forms in a binding may need different header constructions,
-            therefore the <code>headers</code> construct is an extension of the TD "form" element.
+            therefore the <code>htv:headers</code> construct is an extension of the TD "form" element.
           </p>
           <p>
             Protocols may have defined sub-protocols that can be used for some interaction
-            types. For example, to recieve asynchronous notifications using http, some
-            servers may support long polling, EventSource, or a simple non-multiplexed
-            websocket protocol.
+            types. For example, to receive asynchronous notifications using http, some
+            servers may support long polling (<code>longpoll</code>), WebSub [[websub]] (<code>websub</code>) 
+            and Server-Sent Events [[eventsource]] (<code>sse</code>).
 
-            The "subProtocol" item may be defined in a form instance to indicate the
-            use of one of these protocols, for example:
-            <pre class="example" title="subProtocol">
+            The "subprotocol" item may be defined in a form instance to indicate the
+            use of one of these protocols, for example long polling with its special use of HTTP:
+            <pre class="example" title="subprotocol">
               {
-              "subProtocol": "LongPoll"
+                "op": "subscribeevent",
+                "href": "https://mylamp.example.com/overheating",
+                "subprotocol": "longpoll"
               }
             </pre>
-
             </thead>
-          </p>
-
-
+          
+        </p>
         </section>
 
     </section>
 
 
-    <section id="Interaction Types" class="informative">
-      <h1>Interaction Types</h1>
+    <section id="sec-interaction-pattterns" class="informative">
+      <h1>Interaction Patterns</h1>
       <p>
         This section describes unique aspects of protocol bindings for the three
-        WoT interaction types.
+        WoT Interaction Patterns.
       </p>
 
       <section id="property-bindings">
         <h2>Bindings for Properties</h2>
         <p>
           This section describes unique aspects of protocol bindings for
-          WoT Property type interactions.
+          WoT Property interactions.
         </p>
         <p>
-          The abstract methods exposed for the Property Interaction are readproperty,
-          writeproperty, and observeproperty. These are mapped by using form relations that describe
-          the abstract method, resulting in a semantic interpretation similar to
+
+          The abstract operations exposed for the Property Interaction are <code>readproperty</code>,
+          <code>writeproperty</code>, <code>observeproperty</code> and <code>unobserveproperty</code>.
+          These are mapped by using form operations that describe how
+          the abstract operation is performed, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
-        <pre class="example" title="Example use of form relation for Property">
-          <p>
-            For example a form having href=/example/level, rel=writeproperty, and
-            http:methodName=POST conveys the statement:
-          </p>
-          <p>
-            To do a writeproperty of the subject Property (context of the form),
-            perform a POST on the resource at the target URI /example/level.
-          </p>
+        <pre class="example" title="Example use of form operation for Property">
+          {
+            "op": "writeproperty",
+            "href": "/example/level",
+            "htv:methodName": "POST"
+          }
         </pre>
+        
+        <p>
+          The form element in the example above conveys the statement: <i>"To do a <code>writeproperty</code> of the subject Property (context of the form),
+          perform a <code>POST</code> on the resource at the target URI <code>/example/level</code>."</i>
+        </p>
         <p>
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
-          indicated by including rel=observeproperty in the form. The observe form may
+          indicated by including op=observeproperty in the form. The observe form may
           also specify header options to use, for example CoAP observe option=0
           in the header to start observation.
         </p>
@@ -688,64 +758,65 @@
       <section id="action-bindings" class="informative">
         <h2>Bindings for Actions</h2>
         <p>
-          This section describes unique aspects of protocol bindings for WoT
-          Action type interactions.
+          This section describes unique aspects of protocol bindings for Actions.
         </p>
         <p>
-          The abstract method on Actions is invokeaction. In the same way that
-          the abstract methods on properties are
-          mapped using form relations, the abstract methods of actions are also
-          mapped.
+
+          The abstract operation on Actions is <code>invokeaction</code>.
+          In the same way that the abstract operations on Properties are mapped using form operation types,
+          the abstract operation of Actions is also mapped.
         </p>
-        <pre class="example" title="Example use of form relation for Action">
-          <p>
-            For example a form with href=/example/levelaction, rel=invokeaction,
-            and http:methodName=POST conveys the statement:
-          </p>
-          <p>
-            To do an invokeaction of the subject Action (context of the form),
-            perform a POST on the resource at /example/levelaction.
-          </p>
+        <pre class="example" title="Example use of form operation for Action">
+          {
+            "op": "invokeaction",
+            "href": "/example/levelaction",
+            "http:methodName": "POST"
+          }
+
         </pre>
+        <p>
+          The form element in the example above conveys the statement: <i>"To do an <code>invokeaction</code> of the subject Action (context of the form),
+          perform a <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
+        </p>
       </section>
 
       <section id="event-bindings" class="informative">
         <h2>Bindings for Events</h2>
         <p>
           This section describes unique aspects of protocol bindings for WoT
-          Event type interactions.
+          Event Interaction Patterns.
         </p>
         <p>
-          The abstract methods on Events are subscribeevent and unsubscribeevent.
-          The subscribeevent operation returns a location or resource URI from which
-          events may be obtained, either by observation or some other method,
-          depending on the transfer protocol.
+
+          The abstract operations on Events are <code>subscribeevent</code> and <code>unsubscribeevent</code>.
+          The <code>subscribeevent</code> operation may directly enable event instance delivery
+          from the pre-defined URI to observable resources or pubsub topics encoded in URIs.
+          Alternatively, it may return a location or resource URI from which event instance may be obtained,
+          either by observation or some other mechanism, depending on the transfer protocol.
         </p>
         <p>
-          The binding for Events allows pre-defined URIs to observable resources,
-          or pubsub topica encoded in URI.
-        </p>
-        <p>
-          If the binding offers a subscription, there will be a form with
-          rel=subscribeevent
+          Usually, the <code>unsubscribeevent</code> only occurs when the transfer protocol has no implicit
+          unsubscribe operation such as closing the connection. Examples are Webhooks that require particular unsubscribe requests.
+
         </p>
         <p>
           If the binding offers an observable Event resource from which events are
           obtained, there will be a form which describes the required transfer layer
           operation, for example CoAP Observe or HTTP Long Polling.
         </p>
-        <pre class="example" title="Example use of form relation for Events">
-          <p>
-            For example, a form having href=mqtt://0m2m.net/example/levelevent,
-            rel=subscribeevent,
-            and mqtt:methodCode=8 conveys the statement:
-          </p>
-          <p>
-            To do a subscribeevent of the subject Event (context of the form),
-            perform an MQTT SUBSCRIBE (code 8) on the topic /example/levelevent
-            on the broker at mqtt://0m2m.net using the default MQTT port.
-          </p>
+
+        <pre class="example" title="Example use of form operation for Events">
+          {
+            "op": "subscribeevent",
+            "href": "mqtt://wot.example.com/levelevent",
+            "mqv:methodCode": 8
+          }
+
         </pre>
+        <p>
+          The form element in the example above conveys the statement: <i>"To do an <code>subscribeevent</code> of the subject Event (context of the form),
+          perform an <code>MQTT SUBSCRIBE</code> (code 8) on the topic <code>/levelevent</code> on the broker at <code>wot.example.com</code> using the default MQTT port."</i>
+        </p>
       </section>
 
     </section>
@@ -761,7 +832,7 @@
         value scaling is performed, in the application library or adaptation layer.
       </p>
       <p>
-        Form elements that specify href, method, options, and mediaType are
+        Form elements that specify href, method, options, and contentType are
         processed in a driver context which is isolated from the application.
       </p>
       <p>
@@ -794,157 +865,329 @@
     <section id="vocabulary" class="informative">
       <h1>Vocabulary</h1>
         <p>
-          This section specifies the vocabulary for protocol binding templates
+          This section summerizes the vocabulary used for protocol binding templates.
+          The vocabulary is defined in other documents, in particular the WoT Thing Description [[!WOT-TD]]
         </p>
         <section>
           <h2><code>DataSchema</code> Vocabulary</h2>
             <p>
               <code>DataSchema</code> elements describe the structure of the payload.
-              The <code>DataSchema</code>
-              vocabulary is described in [TD]. Properties and Events define a "schema"
-              for data transfer in either direction. Actions may define "inputSchema"
-              for actuation data being sent to the resource using, for example, POST or
-              PUT, and "outputSchema" for result or status data being returned from
-              the Action resource.
+              The <code>DataSchema</code> class and vocabulary is defined in [[!WOT-TD]].
+              Properties and Events directly implement the <code>DataSchema</code> class
+              (i.e., they contain the corresponding fields such as <code>type</code>),
+              which describes the data transfer in either direction.
+              Actions may define an <code>input</code> data schema for actuation data being sent to the Action
+              and/or an <code>output</code> data schema for result or status data being returned from
+              the Action.
+
             </p>
         </section>
 
         <section>
-          <h2>Interaction Verbs</h2>
+          <h2>Form Operation Type Vocabulary</h2>
             <p>
-              Interactions have one or more defined interaction verbs for each
-              interaction pattern. Form Relations allow an interaction to have
-              separate protocol mechanisms to support different interaction verbs.
+
+              Each interaction pattern has associated form operation types
+              that are used to select the form element corresponding to the intended interaction,
+              reading a Property vs writing a Property vs observing a Property.
+
             </p>
           <section>
-            <h3>Property Interactions</h3>
+            <h3>Property Forms</h3>
               <p>
-                Properties provide '"read" and, optionally, "write"
+                Properties provide "read" and, optionally, "write"
                 operations, which map to GET and PUT/POST of a REST API.
-                Properties may also by observed, though some properties may not be
-                observable.
+                Properties may also by observed, though some properties may not be observable.
               </p>
-              <p>
-                readproperty
-              </p>
-              <p>
-                writeproperty
-              </p>
-              <p>
-                observeproperty
-              </p>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th><code>op</code> Term</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>readproperty</code></td>
+                    <td>Read a Property.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                  <tr>
+                    <td><code>writeproperty</code></td>
+                    <td>Write a Property. Requires <code>writable</code> to be set to <code>true</code>.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                  <tr>
+                    <td><code>observeproperty</code></td>
+                    <td>Observe a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
 
           <section>
-            <h3>Action Interactions</h3>
+            <h3>Action Forms</h3>
               <p>
-                Actions provide '"invoke" operations, which can map to PUT, POST,
-                or PUBLISH operations.
+                Actions only provide "invoke" operations.
+                For completeness, there is also a form operation type defined.
               </p>
-              <p>
-                invokeaction
-              </p>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th><code>op</code> Term</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>invokeaction</code></td>
+                    <td>Invoke an Action.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                </tbody>
+              </table>
           </section>
 
           <section>
-            <h3>Event Interactions</h3>
+            <h3>Event Forms</h3>
               <p>
-                Events may directly expose observable resources from which to obtain event
-                instances.
+                Events describe subscription endpoints from which to event instances can be received.
               </p>
-              <p>
-                subscribeevent
-              </p>
-              <p>
-                unsubscribeevent
-              </p>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th><code>op</code> Term</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>subscribeevent</code></td>
+                    <td>Subscribe to an Event.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                  <tr>
+                    <td><code>unsubscribeevent</code></td>
+                    <td>Unsubscribe drom an Event.</td>
+                    <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
           </section>
 
           <section>
-          <h2>Form Vocabulary</h2>
+          <h2>Protocol Vocabulary</h2>
             <p>
-              Extensions to the form vocabulary provide a way to inform the client about
-              protocol methods, options, and status codes.
+              Extensions to the TD core vocabulary can inform the client about
+              protocol-specific message configurations such as methods, options, and status codes.
+              The vocabulary comes from existing Linked Data vocabulary such as the HTTP Vocabulary in RDF 1.0 [[HTTP-in-RDF10]].
             </p>
+            <p class="ednote" title="Protocol Vocabulary Definitions">
+              The WoT Working Group is investigating good ways to also provide COAP and MQTT Vocabulary in RDF.
+              If the WG will publish corresponding WG Notes is still subject to discussion.
+            </p>
+            
             <section>
-              <h3>HTTP form vocabulary</h3>
-                <p>
-                  http:methodName [ "GET", "PUT", "POST", "DELETE"]
-                </p>
-                <p>
-                  http:headers
-                  example: [ {"http:fieldName": "accept", "http:fieldValue": "text/plain"} ]
-                </p>
-                <p>
-                  http:fieldName [ accept, content-type, transfer-encoding ]
-                </p>
-                <p>
-                  http:fieldValue
-                </p>
+
+              <h3>HTTP Vocabulary</h3>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Mandatory</th>
+                    <th>Default value</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>htv:methodName</code></td>
+                    <td>HTTP method name (Literal).</td>
+                    <td>no</td>
+                    <td>
+                      <p><code>readproperty</code>: <code>"GET"</code></p>
+                      <p><code>writeproperty</code>: <code>"PUT"</code></p>
+                      <p><code>invokeaction</code>: <code>"POST"</code></p>
+                    </td>
+                    <td>
+                      <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                      <p>(one of <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, <code>"DELETE"</code>, <code>"PATCH"</code>)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>htv:headers</code></td>
+                    <td>HTTP headers sent with the message.</td>
+                    <td>no</td>
+                    <td>.</td>
+                    <td>
+                      array of <a href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>htv:MessageHeader</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>htv:fieldName</code></td>
+                    <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
+                    <td>yes (within <code>htv:headers</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>htv:fieldValue</code></td>
+                    <td>Header value (Literal).</td>
+                    <td>yes (within <code>http:headers</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
             </section>
+            
             <section>
-              <h3>CoAP form vocabulary</h3>
-                <p>
-                  coap:methodCode [ 1, 2, 3, 4 ]
-                </p>
-                <p>
-                  coap:options
-                  example: [ { "coap:optionNumber": 6, "coap:optionValue": 49 } ]
-                </p>
-                <p>
-                  coap:optionNumber [ 0..65535 ]
-                </p>
-                <p>
-                  coap:optionValue [ any type ]
-                </p>
+              <h3>CoAP Vocabulary</h3>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Mandatory</th>
+                    <th>Default value</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>cov:methodCode</code></td>
+                    <td>CoAP method code (Literal).</td>
+                    <td>no</td>
+                    <td>
+                      <p><code>readproperty</code>: <code>1</code></p>
+                      <p><code>writeproperty</code>: <code>3</code></p>
+                      <p><code>observeproperty</code>: <code>1</code></p>
+                      <p><code>invokeaction</code>: <code>2</code></p>
+                    </td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                      <p>(one of <code>1</code> (GET), <code>2</code> (POST), <code>3</code> (PUT), <code>4</code> (DELETE), <code>5</code> (FETCH), <code>6</code> (PATCH), <code>7</code> (iPATCH))</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cov:options</code></td>
+                    <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 } ]</code>.</td>
+                    <td>no</td>
+                    <td>.</td>
+                    <td>
+                      array of <code>cov:MessageOption</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cov:optionNumber</code></td>
+                    <td>Option number (Literal), see <a href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE Parameters</a>.</td>
+                    <td>yes (within <code>cov:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cov:optionValue</code></td>
+                    <td>Header value (Literal).</td>
+                    <td>yes (within <code>cov:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
 
             <section>
-              <h3>MQTT form vocabulary</h3>
-                <p>
-                  mqtt:commandCode [ 3, 8, 10 ]
-                </p>
-                <p>
-                  mqtt:options
-                  example: [ {  "mqtt:optionName": "qos", "mqtt:optionValue": 1 }]
-                </p>
-                <p>
-                  mqtt:optionName [ qos, retain, dup ]
-                </p>
-                <p>
-                  mqtt:qos Quality of service level as number (0=at most once, 1=at least once, 2=exactly once)
-                </p>
-                <p>
-                  mqtt:retain Retain flag as boolean. If true, the broker will store the last retained message and the corresponding QoS for that topic
-                </p>
-                <p>
-                  mqtt:dup Duplicate flag for duplicated delivery
-                </p>
-                <p>
-                  mqtt:optionValue (qos) [ 0, 1, 2, 3 ]
-                </p>
-                <p>
-                  mqtt:optionValue (retain) [ 0, 1 ]
-                </p>
-                <p>
-                  mqtt:optionValue (dup) [ 0, 1 ]
-                </p>
+              <h3>MQTT Vocabulary</h3>
+              <table class="def">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Description</th>
+                    <th>Mandatory</th>
+                    <th>Default value</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>mqv:commandCode</code></td>
+                    <td>MQTT Control Packet type (Literal).</td>
+                    <td>no</td>
+                    <td>
+                      <p><code>readproperty</code>: <code>8</code></p>
+                      <p><code>writeproperty</code>: <code>3</code></p>
+                      <p><code>observeproperty</code>: <code>8</code></p>
+                      <p><code>invokeaction</code>: <code>3</code></p>
+                      <p><code>subscribeevent</code>: <code>8</code></p>
+                      <p><code>unsubscribeevent</code>: <code>10</code></p>
+                    </td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                      <p>(one of <code>3</code> (PUBLISH), <code>8</code> (SUBSCRIBE), <code>10</code> (UNSUBSCRIBE))</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>mqv:options</code></td>
+                    <td>MQTT options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 } ]</code>.</td>
+                    <td>no</td>
+                    <td>.</td>
+                    <td>
+                      array of <a href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>http:MessageHeader</code></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>mqv:optionName</code></td>
+                    <td>Option name (Literal).</td>
+                    <td>yes (within <code>mqv:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                      <p>(one of <code>"qos"</code>, <code>"retain"</code>, <code>"dup"</code>)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>mqv:optionValue</code></td>
+                    <td>Header value (Literal).</td>
+                    <td>yes (within <code>mqv:options</code>)</td>
+                    <td>.</td>
+                    <td>
+                      <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
 
             <section>
-              <h3>subProtocol form vocabulary</h3>
-                <p>
-                  subProtocol [ "LongPoll" ]
-                </p>
-                <p>
-                  Long polling may be specified as a sub protocol of HTTP to enable asynchronous event
-                  delivery.
-                </p>
-                <p>
-                  Additional subProtocol values, which are registered by IANA, may be used for websockets:
-                  <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>Websocket Subprotocols</a>
-                </p>
+
+              <h3><code>subprotocol</code> Vocabulary</h3>
+              <p>
+                The <code>subprotocol</code> field is defined in [[!WOT-TD]].
+              </p>
+              <p>
+                Currently, there is only the value <code>"longpoll"</code> defined for HTTP.
+                It can be used for asynchronous event delivery or observing Properties.
+              </p>
+              <p>
+                For WebSockets, the IANA-registered <a href="https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">Websocket Subprotocols</a>
+                may be used.
+              </p>
+
             </section>
 
           </section>
@@ -953,50 +1196,68 @@
 
     <section id="binding-examples" class="informative">
       <h1>Examples of Thing Descriptions including protocol bindings</h1>
+
+      <p>
+        The following TD examples uses a fictional CoAP and MQTT Protocol Bindings, as no such Protocol Binding is available at the time of writing this specification. 
+        These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and <code>http://www.example.org/mqtt-binding#</code>, respectively. 
+        The supplemented <code>cov:methodName</code> member instructs the client which CoAP method has to be applied (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code 0.02, or <code>iPATCH</code> for CoAP Method Code 0.07).
+        The supplemented mqv:commandCode member instructs the client which MQTT command has to be applied (e.g., <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
+      </p>
+
       <p>
         TD with simple payload format
       </p>
-      <pre class="example" title="TD with a simple Payload">
+      <pre class="example" title="TD with a Simple Payload">
         {
-          "@context": {
-            "iot": "http://iotschema.org/",
-            "http": "http://iotschema.org/protocol/http",
-            "coap": "http://iotschema.org/protocol/coap",
-            "mqtt": "http://iotschema.org/protocol/mqtt"
-          },
+          "@context": [
+            "https://www.w3.org/2019/wot/td/v1",
+            {
+              "iot": "http://iotschema.org/",
+              "cov": "http://www.example.org/coap-binding#"
+              "mqv": "http://www.example.org/mqtt-binding#"
+            }
+          ],
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitchCapability" ],
           "base": "http://example.com",
-          "name": "Lamp",
+          "title": "Lamp",
+          "id": "urn:dev:ops:32473-WoTLamp-1234",
+          "securityDefinitions": {"basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+          }},
+          "security": ["basic_sc"],
           "properties": {
-            "switchstate": {
+            "switchState": {
               "@type": ["iot:SwitchStatus", "iot:SwitchData"],
               "type": "boolean",
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": false,
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["readproperty", "writeproperty"],
-                  "mediaType": "application/json"
+                  "op": ["readproperty", "writeproperty"],
+                  "contentType": "application/json"
                 }
               ]
             },
             "brightness": {
               "@type": ["iot:CurrentLevel", "iot:LevelData"],
               "type": "number",
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": false,
               "forms": [
                 {
-                  "href": "/example/light/currentdimmer",
-                  "rel": ["readproperty", "writeproperty"],
-                  "mediaType": "application/json"
+                  "href": "coap://example.com/example/light/currentdimmer",
+                  "op": ["readproperty", "writeproperty"],
+                  "contentType": "application/json"
                 }
               ]
             }
           },
           "actions": {
-            "switchon": {
+            "switchOn": {
               "@type": ["iot:SwitchOnAction"],
               "input":  {
                 "type": "boolean",
@@ -1005,12 +1266,12 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["invokeaction"],
-                  "mediaType": "application/json"
+                  "op": ["invokeaction"],
+                  "contentType": "application/json"
                 }
               ]
             },
-            "switchoff": {
+            "switchOff": {
               "@type": ["iot:SwitchOff"],
               "input":  {
                 "type": "boolean",
@@ -1019,12 +1280,12 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "rel": ["invokeaction"],
-                  "mediaType": "application/json"
+                  "op": ["invokeaction"],
+                  "contentType": "application/json"
                 }
               ]
             },
-            "setbrightness": {
+            "setBrightness": {
               "@type": ["iot:SetLevelAction"],
               "input":  {
                 "@type": ["iot:LevelData"],
@@ -1033,8 +1294,8 @@
               "forms": [
                 {
                   "href": "/example/light/currentdimmer",
-                  "rel": ["invokeaction"],
-                  "mediaType": "application/json"
+                  "op": ["invokeaction"],
+                  "contentType": "application/json"
                 }
               ]
             }
@@ -1046,17 +1307,25 @@
       </p>
       <pre class="example" title="TD with protocol options and complex payload">
         {
-          "@context": {
+          "@context": [
+            "https://www.w3.org/2019/wot/td/v1",
+            {
               "iot": "http://iotschema.org/",
-              "http": "http://iotschema.org/protocol/http",
-              "coap": "http://iotschema.org/protocol/coap",
-              "mqtt": "http://iotschema.org/protocol/mqtt"
-          },
+              "cov": "http://www.example.org/coap-binding#"
+              "mqv": "http://www.example.org/mqtt-binding#"
+            }
+          ],
           "base": "http://example.com/",
           "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
-          "name": "Lamp",
+          "title": "Lamp",
+          "id": "urn:dev:ops:32473-WoTLamp-1234",
+          "securityDefinitions": {"basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+          }},
+          "security": ["basic_sc"],
           "properties": {
-            "switchstate": {
+            "switchState": {
               "@type": ["iot:SwitchStatus"],
               "type": "object",
               "properties": {
@@ -1065,25 +1334,26 @@
                   "type": "boolean"
                 }
               },
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": true,
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["readproperty"],
-                  "http:methodName": "GET"
+                  "contentType": "application/json",
+                  "op": ["readproperty"],
+                  "htv:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["writeproperty"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["writeproperty"],
+                  "htv:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentswitch",
-                  "rel": ["observeproperty"],
-                  "mqtt:commandCode": 8
+                  "op": ["observeproperty"],
+                  "mqv:commandCode": 8
                 }
               ]
             },
@@ -1098,64 +1368,65 @@
                   "maximum": 255
                 }
               },
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": true,
               "forms": [
                 {
-                  "href": "/example/light/currentdimmer",
-                  "mediaType": "application/json",
-                  "rel": ["readproperty"],
-                  "http:methodName": "GET"
+                  "href": "coap://example.com/example/light/currentdimmer",
+                  "contentType": "application/json",
+                  "op": ["readproperty"],
+                  "cov:methodName": "GET"
                 },
                 {
                   "href": "/example/light/currentdimmer",
-                  "mediaType": "application/json",
-                  "rel": ["writeproperty"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["writeproperty"],
+                  "htv:methodName": "POST"
                 },
                 {
                   "href": "mqtt://example.com/example/light/currentdimmer",
-                  "rel": ["observeproperty"],
-                  "mqtt:commandCode": 8
+                  "op": ["observeproperty"],
+                  "mqv:commandCode": 8
                 }
               ]
             },
-            "transitiontime": {
+            "transitionTime": {
               "@type": ["iot:TransitionTime"],
               "type": "object",
               "properties": {
-                "transitiontime": {
+                "transitionTime": {
                   "@type": ["iot:TransitionTimeData" ],
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 255
                 }
               },
-              "writable": true,
+              "writeOnly": false,
+              "readOnly": false,
               "observable": false,
               "forms": [
                 {
                   "href": "/example/light/transitiontime",
-                  "mediaType": "application/json",
-                  "rel": ["readproperty"],
-                  "http:methodName": "GET"
+                  "contentType": "application/json",
+                  "op": ["readproperty"],
+                  "htv:methodName": "GET"
                 },
                 {
                   "href": "/example/light/transitiontime",
-                  "mediaType": "application/json",
-                  "rel": ["writeproperty"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["writeproperty"],
+                  "htv:methodName": "POST"
                 }
               ]
             }
           },
           "actions": {
-            "switchon": {
+            "switchOn": {
               "@type": ["iot:SwitchOnAction"],
               "input":  {
                 "type": "object",
                 "properties": {
-                  "name": "switch",
                   "type": "boolean",
                   "const": true
                 }
@@ -1163,34 +1434,30 @@
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["invokeaction"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["invokeaction"],
+                  "htv:methodName": "POST"
                 }
               ]
             },
-            "switchoff": {
+            "switchOff": {
               "@type": ["iot:SwitchOffAction"],
               "input": {
-                "type": "object",
-                "properties": {
-                  "switch": {
                     "type": "boolean",
                     "const": false
-                  }
                 }
               },
               "forms": [
                 {
                   "href": "/example/light/currentswitch",
-                  "mediaType": "application/json",
-                  "rel": ["invokeaction"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["invokeaction"],
+                  "htv:methodName": "POST"
                 }
               ]
             },
-            "setbrightness": {
-              "label": "Set Brightness Level",
+            "setBrightness": {
+              "title": "Set Brightness Level",
               "@type": ["iot:SetLevelAction"],
               "input": {
                 "type": "object",
@@ -1202,19 +1469,19 @@
                     "maximum": 255
                     }
                   },
-                  "transitiontime": {
+                  "transitionTime": {
                     "@type": ["iot:TransitionTimeData"],
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 65535
                   }
               },
-              "form": [
+              "forms": [
                 {
                   "href": "/example/light/",
-                  "mediaType": "application/json",
-                  "rel": ["invokeaction"],
-                  "http:methodName": "POST"
+                  "contentType": "application/json",
+                  "op": ["invokeaction"],
+                  "htv:methodName": "POST"
                 }
               ]
             }
@@ -1394,7 +1661,77 @@
 
 
     <section id="references" class="informative">
-      <h1>References</h1>
+          <h1>References</h1>
+
+    <dl class="bibliography">
+      <dt id="bib-http-in-rdf10">[HTTP-in-RDF10
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.w3.org/TR/HTTP-in-RDF10/"><cite>HTTP Vocabulary in RDF 1.0</cite></a>. Johannes Koch; Carlos
+        A. Velasco; Philip Ackermann. W3C. 2 February 2017. W3C Note. URL: <a
+          href="https://www.w3.org/TR/HTTP-in-RDF10/">https://www.w3.org/TR/HTTP-in-RDF10/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-iana-media-types">[IANA-MEDIA-TYPES
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.iana.org/assignments/media-types/"><cite>Media Types</cite></a>. IANA. URL: <a
+          href="https://www.iana.org/assignments/media-types/">https://www.iana.org/assignments/media-types/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-iana-uri-schemes">[IANA-URI-SCHEMES
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml"><cite>Uniform Resource Identifier (URI)
+            Schemes</cite></a>. IANA. URL: <a
+          href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml">https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-json-ld11">[JSON-LD11
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://www.w3.org/TR/json-ld11/"><cite>JSON-LD 1.1</cite></a>. Gregg Kellogg; Pierre-Antoine Champin.
+        W3C. 14 July 2019. W3C Working Draft. URL: <a
+          href="https://www.w3.org/TR/json-ld11/">https://www.w3.org/TR/json-ld11/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-json-schema">[JSON-SCHEMA
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://tools.ietf.org/html/draft-handrews-json-schema-validation-01"><cite>JSON Schema Validation: A
+            Vocabulary for Structural Validation of JSON</cite></a>. Austin Wright; Henry Andrews; Geraint Luff. IETF. 19
+        March 2018. Internet-Draft. URL: <a
+          href="https://tools.ietf.org/html/draft-handrews-json-schema-validation-01">https://tools.ietf.org/html/draft-handrews-json-schema-validation-01</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-mqtt">[MQTT
+        <!---0.165880%-->]</dt>
+      <dd><a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html"><cite>MQTT Version 3.1.1</cite></a>. Andrew
+        Banks; Rahul Gupta. OASIS. 10 December 2015. OASIS Standard Incorporating Approved Errata 01. URL: <a
+          href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-openapi">[OPENAPI
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://swagger.io/specification/"><cite>OpenAPI Specification: Version 3.0.1</cite></a>. Darrel Miller;
+        Jason Harmon; Jeremy Whitlock; Kris Hahn; Marsh Gardiner; Mike Ralphson; Rob Dolin; Ron Ratovsky; Tony Tam. OpenAPI
+        Initiative, Linux Foundation. 7 December 2017. URL: <a
+          href="https://swagger.io/specification/">https://swagger.io/specification/</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-rfc7231">[RFC7231
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://httpwg.org/specs/rfc7231.html"><cite>Hypertext Transfer Protocol (HTTP/1.1): Semantics and
+            Content</cite></a>. R. Fielding, Ed.; J. Reschke, Ed.. IETF. June 2014. Proposed Standard. URL: <a
+          href="https://httpwg.org/specs/rfc7231.html">https://httpwg.org/specs/rfc7231.html</a>
+        <!---0.165880%-->
+      </dd>
+      <dt id="bib-wot-security-guidelines">[WOT-SECURITY-GUIDELINES
+        <!---0.165880%-->]</dt>
+      <dd><a href="https://w3c.github.io/wot-security/"><cite>Web of Things (WoT) Security and Privacy
+            Guidelines</cite></a>. ; Michael McCool; Elena Reshetova. W3C. March 2019. URL: <a
+          href="https://w3c.github.io/wot-security/">https://w3c.github.io/wot-security/</a>
+        <!---0.165880%-->
+      </dd>
+      <!---0.165880%-->
+    </dl>
+
+
       <p>
         <a href=https://www.iana.org/assignments/link-relations/link-relations.xhtml>IANA link relations</a>
       </p>
@@ -1413,15 +1750,13 @@
        to extract additional semantics.
       </p>
       <p>
-        <a href=https://www.w3.org/TR/HTTP-in-RDF10/>HTTP vocabulary</a>
-      </p>
-      <p>
 
         <a href=https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name>IANA Registry for Websocket Subprotocols</a>
       </p>
 
 
     </section>
+
 
 
     <section id="sec-security-considerations">
@@ -1440,8 +1775,7 @@
         Please file any security or privacy considerations and/or concerns using the <a href="https://github.com/w3c/wot-security/issues">GitHub Issue</a> feature.
       </p>
       <p><!-- Security requirements for the the WoT -->
-        Security is a cross-cutting issue that needs to be taken into account in all
-        <a href="#sec-building-blocks">WoT building blocks</a>.
+        Security is a cross-cutting issue that needs to be taken into account in all WoT building blocks.
         The W3C WoT does not define any new security mechanisms,
         but provides guidelines to apply the best practices from
         Web security,

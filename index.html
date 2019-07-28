@@ -166,8 +166,10 @@
           <p>
             The protocol methods are mapped to the abstract WoT Interaction verbs
             <code>readproperty</code>, <code>writeproperty</code>,
-            <code>observeproperty</code>, <code>invokeaction</code>,
-            <code>subscribeevent</code>, <code>unsubscribeevent</code>.
+            <code>observeproperty</code>, <code>unobserveproperty</code>, <code>invokeaction</code>,
+            <code>subscribeevent</code>, <code>unsubscribeevent</code>, 
+            <code>readallproperties</code>, <code>writeallproperties</code>, 
+            <code>readmultipleproperties</code>, <code>writemultipleproperties</code>.
             <!-- modifyAction, cancelAction is still undefined -->
           </p>
           <p>
@@ -892,6 +894,12 @@
           the abstract operation is performed, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
+
+        <p>
+          Additionally, the abstract operations exposed for multiple Property Interactions are <code>readallproperties</code>,
+          <code>writeallproperties</code>, <code>readmultipleproperties</code> and <code>writemultipleproperties</code>.
+        </p>
+
         <pre class="example" title="Example use of form operation for Property">
           {
             "op": "writeproperty",
@@ -902,7 +910,7 @@
         
         <p>
           The form element in the example above conveys the statement: <i>"To do a <code>writeproperty</code> of the subject Property (context of the form),
-          perform a <code>POST</code> on the resource at the target URI <code>/example/level</code>."</i>
+          perform an <code> HTTP POST</code> on the resource at the target URI <code>/example/level</code>."</i>
         </p>
         <p>
           Properties may be observable, defined by the TD keyword "observable".

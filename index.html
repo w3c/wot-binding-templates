@@ -166,8 +166,10 @@
           <p>
             The protocol methods are mapped to the abstract WoT Interaction verbs
             <code>readproperty</code>, <code>writeproperty</code>,
-            <code>observeproperty</code>, <code>invokeaction</code>,
-            <code>subscribeevent</code>, <code>unsubscribeevent</code>.
+            <code>observeproperty</code>, <code>unobserveproperty</code>, <code>invokeaction</code>,
+            <code>subscribeevent</code>, <code>unsubscribeevent</code>, 
+            <code>readallproperties</code>, <code>writeallproperties</code>, 
+            <code>readmultipleproperties</code>, <code>writemultipleproperties</code>.
             <!-- modifyAction, cancelAction is still undefined -->
           </p>
           <p>
@@ -610,59 +612,126 @@
             }
           </pre>
           When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code> definition), the above <code>object</code> definition transforms to the following XML Schema element definition.
+
           <pre class="example" title="XML Schema mapping of the above JSON Schema with an anonymous object">
-            <xs:element name="object" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-              <xs:complexType>
-                <xs:all>
-                  <xs:element name="id">
-                    <xs:complexType>
-                      <xs:sequence>
-                        <xs:element name="integer" type="xs:integer" />
-                      </xs:sequence>
-                    </xs:complexType>
-                  </xs:element>
-                  <xs:element name="name" minOccurs="0">
-                    <xs:complexType>
-                      <xs:sequence>
-                        <xs:element name="string" type="xs:string" />
-                      </xs:sequence>
-                    </xs:complexType>
-                  </xs:element>
-                </xs:all>
-              </xs:complexType>
-            </xs:element>
-          </pre>
+              <pre class="hljs xml" aria-busy="false"><span class=
+              "hljs-tag">&lt;<span class=
+              "hljs-name">xs:element</span> <span class=
+              "hljs-attr">name</span>=<span class=
+              "hljs-string">"array"</span> <span class=
+              "hljs-attr">xmlns:xs</span>=<span class=
+              "hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:element</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"double"</span> <span class=
+  "hljs-attr">minOccurs</span>=<span class=
+  "hljs-string">"3"</span> <span class=
+  "hljs-attr">maxOccurs</span>=<span class=
+  "hljs-string">"3"</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:simpleType</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"minInclusive"</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:restriction</span> <span class=
+  "hljs-attr">base</span>=<span class=
+  "hljs-string">"xs:double"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:minInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"0"</span>/&gt;</span>
+                          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:maxInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"2047"</span>/&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:restriction</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:simpleType</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span></pre>
+  </pre>
 
           Otherwise (i.e. the <code>object</code> is a member of another <code>object</code> definition, thus has a name), the object definition transforms to the following XML schema element definition. Note <code>$name</code> represents the name of the <code>object</code>, and needs to be replaced by the actual name of the <code>object</code>.
-
+          
           <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous object">
-            <xs:element name="$name" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element name="object">
-                    <xs:complexType>
-                      <xs:all>
-                        <xs:element name="id">
-                          <xs:complexType>
-                            <xs:sequence>
-                              <xs:element name="integer" type="xs:integer" />
-                            </xs:sequence>
-                          </xs:complexType>
-                        </xs:element>
-                        <xs:element name="name" minOccurs="0">
-                          <xs:complexType>
-                            <xs:sequence>
-                              <xs:element name="string" type="xs:string" />
-                            </xs:sequence>
-                          </xs:complexType>
-                        </xs:element>
-                      </xs:all>
-                    </xs:complexType>
-                  </xs:element>
-                </xs:sequence>
-              </xs:complexType>
-            </xs:element>
-          </pre>
+              <pre class="hljs xml" aria-busy="false"><span class=
+              "hljs-tag">&lt;<span class=
+              "hljs-name">xs:element</span> <span class=
+              "hljs-attr">name</span>=<span class=
+              "hljs-string">"$name"</span> <span class=
+              "hljs-attr">xmlns:xs</span>=<span class=
+              "hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:element</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"array"</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:element</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"double"</span> <span class=
+  "hljs-attr">minOccurs</span>=<span class=
+  "hljs-string">"3"</span> <span class=
+  "hljs-attr">maxOccurs</span>=<span class=
+  "hljs-string">"3"</span> &gt;</span>
+                              <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:simpleType</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"minInclusive"</span>&gt;</span>
+                                  <span class=
+  "hljs-tag">&lt;<span class=
+  "hljs-name">xs:restriction</span> <span class=
+  "hljs-attr">base</span>=<span class=
+  "hljs-string">"xs:double"</span>&gt;</span>
+                                      <span class=
+  "hljs-tag">&lt;<span class=
+  "hljs-name">xs:minInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"0"</span>/&gt;</span>
+                                      <span class=
+  "hljs-tag">&lt;<span class=
+  "hljs-name">xs:maxInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"2047"</span>/&gt;</span>
+                                  <span class=
+  "hljs-tag">&lt;/<span class=
+  "hljs-name">xs:restriction</span>&gt;</span>
+                              <span class=
+  "hljs-tag">&lt;/<span class="hljs-name">xs:simpleType</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span></pre>
+  </pre>
 
         </section>
 
@@ -890,6 +959,12 @@
           the abstract operation is performed, resulting in a semantic interpretation similar to
           HTML form submission.
         </p>
+
+        <p>
+          Additionally, the abstract operations exposed for multiple Property Interactions are <code>readallproperties</code>,
+          <code>writeallproperties</code>, <code>readmultipleproperties</code> and <code>writemultipleproperties</code>.
+        </p>
+
         <pre class="example" title="Example use of form operation for Property">
           {
             "op": "writeproperty",
@@ -900,7 +975,7 @@
         
         <p>
           The form element in the example above conveys the statement: <i>"To do a <code>writeproperty</code> of the subject Property (context of the form),
-          perform a <code>POST</code> on the resource at the target URI <code>/example/level</code>."</i>
+          perform an <code> HTTP POST</code> on the resource at the target URI <code>/example/level</code>."</i>
         </p>
         <p>
           Properties may be observable, defined by the TD keyword "observable".
@@ -1299,11 +1374,11 @@
                   </tr>
                   <tr>
                     <td><code>mqv:options</code></td>
-                    <td>MQTT options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 } ]</code>.</td>
+                    <td>MQTT options sent with the message, e.g., <code>[ { "mqv:optionName": "qos", "mqv:optionValue": 1 } ]</code>.</td>
                     <td>no</td>
                     <td>.</td>
                     <td>
-                      array of <a href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>http:MessageHeader</code></a>
+                      array of <code>mqv:MessageOption</code></a>
                     </td>
                   </tr>
                   <tr>
@@ -1336,8 +1411,8 @@
                 The <code>subprotocol</code> field is defined in [[!WOT-TD]].
               </p>
               <p>
-                Currently, there is only the value <code>"longpoll"</code> defined for HTTP.
-                It can be used for asynchronous event delivery or observing Properties.
+                Currently, the supported values are <code>longpoll</code>, <code>websub</code> and <code>sse</code> defined for HTTP.
+                Subprotocols can be used for asynchronous event delivery or observing Properties.
               </p>
               <p>
                 For WebSockets, the IANA-registered <a href="https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">Websocket Subprotocols</a>

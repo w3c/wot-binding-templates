@@ -614,7 +614,83 @@
           When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code> definition), the above <code>object</code> definition transforms to the following XML Schema element definition.
 
           <pre class="example" title="XML Schema mapping of the above JSON Schema with an anonymous object">
-              <pre class="hljs xml" aria-busy="false"><span class=
+            <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"object"</span> <span class="hljs-attr">xmlns:xs</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:all</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"id"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"integer"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:integer"</span> /&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">minOccurs</span>=<span class="hljs-string">"0"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"string"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:string"</span> /&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:all</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span></pre>
+          </pre>
+
+          Otherwise (i.e. the <code>object</code> is a member of another <code>object</code> definition, thus has a name), the object definition transforms to the following XML schema element definition. Note <code>$name</code> represents the name of the <code>object</code>, and needs to be replaced by the actual name of the <code>object</code>.
+          
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous object">
+            <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"$name"</span> <span class="hljs-attr">xmlns:xs</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"object"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-name">xs:all</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"id"</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"integer"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:integer"</span> /&gt;</span>
+                                        <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">minOccurs</span>=<span class="hljs-string">"0"</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"string"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:string"</span> /&gt;</span>
+                                        <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                              <span class="hljs-tag">&lt;/<span class="hljs-name">xs:all</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span></pre>
+          </pre>
+
+        </section>
+
+        <section id="mapping-to-xml-schema-array">
+          <h2>Array Definition to XML Schema</h2>
+
+          Shown below is the type system <code>array</code> definition given for the <code></code>input in Section Array. The <code></code>array consists of exactly three number literals with each value within the value range of [ 0 ... 2047 ].
+
+          <pre class="example" title="JSON Schema description of the required JSON Array for an Action input">
+            {
+                "type": "array",
+                "items": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 2047
+                },
+                "minItems": 3,
+                "maxItems": 3
+            }
+          </pre>
+
+          When the <code></code>array is anonymous (i.e. it is the root, or participates in another <code></code>array definition), the above <code></code>array definition transforms to the following XML Schema element definition.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous array">
+            <pre class="hljs xml" aria-busy="false"><span class=
               "hljs-tag">&lt;<span class=
               "hljs-name">xs:element</span> <span class=
               "hljs-attr">name</span>=<span class=
@@ -661,12 +737,13 @@
   "hljs-name">xs:complexType</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class=
   "hljs-name">xs:element</span>&gt;</span></pre>
-  </pre>
+          </pre>
 
-          Otherwise (i.e. the <code>object</code> is a member of another <code>object</code> definition, thus has a name), the object definition transforms to the following XML schema element definition. Note <code>$name</code> represents the name of the <code>object</code>, and needs to be replaced by the actual name of the <code>object</code>.
-          
-          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous object">
-              <pre class="hljs xml" aria-busy="false"><span class=
+          Otherwise (i.e. the <code></code>array is a member of an <code></code>object definition, thus has a name), the <code></code>array definition transforms to the following XML schema element definition. 
+          Note <code></code>$name represents the name of the <code></code>array, and needs to be replaced by the actual name of the <code></code>array.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous array">
+            <pre class="hljs xml" aria-busy="false"><span class=
               "hljs-tag">&lt;<span class=
               "hljs-name">xs:element</span> <span class=
               "hljs-attr">name</span>=<span class=
@@ -731,71 +808,6 @@
   "hljs-name">xs:complexType</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class=
   "hljs-name">xs:element</span>&gt;</span></pre>
-  </pre>
-
-        </section>
-
-        <section id="mapping-to-xml-schema-array">
-          <h2>Array Definition to XML Schema</h2>
-
-          Shown below is the type system <code>array</code> definition given for the <code></code>input in Section Array. The <code></code>array consists of exactly three number literals with each value within the value range of [ 0 ... 2047 ].
-
-          <pre class="example" title="JSON Schema description of the required JSON Array for an Action input">
-            {
-                "type": "array",
-                "items": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 2047
-                },
-                "minItems": 3,
-                "maxItems": 3
-            }
-          </pre>
-
-          When the <code></code>array is anonymous (i.e. it is the root, or participates in another <code></code>array definition), the above <code></code>array definition transforms to the following XML Schema element definition.
-
-          <pre class="xml" title="XML Schema mapping of the above JSON Schema with a non-anonymous array">
-            <xs:element name="array" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element name="double" minOccurs="3" maxOccurs="3">
-                    <xs:simpleType name="minInclusive">
-                      <xs:restriction base="xs:double">
-                        <xs:minInclusive value="0" />
-                        <xs:maxInclusive value="2047" />
-                      </xs:restriction>
-                    </xs:simpleType>
-                  </xs:element>
-                </xs:sequence>
-              </xs:complexType>
-            </xs:element>
-          </pre>
-
-          Otherwise (i.e. the <code></code>array is a member of an <code></code>object definition, thus has a name), the <code></code>array definition transforms to the following XML schema element definition. 
-          Note <code></code>$name represents the name of the <code></code>array, and needs to be replaced by the actual name of the <code></code>array.
-
-          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous array">
-            <xs:element name="$name" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element name="array">
-                    <xs:complexType>
-                      <xs:sequence>
-                        <xs:element name="double" minOccurs="3" maxOccurs="3">
-                          <xs:simpleType name="minInclusive">
-                            <xs:restriction base="xs:double">
-                              <xs:minInclusive value="0" />
-                              <xs:maxInclusive value="2047" />
-                            </xs:restriction>
-                          </xs:simpleType>
-                        </xs:element>
-                      </xs:sequence>
-                    </xs:complexType>
-                  </xs:element>
-                </xs:sequence>
-              </xs:complexType>
-            </xs:element>
           </pre>
 
         </section>

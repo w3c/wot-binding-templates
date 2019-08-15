@@ -591,25 +591,19 @@
           Shown below is the type system object definition given for the <code>input</code> in Section Object. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of type <code>string</code>) where <code>id</code> is required to be present.
           <pre class="example" title="JSON Schema description of the required JSON Object for an Action input">
             {
-                "type": "object",
-                "field": [
-                    {
-                        "name": "id",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "required": [
-                    "id"
-                ]
-            }
+              "type": "object",
+              "properties": {
+                  "id": {
+                          "type": "integer"
+                  },
+                  "name": {
+                          "type": "string"
+                  }
+              },
+              "required": [
+                  "id"
+              ]
+          }
           </pre>
           When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code> definition), the above <code>object</code> definition transforms to the following XML Schema element definition.
 

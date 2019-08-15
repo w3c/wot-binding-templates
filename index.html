@@ -296,11 +296,19 @@
           <h2>Payload Structure</h2>
           <p>
             Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
-            DataSchema elements are indicated by the <code>type</code> keyword in an Interaction Description with associated
-            JSON Schema validation keywords. The additional keywords <code>input</code> and
+            <code>DataSchema</code> elements are indicated by the <code>type</code>, <code>enum</code> or <code>const</code> 
+            keywords in an Interaction Affordance with associated JSON Schema validation keywords. 
+          </p>
+          <p>
+            In the case of Action Affordances, the additional keywords <code>input</code> and
             <code>output</code> are used to provide two different schemas when data
-            might be exchanged in both directions, such as in the case of invoking an Action
-            when status information is returned.
+            might be exchanged in both directions, such as in the case of invoking an Action Affordance 
+            with input parameters and receiving status information.
+          </p>
+          <p>
+            In the case of Event Affordances, the additional keywords <code>data</code>, <code>subscription</code> and 
+            <code>cancellation</code> are used to describe the payload when the event data is delivered by the Exposed Thing,
+            the payload needed to subscribe to the event and the payload needed to cancel receiving event data from the Exposed Thing, respectively.
           </p>
           <p>
             In addition to the example pattern in [[!WOT-TD]] of an object with name/value

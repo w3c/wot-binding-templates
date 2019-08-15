@@ -285,7 +285,7 @@
         examples.
       </p>
 
-      <section id="Data Schema">
+      <section id="sec-data-schema">
         <h2>Data Schema</h2>
         <p>
           A data schema describes the payload structure and included
@@ -580,7 +580,7 @@
         </section>
 
         <section id="mapping-to-xml-schema">
-          <h2>Mapping to XML Schema</h2>
+          <h2>XML Schema Binding</h2>
         In the previous section, examples showed what data whose value type is described using the type system look like when serialized to XML in parallel to corresponding JSON serializations.
         
         This section describes how type definitions described using the type system can be mapped to XML schema definitions by using the same examples. Given these type definitions, providing the mapping to XML schema allows XML tools to directly validate serialized XML data, for example. The XML structure for which this mapping is designed is based on EXI4JSON [exi-for-json].
@@ -843,7 +843,7 @@
           </p>
         </section>
 
-        <section id="media-types">
+        <section id="content-types">
           <h2>Content Types</h2>
           <p>
             Content Types define the serialization details and other rules for processing
@@ -862,6 +862,17 @@
             media type (e.g., <code>x-<echonet></code>) along with a custom URI scheme and its own
             set of protocol methods and options defined for that URI scheme.
           </p>
+
+          <p> When the content type is <code>application/xml</code> (or its binary representation <code>application/exi</code>) and 
+            there is a Data Schema provided for the payload, the payloads are constrained by a XML Schema derived from the Data Schema. 
+            See <a href="#mapping-to-xml-schema" class="sec-ref">§&nbsp;
+                <bdi class="secno">
+                  3.1.3
+                </bdi>XML Schema Binding
+              </a> Schema Binding for how to derive a XML Schema from a Data Schema definition.
+          </p>
+
+          <p>Below are some examples of payloads in JSON and their corresponding equivalent payloads in XML.</p>
         </section>
 
         <section id="protocol-methods-options">
@@ -1065,7 +1076,10 @@
         respect to the abstract WoT Interactions provided by the Scripting API.
       </p>
       <p>
-        <code>DataSchema</code> elements (see Section 2.1) are processed, and
+        <code>DataSchema</code> elements (see <a href="#sec-data-schema" class="sec-ref">§&nbsp;
+          <bdi class="secno">
+            3.1
+          </bdi>Data Schema</a> ) are processed, and
         value scaling is performed, in the application library or adaptation layer.
       </p>
       <p>

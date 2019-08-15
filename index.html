@@ -952,6 +952,54 @@
         </p>
         </section>
 
+        <section id="uri-variables">
+            <h2>URI Template Variables</h2>
+            <p>
+              When Interaction Affordances require dynamic variables in the <code>href</code>, 
+              they can be described using <code>uriVariables</code> in the Data Schema of the interaction.
+              For example, <code>p</code> and <code>d</code> in <code>http://192.168.1.25/left?p=2&d=1</code>
+              can be described with a template as defined in 
+              [<cite><a class="bibref" href="#bib-rfc6570" title="URI Template" data-link-type="biblio">RFC6570</a></cite>
+              ]: <code>http://192.168.1.25/left{?p,d}</code>.
+            </p>
+
+            <p>
+              In such a case, the URI Template variables <i>MUST</i> be collected in the JSON-object based <code>uriVariables</code> 
+              member with the associated (unique) variable names as JSON names.
+            </p>
+
+            <p>
+              The serialization of each value in the map assigned to <code>uriVariables</code> in an instance of <code>Form</code> <i>MUST</i> rely on 
+              the DataSchema as explained in <a href="#sec-data-schema" class="sec-ref">§&nbsp;
+                  <bdi class="secno">
+                    3.1
+                  </bdi>Data Schema</a>.
+            </p>
+            
+            <p>
+              An action affordance snippet using a URI Template and <code>uriVariables</code> is given below:
+            </p>
+            <pre class="example" title="Action Affordance using URI Template Variables">
+                ...
+                "actions": {
+                    "LeftDown": {
+                        ...
+                        "uriVariables": {
+                            "p" : { "type": "integer", "minimum": 0, "maximum": 16 },
+                            "d" : { "type": "integer", "minimum": 0, "maximum": 1 }
+                        },
+                        "forms": [{
+                          "href" : "http://192.168.1.25/left{?p,d}",
+                          "htv:methodName": "GET"
+                        }]
+                    },
+                    ...
+                },
+                ...
+              </pre>
+
+        </section>
+
     </section>
 
 
@@ -1811,6 +1859,8 @@
         <!---0.165880%-->
       </dd>
       <!---0.165880%-->
+      <dt id="bib-rfc6570">[RFC6570<!---0.477926%-->]</dt>
+      <dd><a href="https://tools.ietf.org/html/rfc6570"><cite>URI Template</cite></a>. J. Gregorio; R. Fielding; M. Hadley; M. Nottingham; D. Orchard.  IETF. March 2012. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6570">https://tools.ietf.org/html/rfc6570</a><!---0.477926%--></dd>
     </dl>
 
 

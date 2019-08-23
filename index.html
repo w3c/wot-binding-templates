@@ -880,6 +880,45 @@
           </p>
 
           <p>Below are some examples of payloads in JSON and their corresponding equivalent payloads in XML.</p>
+
+          <pre class="example" title="JSON Payload of Object type for specifying the desired brightness and flashing frequency of a lamp">
+            {
+              "brightness": 200,
+              "frequency": "fast"
+            }
+          </pre>
+
+
+            <pre class="example" title="Corresponding XML Payload for the previous JSON Payload">
+            
+<pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">object</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>200<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>fast<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">object</span>&gt;</span></pre>
+</pre>
+
+          <pre class="example" title="JSON Payload of Array type for specifying the desired brightness and flashing frequency of a lamp">
+[
+  520,
+  184,
+  1314
+]
+          </pre>
+          
+          
+          <pre class="example" title="Corresponding XML Payload for the previous JSON Payload">
+          
+<pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">number</span>&gt;</span>520<span class="hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">number</span>&gt;</span>184<span class="hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">number</span>&gt;</span>1314<span class="hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></pre>
+          </pre>
+          
         </section>
 
         <section id="protocol-methods-options">

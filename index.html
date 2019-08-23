@@ -296,8 +296,7 @@
           <h2>Payload Structure</h2>
           <p>
             Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
-            <code>DataSchema</code> elements are indicated by the <code>type</code>, <code>enum</code> or <code>const</code> 
-            keywords in an Interaction Affordance with associated JSON Schema validation keywords. 
+            DataSchema elements should be used by an instance of a <code></code>PropertyAffordance, <code>input</code>/<code>output</code> of <code>ActionAffordance</code>, <code>data</code>/<code>subscription</code>/<code>cancellation</code> of an <code>EventAffordance</code> or by a <code>uriVariable</code> of the <code>InteractionAffordance</code>.
           </p>
           <p>
             In the case of Action Affordances, the additional keywords <code>input</code> and

@@ -599,10 +599,9 @@
         <section id="mapping-to-xml-schema-object">
           <h2>Object Definition to XML Schema</h2>
 
-          Shown below is the type system object definition given for the <code>input</code> in Section Object. The
-          object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
+          Shown below is an example type system object definition. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
           type <code>string</code>) where <code>id</code> is required to be present.
-          <pre class="example" title="JSON Schema description of the required JSON Object for an Action input">
+          <pre class="example" title="JSON Schema description of the required JSON Object">
             {
               "type": "object",
               "properties": {
@@ -684,10 +683,10 @@
         <section id="mapping-to-xml-schema-array">
           <h2>Array Definition to XML Schema</h2>
 
-          Shown below is the type system <code>array</code> definition given for the <code>input</code> in Section Array. The <code>array</code> consists of exactly three number literals with each value within the value range
+          Shown below is an example type system array definition. The <code>array</code> consists of exactly three number literals with each value within the value range
           of [ 0 ... 2047 ].
 
-          <pre class="example" title="JSON Schema description of the required JSON Array for an Action input">
+          <pre class="example" title="JSON Schema description of the required JSON Array">
             {
                 "type": "array",
                 "items": {
@@ -704,7 +703,7 @@
           definition), the above <code>array</code> definition transforms to the following XML Schema element
           definition.
 
-          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous array">
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with an anonymous array">
             <pre class="hljs xml" aria-busy="false"><span class=
               "hljs-tag">&lt;<span class=
               "hljs-name">xs:element</span> <span class=

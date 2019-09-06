@@ -53,6 +53,20 @@
           status: "Internet-Draft",
           publisher: "IETF",
           date: "03 July 2017"
+        },
+        "wot-security-guidelines":{
+          href:"https://w3c.github.io/wot-security/",
+          title: "Web of Things (WoT) Security and Privacy Guidelines",
+          status: "W3C Editor's Draft",
+          publisher: "W3C",
+          date: "21 August 2019"
+        },
+        "iana-web-socket-registry":{
+          href: "https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name",
+          title: "IANA Registry for Websocket Subprotocols",
+          status: "",
+          publisher: "IANA",
+          date: "24 May 2019"
         }
       }
     };
@@ -163,7 +177,7 @@
       <section>
         <h3>Media Types</h3>
         <p>
-          Maximum use should be made of IANA-registered Media Types (e.g.,
+          Maximum use should be made of IANA-registered Media Types [[IANA-MEDIA-TYPES]] (e.g.,
           <code>application/json</code>) in order to decouple applications from
           connected Things. Standard bridges and translations from proprietary
           formats to Web-friendly languages such as JSON and XML are part of the
@@ -184,7 +198,7 @@
         </p>
         <p>
           The data definition language of <code>DataSchema</code>
-          elements, described in [TD], allows for describing arbitrary
+          elements, described in [[TD]], allows for describing arbitrary
           structures by nesting of arrays and objects. Constants and
           variable specifications may be intermixed.
         </p>
@@ -280,6 +294,7 @@
           <code>input</code>/<code>output</code> of <code>ActionAffordance</code>,
           <code>data</code>/<code>subscription</code>/<code>cancellation</code> of an <code>EventAffordance</code> or by
           a <code>uriVariable</code> of the <code>InteractionAffordance</code>.
+          As indicated in the [[wot-thing-description]], <code>DataSchema</code> Vocabulary is a subset of JSON Schema [[json-schema]]
         </p>
         <p>
           In the case of Action Affordances, the additional keywords <code>input</code> and
@@ -1010,8 +1025,7 @@
           When Interaction Affordances require dynamic variables in the <code>href</code>,
           they can be described using <code>uriVariables</code> in the Data Schema of the interaction.
           For example, <code>p</code> and <code>d</code> in <code>http://192.168.1.25/left?p=2&d=1</code>
-          can be described with a template as defined in
-          [<cite><a class="bibref" href="#bib-rfc6570" title="URI Template" data-link-type="biblio">RFC6570</a></cite>
+          can be described with a template as defined in [[rfc6570]]
           ]: <code>http://192.168.1.25/left{?p,d}</code>.
         </p>
 
@@ -1101,7 +1115,7 @@
         <p>
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
-          indicated by including op=observeproperty in the form. The observe form may
+          indicated by including <code>op=observeproperty</code> in the form. The observe form may
           also specify header options to use, for example CoAP observe option=0
           in the header to start observation.
         </p>
@@ -1224,7 +1238,7 @@
   <section id="vocabulary" class="informative">
     <h1>Vocabulary</h1>
     <p>
-      This section summerizes the vocabulary used for protocol binding templates.
+      This section summarizes the vocabulary used for protocol binding templates.
       The vocabulary is defined in other documents, in particular the WoT Thing Description [[!wot-thing-description]]
     </p>
     <section>
@@ -1269,17 +1283,22 @@
           <tbody>
             <tr>
               <td><code>readproperty</code></td>
-              <td>Read a Property.</td>
+              <td>Read a Property. Requires <code>writeOnly</code> to be set to <code>false</code>.</td>
               <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
-              <td>Write a Property. Requires <code>writable</code> to be set to <code>true</code>.</td>
+              <td>Write a Property. Requires <code>readOnly</code> to be set to <code>false</code>.</td>
               <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
             <tr>
               <td><code>observeproperty</code></td>
               <td>Observe a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
+              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td>Unobserve a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
               <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
           </tbody>
@@ -1556,9 +1575,7 @@
           Subprotocols can be used for asynchronous event delivery or observing Properties.
         </p>
         <p>
-          For WebSockets, the IANA-registered <a
-            href="https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">Websocket Subprotocols</a>
-          may be used.
+          For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
         </p>
 
       </section>
@@ -2105,122 +2122,71 @@
     </p>
     </section>
 
-    <section id="references" class="appendix">
+    <!-- <section id="references" class="appendix">
         <h1>References</h1>
       
         <dl class="bibliography">
-          <dt id="bib-http-in-rdf10">[HTTP-in-RDF10
-            <!---0.165880%-->]</dt>
-          <dd><a href="https://www.w3.org/TR/HTTP-in-RDF10/"><cite>HTTP Vocabulary in RDF 1.0</cite></a>. Johannes Koch;
-            Carlos
-            A. Velasco; Philip Ackermann. W3C. 2 February 2017. W3C Note. URL: <a
-              href="https://www.w3.org/TR/HTTP-in-RDF10/">https://www.w3.org/TR/HTTP-in-RDF10/</a>
-            <!---0.165880%-->
-          </dd>
-          <dt id="bib-iana-media-types">[IANA-MEDIA-TYPES
-            <!---0.165880%-->]</dt>
-          <dd><a href="https://www.iana.org/assignments/media-types/"><cite>Media Types</cite></a>. IANA. URL: <a
-              href="https://www.iana.org/assignments/media-types/">https://www.iana.org/assignments/media-types/</a>
-            <!---0.165880%-->
-          </dd>
-          <dt id="bib-iana-uri-schemes">[IANA-URI-SCHEMES
-            <!---0.165880%-->]</dt>
+
+          <dt id="bib-iana-uri-schemes">[IANA-URI-SCHEMES]</dt>
           <dd><a href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml"><cite>Uniform Resource Identifier
                 (URI)
                 Schemes</cite></a>. IANA. URL: <a
               href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml">https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml</a>
-            <!---0.165880%-->
           </dd>
-          <dt id="bib-json-ld11">[JSON-LD11
-            <!---0.165880%-->]</dt>
+
+          <dt id="bib-json-ld11">[JSON-LD11]</dt>
           <dd><a href="https://www.w3.org/TR/json-ld11/"><cite>JSON-LD 1.1</cite></a>. Gregg Kellogg; Pierre-Antoine
             Champin.
             W3C. 14 July 2019. W3C Working Draft. URL: <a
               href="https://www.w3.org/TR/json-ld11/">https://www.w3.org/TR/json-ld11/</a>
-            <!---0.165880%-->
+
           </dd>
-          <dt id="bib-json-schema">[JSON-SCHEMA
-            <!---0.165880%-->]</dt>
-          <dd><a href="https://tools.ietf.org/html/draft-handrews-json-schema-validation-01"><cite>JSON Schema Validation: A
-                Vocabulary for Structural Validation of JSON</cite></a>. Austin Wright; Henry Andrews; Geraint Luff. IETF.
-            19
-            March 2018. Internet-Draft. URL: <a
-              href="https://tools.ietf.org/html/draft-handrews-json-schema-validation-01">https://tools.ietf.org/html/draft-handrews-json-schema-validation-01</a>
-            <!---0.165880%-->
-          </dd>
-          <dt id="bib-mqtt">[MQTT
-            <!---0.165880%-->]</dt>
+          <dt id="bib-mqtt">[MQTT]</dt>
           <dd><a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html"><cite>MQTT Version 3.1.1</cite></a>.
             Andrew
             Banks; Rahul Gupta. OASIS. 10 December 2015. OASIS Standard Incorporating Approved Errata 01. URL: <a
               href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html</a>
-            <!---0.165880%-->
+
           </dd>
-          <dt id="bib-openapi">[OPENAPI
-            <!---0.165880%-->]</dt>
+          <dt id="bib-openapi">[OPENAPI]</dt>
           <dd><a href="https://swagger.io/specification/"><cite>OpenAPI Specification: Version 3.0.1</cite></a>. Darrel
             Miller;
             Jason Harmon; Jeremy Whitlock; Kris Hahn; Marsh Gardiner; Mike Ralphson; Rob Dolin; Ron Ratovsky; Tony Tam.
             OpenAPI
             Initiative, Linux Foundation. 7 December 2017. URL: <a
               href="https://swagger.io/specification/">https://swagger.io/specification/</a>
-            <!---0.165880%-->
+
           </dd>
-          <dt id="bib-rfc7231">[RFC7231
-            <!---0.165880%-->]</dt>
+          <dt id="bib-rfc7231">[RFC7231]</dt>
           <dd><a href="https://httpwg.org/specs/rfc7231.html"><cite>Hypertext Transfer Protocol (HTTP/1.1): Semantics and
                 Content</cite></a>. R. Fielding, Ed.; J. Reschke, Ed.. IETF. June 2014. Proposed Standard. URL: <a
               href="https://httpwg.org/specs/rfc7231.html">https://httpwg.org/specs/rfc7231.html</a>
-            <!---0.165880%-->
+
           </dd>
-          <dt id="bib-wot-security-guidelines">[WOT-SECURITY-GUIDELINES
-            <!---0.165880%-->]</dt>
-          <dd><a href="https://w3c.github.io/wot-security/"><cite>Web of Things (WoT) Security and Privacy
-                Guidelines</cite></a>. ; Michael McCool; Elena Reshetova. W3C. March 2019. URL: <a
-              href="https://w3c.github.io/wot-security/">https://w3c.github.io/wot-security/</a>
-            <!---0.165880%-->
-          </dd>
-          <!---0.165880%-->
-          <dt id="bib-rfc6570">[RFC6570
-            <!---0.477926%-->]</dt>
-          <dd><a href="https://tools.ietf.org/html/rfc6570"><cite>URI Template</cite></a>. J. Gregorio; R. Fielding; M.
-            Hadley; M. Nottingham; D. Orchard. IETF. March 2012. Proposed Standard. URL: <a
-              href="https://tools.ietf.org/html/rfc6570">https://tools.ietf.org/html/rfc6570</a>
-            <!---0.477926%-->
-          </dd>
+
       
-          <dt id="bib-link-relations">[IANA Link Relations
-            <!---0.477926%-->]</dt>
+          <dt id="bib-link-relations">[IANA Link Relations]</dt>
           <dd><a href="https://www.iana.org/assignments/link-relations/link-relations.xhtml"><cite>Link Relations</cite></a>. IANA. URL: <a
               href="iana.org/assignments/link-relations/link-relations.xhtml">iana.org/assignments/link-relations/link-relations.xhtml</a>
-            <!---0.477926%-->
           </dd>
       
-          <dt id="bib-rfc6906">[RFC6906
-            <!---0.477926%-->]</dt>
+          <dt id="bib-rfc6906">[RFC6906]</dt>
           <dd><a href="https://tools.ietf.org/html/rfc6906"><cite>The 'profile' Link Relation Type</cite></a>. E. Wilde;
             IETF. March 2013. Informational. URL: <a
               href="https://tools.ietf.org/html/rfc6906">https://tools.ietf.org/html/rfc6906</a>
-            <!---0.477926%-->
           </dd>
-          <!-- A media type defines both the semantics and the serialization of a
+          < A media type defines both the semantics and the serialization of a
                       specific type of content. In many cases, media types have some
                       built-in extensibility or openness, so that specific instances of the
                       media type can layer additional semantics on top of the media type's
                       foundation. In this case, a profile is the appropriate mechanism to
                       signal that the original semantics and processing model of the media
                       type still apply, but that an additional processing model can be used
-                      to extract additional semantics. -->
+                      to extract additional semantics. 
         </dl>
       
-          <dt id="bib-ws-registry">[IANA Registry for Websocket Subprotocols
-            <!---0.477926%-->]</dt>
-          <dd><a href="https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name"><cite>Registry for Websocket Subprotocol</cite></a>.
-            IANA. URL: <a
-              href="https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name</a>
-            <!---0.477926%-->
-          </dd>
-      </section>
+
+      </section> -->
   </section>
   <!--
     <section class="appendix">

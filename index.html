@@ -47,19 +47,6 @@
         }]
       }],
       localBiblio: {
-        "WOT-TD": {
-          title: "Web of Things (WoT) Thing Description",
-          href: "https://w3c.github.io/wot-thing-description/",
-          authors: [
-            "Sebastian Kaebisch",
-            "Takuki Kamiya",
-            "Michael McCool",
-            "Victor Charpenay",
-            "Matthias Kovatsch"
-          ],
-          publisher: "W3C",
-          date: "09 September 2018"
-        },
         "CoRE-RD": {
           href: "https://tools.ietf.org/html/draft-ietf-core-resource-directory-11",
           title: "CoRE Resource Directory",
@@ -126,7 +113,7 @@
     <h1>Introduction</h1>
     <p>
       Protocol Binding Templates consist of reusable vocabulary and design
-      pattern extensions to the WoT Thing Description format that enable an
+      pattern extensions to the WoT Thing Description[[!wot-thing-description]] format that enable an
       application client to interact, using a consistent interaction model,
       with Things that expose diverse protocols and protocol usage.
     </p>
@@ -141,7 +128,7 @@
       </p>
       <p class="ednote" title="Additional Protocol Bindings">
         This document contains examples of Protocol Bindings for HTTP, CoAP,
-        and MQTT. Other prococols may be added, following the same design style,
+        and MQTT. Other protocols may be added, following the same design style,
         and using payload mappings that can be expressed as JSON compatible
         entities. Future extensions to other payload definition formats are
         also contemplated.
@@ -308,7 +295,7 @@
           Exposed Thing, respectively.
         </p>
         <p>
-          In addition to the example pattern in [[!WOT-TD]] of an object with name/value
+          In addition to the example pattern in [[!wot-thing-description]] of an object with name/value
           constructs or simple arrays, Protocol Bindings for existing standards
           may require nested arrays and objects, and some constant values to
           be specified.
@@ -1238,13 +1225,13 @@
     <h1>Vocabulary</h1>
     <p>
       This section summerizes the vocabulary used for protocol binding templates.
-      The vocabulary is defined in other documents, in particular the WoT Thing Description [[!WOT-TD]]
+      The vocabulary is defined in other documents, in particular the WoT Thing Description [[!wot-thing-description]]
     </p>
     <section>
       <h2><code>DataSchema</code> Vocabulary</h2>
       <p>
         <code>DataSchema</code> elements describe the structure of the payload.
-        The <code>DataSchema</code> class and vocabulary is defined in [[!WOT-TD]].
+        The <code>DataSchema</code> class and vocabulary is defined in [[!wot-thing-description]].
         Properties and Events directly implement the <code>DataSchema</code> class
         (i.e., they contain the corresponding fields such as <code>type</code>),
         which describes the data transfer in either direction.
@@ -1561,7 +1548,7 @@
 
         <h3><code>subprotocol</code> Vocabulary</h3>
         <p>
-          The <code>subprotocol</code> field is defined in [[!WOT-TD]].
+          The <code>subprotocol</code> field is defined in [[!wot-thing-description]].
         </p>
         <p>
           Currently, the supported values are <code>longpoll</code>, <code>websub</code> and <code>sse</code> defined

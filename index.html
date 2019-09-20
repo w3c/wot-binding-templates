@@ -67,6 +67,16 @@
           status: "",
           publisher: "IANA",
           date: "24 May 2019"
+        },
+        "MQTT": {
+          href: "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html",
+          title: "MQTT Version 5.0",
+          status: "",
+          publisher: "MQTT",
+          date: "07 March 2019",
+          authors: [
+            "Andrew Banks", "Ed Briggs", "Ken Borgendale", "Rahul Gupta"
+        ]
         }
       }
     };
@@ -127,7 +137,7 @@
     <h1>Introduction</h1>
     <p>
       Binding Templates consist of reusable vocabulary and design
-      pattern extensions to the WoT Thing Description[[!wot-thing-description]] format that enable an
+      pattern extensions to the WoT Thing Description[[!WOT-THING-DESCRIPTION]] format that enable an
       application client to interact, using a consistent interaction model,
       with Things that expose diverse protocols and protocol usage.
     </p>
@@ -137,12 +147,12 @@
       <p>
         Binding Templates enable clients to adapt to the underlying
         protocol and network-facing API constructions. Once the base protocol
-        (e.g., HTTP, CoAP, MQTT, etc.) is identified, the following adaptions
-        specifiy the particular use within the given Platform.
+        (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) is identified, the following adaptions
+        specify the particular use within the given Platform.
       </p>
       <p class="ednote" title="Additional Protocol Bindings">
         This document contains examples of Protocol Bindings for HTTP, CoAP,
-        and MQTT. Other protocols may be added, following the same design style,
+        and MQTT. Other protocols may be added following the same design style
         and using payload mappings that can be expressed as JSON compatible
         entities. Future extensions to other payload definition formats are
         also contemplated.
@@ -198,7 +208,7 @@
         </p>
         <p>
           The data definition language of <code>DataSchema</code>
-          elements, described in [[TD]], allows for describing arbitrary
+          elements, described in [[WOT-THING-DESCRIPTION]], allows for describing arbitrary
           structures by nesting of arrays and objects. Constants and
           variable specifications may be intermixed.
         </p>
@@ -249,7 +259,8 @@
       </dt>
       <dd>
         A mechanism to extend <a>Thing Descriptions</a> with additional <a>Vocabulary
-          Terms</a>. It is the basis for semantic annotations and extensions to core
+          Terms</a> using <code>@context</code> as specified in JSON-LD[[?json-ld11]]. 
+          It is the basis for semantic annotations and extensions to core
         mechanisms such as Protocol Bindings, Security Schemes, and Data Schemas.
       </dd>
       <dt>
@@ -265,7 +276,7 @@
       </dt>
       <dd>
         A character string. When a <a>Term</a> is part of a <a>Vocabulary</a>, i.e., prefixed by
-        a namespace IRI, it is called a <a>Vocabulary Term</a>. For the sake of readability,
+        a namespace IRI[[!RFC3987]], it is called a <a>Vocabulary Term</a>. For the sake of readability,
         <a>Vocabulary Terms</a> present in this document are always written in a compact
         form and not as full IRIs.
       </dd>
@@ -294,7 +305,7 @@
           <code>input</code>/<code>output</code> of <code>ActionAffordance</code>,
           <code>data</code>/<code>subscription</code>/<code>cancellation</code> of an <code>EventAffordance</code> or by
           a <code>uriVariable</code> of the <code>InteractionAffordance</code>.
-          As indicated in the [[wot-thing-description]], <code>DataSchema</code> Vocabulary is a subset of JSON Schema [[json-schema]]
+          As indicated in the [[WOT-THING-DESCRIPTION]], <code>DataSchema</code> Vocabulary is a subset of JSON Schema [[json-schema]]
         </p>
         <p>
           In the case of Action Affordances, the additional keywords <code>input</code> and
@@ -310,7 +321,7 @@
           Exposed Thing, respectively.
         </p>
         <p>
-          In addition to the example pattern in [[!wot-thing-description]] of an object with name/value
+          In addition to the example pattern in [[!WOT-THING-DESCRIPTION]] of an object with name/value
           constructs or simple arrays, Protocol Bindings for existing standards
           may require nested arrays and objects, and some constant values to
           be specified.
@@ -837,7 +848,7 @@
     <section id="form-element">
       <h2>Forms Element</h2>
       <p>
-        The form elements contain the URI pointing to an instance of the interaction
+        The form elements contain the URI [[!RFC3986]] pointing to an instance of the interaction
         and descriptions of the protocol settings and options expected to be used when
         between the client and server for the interaction.
       </p>
@@ -883,8 +894,8 @@
         </p>
         <p>
           Some special protocol drivers may be invoked by using a non-registered
-          media type (e.g., <code>x-<echonet></code>) along with a custom URI scheme and its own
-          set of protocol methods and options defined for that URI scheme.
+          media type (e.g., <code>x-<echonet></code>) along with a custom URI Scheme [[!RFC3986]] and its own
+          set of protocol methods and options defined for that URI Scheme.
         </p>
 
         <p> When the content type is <code>application/xml</code> (or its binary representation
@@ -1002,10 +1013,10 @@
         <p>
           Protocols may have defined sub-protocols that can be used for some interaction
           types. For example, to receive asynchronous notifications using http, some
-          servers may support long polling (<code>longpoll</code>), WebSub [[websub]] (<code>websub</code>)
+          servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>)
           and Server-Sent Events [[eventsource]] (<code>sse</code>).
 
-          The "subprotocol" item may be defined in a form instance to indicate the
+          The <code>subprotocol</code> item may be defined in a form instance to indicate the
           use of one of these protocols, for example long polling with its special use of HTTP:
           <pre class="example" title="subprotocol">
               {
@@ -1025,7 +1036,7 @@
           When Interaction Affordances require dynamic variables in the <code>href</code>,
           they can be described using <code>uriVariables</code> in the Data Schema of the interaction.
           For example, <code>p</code> and <code>d</code> in <code>http://192.168.1.25/left?p=2&d=1</code>
-          can be described with a template as defined in [[rfc6570]]
+          can be described with a template as defined in [[RFC6570]]
           ]: <code>http://192.168.1.25/left{?p,d}</code>.
         </p>
 
@@ -1239,13 +1250,13 @@
     <h1>Vocabulary</h1>
     <p>
       This section summarizes the vocabulary used for Binding Templates.
-      The vocabulary is defined in other documents, in particular the WoT Thing Description [[!wot-thing-description]]
+      The vocabulary is defined in other documents, in particular the WoT Thing Description [[!WOT-THING-DESCRIPTION]]
     </p>
     <section>
       <h2><code>DataSchema</code> Vocabulary</h2>
       <p>
         <code>DataSchema</code> elements describe the structure of the payload.
-        The <code>DataSchema</code> class and vocabulary is defined in [[!wot-thing-description]].
+        The <code>DataSchema</code> class and vocabulary is defined in [[!WOT-THING-DESCRIPTION]].
         Properties and Events directly implement the <code>DataSchema</code> class
         (i.e., they contain the corresponding fields such as <code>type</code>),
         which describes the data transfer in either direction.
@@ -1268,9 +1279,10 @@
       <section>
         <h3>Property Forms</h3>
         <p>
-          Properties provide "read" and, optionally, "write"
+          Properties provide <code>readproperty</code> and, optionally, <code>writeproperty</code>
           operations, which map to GET and PUT/POST of a REST API.
-          Properties may also by observed, though some properties may not be observable.
+          Properties may also by observed if they provide an <code>observeproperty</code> operation and 
+          the observation can be stopped if the property provides an <code>unobserveproperty</code> operation.
         </p>
         <table class="def">
           <thead>
@@ -1308,7 +1320,7 @@
       <section>
         <h3>Action Forms</h3>
         <p>
-          Actions only provide "invoke" operations.
+          Actions only provide <code>invokeaction</code> operations.
           For completeness, there is also a form operation type defined.
         </p>
         <table class="def">
@@ -1567,7 +1579,7 @@
 
         <h3><code>subprotocol</code> Vocabulary</h3>
         <p>
-          The <code>subprotocol</code> field is defined in [[!wot-thing-description]].
+          The <code>subprotocol</code> field is defined in [[!WOT-THING-DESCRIPTION]].
         </p>
         <p>
           Currently, the supported values are <code>longpoll</code>, <code>websub</code> and <code>sse</code> defined
@@ -2054,10 +2066,9 @@
         </section>
         <section>
             <h2>Event Interactions</h2>
-            <p>In the following, note that
-               there is no explicit operation defined for event notification itself.
+            <p>In the following, note that there is no explicit operation defined for event notification itself.
                The subprotocol used for notification is associated with 
-               the "subscribeevent" operation, and any necessary concrete
+               the <code>subscribeevent</code> operation, and any necessary concrete
                protocol transactions are managed by the Protocol Binding subsystem.
             </p>
             <p>There are also several subprotocols possible for event notification
@@ -2069,9 +2080,8 @@
                     (HTTP binding with Long Polling subprotocol)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   "subscribeevent" and "unsubscribeevent" operations
-                   with an HTTP protocol binding using
-                   the Long Polling subprotocol.
+                   <code>subscribeevent</code> and <code>operations</code>
+                   with an HTTP protocol binding using  the Long Polling subprotocol.
                 </p>
                 <p>
                     <img
@@ -2084,9 +2094,8 @@
                     (HTTP binding with Server Sent Event subprotocol)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   "subscribeevent" and "unsubscribeevent" operations
-                   with an HTTP protocol binding using
-                   the Server Sent Event subprotocol.
+                   <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
+                   with an HTTP protocol binding using the Server Sent Event subprotocol.
                 </p>
                 <p>
                     <img src="images/message-flows/A_3_1b_eventSSE.png"
@@ -2097,10 +2106,8 @@
                 <h3>Subscribe, notify and unsubscribe event
                     (HTTP binding with WebSocket subprotocol)</h3>
                 <p>The following sequence illustrates application and network
-                   transactions to implement the 
-                   "subscribeevent" and "unsubscribeevent" operations
-                   with an HTTP protocol binding using
-                   a WebSocket subprotocol.
+                   transactions to implement the <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
+                   with an HTTP protocol binding using a WebSocket subprotocol.
                 </p>
                 <p>
                     <img
@@ -2117,7 +2124,7 @@
     <section id="sec-acknowledgements" class="appendix">
     <h2>Acknowledgements</h2>
     <p>
-      Special thanks to all active Participants of the W3C Web of Things Interest Group and Working Group
+      Special thanks to all active participants of the W3C Web of Things Interest Group and Working Group
       for their technical input and suggestions that led to improvements to this document.
     </p>
     </section>
@@ -2127,27 +2134,6 @@
       
         <dl class="bibliography">
 
-          <dt id="bib-iana-uri-schemes">[IANA-URI-SCHEMES]</dt>
-          <dd><a href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml"><cite>Uniform Resource Identifier
-                (URI)
-                Schemes</cite></a>. IANA. URL: <a
-              href="https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml">https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml</a>
-          </dd>
-
-          <dt id="bib-json-ld11">[JSON-LD11]</dt>
-          <dd><a href="https://www.w3.org/TR/json-ld11/"><cite>JSON-LD 1.1</cite></a>. Gregg Kellogg; Pierre-Antoine
-            Champin.
-            W3C. 14 July 2019. W3C Working Draft. URL: <a
-              href="https://www.w3.org/TR/json-ld11/">https://www.w3.org/TR/json-ld11/</a>
-
-          </dd>
-          <dt id="bib-mqtt">[MQTT]</dt>
-          <dd><a href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html"><cite>MQTT Version 3.1.1</cite></a>.
-            Andrew
-            Banks; Rahul Gupta. OASIS. 10 December 2015. OASIS Standard Incorporating Approved Errata 01. URL: <a
-              href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html">http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html</a>
-
-          </dd>
           <dt id="bib-openapi">[OPENAPI]</dt>
           <dd><a href="https://swagger.io/specification/"><cite>OpenAPI Specification: Version 3.0.1</cite></a>. Darrel
             Miller;
@@ -2157,13 +2143,6 @@
               href="https://swagger.io/specification/">https://swagger.io/specification/</a>
 
           </dd>
-          <dt id="bib-rfc7231">[RFC7231]</dt>
-          <dd><a href="https://httpwg.org/specs/rfc7231.html"><cite>Hypertext Transfer Protocol (HTTP/1.1): Semantics and
-                Content</cite></a>. R. Fielding, Ed.; J. Reschke, Ed.. IETF. June 2014. Proposed Standard. URL: <a
-              href="https://httpwg.org/specs/rfc7231.html">https://httpwg.org/specs/rfc7231.html</a>
-
-          </dd>
-
       
           <dt id="bib-link-relations">[IANA Link Relations]</dt>
           <dd><a href="https://www.iana.org/assignments/link-relations/link-relations.xhtml"><cite>Link Relations</cite></a>. IANA. URL: <a

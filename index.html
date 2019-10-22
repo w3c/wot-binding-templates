@@ -137,7 +137,7 @@
     <h1>Introduction</h1>
     <p>
       Binding Templates consist of reusable vocabulary and design
-      pattern extensions to the WoT Thing Description[[!WOT-THING-DESCRIPTION]] format that enable an
+      pattern extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an
       application client to interact, using a consistent interaction model,
       with Things that expose diverse protocols and protocol usage.
     </p>
@@ -218,7 +218,7 @@
         <h3>Data Types and Value Constraints</h3>
         <p>
           Simple data types and value constraints are currently used in a layered
-          and descriptive way in WoT Thing Description. Additional forms of
+          and descriptive way in [[WOT-THING-DESCRIPTION]]. Additional forms of
           constraints are available to help adapt to the underlying data types.
           A Platform-specific 8-bit unsigned integer, for instance, can be defined
           as Integer with a minimum of 0 and maximum of 255; the system-specific
@@ -229,7 +229,7 @@
     </section>
   </section>
 
-  <section id="terminology" class="normative">
+  <section id="terminology" class="informative">
     <h2>Terminology</h2>
 
     <p>The fundamental WoT terminology such as
@@ -276,7 +276,7 @@
       </dt>
       <dd>
         A character string. When a <a>Term</a> is part of a <a>Vocabulary</a>, i.e., prefixed by
-        a namespace IRI[[!RFC3987]], it is called a <a>Vocabulary Term</a>. For the sake of readability,
+        a namespace IRI[[RFC3987]], it is called a <a>Vocabulary Term</a>. For the sake of readability,
         <a>Vocabulary Terms</a> present in this document are always written in a compact
         form and not as full IRIs.
       </dd>
@@ -321,7 +321,7 @@
           Exposed Thing, respectively.
         </p>
         <p>
-          In addition to the example pattern in [[!WOT-THING-DESCRIPTION]] of an object with name/value
+          In addition to the example pattern in [[WOT-THING-DESCRIPTION]] of an object with name/value
           constructs or simple arrays, Protocol Bindings for existing standards
           may require nested arrays and objects, and some constant values to
           be specified.
@@ -848,7 +848,7 @@
     <section id="form-element">
       <h2>Forms Element</h2>
       <p>
-        The form elements contain the URI [[!RFC3986]] pointing to an instance of the interaction
+        The form elements contain the URI [[RFC3986]] pointing to an instance of the interaction
         and descriptions of the protocol settings and options expected to be used when
         between the client and server for the interaction.
       </p>
@@ -894,7 +894,7 @@
         </p>
         <p>
           Some special protocol drivers may be invoked by using a non-registered
-          media type (e.g., <code>x-<echonet></code>) along with a custom URI Scheme [[!RFC3986]] and its own
+          media type (e.g., <code>x-<echonet></code>) along with a custom URI Scheme [[RFC3986]] and its own
           set of protocol methods and options defined for that URI Scheme.
         </p>
 
@@ -1246,7 +1246,7 @@
 
   </section>
 
-  <section id="vocabulary" class="informative">
+  <section id="vocabulary" class="normative">
     <h1>Vocabulary</h1>
     <p>
       This section summarizes the vocabulary used for Binding Templates.
@@ -1960,12 +1960,11 @@
         <p> This section illustrates example sequences of application and protocol
             transactions that correspond to operations 
             (defined in the Thing Description Specification)
-            implementing various interactions
-            among <a>WoT Clients</a> and <a>WoT Servers</a>.
+            implementing various interactions among WoT Clients and WoT Servers.
             The illustrations show both the concrete protocol transactions
             and the interactions between the applications running
-            inside the <a>WoT Client</a> and <a>WoT Server</a>
-            and the <a>Consumed Thing</a> and <a>Exposed Thing</a> abstractions.
+            inside the WoT Client and WoT Server
+            and the Consumed Thing and Exposed Thing abstractions.
         </p>
         <p> For the sake of simplicity, remote and local proxies
             between client and server are omitted from the following sequences.
@@ -1976,7 +1975,7 @@
             Other concrete protocols and the addition of security transactions
             however would only effect the concrete protocol transactions,
             not the application-level interactions with the
-            <a>Consumed Thing</a> and <a>Exposed Thing</a> abstractions.
+            Consumed Thing and Exposed Thing abstractions.
         </p>
         <section>
             <h2>Property Interactions</h2>

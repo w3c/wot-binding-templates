@@ -1271,16 +1271,17 @@
       <h2>Form Operation Type Vocabulary</h2>
       <p>
 
-        Each interaction pattern has associated form operation types
-        that are used to select the form element corresponding to the intended interaction,
-        reading a Property vs writing a Property vs observing a Property.
+        Each interaction pattern has associated form operation types (i.e. <code>op</code>)
+        that are used to select the form element corresponding to the intended interaction from the Array of forms.
+        For example, for one interaction, a Consumer can choose the form element corresponding to reading a Property, 
+        observing a Property or writing to Property by using the form operation type.
 
       </p>
       <section>
         <h3>Property Forms</h3>
         <p>
-          Properties provide <code>readproperty</code> and, optionally, <code>writeproperty</code>
-          operations, which map to GET and PUT/POST of a REST API.
+          Properties can provide <code>readproperty</code> and <code>writeproperty</code>
+          operations, which map to GET and PUT/POST of a REST API, respectively.
           Properties may also by observed if they provide an <code>observeproperty</code> operation and 
           the observation can be stopped if the property provides an <code>unobserveproperty</code> operation.
         </p>
@@ -1344,7 +1345,8 @@
       <section>
         <h3>Event Forms</h3>
         <p>
-          Events describe subscription endpoints from which to event instances can be received.
+          Events describe subscription endpoints from which to event instances can be received 
+          and unsubscription endpoints to stop receiving event instances.
         </p>
         <table class="def">
           <thead>
@@ -1389,9 +1391,9 @@
         <table class="def">
           <thead>
             <tr>
-              <th>Field Name</th>
+              <th>Vocabulary term</th>
               <th>Description</th>
-              <th>Mandatory</th>
+              <th>Assignment</th>
               <th>Default value</th>
               <th>Type</th>
             </tr>
@@ -1400,7 +1402,7 @@
             <tr>
               <td><code>htv:methodName</code></td>
               <td>HTTP method name (Literal).</td>
-              <td>no</td>
+              <td>optional</td>
               <td>
                 <p><code>readproperty</code>: <code>"GET"</code></p>
                 <p><code>writeproperty</code>: <code>"PUT"</code></p>
@@ -1415,7 +1417,7 @@
             <tr>
               <td><code>htv:headers</code></td>
               <td>HTTP headers sent with the message.</td>
-              <td>no</td>
+              <td>optional</td>
               <td>.</td>
               <td>
                 array of <a
@@ -1425,7 +1427,7 @@
             <tr>
               <td><code>htv:fieldName</code></td>
               <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
-              <td>yes (within <code>htv:headers</code>)</td>
+              <td>mandatory within <code>htv:MessageHeader</code></td>
               <td>.</td>
               <td>
                 <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
@@ -1434,7 +1436,7 @@
             <tr>
               <td><code>htv:fieldValue</code></td>
               <td>Header value (Literal).</td>
-              <td>yes (within <code>http:headers</code>)</td>
+              <td>mandatory within <code>htv:MessageHeader</code></td>
               <td>.</td>
               <td>
                 <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
@@ -1450,9 +1452,9 @@
         <table class="def">
           <thead>
             <tr>
-              <th>Field Name</th>
+              <th>Vocabulary term</th>
               <th>Description</th>
-              <th>Mandatory</th>
+              <th>Assignment</th>
               <th>Default value</th>
               <th>Type</th>
             </tr>
@@ -1461,7 +1463,7 @@
             <tr>
               <td><code>cov:methodCode</code></td>
               <td>CoAP method code (Literal).</td>
-              <td>no</td>
+              <td>optional</td>
               <td>
                 <p><code>readproperty</code>: <code>1</code></p>
                 <p><code>writeproperty</code>: <code>3</code></p>
@@ -1479,7 +1481,7 @@
               <td><code>cov:options</code></td>
               <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 }
                   ]</code>.</td>
-              <td>no</td>
+              <td>optional</td>
               <td>.</td>
               <td>
                 array of <code>cov:MessageOption</code>
@@ -1490,7 +1492,7 @@
               <td>Option number (Literal), see <a
                   href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE
                   Parameters</a>.</td>
-              <td>yes (within <code>cov:options</code>)</td>
+              <td>mandatory within <code>cov:MessageOption</code></td>
               <td>.</td>
               <td>
                 <a
@@ -1500,7 +1502,7 @@
             <tr>
               <td><code>cov:optionValue</code></td>
               <td>Header value (Literal).</td>
-              <td>yes (within <code>cov:options</code>)</td>
+              <td>mandatory within <code>cov:MessageOption</code></td>
               <td>.</td>
               <td>
                 <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
@@ -1515,9 +1517,9 @@
         <table class="def">
           <thead>
             <tr>
-              <th>Field Name</th>
+              <th>Vocabulary term</th>
               <th>Description</th>
-              <th>Mandatory</th>
+              <th>Assignment</th>
               <th>Default value</th>
               <th>Type</th>
             </tr>
@@ -1545,7 +1547,7 @@
               <td><code>mqv:options</code></td>
               <td>MQTT options sent with the message, e.g., <code>[ { "mqv:optionName": "qos", "mqv:optionValue": 1 }
                   ]</code>.</td>
-              <td>no</td>
+              <td>optional</td>
               <td>.</td>
               <td>
                 array of <code>mqv:MessageOption</code></a>
@@ -1554,7 +1556,7 @@
             <tr>
               <td><code>mqv:optionName</code></td>
               <td>Option name (Literal).</td>
-              <td>yes (within <code>mqv:options</code>)</td>
+              <td>mandatory within <code>mqv:MessageOption</code>)</td>
               <td>.</td>
               <td>
                 <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
@@ -1564,7 +1566,7 @@
             <tr>
               <td><code>mqv:optionValue</code></td>
               <td>Header value (Literal).</td>
-              <td>yes (within <code>mqv:options</code>)</td>
+              <td>mandatory within <code>mqv:MessageOption</code>)</td>b
               <td>.</td>
               <td>
                 <a

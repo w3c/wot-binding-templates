@@ -16,7 +16,7 @@ end box
 AP  -> SA: invoke\n"observeproperty"\noperation
 activate SA
 SA  -> AP: returns Subscription
-SA  -> WS: send HTTP POST Request\nto href of form\n with rel: observeProperty and\n subProtocol: sse \n (body: none)
+SA  -> WS: send HTTP POST Request\nto href of form\n with op: observeproperty and\n subprotocol: sse \n (body: none)
 activate WS
 WS  -> SA: send HTTP POST Response\n (body: none; Content-Type: text/event-stream)
 WS  -> DC: wait until\n state changes

@@ -102,20 +102,18 @@
     <p>
       Despite using unique formats and data models, the high-level interactions
       exposed by most connected things can be modeled using the Property, Action,
-      and Event interaction patterns of the WoT Thing Description.
+      and Event interaction affordances of the WoT Thing Description.
     </p>
     <p>
       Binding Templates enable a Thing Description to be adapted to
       the specific protocol or data payload usage across the different standards. This is done
-      through additional descriptive vocabulary that is used in the
-      Thing Description.
+      through additional descriptive vocabulary that is used in the Thing Description.
     </p>
     <p>
-      This document describes the initial set of design pattern and vocabulary
+      This document describes the initial set of vocabulary
       extensions to the WoT Thing Description that make up the Binding
-      Templates. It is expected over time that additional protocols will be
-      accommodated by further extending the Binding Templates, adding new
-      vocabulary and new design patterns.
+      Templates. It is expected over time that additional protocols and payload structures will be
+      accommodated by further extending the Binding Templates.
     </p>
   </section>
 
@@ -136,16 +134,12 @@
   <section>
     <h1>Introduction</h1>
     <p>
-      Binding Templates consist of reusable vocabulary and design
-      pattern extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an
-      application client to interact, using a consistent interaction model,
-      with Things that expose diverse protocols and protocol usage.
+      Binding Templates consist of reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an
+      application client (a Consumer) to interact, using a consistent interaction model, with Things that expose diverse protocols and protocol usage.
     </p>
 
-    <section>
-      <h2>Protocol Adaptation</h2>
       <p>
-        Binding Templates enable clients to adapt to the underlying
+        Binding Templates enable Consumers to adapt to the underlying
         protocol and network-facing API constructions. Once the base protocol
         (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) is identified, the following adaptions
         specify the particular use within the given Platform.
@@ -162,13 +156,13 @@
         <h3>Protocol Methods and Options</h3>
         <p>
           Most protocols have a relatively small set of methods that define
-          the message type, the semantic intention of the message. As a starting
-          point, a superset of REST and PubSub can cover most standard
-          communication patterns. Common methods are GET, PUT, POST, DELETE,
-          PUBLISH, and SUBSCRIBE.
+          the message type, the semantic intention of the message.
+          REST and PubSub architecture patterns result in different protocols with different methods.
+          Common methods found in these protocols are GET, PUT, POST, DELETE, PUBLISH, and SUBSCRIBE.
+          Binding Templates describe how these existing methods and vocabularies can be described in a Thing Description.
         </p>
         <p>
-          The protocol methods are mapped to the abstract WoT Interaction verbs
+          This is done by mapping the protocol methods to the abstract WoT Interaction Affordance terms
           <code>readproperty</code>, <code>writeproperty</code>,
           <code>observeproperty</code>, <code>unobserveproperty</code>, <code>invokeaction</code>,
           <code>subscribeevent</code>, <code>unsubscribeevent</code>,
@@ -188,14 +182,14 @@
         <h3>Media Types</h3>
         <p>
           Maximum use should be made of IANA-registered Media Types [[IANA-MEDIA-TYPES]] (e.g.,
-          <code>application/json</code>) in order to decouple applications from
-          connected Things. Standard bridges and translations from proprietary
-          formats to Web-friendly languages such as JSON and XML are part of the
-          adaptation needed.
+          <code>application/json</code>) in order to decouple applications from connected Things. 
+          Standard bridges and translations from proprietary formats to Web-friendly languages 
+          such as JSON and XML are part of the adaptation needed.
         </p>
         <p>
-          WoT Protocol Bindings depend on consistent use of Media Types for
-          customization of the upper layers.
+          Correct indication of Media Types enable proper processing of the serialized documents.
+          This way, the documents can be exchanged in any format and allow the upper layers of an application
+          to adapt to different formats.
         </p>
       </section>
 
@@ -226,7 +220,6 @@
           relevant for interoperability.
         </p>
       </section>
-    </section>
   </section>
 
   <section id="terminology" class="informative">
@@ -959,7 +952,7 @@
           Each target protocol may specify different method names for similar
           operations, and there may be semantic differences between similar method names of
           different protocols. Additionally, platforms may use different methods
-          for realizing a particular WoT Interaction Pattern. For example, POST may
+          for realizing a particular WoT Interaction Affordance. For example, POST may
           be used for writing a Property value in one platforms, while PUT may be
           used in another. For these reasons, we require the ability to specify
           which method to use for a particular Interaction. We also will provide
@@ -1083,10 +1076,10 @@
 
 
     <section id="sec-interaction-pattterns" class="informative">
-      <h1>Interaction Patterns</h1>
+      <h1>Interaction Affordances</h1>
       <p>
         This section describes unique aspects of protocol bindings for the three
-        WoT Interaction Patterns.
+        WoT Interaction Affordances.
       </p>
 
       <section id="property-bindings">
@@ -1162,7 +1155,7 @@
         <h2>Bindings for Events</h2>
         <p>
           This section describes unique aspects of protocol bindings for WoT
-          Event Interaction Patterns.
+          Event Interaction Affordances.
         </p>
         <p>
 
@@ -1270,7 +1263,7 @@
       <h2>Form Operation Type Vocabulary</h2>
       <p>
 
-        Each interaction pattern has associated form operation types (i.e. <code>op</code>)
+        Each interaction affordance has associated form operation types (i.e. <code>op</code>)
         that are used to select the form element corresponding to the intended interaction from the Array of forms.
         For example, for one interaction, a Consumer can choose the form element corresponding to reading a Property, 
         observing a Property or writing to Property by using the form operation type.
@@ -2120,7 +2113,7 @@
     </section>
 
     <section id="appendix-example-sequences" class="appendix informative">
-        <h1>Example Sequences of interaction patterns</h1>
+        <h1>Example Sequences of Interaction Affordances</h1>
         <p> This section illustrates example sequences of application and protocol
             transactions that correspond to operations 
             (defined in the Thing Description Specification)

@@ -1504,7 +1504,6 @@
               <th>Vocabulary term</th>
               <th>Description</th>
               <th>Assignment</th>
-              <th>Default value</th>
               <th>Type</th>
             </tr>
           </thead>
@@ -1513,12 +1512,6 @@
               <td><code>cov:methodCode</code></td>
               <td>CoAP method code (Literal).</td>
               <td>optional</td>
-              <td>
-                <p><code>readproperty</code>: <code>1</code></p>
-                <p><code>writeproperty</code>: <code>3</code></p>
-                <p><code>observeproperty</code>: <code>1</code></p>
-                <p><code>invokeaction</code>: <code>2</code></p>
-              </td>
               <td>
                 <a
                   href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
@@ -1531,7 +1524,6 @@
               <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 }
                   ]</code>.</td>
               <td>optional</td>
-              <td>.</td>
               <td>
                 array of <code>cov:MessageOption</code>
               </td>
@@ -1542,7 +1534,6 @@
                   href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE
                   Parameters</a>.</td>
               <td>mandatory within <code>cov:MessageOption</code></td>
-              <td>.</td>
               <td>
                 <a
                   href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
@@ -1552,7 +1543,6 @@
               <td><code>cov:optionValue</code></td>
               <td>Header value (Literal).</td>
               <td>mandatory within <code>cov:MessageOption</code></td>
-              <td>.</td>
               <td>
                 <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
               </td>

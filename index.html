@@ -19,7 +19,7 @@
       issueBase: "https://www.github.com/w3c/wot-binding-templates/issues",
       editors: [{
           name: "Michael Koster",
-          w3cid: "00000",
+          w3cid: "110658",
           company: "SmartThings",
           companyURL: "https://www.smartthings.com/"
         },
@@ -1120,8 +1120,7 @@
           Properties may be observable, defined by the TD keyword "observable".
           If there is an observe form and a retrieve form, the observe form may be
           indicated by including <code>op=observeproperty</code> in the form. The observe form may
-          also specify header options to use, for example CoAP observe option=0
-          in the header to start observation.
+          also specify header options to use, as specified in Observing in CoAP[[?RFC7641]]for example setting the CoAP Observe option to <code>0</code> in the header, starts observation.
         </p>
       </section>
 
@@ -1145,9 +1144,7 @@
 
         </pre>
         <p>
-          The form element in the example above conveys the statement: <i>"To do an <code>invokeaction</code> of the
-            subject Action (context of the form),
-            perform a <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
+          The form element in the example above conveys the statement: <i>"To do an <code>invokeaction</code> of the subject Action (context of the form), perform a <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
         </p>
       </section>
 
@@ -1186,9 +1183,7 @@
 
         </pre>
         <p>
-          The form element in the example above conveys the statement: <i>"To do an <code>subscribeevent</code> of the
-            subject Event (context of the form), perform an <code>MQTT SUBSCRIBE</code> on the topic <code>/levelevent</code> on the broker at
-            <code>wot.example.com</code> using the default MQTT port."</i>
+          The form element in the example above conveys the statement: <i>"To do an <code>subscribeevent</code> of the subject Event (context of the form), perform an <code>MQTT SUBSCRIBE</code> on the topic <code>/levelevent</code> on the broker at <code>wot.example.com</code> using the default MQTT port."</i>
         </p>
       </section>
 
@@ -1282,29 +1277,24 @@
             <tr>
               <th><code>op</code> Term</th>
               <th>Description</th>
-              <th>Type</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>readproperty</code></td>
               <td>Read a Property. Requires <code>writeOnly</code> to be set to <code>false</code>.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
               <td>Write a Property. Requires <code>readOnly</code> to be set to <code>false</code>.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
             <tr>
               <td><code>observeproperty</code></td>
               <td>Observe a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
             <tr>
               <td><code>unobserveproperty</code></td>
               <td>Unobserve a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
           </tbody>
         </table>
@@ -1321,14 +1311,12 @@
             <tr>
               <th><code>op</code> Term</th>
               <th>Description</th>
-              <th>Type</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>invokeaction</code></td>
               <td>Invoke an Action.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
           </tbody>
         </table>
@@ -1345,19 +1333,16 @@
             <tr>
               <th><code>op</code> Term</th>
               <th>Description</th>
-              <th>Type</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><code>subscribeevent</code></td>
               <td>Subscribe to an Event.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
             </tr>
             <tr>
               <td><code>unsubscribeevent</code></td>
-              <td>Unsubscribe drom an Event.</td>
-              <td><a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a></td>
+              <td>Unsubscribe from an Event.</td>
             </tr>
           </tbody>
         </table>
@@ -1382,7 +1367,8 @@
 
       <section>
 
-        <h3>HTTP Vocabulary Terms</h3>
+        <h3>HTTP Vocabulary</h3>
+        <h4>HTTP Vocabulary Terms</h4>
         <table class="def">
           <thead>
             <tr>
@@ -1498,6 +1484,7 @@
 
       <section>
         <h3>CoAP Vocabulary</h3>
+        <h4>CoAP Vocabulary Terms</h4>
         <table class="def">
           <thead>
             <tr>
@@ -1520,9 +1507,18 @@
               </td>
             </tr>
             <tr>
+              <td><code>cov:methodName</code></td>
+              <td>CoAP method name (Literal).</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <p>(one of <code>"GET"</code> (1), <code>"POST"</code> (2), <code>"PUT"</code> (3), <code>"DELETE"</code> (4),
+                  <code>"FETCH"</code> (5), <code>"PATCH"</code> (6), <code>"iPATCH"</code> (7))</p>
+              </td>
+            </tr>
+            <tr>
               <td><code>cov:options</code></td>
-              <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 49 }
-                  ]</code>.</td>
+              <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 0 }]</code> to observe.</td>
               <td>optional</td>
               <td>
                 array of <code>cov:MessageOption</code>
@@ -1531,12 +1527,21 @@
             <tr>
               <td><code>cov:optionNumber</code></td>
               <td>Option number (Literal), see <a
-                  href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE
-                  Parameters</a>.</td>
-              <td>mandatory within <code>cov:MessageOption</code></td>
+                  href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE Parameters</a>.</td>
+              <td>mandatory within <code>cov:MessageOption</code> if <code>cov:optionName</code> is not present</td>
               <td>
                 <a
                   href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>cov:optionName</code></td>
+              <td>Option name (Literal), see <a
+                  href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE
+                  Parameters</a>.</td>
+              <td>mandatory within <code>cov:MessageOption</code> if <code>cov:optionNumber</code> is not present</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
               </td>
             </tr>
             <tr>
@@ -1561,34 +1566,36 @@
           <tbody>
             <tr>
               <td><code>readproperty</code></td>
-              <td><code>"cov:methodCode": 1</code></td>
+              <td><code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code></td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
-              <td><code>"cov:methodCode": 3</code></td>
+              <td><code>"cov:methodCode": 3</code> OR <code>"cov:methodName": "PUT"</code></td>
             </tr>
             <tr>
               <td><code>observeproperty</code></td>
-              <td> <code>"cov:methodCode": 1</code> </td>
+              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code></td>
             </tr>
-            <!-- <tr>
+            <tr>
               <td><code>unobserveproperty</code></td>
-              <td> Cancel pending CoAP GET request</td>
-            </tr> -->
+              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with
+                <code>[ { "cov:optionName": "Observe", "cov:optionValue": 1 }]</code></td>
+            </tr>
             <tr>
               <td><code>invokeaction</code></td>
-              <td> <code>"cov:methodCode": 2 </code></td>
+              <td> <code>"cov:methodCode": 2 </code> OR <code>"cov:methodName": "POST"</code></td>
             </tr>
             <tr>
               <td><code>subscribeevent</code></td>
-              <td> <code>
-                  "cov:methodCode": 1
-                </code>
+              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with
+                <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code></td>
             </tr>
-            <!-- <tr>
+            <tr>
               <td><code>unsubscribeevent</code></td>
-              <td> Cancel pending CoAP GET request</td>
+              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with
+                <code>[ { "cov:optionName": "Observe", "cov:optionValue": 1 }]</code></td>
             </tr>
+            <!--
             <tr>
               <td><code>readallproperties</code></td>
               <td> <code>"cov:methodCode": 1</code></td>
@@ -1611,7 +1618,11 @@
       </section>
 
       <section>
+
         <h3>MQTT Vocabulary</h3>
+
+        <h4>MQTT Vocabulary Terms</h4>
+
         <table class="def">
           <thead>
             <tr>
@@ -1651,7 +1662,7 @@
             <tr>
               <td><code>mqv:optionValue</code></td>
               <td>Header value (Literal).</td>
-              <td>mandatory within <code>mqv:MessageOption</code>)</td>b
+              <td>mandatory within <code>mqv:MessageOption</code>)</td>
               <td>
                One of <code>0</code>, <code>1</code> or <code>2</code> (only for <code>qos</code>)
               </td>
@@ -1747,8 +1758,7 @@
     <h1>Examples of Thing Descriptions including protocol bindings</h1>
 
     <p>
-      The following TD examples uses a fictional CoAP and MQTT Protocol Bindings, as no such Protocol Binding is
-      available at the time of writing this specification.
+      The following TD examples uses a fictional CoAP and MQTT Protocol Bindings, as no such Protocol Binding is available at the time of writing this specification.
       These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to
       [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and
       <code>http://www.example.org/mqtt-binding#</code>, respectively.
@@ -1760,7 +1770,8 @@
     </p>
 
     <p>
-      TD with simple payload format
+      A TD with simple payload format and protocols can be seen below. 
+      Here each interaction affordance has one form with one protocol.
     </p>
     <pre class="example" title="TD with a Simple Payload">
         {
@@ -1858,7 +1869,8 @@
         }
       </pre>
     <p>
-      TD with complex payload and multiple protocol options
+      Another version of the previous TD with complex payload and multiple protocol options is shown below. 
+      Notably, the <code>brightness</code> property can be read via HTTP, written to via CoAP and observed via MQTT.
     </p>
     <pre class="example" title="TD with protocol options and complex payload">
         {
@@ -2130,7 +2142,7 @@
                 <h3>Read property (HTTP binding)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   "readproperty" operation
+                   <code>readproperty</code> operation
                    with an HTTP protocol binding.</p>
                 <p>
                     <img
@@ -2142,7 +2154,7 @@
                 <h3>Write property (HTTP binding)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   "writeproperty" operation
+                   <code>writeproperty</code> operation
                    with an HTTP protocol binding.</p>
                 <p>
                     <img
@@ -2154,7 +2166,7 @@
                 <h3>Observe property (HTTP binding with Long Polling subprotocol)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   "observeproperty" operation
+                   <code>observeproperty</code> operation
                    with an HTTP protocol binding using 
                    the "longpolling" (Long Polling) subprotocol.</p>
                 <p>
@@ -2166,8 +2178,7 @@
             <section>
                 <h3>Observe property (HTTP binding with Server Sent Event subprotocol)</h3>
                 <p>The following sequence illustrates application and network
-                   transactions to implement the 
-                   "observeproperty" operation
+                   transactions to implement the <code>observeproperty</code> operation
                    with an HTTP protocol binding using 
                    the "sse" (Server Sent Event) subprotocol.</p>
                 <p>
@@ -2179,8 +2190,7 @@
             <section>
                 <h3>Observe property (HTTP binding with WebSocket subprotocol)</h3>
                 <p>The following sequence illustrates application and network
-                   transactions to implement the 
-                   "observeproperty" operation
+                   transactions to implement the <code>observeproperty</code> operation
                    with an HTTP protocol binding using
                    a WebSocket-based subprotocol.</p>
                 <p>
@@ -2196,7 +2206,7 @@
                 <h3>Invoke action (HTTP binding)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   "invokeaction" operation
+                   <code>invokeaction</code> operation
                    with an HTTP protocol binding, where the
                    operation is synchronous and the response from the server
                    is delayed until after the action completes.</p>
@@ -2226,7 +2236,7 @@
                     (HTTP binding with Long Polling subprotocol)</h3>
                 <p>The following sequence illustrates application and network
                    transactions to implement the 
-                   <code>subscribeevent</code> and <code>operations</code>
+                   <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
                    with an HTTP protocol binding using  the Long Polling subprotocol.
                 </p>
                 <p>

@@ -976,7 +976,7 @@
 
             "mqv:controlPacketValue": "SUBSCRIBE"
 
-            "cov:methodCode": 1
+            "cov:methodName": "GET"
           </pre>
 
         <p>
@@ -1484,6 +1484,11 @@
 
       <section>
         <h3>CoAP Vocabulary</h3>
+
+        <p>In the CoAP vocabulary, it is also possible to specify features of the protocol and detail the specific header options that need to be set.
+        This is indicated by <code>cov:feature</code> vocabulary term.
+        </p>
+
         <h4>CoAP Vocabulary Terms</h4>
         <table class="def">
           <thead>
@@ -1496,17 +1501,6 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>cov:methodCode</code></td>
-              <td>CoAP method code (Literal).</td>
-              <td>optional</td>
-              <td>
-                <a
-                  href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
-                <p>(one of <code>1</code> (GET), <code>2</code> (POST), <code>3</code> (PUT), <code>4</code> (DELETE),
-                  <code>5</code> (FETCH), <code>6</code> (PATCH), <code>7</code> (iPATCH))</p>
-              </td>
-            </tr>
-            <tr>
               <td><code>cov:methodName</code></td>
               <td>CoAP method name (Literal).</td>
               <td>optional</td>
@@ -1517,29 +1511,27 @@
               </td>
             </tr>
             <tr>
+              <td><code>cov:feature</code></td>
+              <td>CoAP Feature (Literal), e.g. <code>"Observe"</code>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
               <td><code>cov:options</code></td>
-              <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionNumber": 6, "cov:optionValue": 0 }]</code> to observe.</td>
+              <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code> to observe.</td>
               <td>optional</td>
               <td>
                 array of <code>cov:MessageOption</code>
               </td>
             </tr>
             <tr>
-              <td><code>cov:optionNumber</code></td>
-              <td>Option number (Literal), see <a
-                  href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE Parameters</a>.</td>
-              <td>mandatory within <code>cov:MessageOption</code> if <code>cov:optionName</code> is not present</td>
-              <td>
-                <a
-                  href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-              </td>
-            </tr>
-            <tr>
               <td><code>cov:optionName</code></td>
               <td>Option name (Literal), see <a
-                  href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-numbers">CoRE
+                  href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-names">CoRE
                   Parameters</a>.</td>
-              <td>mandatory within <code>cov:MessageOption</code> if <code>cov:optionNumber</code> is not present</td>
+              <td>mandatory within <code>cov:MessageOption</code></td>
               <td>
                 <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
               </td>
@@ -1566,52 +1558,53 @@
           <tbody>
             <tr>
               <td><code>readproperty</code></td>
-              <td><code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code></td>
+              <td><code>"cov:methodName": "GET"</code></td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
-              <td><code>"cov:methodCode": 3</code> OR <code>"cov:methodName": "PUT"</code></td>
+              <td><code>"cov:methodName": "PUT"</code></td>
             </tr>
+            <!-- <tr>
+              <td><code>observeproperty</code></td>
+              <td><code>"cov:methodName": "GET"</code> with <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code></td>
+            </tr> -->
             <tr>
               <td><code>observeproperty</code></td>
-              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code></td>
+              <td><code>"cov:feature": "Observe</code></td>
             </tr>
             <tr>
               <td><code>unobserveproperty</code></td>
-              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with
-                <code>[ { "cov:optionName": "Observe", "cov:optionValue": 1 }]</code></td>
+              <td><code>"cov:feature": "Unobserve</code></td>
             </tr>
             <tr>
               <td><code>invokeaction</code></td>
-              <td> <code>"cov:methodCode": 2 </code> OR <code>"cov:methodName": "POST"</code></td>
+              <td><code>"cov:methodName": "POST"</code></td>
             </tr>
             <tr>
               <td><code>subscribeevent</code></td>
-              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with
-                <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code></td>
+              <td><code>"cov:feature": "Observe</code></td>
             </tr>
             <tr>
               <td><code>unsubscribeevent</code></td>
-              <td> <code>"cov:methodCode": 1</code> OR <code>"cov:methodName": "GET"</code> with
-                <code>[ { "cov:optionName": "Observe", "cov:optionValue": 1 }]</code></td>
+              <td><code>"cov:feature": "Unobserve</code></td>
+
             </tr>
-            <!--
             <tr>
               <td><code>readallproperties</code></td>
-              <td> <code>"cov:methodCode": 1</code></td>
+              <td> <code>"cov:methodName": "GET"</code></td>
             </tr>
             <tr>
               <td><code>writeallproperties</code></td>
-              <td> <code>"cov:methodCode": 3</code></td>
+              <td> <code>"cov:methodName": "PUT"</code></td>
             </tr>
             <tr>
               <td><code>readmultipleproperties</code></td>
-              <td> <code>"cov:methodCode": 1</code></td>
+              <td> <code>"cov:methodName": "GET"</code></td>
             </tr>
             <tr>
               <td><code>writemultipleproperties</code></td>
-              <td> <code>"cov:methodCode": 3</code></td>
-            </tr> -->
+              <td> <code>"cov:methodName": "PUT"</code></td>
+            </tr>
           </tbody>
         </table>
 
@@ -1708,7 +1701,7 @@
               <td><code>unsubscribeevent</code></td>
               <td> <code>"mqv:controlPacketValue": "UNSUBSCRIBE"</code></td>
             </tr>
-            <!-- <tr>
+            <tr>
               <td><code>readallproperties</code></td>
               <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
             </tr>
@@ -1716,11 +1709,11 @@
               <td><code>writeallproperties</code></td>
               <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td><code>readmultipleproperties</code></td>
               <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
               <td><code>writemultipleproperties</code></td>
               <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
             </tr> -->

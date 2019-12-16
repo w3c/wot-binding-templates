@@ -1604,7 +1604,7 @@
         Thus, <code>"subprotocol":"cov:observe"</code> is used to indicate the observation mechanism.
 
         <p class="ednote">
-          As indicated by the <a href="#coap-default-vocabulary-terms" class="sec-ref">CoAP Default Vocabulary Terms</a>, it is recommended to use the <code>subprotocol</code> to describe the observation and using both the <code> cov:options </code> and <code>subprotocol</code> can lead to confusion.
+          As indicated by the <a href="#coap-default-vocabulary-terms" class="sec-ref">CoAP Default Vocabulary Terms</a>, it is recommended to use the <code>subprotocol</code> to describe the observation. Thus, <code> cov:options </code> with the value <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code> MUST NOT be used together with <code>"subprotocol":"cov:observe"</code>, since it can lead to confusion.
         </p>
 
       </section>

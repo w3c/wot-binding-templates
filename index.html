@@ -596,18 +596,17 @@
 
       <section id="mapping-to-xml-schema">
         <h2>XML Schema Binding</h2>
-        In the previous section, examples showed what data whose value type is described using the type system look like
-        when serialized to XML in parallel to corresponding JSON serializations.
+        In the previous sections, the examples showed what data, whose value is described using the Data Schema, look like when serialized to JSON.
 
-        This section describes how type definitions described using the type system can be mapped to XML schema
-        definitions by using the same examples. Given these type definitions, providing the mapping to XML schema allows
+        This section describes how type definitions described using the Data Schema can be mapped to XML schema
+        definitions by using the same examples. Given these Data Schemas, providing the mapping to XML schema allows
         XML tools to directly validate serialized XML data, for example. The XML structure for which this mapping is
         designed is based on EXI4JSON [exi-for-json].
 
         <section id="mapping-to-xml-schema-object">
           <h2>Object Definition to XML Schema</h2>
 
-          Shown below is an example type system object definition. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
+          Shown below is an example Data Schema of an Object Schema. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
           type <code>string</code>) where <code>id</code> is required to be present.
           <pre class="example" title="JSON Schema description of the required JSON Object">
             {
@@ -689,9 +688,9 @@
         </section>
 
         <section id="mapping-to-xml-schema-array">
-          <h2>Array Definition to XML Schema</h2>
+          <h2>Array Schema to XML Schema</h2>
 
-          Shown below is an example type system array definition. The <code>array</code> consists of exactly three number literals with each value within the value range
+          Shown below is an example Data Schema of an Array Schema. The <code>array</code> consists of exactly three number literals with each value within the value range
           of [ 0 ... 2047 ].
 
           <pre class="example" title="JSON Schema description of the required JSON Array">

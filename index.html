@@ -142,7 +142,7 @@
         Binding Templates enable Consumers to adapt to the underlying
         protocol and network-facing API constructions. Once the base protocol
         (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) is identified, the following adaptions
-        specify the particular use within the given Platform.
+        specify the particular use within the given platform.
       </p>
       <p class="ednote" title="Additional Protocol Bindings">
         This document contains examples of Protocol Bindings for HTTP, CoAP,
@@ -187,7 +187,7 @@
           such as JSON and XML are part of the adaptation needed.
         </p>
         <p>
-          Correct indication of Media Types enable proper processing of the serialized documents.
+          Correct indication of Media Types enables proper processing of the serialized documents.
           This way, the documents can be exchanged in any format and allow the upper layers of an application
           to adapt to different formats.
         </p>
@@ -197,7 +197,7 @@
         <h3>Payload Structure</h3>
         <p>
           Data serialized to a standard Media Type still remains in a structure
-          specific to the Platform data model and needs to be understood by
+          specific to the platform data model and needs to be understood by
           clients (cf. various types of JSON documents).
         </p>
         <p>
@@ -214,13 +214,15 @@
           Simple data types and value constraints are currently used in a layered
           and descriptive way in [[WOT-THING-DESCRIPTION]]. Additional forms of
           constraints are available to help adapt to the underlying data types.
-          A Platform-specific 8-bit unsigned integer, for instance, can be defined
+          A platform-specific 8-bit unsigned integer, for instance, can be defined
           as Integer with a minimum of 0 and maximum of 255; the system-specific
           representation (e.g., exact number of bits) on server and client is not
           relevant for interoperability.
         </p>
       </section>
   </section>
+
+  <section id="conformance"></section>
 
   <section id="terminology" class="informative">
     <h2>Terminology</h2>
@@ -953,7 +955,7 @@
           operations, and there may be semantic differences between similar method names of
           different protocols. Additionally, platforms may use different methods
           for realizing a particular WoT Interaction Affordance. For example, POST may
-          be used for writing a Property value in one platforms, while PUT may be
+          be used for writing a Property value in one platform, while PUT may be
           used in another. For these reasons, we require the ability to specify
           which method to use for a particular Interaction. We also will provide
           vocabulary to differentiate between methods of different protocols.
@@ -983,7 +985,7 @@
           Header options in HTTP, CoAP, MQTT sometimes must be included in a
           protocol binding in order to successfully interact with the underlying
           protocol. The example below shows the structure of the definition for
-          http header options, according to the W3C HTTP Vocabulary in RDF.
+          HTTP header options, according to the W3C HTTP Vocabulary in RDF.
         </p>
 
         <pre class="example" title="HTTP Vocabulary Example for Header Options">
@@ -1005,7 +1007,7 @@
         </p>
         <p>
           Protocols may have defined sub-protocols that can be used for some interaction
-          types. For example, to receive asynchronous notifications using http, some
+          types. For example, to receive asynchronous notifications using HTTP, some
           servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>)
           and Server-Sent Events [[eventsource]] (<code>sse</code>).
 
@@ -2098,7 +2100,7 @@
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT
             Binding Templates</a> must correctly cover the security mechanisms employed by the underlying <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">IoT
-            Platform</a>.
+            platform</a>.
           Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Things</a> are
           exposed and consumed in a way that is compliant with their security policies.
@@ -2131,7 +2133,7 @@
             such as those that would be used for authentication or
             to set up a secure connection for HTTPS.
             Other concrete protocols and the addition of security transactions
-            however would only effect the concrete protocol transactions,
+            however would only affect the concrete protocol transactions,
             not the application-level interactions with the
             Consumed Thing and Exposed Thing abstractions.
         </p>

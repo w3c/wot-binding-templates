@@ -871,13 +871,12 @@
       <section id="content-types">
         <h2>Content Types</h2>
         <p>
-          Content Types define the serialization details and other rules for processing
-          the payloads. The content type is used to select a serializer/deserializer
-          and to select an additional set of rules and constraints for the protocol
-          driver.
+          Content Types define the serialization details and other rules for processing the payloads. 
+          The content type is used to select a serializer/deserializer and to select an additional set of rules and constraints for the protocol driver. 
+          Content type includes the media type and potential parameters for the media type.
         </p>
+        
         <p>
-
           For example, the media type <code>application/ocf+cbor</code> indicates that CBOR
           serialization is used, but also that OCF rules and namespaces
           apply to the processing of the representations.
@@ -888,7 +887,7 @@
           set of protocol methods and options defined for that URI Scheme.
         </p>
 
-        <p> When the content type is <code>application/xml</code> (or its binary representation
+        <p> When the media type is <code>application/xml</code> (or its binary representation
           <code>application/exi</code>) and
           there is a Data Schema provided for the payload, the payloads are constrained by a XML Schema derived from the
           Data Schema.

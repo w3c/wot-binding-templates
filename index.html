@@ -134,8 +134,7 @@
   <section>
     <h1>Introduction</h1>
     <p>
-      Binding Templates consist of reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an
-      application client (a Consumer) to interact, using a consistent interaction model, with Things that expose diverse protocols and protocol usage.
+      Binding Templates consist of reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an application client (a Consumer) to interact, using a consistent interaction model, with Things that expose diverse protocols and protocol usage.
     </p>
 
       <p>
@@ -198,7 +197,7 @@
         <p>
           Data serialized to a standard Media Type still remains in a structure
           specific to the platform data model and needs to be understood by
-          clients (cf. various types of JSON documents).
+          Consumers (cf. various types of JSON documents).
         </p>
         <p>
           The data definition language of <code>DataSchema</code>
@@ -216,7 +215,7 @@
           constraints are available to help adapt to the underlying data types.
           A platform-specific 8-bit unsigned integer, for instance, can be defined
           as Integer with a minimum of 0 and maximum of 255; the system-specific
-          representation (e.g., exact number of bits) on server and client is not
+          representation (e.g., exact number of bits) on the Thing and the Consumer is not
           relevant for interoperability.
         </p>
       </section>
@@ -289,7 +288,7 @@
       <h2>Data Schema</h2>
       <p>
         A data schema describes the payload structure and included
-        data items that are passed between client and server during interactions.
+        data items that are passed between the Consumer and the Thing during interactions.
       </p>
 
       <section id="payload-structure">
@@ -587,10 +586,8 @@
         <p>
           Note that in Example 5 above, the values are floating point (<code>double</code>) while the
           other examples have integer values.
-          In general, clients should follow the data schemas strictly, not generating anything not given in the WoT
-          Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing
-          Description.
-          This means that a client sending the payload of the Example 5 should use floating points in the payload.
+          In general, Consumers should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
+          This means that a Consumer sending the payload of the Example 5 should use floating points in the payload.
         </p>
       </section>
 
@@ -690,8 +687,7 @@
         <section id="mapping-to-xml-schema-array">
           <h2>Array Schema to XML Schema</h2>
 
-          Shown below is an example Data Schema of an Array Schema. The <code>array</code> consists of exactly three number literals with each value within the value range
-          of [ 0 ... 2047 ].
+          Shown below is an example Data Schema of an Array Schema. The <code>array</code> consists of exactly three number literals with each value within the value range of [ 0 ... 2047 ].
 
           <pre class="example" title="JSON Schema description of the required JSON Array">
             {
@@ -844,7 +840,7 @@
       <p>
         The form elements contain the URI [[RFC3986]] pointing to an instance of the interaction
         and descriptions of the protocol settings and options expected to be used when
-        between the client and server for the interaction.
+        between the Consumer and the Thing for the interaction.
       </p>
 
       <section id="operation-types">
@@ -856,8 +852,8 @@
         <p>
           For example, the Property interaction allows read and write operations. The
           protocol binding may contain a form for the read operation and a different
-          form for the write operation. The value of the "op" attribute of the form
-          indicates which form is which and allows the client to select the correct
+          form for the write operation. The value of the <code>op</code> attribute of the form
+          indicates which form is which and allows the Consumer to select the correct
           form for the operation required.
         </p>
 
@@ -1762,10 +1758,10 @@
       These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to
       [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and
       <code>http://www.example.org/mqtt-binding#</code>, respectively.
-      The supplemented <code>cov:methodName</code> member instructs the client which CoAP method has to be applied
+      The supplemented <code>cov:methodName</code> member instructs the Consumer which CoAP method has to be applied
       (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code 0.02, or
       <code>iPATCH</code> for CoAP Method Code 0.07).
-      The supplemented <code>"mqv:controlPacketValue"</code> member instructs the client which MQTT command has to be applied (e.g.,
+      The supplemented <code>"mqv:controlPacketValue"</code> member instructs the Consumer which MQTT command has to be applied (e.g.,
       <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
     </p>
 
@@ -2119,14 +2115,14 @@
         <p> This section illustrates example sequences of application and protocol
             transactions that correspond to operations 
             (defined in the Thing Description Specification)
-            implementing various interactions among WoT Clients and WoT Servers.
+            implementing various interactions among WoT Consumer and WoT Things.
             The illustrations show both the concrete protocol transactions
             and the interactions between the applications running
-            inside the WoT Client and WoT Server
+            inside the WoT Consumer and WoT Thing
             and the Consumed Thing and Exposed Thing abstractions.
         </p>
         <p> For the sake of simplicity, remote and local proxies
-            between client and server are omitted from the following sequences.
+            between the Consumer and the Thing are omitted from the following sequences.
             We also assume HTTP as the concrete protocol
             and omit any additional transactions for implementing security,
             such as those that would be used for authentication or

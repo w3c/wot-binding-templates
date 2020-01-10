@@ -1,12 +1,12 @@
 @startuml
 hide footbox
 
-box "WoT Client"
+box "WoT Consumer"
 participant "Application" as AP
 participant "Consumed Thing" as SA
 end box
 
-box "WoT Server"
+box "WoT Thing"
 participant "Exposed Thing" as WS
 participant "Application" as DC
 end box

@@ -619,7 +619,7 @@
               "required": [
                   "id"
               ]
-          }
+            }
           </pre>
           When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code>
           definition), the above <code>object</code> definition transforms to the following XML Schema element
@@ -657,6 +657,7 @@
             <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"$name"</span> <span class="hljs-attr">xmlns:xs</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
               <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
                   <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                  &lt!--Until the next comment, it is a copy of the previous example--&gt
                       <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"object"</span>&gt;</span>
                           <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
                               <span class="hljs-tag">&lt;<span class="hljs-name">xs:all</span>&gt;</span>
@@ -677,6 +678,7 @@
                               <span class="hljs-tag">&lt;/<span class="hljs-name">xs:all</span>&gt;</span>
                           <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
                       <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                  &lt!--Until here--&gt
                   <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span></pre>
@@ -773,6 +775,7 @@
   "hljs-name">xs:complexType</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class=
   "hljs-name">xs:sequence</span>&gt;</span>
+          &lt!--Until the next comment, it is a copy of the previous example--&gt
               <span class="hljs-tag">&lt;<span class=
   "hljs-name">xs:element</span> <span class=
   "hljs-attr">name</span>=<span class=
@@ -821,6 +824,7 @@
   "hljs-name">xs:complexType</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class=
   "hljs-name">xs:element</span>&gt;</span>
+          &lt!--Until here--&gt
           <span class="hljs-tag">&lt;/<span class=
   "hljs-name">xs:sequence</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class=
@@ -1071,7 +1075,7 @@
     </section>
 
 
-    <section id="sec-interaction-pattterns" class="informative">
+    <section id="sec-interaction-patterns" class="informative">
       <h1>Interaction Affordances</h1>
       <p>
         This section describes unique aspects of protocol bindings for the three

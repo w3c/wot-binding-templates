@@ -320,150 +320,37 @@
           may require nested arrays and objects, and some constant values to
           be specified.
         </p>
+
+        <p>
+          Below are examples of different payloads and their corresponding <code>DataSchema</code>. 
+        </p>
+            
         <p>
           For example, a simple payload structure may use a map:
         </p>
-
-        <p>
-          <pre class="example" title="Simple Payload Structure">
-              {
-                "level": 50,
-                "time": 10
-              }
-            </pre>
-
-          <p>
-            SenML might use the following construct:
-          </p>
-
-          <pre class="example" title="SenML Example">
-            [
-              {
-                "bn": "/example/light/"
-              },
-              {
-                "n": "level",
-                "v": 50
-              },
-              {
-                "n": "time",
-                "v": 10
-              }
-            ]
-          </pre>
-
-          <p>
-            A Batch Collection according to OCF may be structured like this:
-          </p>
-
-          <pre class="example" title="OCF Batch Example">
-            [
-              {
-                "href": "/example/light/level",
-                "rep": {
-                  "dimming": 50
-                }
-              },
-              {
-                "href": "/example/light/time",
-                "rep": {
-                  "ramptime": 10
-                }
-              }
-            ]
-          </pre>
-
-          <p>
-            And an IPSO Smart Object on LWM2M might look like the following:
-          </p>
-
-          <pre class="example" title="IPSO/LWM2M Example">
-            {
-              "bn": "/3001/0/",
-              "e": [
+        <table>
+          <tbody>
+          <tr>
+            <td style="vertical-align: top; width: 50%"> 
+              <pre class="example" title="Simple JSON Object Payload">
                 {
-                  "n": "5044",
-                  "v": 0.5
-                },
-                {
-                  "n": "5002",
-                  "v": 10.0
+                  "level": 50,
+                  "time": 10
                 }
-              ]
-            }
-          </pre>
-
-          <p>
-            The Binding template for each of these payloads will be
-            structured according to the desired payload structure.
-          </p>
-
-          <p>
-            For the Simple Payload in Example 1 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
-
-          <pre class="example" title="DataSchema for Simple JSON Object Payload">
-            {
-              "type": "object",
-              "properties": {
-                "level": {
-                  "@type": ["iot:LevelData"],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 255
-                },
-                "time": {
-                  "@type": ["iot:TransitionTimeData"],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 65535
-                }
-              }
-            }
-          </pre>
-
-          <p>
-            For the SenML Payload in Example 2 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
-
-          <pre class="example" title="DataSchema for SenML Payload">
-            {
-              "type": "array",
-              "items": [
+              </pre> 
+            </td>
+            <td style="vertical-align: top; width: 50%"> 
+              <pre class="example" title="DataSchema for Simple JSON Object Payload">
                 {
                   "type": "object",
                   "properties": {
-                    "bn": {
-                      "type": "string",
-                      "const": "example/light"
-                    }
-                  }
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "n": {
-                      "type": "string",
-                      "const": "level"
-                    },
-                    "v": {
+                    "level": {
                       "@type": ["iot:LevelData"],
                       "type": "integer",
                       "minimum": 0,
                       "maximum": 255
-                    }
-                  }
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "n": {
-                      "type": "string",
-                      "const": "time"
                     },
-                    "v": {
+                    "time": {
                       "@type": ["iot:TransitionTimeData"],
                       "type": "integer",
                       "minimum": 0,
@@ -471,123 +358,253 @@
                     }
                   }
                 }
-              ]
-            }
-          </pre>
+              </pre> 
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-          <p>
-            For the OCF Batch Payload in Example 3 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
 
-          <pre class="example" title="DataSchema for OCF Batch Payload">
-            {
-              "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "href": {
-                      "type": "string",
-                      "const": "/example/light/level"
-                    },
-                    "rep": {
-                      "type": "object",
-                      "properties": {
-                        "dimming": {
-                          "@type": ["iot:LevelData"],
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 255
-                        }
-                      }
-                    }
-                  }
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "href": {
-                      "type": "string",
-                      "const": "/example/light/time"
-                    },
-                    "rep": {
-                      "type": "object",
-                      "properties": {
-                        "ramptime": {
-                          "@type": ["iot:TransitionTimeData"],
-                          "type":"integer",
-                          "minimum": 0,
-                          "maximum": 65535
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-          </pre>
+        <p>
+          SenML might use the following construct:
+        </p>
 
-          <p>
-            For the IPSO/LWM2M Payload in Example 4 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
-
-          <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
-            {
-              "type": "object",
-              "properties": {
-                "bn": {
-                  "type": "string",
-                  "const": "/3001/0/"
-                },
-                "e": {
-                  "type": "array",
-                  "items": [
+        <table>
+          <tbody>
+            <tr>
+              <td style="vertical-align: top; width: 50%">
+                <pre class="example" title="SenML Example">
+                  [
                     {
-                      "type": "object",
-                      "properties": {
-                        "n": {
-                          "type": "string",
-                          "const": "5044"
-                        },
-                        "v": {
-                          "@type": ["iot:LevelData"],
-                          "type": "number",
-                          "minimum": 0.0,
-                          "maximum": 1.0
-                        }
-                      }
+                      "bn": "/example/light/"
                     },
                     {
-                      "type": "object",
-                      "Properties": {
-                        "n": {
-                          "type": "string",
-                          "const": "5002"
-                        },
-                        "v": {
-                          "@type": ["iot:TransitionTimeData"],
-                          "type": "number",
-                          "minimum": 0.0,
-                          "maximum": 6553.5
-                        }
-                      }
+                      "n": "level",
+                      "v": 50
+                    },
+                    {
+                      "n": "time",
+                      "v": 10
                     }
                   ]
-                }
-              }
-            }
-          </pre>
+                </pre>
+              </td>
+              <td style="vertical-align: top; width: 50%">
+                <pre class="example" title="DataSchema for SenML Payload">
+                  {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "bn": {
+                            "type": "string",
+                            "const": "example/light"
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "n": {
+                            "type": "string",
+                            "const": "level"
+                          },
+                          "v": {
+                            "@type": ["iot:LevelData"],
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "n": {
+                            "type": "string",
+                            "const": "time"
+                          },
+                          "v": {
+                            "@type": ["iot:TransitionTimeData"],
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 65535
+                          }
+                        }
+                      }
+                    ]
+                  }
+                </pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+          <p>
+            A Batch Collection according to OCF may be structured like this:
+          </p>
+
+          <table>
+            <tbody>
+              <tr>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="OCF Batch Example">
+                    [
+                      {
+                        "href": "/example/light/level",
+                        "rep": {
+                          "dimming": 50
+                        }
+                      },
+                      {
+                        "href": "/example/light/time",
+                        "rep": {
+                          "ramptime": 10
+                        }
+                      }
+                    ]
+                  </pre>
+                </td>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="DataSchema for OCF Batch Payload">
+                    {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string",
+                              "const": "/example/light/level"
+                            },
+                            "rep": {
+                              "type": "object",
+                              "properties": {
+                                "dimming": {
+                                  "@type": ["iot:LevelData"],
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 255
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string",
+                              "const": "/example/light/time"
+                            },
+                            "rep": {
+                              "type": "object",
+                              "properties": {
+                                "ramptime": {
+                                  "@type": ["iot:TransitionTimeData"],
+                                  "type":"integer",
+                                  "minimum": 0,
+                                  "maximum": 65535
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+
+          <p>
+            And an IPSO Smart Object on LWM2M might look like the following:
+          </p>
+
+          <table>
+            <tbody>
+              <tr>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="IPSO/LWM2M Example">
+                    {
+                      "bn": "/3001/0/",
+                      "e": [
+                        {
+                          "n": "5044",
+                          "v": 0.5
+                        },
+                        {
+                          "n": "5002",
+                          "v": 10.0
+                        }
+                      ]
+                    }
+                  </pre>
+                </td>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
+                    {
+                      "type": "object",
+                      "properties": {
+                        "bn": {
+                          "type": "string",
+                          "const": "/3001/0/"
+                        },
+                        "e": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "n": {
+                                  "type": "string",
+                                  "const": "5044"
+                                },
+                                "v": {
+                                  "@type": ["iot:LevelData"],
+                                  "type": "number",
+                                  "minimum": 0.0,
+                                  "maximum": 1.0
+                                }
+                              }
+                            },
+                            {
+                              "type": "object",
+                              "Properties": {
+                                "n": {
+                                  "type": "string",
+                                  "const": "5002"
+                                },
+                                "v": {
+                                  "@type": ["iot:TransitionTimeData"],
+                                  "type": "number",
+                                  "minimum": 0.0,
+                                  "maximum": 6553.5
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
       </section>
 
       <section id="data-types-constraints">
         <h2>Data Types and value constraints</h2>
         <p>
-          Note that in Example 5 above, the values are floating point (<code>double</code>) while the
-          other examples have integer values.
+          Note that in Example 7 above, the values are floating point (<code>double</code>) while the other examples have integer values.
           In general, Consumers should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
-          This means that a Consumer sending the payload of the Example 5 should use floating points in the payload.
+          This means that a Consumer sending the payload of the Example 7 should use floating points in the payload.
         </p>
       </section>
 

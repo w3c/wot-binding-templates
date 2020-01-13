@@ -134,15 +134,14 @@
   <section>
     <h1>Introduction</h1>
     <p>
-      Binding Templates consist of reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an
-      application client (a Consumer) to interact, using a consistent interaction model, with Things that expose diverse protocols and protocol usage.
+      Binding Templates consist of reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an application client (a Consumer) to interact, using a consistent interaction model, with Things that expose diverse protocols and protocol usage.
     </p>
 
       <p>
         Binding Templates enable Consumers to adapt to the underlying
         protocol and network-facing API constructions. Once the base protocol
         (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) is identified, the following adaptions
-        specify the particular use within the given Platform.
+        specify the particular use within the given platform.
       </p>
       <p class="ednote" title="Additional Protocol Bindings">
         This document contains examples of Protocol Bindings for HTTP, CoAP,
@@ -187,7 +186,7 @@
           such as JSON and XML are part of the adaptation needed.
         </p>
         <p>
-          Correct indication of Media Types enable proper processing of the serialized documents.
+          Correct indication of Media Types enables proper processing of the serialized documents.
           This way, the documents can be exchanged in any format and allow the upper layers of an application
           to adapt to different formats.
         </p>
@@ -197,8 +196,8 @@
         <h3>Payload Structure</h3>
         <p>
           Data serialized to a standard Media Type still remains in a structure
-          specific to the Platform data model and needs to be understood by
-          clients (cf. various types of JSON documents).
+          specific to the platform data model and needs to be understood by
+          Consumers (cf. various types of JSON documents).
         </p>
         <p>
           The data definition language of <code>DataSchema</code>
@@ -214,13 +213,15 @@
           Simple data types and value constraints are currently used in a layered
           and descriptive way in [[WOT-THING-DESCRIPTION]]. Additional forms of
           constraints are available to help adapt to the underlying data types.
-          A Platform-specific 8-bit unsigned integer, for instance, can be defined
+          A platform-specific 8-bit unsigned integer, for instance, can be defined
           as Integer with a minimum of 0 and maximum of 255; the system-specific
-          representation (e.g., exact number of bits) on server and client is not
+          representation (e.g., exact number of bits) on the Thing and the Consumer is not
           relevant for interoperability.
         </p>
       </section>
   </section>
+
+  <section id="conformance"></section>
 
   <section id="terminology" class="informative">
     <h2>Terminology</h2>
@@ -287,7 +288,7 @@
       <h2>Data Schema</h2>
       <p>
         A data schema describes the payload structure and included
-        data items that are passed between client and server during interactions.
+        data items that are passed between the Consumer and the Thing during interactions.
       </p>
 
       <section id="payload-structure">
@@ -319,150 +320,37 @@
           may require nested arrays and objects, and some constant values to
           be specified.
         </p>
+
+        <p>
+          Below are examples of different payloads and their corresponding <code>DataSchema</code>. 
+        </p>
+            
         <p>
           For example, a simple payload structure may use a map:
         </p>
-
-        <p>
-          <pre class="example" title="Simple Payload Structure">
-              {
-                "level": 50,
-                "time": 10
-              }
-            </pre>
-
-          <p>
-            SenML might use the following construct:
-          </p>
-
-          <pre class="example" title="SenML Example">
-            [
-              {
-                "bn": "/example/light/"
-              },
-              {
-                "n": "level",
-                "v": 50
-              },
-              {
-                "n": "time",
-                "v": 10
-              }
-            ]
-          </pre>
-
-          <p>
-            A Batch Collection according to OCF may be structured like this:
-          </p>
-
-          <pre class="example" title="OCF Batch Example">
-            [
-              {
-                "href": "/example/light/level",
-                "rep": {
-                  "dimming": 50
-                }
-              },
-              {
-                "href": "/example/light/time",
-                "rep": {
-                  "ramptime": 10
-                }
-              }
-            ]
-          </pre>
-
-          <p>
-            And an IPSO Smart Object on LWM2M might look like the following:
-          </p>
-
-          <pre class="example" title="IPSO/LWM2M Example">
-            {
-              "bn": "/3001/0/",
-              "e": [
+        <table>
+          <tbody>
+          <tr>
+            <td style="vertical-align: top; width: 50%"> 
+              <pre class="example" title="Simple JSON Object Payload">
                 {
-                  "n": "5044",
-                  "v": 0.5
-                },
-                {
-                  "n": "5002",
-                  "v": 10.0
+                  "level": 50,
+                  "time": 10
                 }
-              ]
-            }
-          </pre>
-
-          <p>
-            The Binding template for each of these payloads will be
-            structured according to the desired payload structure.
-          </p>
-
-          <p>
-            For the Simple Payload in Example 1 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
-
-          <pre class="example" title="DataSchema for Simple JSON Object Payload">
-            {
-              "type": "object",
-              "properties": {
-                "level": {
-                  "@type": ["iot:LevelData"],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 255
-                },
-                "time": {
-                  "@type": ["iot:TransitionTimeData"],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 65535
-                }
-              }
-            }
-          </pre>
-
-          <p>
-            For the SenML Payload in Example 2 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
-
-          <pre class="example" title="DataSchema for SenML Payload">
-            {
-              "type": "array",
-              "items": [
+              </pre> 
+            </td>
+            <td style="vertical-align: top; width: 50%"> 
+              <pre class="example" title="DataSchema for Simple JSON Object Payload">
                 {
                   "type": "object",
                   "properties": {
-                    "bn": {
-                      "type": "string",
-                      "const": "example/light"
-                    }
-                  }
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "n": {
-                      "type": "string",
-                      "const": "level"
-                    },
-                    "v": {
+                    "level": {
                       "@type": ["iot:LevelData"],
                       "type": "integer",
                       "minimum": 0,
                       "maximum": 255
-                    }
-                  }
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "n": {
-                      "type": "string",
-                      "const": "time"
                     },
-                    "v": {
+                    "time": {
                       "@type": ["iot:TransitionTimeData"],
                       "type": "integer",
                       "minimum": 0,
@@ -470,142 +358,269 @@
                     }
                   }
                 }
-              ]
-            }
-          </pre>
+              </pre> 
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-          <p>
-            For the OCF Batch Payload in Example 3 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
 
-          <pre class="example" title="DataSchema for OCF Batch Payload">
-            {
-              "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "href": {
-                      "type": "string",
-                      "const": "/example/light/level"
-                    },
-                    "rep": {
-                      "type": "object",
-                      "properties": {
-                        "dimming": {
-                          "@type": ["iot:LevelData"],
-                          "type": "integer",
-                          "minimum": 0,
-                          "maximum": 255
-                        }
-                      }
-                    }
-                  }
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "href": {
-                      "type": "string",
-                      "const": "/example/light/time"
-                    },
-                    "rep": {
-                      "type": "object",
-                      "properties": {
-                        "ramptime": {
-                          "@type": ["iot:TransitionTimeData"],
-                          "type":"integer",
-                          "minimum": 0,
-                          "maximum": 65535
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-          </pre>
+        <p>
+          SenML might use the following construct:
+        </p>
 
-          <p>
-            For the IPSO/LWM2M Payload in Example 4 above, the <code>DataSchema</code> element would
-            be structured as follows:
-          </p>
-
-          <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
-            {
-              "type": "object",
-              "properties": {
-                "bn": {
-                  "type": "string",
-                  "const": "/3001/0/"
-                },
-                "e": {
-                  "type": "array",
-                  "items": [
+        <table>
+          <tbody>
+            <tr>
+              <td style="vertical-align: top; width: 50%">
+                <pre class="example" title="SenML Example">
+                  [
                     {
-                      "type": "object",
-                      "properties": {
-                        "n": {
-                          "type": "string",
-                          "const": "5044"
-                        },
-                        "v": {
-                          "@type": ["iot:LevelData"],
-                          "type": "number",
-                          "minimum": 0.0,
-                          "maximum": 1.0
-                        }
-                      }
+                      "bn": "/example/light/"
                     },
                     {
-                      "type": "object",
-                      "Properties": {
-                        "n": {
-                          "type": "string",
-                          "const": "5002"
-                        },
-                        "v": {
-                          "@type": ["iot:TransitionTimeData"],
-                          "type": "number",
-                          "minimum": 0.0,
-                          "maximum": 6553.5
-                        }
-                      }
+                      "n": "level",
+                      "v": 50
+                    },
+                    {
+                      "n": "time",
+                      "v": 10
                     }
                   ]
-                }
-              }
-            }
-          </pre>
+                </pre>
+              </td>
+              <td style="vertical-align: top; width: 50%">
+                <pre class="example" title="DataSchema for SenML Payload">
+                  {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "bn": {
+                            "type": "string",
+                            "const": "example/light"
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "n": {
+                            "type": "string",
+                            "const": "level"
+                          },
+                          "v": {
+                            "@type": ["iot:LevelData"],
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "n": {
+                            "type": "string",
+                            "const": "time"
+                          },
+                          "v": {
+                            "@type": ["iot:TransitionTimeData"],
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 65535
+                          }
+                        }
+                      }
+                    ]
+                  }
+                </pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+          <p>
+            A Batch Collection according to OCF may be structured like this:
+          </p>
+
+          <table>
+            <tbody>
+              <tr>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="OCF Batch Example">
+                    [
+                      {
+                        "href": "/example/light/level",
+                        "rep": {
+                          "dimming": 50
+                        }
+                      },
+                      {
+                        "href": "/example/light/time",
+                        "rep": {
+                          "ramptime": 10
+                        }
+                      }
+                    ]
+                  </pre>
+                </td>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="DataSchema for OCF Batch Payload">
+                    {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string",
+                              "const": "/example/light/level"
+                            },
+                            "rep": {
+                              "type": "object",
+                              "properties": {
+                                "dimming": {
+                                  "@type": ["iot:LevelData"],
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 255
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "href": {
+                              "type": "string",
+                              "const": "/example/light/time"
+                            },
+                            "rep": {
+                              "type": "object",
+                              "properties": {
+                                "ramptime": {
+                                  "@type": ["iot:TransitionTimeData"],
+                                  "type":"integer",
+                                  "minimum": 0,
+                                  "maximum": 65535
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+
+          <p>
+            And an IPSO Smart Object on LWM2M might look like the following:
+          </p>
+
+          <table>
+            <tbody>
+              <tr>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="IPSO/LWM2M Example">
+                    {
+                      "bn": "/3001/0/",
+                      "e": [
+                        {
+                          "n": "5044",
+                          "v": 0.5
+                        },
+                        {
+                          "n": "5002",
+                          "v": 10.0
+                        }
+                      ]
+                    }
+                  </pre>
+                </td>
+                <td style="vertical-align: top; width: 50%">
+                  <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
+                    {
+                      "type": "object",
+                      "properties": {
+                        "bn": {
+                          "type": "string",
+                          "const": "/3001/0/"
+                        },
+                        "e": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "n": {
+                                  "type": "string",
+                                  "const": "5044"
+                                },
+                                "v": {
+                                  "@type": ["iot:LevelData"],
+                                  "type": "number",
+                                  "minimum": 0.0,
+                                  "maximum": 1.0
+                                }
+                              }
+                            },
+                            {
+                              "type": "object",
+                              "Properties": {
+                                "n": {
+                                  "type": "string",
+                                  "const": "5002"
+                                },
+                                "v": {
+                                  "@type": ["iot:TransitionTimeData"],
+                                  "type": "number",
+                                  "minimum": 0.0,
+                                  "maximum": 6553.5
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
       </section>
 
       <section id="data-types-constraints">
         <h2>Data Types and value constraints</h2>
         <p>
-          Note that in Example 5 above, the values are floating point (<code>double</code>) while the
-          other examples have integer values.
-          In general, clients should follow the data schemas strictly, not generating anything not given in the WoT
-          Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing
-          Description.
-          This means that a client sending the payload of the Example 5 should use floating points in the payload.
+          Note that in Example 7 above, the values are floating point (<code>double</code>) while the other examples have integer values.
+          In general, Consumers should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
+          This means that a Consumer sending the payload of the Example 7 should use floating points in the payload.
         </p>
       </section>
 
       <section id="mapping-to-xml-schema">
         <h2>XML Schema Binding</h2>
-        In the previous section, examples showed what data whose value type is described using the type system look like
-        when serialized to XML in parallel to corresponding JSON serializations.
+        In the previous sections, the examples showed what data, whose value is described using the Data Schema, look like when serialized to JSON.
 
-        This section describes how type definitions described using the type system can be mapped to XML schema
-        definitions by using the same examples. Given these type definitions, providing the mapping to XML schema allows
+        This section describes how type definitions described using the Data Schema can be mapped to XML schema
+        definitions by using the same examples. Given these Data Schemas, providing the mapping to XML schema allows
         XML tools to directly validate serialized XML data, for example. The XML structure for which this mapping is
         designed is based on EXI4JSON [exi-for-json].
 
         <section id="mapping-to-xml-schema-object">
           <h2>Object Definition to XML Schema</h2>
 
-          Shown below is an example type system object definition. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
+          Shown below is an example Data Schema of an Object Schema. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
           type <code>string</code>) where <code>id</code> is required to be present.
           <pre class="example" title="JSON Schema description of the required JSON Object">
             {
@@ -621,7 +636,7 @@
               "required": [
                   "id"
               ]
-          }
+            }
           </pre>
           When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code>
           definition), the above <code>object</code> definition transforms to the following XML Schema element
@@ -659,6 +674,7 @@
             <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"$name"</span> <span class="hljs-attr">xmlns:xs</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
               <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
                   <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                  &lt!--Until the next comment, it is a copy of the previous example--&gt
                       <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"object"</span>&gt;</span>
                           <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
                               <span class="hljs-tag">&lt;<span class="hljs-name">xs:all</span>&gt;</span>
@@ -679,6 +695,7 @@
                               <span class="hljs-tag">&lt;/<span class="hljs-name">xs:all</span>&gt;</span>
                           <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
                       <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                  &lt!--Until here--&gt
                   <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
           <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span></pre>
@@ -687,10 +704,9 @@
         </section>
 
         <section id="mapping-to-xml-schema-array">
-          <h2>Array Definition to XML Schema</h2>
+          <h2>Array Schema to XML Schema</h2>
 
-          Shown below is an example type system array definition. The <code>array</code> consists of exactly three number literals with each value within the value range
-          of [ 0 ... 2047 ].
+          Shown below is an example Data Schema of an Array Schema. The <code>array</code> consists of exactly three number literals with each value within the value range of [ 0 ... 2047 ].
 
           <pre class="example" title="JSON Schema description of the required JSON Array">
             {
@@ -776,6 +792,7 @@
   "hljs-name">xs:complexType</span>&gt;</span>
           <span class="hljs-tag">&lt;<span class=
   "hljs-name">xs:sequence</span>&gt;</span>
+          &lt!--Until the next comment, it is a copy of the previous example--&gt
               <span class="hljs-tag">&lt;<span class=
   "hljs-name">xs:element</span> <span class=
   "hljs-attr">name</span>=<span class=
@@ -824,6 +841,7 @@
   "hljs-name">xs:complexType</span>&gt;</span>
               <span class="hljs-tag">&lt;/<span class=
   "hljs-name">xs:element</span>&gt;</span>
+          &lt!--Until here--&gt
           <span class="hljs-tag">&lt;/<span class=
   "hljs-name">xs:sequence</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class=
@@ -843,7 +861,7 @@
       <p>
         The form elements contain the URI [[RFC3986]] pointing to an instance of the interaction
         and descriptions of the protocol settings and options expected to be used when
-        between the client and server for the interaction.
+        between the Consumer and the Thing for the interaction.
       </p>
 
       <section id="operation-types">
@@ -855,8 +873,8 @@
         <p>
           For example, the Property interaction allows read and write operations. The
           protocol binding may contain a form for the read operation and a different
-          form for the write operation. The value of the "op" attribute of the form
-          indicates which form is which and allows the client to select the correct
+          form for the write operation. The value of the <code>op</code> attribute of the form
+          indicates which form is which and allows the Consumer to select the correct
           form for the operation required.
         </p>
 
@@ -874,13 +892,12 @@
       <section id="content-types">
         <h2>Content Types</h2>
         <p>
-          Content Types define the serialization details and other rules for processing
-          the payloads. The content type is used to select a serializer/deserializer
-          and to select an additional set of rules and constraints for the protocol
-          driver.
+          Content Types define the serialization details and other rules for processing the payloads. 
+          The content type is used to select a serializer/deserializer and to select an additional set of rules and constraints for the protocol driver. 
+          Content type includes the media type and potential parameters for the media type.
         </p>
+        
         <p>
-
           For example, the media type <code>application/ocf+cbor</code> indicates that CBOR
           serialization is used, but also that OCF rules and namespaces
           apply to the processing of the representations.
@@ -891,7 +908,7 @@
           set of protocol methods and options defined for that URI Scheme.
         </p>
 
-        <p> When the content type is <code>application/xml</code> (or its binary representation
+        <p> When the media type is <code>application/xml</code> (or its binary representation
           <code>application/exi</code>) and
           there is a Data Schema provided for the payload, the payloads are constrained by a XML Schema derived from the
           Data Schema.
@@ -953,7 +970,7 @@
           operations, and there may be semantic differences between similar method names of
           different protocols. Additionally, platforms may use different methods
           for realizing a particular WoT Interaction Affordance. For example, POST may
-          be used for writing a Property value in one platforms, while PUT may be
+          be used for writing a Property value in one platform, while PUT may be
           used in another. For these reasons, we require the ability to specify
           which method to use for a particular Interaction. We also will provide
           vocabulary to differentiate between methods of different protocols.
@@ -983,7 +1000,7 @@
           Header options in HTTP, CoAP, MQTT sometimes must be included in a
           protocol binding in order to successfully interact with the underlying
           protocol. The example below shows the structure of the definition for
-          http header options, according to the W3C HTTP Vocabulary in RDF.
+          HTTP header options, according to the W3C HTTP Vocabulary in RDF.
         </p>
 
         <pre class="example" title="HTTP Vocabulary Example for Header Options">
@@ -1005,7 +1022,7 @@
         </p>
         <p>
           Protocols may have defined sub-protocols that can be used for some interaction
-          types. For example, to receive asynchronous notifications using http, some
+          types. For example, to receive asynchronous notifications using HTTP, some
           servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>)
           and Server-Sent Events [[eventsource]] (<code>sse</code>).
 
@@ -1075,7 +1092,7 @@
     </section>
 
 
-    <section id="sec-interaction-pattterns" class="informative">
+    <section id="sec-interaction-patterns" class="informative">
       <h1>Interaction Affordances</h1>
       <p>
         This section describes unique aspects of protocol bindings for the three
@@ -1761,10 +1778,10 @@
       These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to
       [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and
       <code>http://www.example.org/mqtt-binding#</code>, respectively.
-      The supplemented <code>cov:methodName</code> member instructs the client which CoAP method has to be applied
+      The supplemented <code>cov:methodName</code> member instructs the Consumer which CoAP method has to be applied
       (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code 0.02, or
       <code>iPATCH</code> for CoAP Method Code 0.07).
-      The supplemented <code>"mqv:controlPacketValue"</code> member instructs the client which MQTT command has to be applied (e.g.,
+      The supplemented <code>"mqv:controlPacketValue"</code> member instructs the Consumer which MQTT command has to be applied (e.g.,
       <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
     </p>
 
@@ -2098,7 +2115,7 @@
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT
             Binding Templates</a> must correctly cover the security mechanisms employed by the underlying <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">IoT
-            Platform</a>.
+            platform</a>.
           Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Things</a> are
           exposed and consumed in a way that is compliant with their security policies.
@@ -2118,20 +2135,20 @@
         <p> This section illustrates example sequences of application and protocol
             transactions that correspond to operations 
             (defined in the Thing Description Specification)
-            implementing various interactions among WoT Clients and WoT Servers.
+            implementing various interactions among WoT Consumer and WoT Things.
             The illustrations show both the concrete protocol transactions
             and the interactions between the applications running
-            inside the WoT Client and WoT Server
+            inside the WoT Consumer and WoT Thing
             and the Consumed Thing and Exposed Thing abstractions.
         </p>
         <p> For the sake of simplicity, remote and local proxies
-            between client and server are omitted from the following sequences.
+            between the Consumer and the Thing are omitted from the following sequences.
             We also assume HTTP as the concrete protocol
             and omit any additional transactions for implementing security,
             such as those that would be used for authentication or
             to set up a secure connection for HTTPS.
             Other concrete protocols and the addition of security transactions
-            however would only effect the concrete protocol transactions,
+            however would only affect the concrete protocol transactions,
             not the application-level interactions with the
             Consumed Thing and Exposed Thing abstractions.
         </p>

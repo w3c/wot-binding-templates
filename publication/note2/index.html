@@ -1,0 +1,4408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for HTML5 for Linux version 5.7.27">
+  <meta charset="utf-8">
+  <meta name="generator" content="ReSpec 25.1.0">
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1, shrink-to-fit=no">
+  <style>
+  /* --- EXAMPLES --- */
+  span.example-title {
+    text-transform: none;
+  }
+  aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+  }
+  div.illegal-example { color: red }
+  div.illegal-example p { color: black }
+  aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;
+  }
+
+  aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+  }
+  aside.example div.example span.example-title {
+    color: #999;
+  }
+  </style>
+  <style>
+  /* --- ISSUES/NOTES --- */
+  .issue-label {
+    text-transform: initial;
+  }
+
+  .warning > p:first-child { margin-top: 0 }
+  .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+  }
+  span.warning { padding: .1em .5em .15em; }
+
+  .issue.closed span.issue-number {
+    text-decoration: line-through;
+  }
+
+  .warning {
+    border-color: #f11;
+    border-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+  }
+
+  .warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 1.3em;
+    float: left;
+    padding-right: .3em;
+    margin-top: -0.3em;
+  }
+
+  li.task-list-item {
+    list-style: none;
+  }
+
+  input.task-list-item-checkbox {
+    margin: 0 0.35em 0.25em -1.6em;
+    vertical-align: middle;
+  }
+
+  .issue a.respec-gh-label {
+  padding: 5px;
+  margin: 0 2px 0 2px;
+  font-size: 10px;
+  text-transform: none;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+  position: relative;
+  bottom: 2px;
+  border: none;
+  display: inline-block;
+  }
+
+  .issue a.respec-label-dark {
+  color: #fff;
+  background-color: #000;
+  }
+
+  .issue a.respec-label-light {
+  color: #000;
+  background-color: #fff;
+  }
+  </style>
+  <style>
+  /* dfn popup panel that list all local references to a dfn */
+  dfn {
+  cursor: pointer;
+  }
+
+  .dfn-panel {
+  position: absolute;
+  left: var(--left); /* set via JS */
+  top: var(--top); /* set via JS */
+  z-index: 35;
+  height: auto;
+  width: max-content;
+  max-width: 300px;
+  max-height: 500px;
+  overflow: auto;
+  padding: 0.5em 0.75em;
+  font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+  background: #dddddd;
+  color: black;
+  border: outset 0.2em;
+  }
+
+  .dfn-panel * {
+  margin: 0;
+  }
+
+  .dfn-panel > b {
+  display: block;
+  }
+
+  .dfn-panel ul a[href] {
+  color: black;
+  }
+
+  .dfn-panel a:not(:hover) {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  }
+
+  .dfn-panel a[href]:hover {
+  border-bottom-width: 1px;
+  }
+
+  .dfn-panel > b + b {
+  margin-top: 0.25em;
+  }
+
+  .dfn-panel ul {
+  padding: 0;
+  }
+
+  .dfn-panel li {
+  list-style: inside;
+  }
+
+  .dfn-panel.docked {
+  display: inline-block;
+  position: fixed;
+  left: 0.5em;
+  top: unset;
+  bottom: 2em;
+  margin: 0 auto;
+  /* 0.75em from padding (x2), 0.5em from left position, 0.2em border (x2) */
+  max-width: calc(100vw - 0.75em * 2 - 0.5em - 0.2em * 2);
+  max-height: 30vh;
+  }
+  </style>
+  <title>Web of Things (WoT) Binding Templates</title>
+  <style id="respec-mainstyle">
+  /*****************************************************************
+  * ReSpec specific CSS
+  *****************************************************************/
+  @keyframes pop {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.25, 1.25);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+  }
+
+  /* Override code highlighter background */
+  .hljs {
+  background: transparent !important;
+  }
+
+  /* --- INLINES --- */
+  h1 abbr,
+  h2 abbr,
+  h3 abbr,
+  h4 abbr,
+  h5 abbr,
+  h6 abbr,
+  a abbr {
+  border: none;
+  }
+
+  dfn {
+  font-weight: bold;
+  }
+
+  a.internalDFN {
+  color: inherit;
+  border-bottom: 1px solid #99c;
+  text-decoration: none;
+  }
+
+  a.externalDFN {
+  color: inherit;
+  border-bottom: 1px dotted #ccc;
+  text-decoration: none;
+  }
+
+  a.bibref {
+  text-decoration: none;
+  }
+
+  .respec-offending-element:target {
+  animation: pop 0.25s ease-in-out 0s 1;
+  }
+
+  .respec-offending-element,
+  a[href].respec-offending-element {
+  text-decoration: red wavy underline;
+  }
+  @supports not (text-decoration: red wavy underline) {
+  .respec-offending-element:not(pre) {
+    display: inline-block;
+  }
+  .respec-offending-element {
+    /* Red squiggly line */
+    background: url(data:image/gif;base64,R0lGODdhBAADAPEAANv///8AAP///wAAACwAAAAABAADAEACBZQjmIAFADs=)
+      bottom repeat-x;
+  }
+  }
+
+  #references :target {
+  background: #eaf3ff;
+  animation: pop 0.4s ease-in-out 0s 1;
+  }
+
+  cite .bibref {
+  font-style: normal;
+  }
+
+  code {
+  color: #c83500;
+  }
+
+  th code {
+  color: inherit;
+  }
+
+  a[href].orcid {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  a[href].orcid > svg {
+    margin-bottom: -2px;
+  }
+
+  /* --- TOC --- */
+
+  .toc a,
+  .tof a {
+  text-decoration: none;
+  }
+
+  a .secno,
+  a .figno {
+  color: #000;
+  }
+
+  ul.tof,
+  ol.tof {
+  list-style: none outside none;
+  }
+
+  .caption {
+  margin-top: 0.5em;
+  font-style: italic;
+  }
+
+  /* --- TABLE --- */
+
+  table.simple {
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-bottom: 3px solid #005a9c;
+  }
+
+  .simple th {
+  background: #005a9c;
+  color: #fff;
+  padding: 3px 5px;
+  text-align: left;
+  }
+
+  .simple th a {
+  color: #fff;
+  padding: 3px 5px;
+  text-align: left;
+  }
+
+  .simple th[scope="row"] {
+  background: inherit;
+  color: inherit;
+  border-top: 1px solid #ddd;
+  }
+
+  .simple td {
+  padding: 3px 10px;
+  border-top: 1px solid #ddd;
+  }
+
+  .simple tr:nth-child(even) {
+  background: #f0f6ff;
+  }
+
+  /* --- DL --- */
+
+  .section dd > p:first-child {
+  margin-top: 0;
+  }
+
+  .section dd > p:last-child {
+  margin-bottom: 0;
+  }
+
+  .section dd {
+  margin-bottom: 1em;
+  }
+
+  .section dl.attrs dd,
+  .section dl.eldef dd {
+  margin-bottom: 0;
+  }
+
+  #issue-summary > ul,
+  .respec-dfn-list {
+  column-count: 2;
+  }
+
+  #issue-summary li,
+  .respec-dfn-list li {
+  list-style: none;
+  }
+
+  details.respec-tests-details {
+  margin-left: 1em;
+  display: inline-block;
+  vertical-align: top;
+  }
+
+  details.respec-tests-details > * {
+  padding-right: 2em;
+  }
+
+  details.respec-tests-details[open] {
+  z-index: 999999;
+  position: absolute;
+  border: thin solid #cad3e2;
+  border-radius: 0.3em;
+  background-color: white;
+  padding-bottom: 0.5em;
+  }
+
+  details.respec-tests-details[open] > summary {
+  border-bottom: thin solid #cad3e2;
+  padding-left: 1em;
+  margin-bottom: 1em;
+  line-height: 2em;
+  }
+
+  details.respec-tests-details > ul {
+  width: 100%;
+  margin-top: -0.3em;
+  }
+
+  details.respec-tests-details > li {
+  padding-left: 1em;
+  }
+
+  a[href].self-link:hover {
+  opacity: 1;
+  text-decoration: none;
+  background-color: transparent;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+  position: relative;
+  }
+
+  aside.example .marker > a.self-link {
+  color: inherit;
+  }
+
+  h2 > a.self-link,
+  h3 > a.self-link,
+  h4 > a.self-link,
+  h5 > a.self-link,
+  h6 > a.self-link {
+  border: none;
+  color: inherit;
+  font-size: 83%;
+  height: 2em;
+  left: -1.6em;
+  opacity: 0.5;
+  position: absolute;
+  text-align: center;
+  text-decoration: none;
+  top: 0;
+  transition: opacity 0.2s;
+  width: 2em;
+  }
+
+  h2 > a.self-link::before,
+  h3 > a.self-link::before,
+  h4 > a.self-link::before,
+  h5 > a.self-link::before,
+  h6 > a.self-link::before {
+  content: "§";
+  display: block;
+  }
+
+  @media (max-width: 767px) {
+  dd {
+    margin-left: 0;
+  }
+
+  /* Don't position self-link in headings off-screen */
+  h2 > a.self-link,
+  h3 > a.self-link,
+  h4 > a.self-link,
+  h5 > a.self-link,
+  h6 > a.self-link {
+    left: auto;
+    top: auto;
+  }
+  }
+
+  @media print {
+  .removeOnSave {
+    display: none;
+  }
+  }
+  </style>
+  <meta name="description" content=
+  "W3C Web of Things enables applications to interact with and orchestrate connected Things at Web scale. The standardized abstract interaction model exposed by the WoT Thing Description enables applications to scale and evolve independently of the individual Things.">
+  <link rel="canonical" href=
+  "https://www.w3.org/TR/wot-binding-templates/">
+  <style>
+  /*
+  Atom One Light by Daniel Gamage
+  Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+  base:    #fafafa
+  mono-1:  #383a42
+  mono-2:  #686b77
+  mono-3:  #a0a1a7
+  hue-1:   #0184bb
+  hue-2:   #4078f2
+  hue-3:   #a626a4
+  hue-4:   #50a14f
+  hue-5:   #e45649
+  hue-5-2: #c91243
+  hue-6:   #986801
+  hue-6-2: #c18401
+  */
+
+  .hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #383a42;
+  background: #fafafa;
+  }
+
+  .hljs-comment,
+  .hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+  }
+
+  .hljs-doctag,
+  .hljs-keyword,
+  .hljs-formula {
+  color: #a626a4;
+  }
+
+  .hljs-section,
+  .hljs-name,
+  .hljs-selector-tag,
+  .hljs-deletion,
+  .hljs-subst {
+  color: #e45649;
+  }
+
+  .hljs-literal {
+  color: #0184bb;
+  }
+
+  .hljs-string,
+  .hljs-regexp,
+  .hljs-addition,
+  .hljs-attribute,
+  .hljs-meta-string {
+  color: #50a14f;
+  }
+
+  .hljs-built_in,
+  .hljs-class .hljs-title {
+  color: #c18401;
+  }
+
+  .hljs-attr,
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-type,
+  .hljs-selector-class,
+  .hljs-selector-attr,
+  .hljs-selector-pseudo,
+  .hljs-number {
+  color: #986801;
+  }
+
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-link,
+  .hljs-meta,
+  .hljs-selector-id,
+  .hljs-title {
+  color: #4078f2;
+  }
+
+  .hljs-emphasis {
+  font-style: italic;
+  }
+
+  .hljs-strong {
+  font-weight: bold;
+  }
+
+  .hljs-link {
+  text-decoration: underline;
+  }
+  </style>
+  <style>
+  var {
+  position: relative;
+  cursor: pointer;
+  }
+
+  var[data-type]::before,
+  var[data-type]::after {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  }
+
+  /* the triangle or arrow or caret or whatever */
+  var[data-type]::before {
+  content: "";
+  transform: translateX(-50%);
+  border-width: 4px 6px 0 6px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-color: #000;
+  }
+
+  /* actual text */
+  var[data-type]::after {
+  content: attr(data-type);
+  transform: translateX(-50%) translateY(-100%);
+  background: #000;
+  text-align: center;
+  /* additional styling */
+  font-family: "Dank Mono", "Fira Code", monospace;
+  font-style: normal;
+  padding: 6px;
+  border-radius: 3px;
+  color: #daca88;
+  text-indent: 0;
+  font-weight: normal;
+  }
+
+  var[data-type]:hover::after,
+  var[data-type]:hover::before {
+  opacity: 1;
+  }
+  </style>
+  <script id="initialUserConfig" type="application/json">
+  {
+  "specStatus": "ED",
+  "processVersion": 2017,
+  "shortName": "wot-binding-templates",
+  "copyrightStart": 2017,
+  "wg": "Web of Things Working Group",
+  "wgURI": "https://www.w3.org/WoT/WG/",
+  "wgPublicList": "public-wot-wg",
+  "edDraftURI": "https://w3c.github.io/wot-binding-templates/",
+  "githubAPI": "https://api.github.com/repos/w3c/wot-binding-templates",
+  "issueBase": "https://www.github.com/w3c/wot-binding-templates/issues",
+  "editors": [
+    {
+      "name": "Michael Koster",
+      "w3cid": "110658",
+      "company": "SmartThings",
+      "companyURL": "https://www.smartthings.com/"
+    },
+    {
+      "name": "Ege Korkan",
+      "w3cid": "110131",
+      "company": "Siemens AG",
+      "companyURL": "https://www.siemens.com/"
+    }
+  ],
+  "otherLinks": [
+    {
+      "key": "Contributors",
+      "data": [
+        {
+          "value": "In the GitHub repository",
+          "href": "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+        }
+      ]
+    },
+    {
+      "key": "Repository",
+      "data": [
+        {
+          "value": "We are on GitHub",
+          "href": "https://github.com/w3c/wot-binding-templates/"
+        },
+        {
+          "value": "File a bug",
+          "href": "https://github.com/w3c/wot-binding-templates/issues"
+        }
+      ]
+    }
+  ],
+  "localBiblio": {
+    "CoRE-RD": {
+      "href": "https://tools.ietf.org/html/draft-ietf-core-resource-directory-11",
+      "title": "CoRE Resource Directory",
+      "status": "Internet-Draft",
+      "publisher": "IETF",
+      "date": "03 July 2017"
+    },
+    "wot-security-guidelines": {
+      "href": "https://w3c.github.io/wot-security/",
+      "title": "Web of Things (WoT) Security and Privacy Guidelines",
+      "status": "W3C Editor's Draft",
+      "publisher": "W3C",
+      "date": "21 August 2019"
+    },
+    "iana-web-socket-registry": {
+      "href": "https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name",
+      "title": "IANA Registry for Websocket Subprotocols",
+      "status": "",
+      "publisher": "IANA",
+      "date": "24 May 2019",
+      "id": "iana-web-socket-registry"
+    },
+    "MQTT": {
+      "href": "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html",
+      "title": "MQTT Version 5.0",
+      "status": "",
+      "publisher": "MQTT",
+      "date": "07 March 2019",
+      "authors": [
+        "Andrew Banks",
+        "Ed Briggs",
+        "Ken Borgendale",
+        "Rahul Gupta"
+      ],
+      "id": "mqtt"
+    }
+  },
+  "publishISODate": "2020-01-13T00:00:00.000Z",
+  "generatedSubtitle": "Editor's Draft 13 January 2020"
+  }
+  </script>
+  <link rel="stylesheet" href=
+  "https://www.w3.org/StyleSheets/TR/2016/W3C-ED">
+</head>
+<body class="h-entry toc-inline">
+  <div class="head">
+    <a class="logo" href="https://www.w3.org/"><img alt="W3C"
+    width="72" height="48" src=
+    "https://www.w3.org/StyleSheets/TR/2016/logos/W3C"></a>
+    <h1 id="title" class="title p-name">Web of Things (WoT) Binding
+    Templates</h1>
+    <h2>W3C Editor's Draft <time class="dt-published" datetime=
+    "2020-01-13">13 January 2020</time></h2>
+    <dl>
+      <dt>This version:</dt>
+      <dd>
+        <a class="u-url" href=
+        "https://w3c.github.io/wot-binding-templates/">https://w3c.github.io/wot-binding-templates/</a>
+      </dd>
+      <dt>Latest published version:</dt>
+      <dd>
+        <a href=
+        "https://www.w3.org/TR/wot-binding-templates/">https://www.w3.org/TR/wot-binding-templates/</a>
+      </dd>
+      <dt>Latest editor's draft:</dt>
+      <dd>
+        <a href=
+        "https://w3c.github.io/wot-binding-templates/">https://w3c.github.io/wot-binding-templates/</a>
+      </dd>
+      <dt>Editors:</dt>
+      <dd class="p-author h-card vcard" data-editor-id="110658">
+        <span class="p-name fn">Michael Koster</span> (<a class=
+        "p-org org h-org h-card" href=
+        "https://www.smartthings.com/">SmartThings</a>)
+      </dd>
+      <dd class="p-author h-card vcard" data-editor-id="110131">
+        <span class="p-name fn">Ege Korkan</span> (<a class=
+        "p-org org h-org h-card" href=
+        "https://www.siemens.com/">Siemens AG</a>)
+      </dd>
+      <dt>Contributors:</dt>
+      <dd>
+        <a href=
+        "https://github.com/w3c/wot-binding-templates/graphs/contributors">
+        In the GitHub repository</a>
+      </dd>
+      <dt>Repository:</dt>
+      <dd>
+        <a href="https://github.com/w3c/wot-binding-templates/">We
+        are on GitHub</a>
+      </dd>
+      <dd>
+        <a href=
+        "https://github.com/w3c/wot-binding-templates/issues">File
+        a bug</a>
+      </dd>
+    </dl>
+    <p class="copyright"><a href=
+    "https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>
+    © 2017-2020 <a href="https://www.w3.org/"><abbr title=
+    "World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+    (<a href="https://www.csail.mit.edu/"><abbr title=
+    "Massachusetts Institute of Technology">MIT</abbr></a>,
+    <a href="https://www.ercim.eu/"><abbr title=
+    "European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+    <a href="https://www.keio.ac.jp/">Keio</a>, <a href=
+    "https://ev.buaa.edu.cn/">Beihang</a>). W3C <a href=
+    "https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">
+    liability</a>, <a href=
+    "https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">
+    trademark</a> and <a rel="license" href=
+    "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document">
+    permissive document license</a> rules apply.</p>
+    <hr title="Separator for header">
+  </div>
+  <section id="abstract" class="introductory">
+    <h2>Abstract</h2>
+    <p><abbr title="World Wide Web Consortium">W3C</abbr> Web of
+    Things enables applications to interact with and orchestrate
+    connected Things at Web scale. The standardized abstract
+    interaction model exposed by the WoT Thing Description enables
+    applications to scale and evolve independently of the
+    individual Things.</p>
+    <p>Many network-level protocols and standards for connected
+    Things have already been developed, and have millions of
+    devices deployed in the field today. These standards are
+    converging on a common set of transport protocols and transfer
+    layers, but each has peculiar content formats, payload schemas,
+    and data types.</p>
+    <p>Despite using unique formats and data models, the high-level
+    interactions exposed by most connected things can be modeled
+    using the Property, Action, and Event interaction affordances
+    of the WoT Thing Description.</p>
+    <p>Binding Templates enable a Thing Description to be adapted
+    to the specific protocol or data payload usage across the
+    different standards. This is done through additional
+    descriptive vocabulary that is used in the Thing
+    Description.</p>
+    <p>This document describes the initial set of vocabulary
+    extensions to the WoT Thing Description that make up the
+    Binding Templates. It is expected over time that additional
+    protocols and payload structures will be accommodated by
+    further extending the Binding Templates.</p>
+  </section>
+  <section id="sotd" class="introductory">
+    <h2>Status of This Document</h2>
+    <p><em>This section describes the status of this document at
+    the time of its publication. Other documents may supersede this
+    document. A list of current <abbr title=
+    "World Wide Web Consortium">W3C</abbr> publications and the
+    latest revision of this technical report can be found in the
+    <a href="https://www.w3.org/TR/"><abbr title=
+    "World Wide Web Consortium">W3C</abbr> technical reports
+    index</a> at https://www.w3.org/TR/.</em></p>
+    <div class="note" id="issue-container-generatedID">
+      <div role="heading" class="ednote-title marker" id="h-ednote"
+      aria-level="3">
+        <span>Editor's note</span><span class="issue-label">: The
+        W3C WoT WG is asking for feedback</span>
+      </div>
+      <p class="">Please contribute to this draft using the
+      <a href="https://github.com/w3c/wot-binding-templates/issues">
+      GitHub Issue</a> feature of the <a href=
+      "https://github.com/w3c/wot-binding-templates/">WoT Binding
+      Templates</a> repository. For feedback on security and
+      privacy considerations, please use the <a href=
+      "https://github.com/w3c/wot-security/issues">WoT Security and
+      Privacy</a> Issues, as they are cross-cutting over all our
+      documents.</p>
+    </div>
+    <p>This document was published by the <a href=
+    "https://www.w3.org/WoT/WG/">Web of Things Working Group</a> as
+    an Editor's Draft.</p>
+    <p>Comments regarding this document are welcome. Please send
+    them to <a href=
+    "mailto:public-wot-wg@w3.org">public-wot-wg@w3.org</a>
+    (<a href="https://lists.w3.org/Archives/Public/public-wot-wg/">archives</a>).</p>
+    <p>Publication as an Editor's Draft does not imply endorsement
+    by the <abbr title="World Wide Web Consortium">W3C</abbr>
+    Membership. This is a draft document and may be updated,
+    replaced or obsoleted by other documents at any time. It is
+    inappropriate to cite this document as other than work in
+    progress.</p>
+    <p>This document was produced by a group operating under the
+    <a href=
+    "https://www.w3.org/Consortium/Patent-Policy/"><abbr title=
+    "World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+    <abbr title="World Wide Web Consortium">W3C</abbr> maintains a
+    <a rel="disclosure" href="@@@">public list of any patent
+    disclosures</a> made in connection with the deliverables of the
+    group; that page also includes instructions for disclosing a
+    patent. An individual who has actual knowledge of a patent
+    which the individual believes contains <a href=
+    "https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential
+    Claim(s)</a> must disclose the information in accordance with
+    <a href=
+    "https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section
+    6 of the <abbr title="World Wide Web Consortium">W3C</abbr>
+    Patent Policy</a>.</p>
+    <p>This document is governed by the <a id=
+    "w3c_process_revision" href=
+    "https://www.w3.org/2019/Process-20190301/">1 March 2019
+    <abbr title="World Wide Web Consortium">W3C</abbr> Process
+    Document</a>.</p>
+  </section>
+  <nav id="toc">
+    <h2 class="introductory" id="table-of-contents">Table of
+    Contents</h2>
+    <ol class="toc">
+      <li class="tocline">
+        <a class="tocxref" href="#introduction"><bdi class=
+        "secno">1.</bdi> Introduction</a>
+        <ol class="toc">
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#protocol-methods-and-options"><bdi class=
+            "secno">1.1</bdi> Protocol Methods and Options</a>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href="#media-types"><bdi class=
+            "secno">1.2</bdi> Media Types</a>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#payload-structure-0"><bdi class="secno">1.3</bdi>
+            Payload Structure</a>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#data-types-and-value-constraints"><bdi class=
+            "secno">1.4</bdi> Data Types and Value Constraints</a>
+          </li>
+        </ol>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#conformance"><bdi class=
+        "secno">2.</bdi> Conformance</a>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#terminology"><bdi class=
+        "secno">3.</bdi> Terminology</a>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#binding-overview"><bdi class=
+        "secno">4.</bdi> Binding Templates Overview</a>
+        <ol class="toc">
+          <li class="tocline">
+            <a class="tocxref" href="#sec-data-schema"><bdi class=
+            "secno">4.1</bdi> Data Schema</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#payload-structure"><bdi class="secno">4.1.1</bdi>
+                Payload Structure</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#data-types-constraints"><bdi class=
+                "secno">4.1.2</bdi> Data Types and value
+                constraints</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#mapping-to-xml-schema"><bdi class=
+                "secno">4.1.3</bdi> XML Schema Binding</a>
+                <ol class="toc">
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#mapping-to-xml-schema-object"><bdi class=
+                    "secno">4.1.3.1</bdi> Object Definition to XML
+                    Schema</a>
+                  </li>
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#mapping-to-xml-schema-array"><bdi class=
+                    "secno">4.1.3.2</bdi> Array Schema to XML
+                    Schema</a>
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href="#form-element"><bdi class=
+            "secno">4.2</bdi> Forms Element</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#operation-types"><bdi class="secno">4.2.1</bdi>
+                Operation Types</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#content-types"><bdi class="secno">4.2.2</bdi>
+                Content Types</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#protocol-methods-options"><bdi class=
+                "secno">4.2.3</bdi> Protocol Methods and
+                Options</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#uri-variables"><bdi class="secno">4.2.4</bdi> URI
+                Template Variables</a>
+              </li>
+            </ol>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#sec-interaction-patterns"><bdi class=
+            "secno">4.3</bdi> Interaction Affordances</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#property-bindings"><bdi class="secno">4.3.1</bdi>
+                Bindings for Properties</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#action-bindings"><bdi class="secno">4.3.2</bdi>
+                Bindings for Actions</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#event-bindings"><bdi class="secno">4.3.3</bdi>
+                Bindings for Events</a>
+              </li>
+            </ol>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href="#processing-model"><bdi class=
+            "secno">4.4</bdi> Processing Model and Runtime</a>
+          </li>
+        </ol>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#vocabulary"><bdi class=
+        "secno">5.</bdi> Vocabulary</a>
+        <ol class="toc">
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#dataschema-vocabulary"><bdi class="secno">5.1</bdi>
+            <code>DataSchema</code> Vocabulary</a>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#form-operation-type-vocabulary"><bdi class=
+            "secno">5.2</bdi> Form Operation Type Vocabulary</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#property-forms"><bdi class="secno">5.2.1</bdi>
+                Property Forms</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href="#action-forms"><bdi class=
+                "secno">5.2.2</bdi> Action Forms</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href="#event-forms"><bdi class=
+                "secno">5.2.3</bdi> Event Forms</a>
+              </li>
+            </ol>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#protocol-vocabulary"><bdi class="secno">5.3</bdi>
+            Protocol Vocabulary</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#http-vocabulary"><bdi class="secno">5.3.1</bdi>
+                HTTP Vocabulary</a>
+                <ol class="toc">
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#http-vocabulary-terms"><bdi class=
+                    "secno">5.3.1.1</bdi> HTTP Vocabulary Terms</a>
+                  </li>
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#http-default-vocabulary-terms"><bdi class=
+                    "secno">5.3.1.2</bdi> HTTP Default Vocabulary
+                    Terms</a>
+                  </li>
+                </ol>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#coap-vocabulary"><bdi class="secno">5.3.2</bdi>
+                CoAP Vocabulary</a>
+                <ol class="toc">
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#coap-vocabulary-terms"><bdi class=
+                    "secno">5.3.2.1</bdi> CoAP Vocabulary Terms</a>
+                  </li>
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#coap-default-vocabulary-terms"><bdi class=
+                    "secno">5.3.2.2</bdi> CoAP Default Vocabulary
+                    Terms</a>
+                  </li>
+                </ol>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#mqtt-vocabulary"><bdi class="secno">5.3.3</bdi>
+                MQTT Vocabulary</a>
+                <ol class="toc">
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#mqtt-vocabulary-terms"><bdi class=
+                    "secno">5.3.3.1</bdi> MQTT Vocabulary Terms</a>
+                  </li>
+                  <li class="tocline">
+                    <a class="tocxref" href=
+                    "#mqtt-default-vocabulary-terms"><bdi class=
+                    "secno">5.3.3.2</bdi> MQTT Default Vocabulary
+                    Terms</a>
+                  </li>
+                </ol>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#subprotocol-vocabulary"><bdi class=
+                "secno">5.3.4</bdi> <code>subprotocol</code>
+                Vocabulary</a>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#binding-examples"><bdi class=
+        "secno">6.</bdi> Examples of Thing Descriptions including
+        protocol bindings</a>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href=
+        "#sec-security-considerations"><bdi class="secno">7.</bdi>
+        Security and Privacy Considerations</a>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href=
+        "#appendix-example-sequences"><bdi class="secno">A.</bdi>
+        Example Sequences of Interaction Affordances</a>
+        <ol class="toc">
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#property-interactions"><bdi class="secno">A.1</bdi>
+            Property Interactions</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#read-property-http-binding"><bdi class=
+                "secno">A.1.1</bdi> Read property (HTTP
+                binding)</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#write-property-http-binding"><bdi class=
+                "secno">A.1.2</bdi> Write property (HTTP
+                binding)</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#observe-property-http-binding-with-long-polling-subprotocol">
+                <bdi class="secno">A.1.3</bdi> Observe property
+                (HTTP binding with Long Polling subprotocol)</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#observe-property-http-binding-with-server-sent-event-subprotocol">
+                <bdi class="secno">A.1.4</bdi> Observe property
+                (HTTP binding with Server Sent Event
+                subprotocol)</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#observe-property-http-binding-with-websocket-subprotocol">
+                <bdi class="secno">A.1.5</bdi> Observe property
+                (HTTP binding with WebSocket subprotocol)</a>
+              </li>
+            </ol>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#action-interactions"><bdi class="secno">A.2</bdi>
+            Action Interactions</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#invoke-action-http-binding"><bdi class=
+                "secno">A.2.1</bdi> Invoke action (HTTP
+                binding)</a>
+              </li>
+            </ol>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#event-interactions"><bdi class="secno">A.3</bdi>
+            Event Interactions</a>
+            <ol class="toc">
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#subscribe-notify-and-unsubscribe-event-http-binding-with-long-polling-subprotocol">
+                <bdi class="secno">A.3.1</bdi> Subscribe, notify
+                and unsubscribe event (HTTP binding with Long
+                Polling subprotocol)</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#subscribe-notify-and-unsubscribe-event-http-binding-with-server-sent-event-subprotocol">
+                <bdi class="secno">A.3.2</bdi> Subscribe, notify
+                and unsubscribe event (HTTP binding with Server
+                Sent Event subprotocol)</a>
+              </li>
+              <li class="tocline">
+                <a class="tocxref" href=
+                "#subscribe-notify-and-unsubscribe-event-http-binding-with-websocket-subprotocol">
+                <bdi class="secno">A.3.3</bdi> Subscribe, notify
+                and unsubscribe event (HTTP binding with WebSocket
+                subprotocol)</a>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#sec-acknowledgements"><bdi class=
+        "secno">B.</bdi> Acknowledgements</a>
+      </li>
+      <li class="tocline">
+        <a class="tocxref" href="#references"><bdi class=
+        "secno">C.</bdi> References</a>
+        <ol class="toc">
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#normative-references"><bdi class="secno">C.1</bdi>
+            Normative references</a>
+          </li>
+          <li class="tocline">
+            <a class="tocxref" href=
+            "#informative-references"><bdi class="secno">C.2</bdi>
+            Informative references</a>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </nav>
+  <section id="introduction">
+    <h2 id="x1-introduction"><bdi class="secno">1.</bdi>
+    Introduction<a class="self-link" aria-label="§" href=
+    "#introduction"></a></h2>
+    <p>Binding Templates consist of reusable vocabulary and
+    extensions to the WoT Thing Description[<cite><a class="bibref"
+    data-link-type="biblio" href="#bib-wot-thing-description"
+    title="Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>]
+    format that enable an application client (a Consumer) to
+    interact, using a consistent interaction model, with Things
+    that expose diverse protocols and protocol usage.</p>
+    <p>Binding Templates enable Consumers to adapt to the
+    underlying protocol and network-facing API constructions. Once
+    the base protocol (e.g., HTTP[<cite><a class="bibref"
+    data-link-type="biblio" href="#bib-rfc7231" title=
+    "Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content">RFC7231</a></cite>],
+    CoAP[<cite><a class="bibref" data-link-type="biblio" href=
+    "#bib-rfc7252" title=
+    "The Constrained Application Protocol (CoAP)">RFC7252</a></cite>],
+    MQTT[<cite><a class="bibref" data-link-type="biblio" href=
+    "#bib-mqtt" title="MQTT Version 5.0">MQTT</a></cite>], etc.) is
+    identified, the following adaptions specify the particular use
+    within the given platform.</p>
+    <div class="note" id="issue-container-generatedID-0">
+      <div role="heading" class="ednote-title marker" id=
+      "h-ednote-0" aria-level="3">
+        <span>Editor's note</span><span class="issue-label">:
+        Additional Protocol Bindings</span>
+      </div>
+      <p class="">This document contains examples of Protocol
+      Bindings for HTTP, CoAP, and MQTT. Other protocols may be
+      added following the same design style and using payload
+      mappings that can be expressed as JSON compatible entities.
+      Future extensions to other payload definition formats are
+      also contemplated.</p>
+    </div>
+    <section id="protocol-methods-and-options">
+      <h3 id="x1-1-protocol-methods-and-options"><bdi class=
+      "secno">1.1</bdi> Protocol Methods and Options<a class=
+      "self-link" aria-label="§" href=
+      "#protocol-methods-and-options"></a></h3>
+      <p>Most protocols have a relatively small set of methods that
+      define the message type, the semantic intention of the
+      message. REST and PubSub architecture patterns result in
+      different protocols with different methods. Common methods
+      found in these protocols are GET, PUT, POST, DELETE, PUBLISH,
+      and SUBSCRIBE. Binding Templates describe how these existing
+      methods and vocabularies can be described in a Thing
+      Description.</p>
+      <p>This is done by mapping the protocol methods to the
+      abstract WoT Interaction Affordance terms
+      <code>readproperty</code>, <code>writeproperty</code>,
+      <code>observeproperty</code>, <code>unobserveproperty</code>,
+      <code>invokeaction</code>, <code>subscribeevent</code>,
+      <code>unsubscribeevent</code>,
+      <code>readallproperties</code>,
+      <code>writeallproperties</code>,
+      <code>readmultipleproperties</code>,
+      <code>writemultipleproperties</code>.</p>
+      <p>Possible protocol options are also specified in the
+      Protocol Binding. They are used to select transfer modes, to
+      request notifications from observable resources, or otherwise
+      extend the semantics of the protocol methods.</p>
+    </section>
+    <section id="media-types">
+      <h3 id="x1-2-media-types"><bdi class="secno">1.2</bdi> Media
+      Types<a class="self-link" aria-label="§" href=
+      "#media-types"></a></h3>
+      <p>Maximum use should be made of IANA-registered Media Types
+      [<cite><a class="bibref" data-link-type="biblio" href=
+      "#bib-iana-media-types" title=
+      "Media Types">IANA-MEDIA-TYPES</a></cite>] (e.g.,
+      <code>application/json</code>) in order to decouple
+      applications from connected Things. Standard bridges and
+      translations from proprietary formats to Web-friendly
+      languages such as JSON and XML are part of the adaptation
+      needed.</p>
+      <p>Correct indication of Media Types enables proper
+      processing of the serialized documents. This way, the
+      documents can be exchanged in any format and allow the upper
+      layers of an application to adapt to different formats.</p>
+    </section>
+    <section id="payload-structure-0">
+      <h3 id="x1-3-payload-structure"><bdi class="secno">1.3</bdi>
+      Payload Structure<a class="self-link" aria-label="§" href=
+      "#payload-structure-0"></a></h3>
+      <p>Data serialized to a standard Media Type still remains in
+      a structure specific to the platform data model and needs to
+      be understood by Consumers (cf. various types of JSON
+      documents).</p>
+      <p>The data definition language of <code>DataSchema</code>
+      elements, described in [<cite><a class="bibref"
+      data-link-type="biblio" href="#bib-wot-thing-description"
+      title=
+      "Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>],
+      allows for describing arbitrary structures by nesting of
+      arrays and objects. Constants and variable specifications may
+      be intermixed.</p>
+    </section>
+    <section id="data-types-and-value-constraints">
+      <h3 id="x1-4-data-types-and-value-constraints"><bdi class=
+      "secno">1.4</bdi> Data Types and Value Constraints<a class=
+      "self-link" aria-label="§" href=
+      "#data-types-and-value-constraints"></a></h3>
+      <p>Simple data types and value constraints are currently used
+      in a layered and descriptive way in [<cite><a class="bibref"
+      data-link-type="biblio" href="#bib-wot-thing-description"
+      title=
+      "Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>].
+      Additional forms of constraints are available to help adapt
+      to the underlying data types. A platform-specific 8-bit
+      unsigned integer, for instance, can be defined as Integer
+      with a minimum of 0 and maximum of 255; the system-specific
+      representation (e.g., exact number of bits) on the Thing and
+      the Consumer is not relevant for interoperability.</p>
+    </section>
+  </section>
+  <section id="conformance">
+    <h2 id="x2-conformance"><bdi class="secno">2.</bdi>
+    Conformance<a class="self-link" aria-label="§" href=
+    "#conformance"></a></h2>
+    <p>As well as sections marked as non-normative, all authoring
+    guidelines, diagrams, examples, and notes in this specification
+    are non-normative. Everything else in this specification is
+    normative.</p>
+    <p>The key words <em class="rfc2119">MUST</em>, <em class=
+    "rfc2119">MUST NOT</em>, <em class="rfc2119">SHOULD</em>, and
+    <em class="rfc2119">SHOULD NOT</em> in this document are to be
+    interpreted as described in <a href=
+    "https://tools.ietf.org/html/bcp14">BCP 14</a> [<cite><a class=
+    "bibref" data-link-type="biblio" href="#bib-rfc2119" title=
+    "Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a></cite>]
+    [<cite><a class="bibref" data-link-type="biblio" href=
+    "#bib-rfc8174" title=
+    "Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words">RFC8174</a></cite>]
+    when, and only when, they appear in all capitals, as shown
+    here.</p>
+  </section>
+  <section id="terminology" class="informative">
+    <h2 id="x3-terminology"><bdi class="secno">3.</bdi>
+    Terminology<a class="self-link" aria-label="§" href=
+    "#terminology"></a></h2>
+    <p><em>This section is non-normative.</em></p>
+    <p>The fundamental WoT terminology such as <dfn data-dfn-type=
+    "dfn" id="dfn-thing">Thing</dfn>, <dfn data-dfn-type="dfn" id=
+    "dfn-consumer">Consumer</dfn>, <dfn data-dfn-type="dfn"
+    data-plurals="thing descriptions" id=
+    "dfn-thing-description">Thing Description</dfn>
+    (<dfn data-dfn-type="dfn" id="dfn-td">TD</dfn>),
+    <dfn data-dfn-type="dfn" id="dfn-interaction-model">Interaction
+    Model</dfn>, <dfn data-dfn-type="dfn" id=
+    "dfn-interaction-affordance">Interaction Affordance</dfn>,
+    <dfn data-dfn-type="dfn" id="dfn-property">Property</dfn>,
+    <dfn data-dfn-type="dfn" id="dfn-action">Action</dfn>,
+    <dfn data-dfn-type="dfn" id="dfn-event">Event</dfn>,
+    <dfn data-dfn-type="dfn" id="dfn-protocol-binding">Protocol
+    Binding</dfn>, <dfn data-dfn-type="dfn" id=
+    "dfn-servient">Servient</dfn>, <dfn data-dfn-type="dfn" id=
+    "dfn-wot-interface">WoT Interface</dfn>, <dfn data-dfn-type=
+    "dfn" id="dfn-wot-runtime">WoT Runtime</dfn>, etc. is defined
+    in <a href=
+    "https://w3c.github.io/wot-architecture/#terminology">Section
+    3</a> of the WoT Architecture specification [<cite><a class=
+    "bibref" data-link-type="biblio" href="#bib-wot-architecture"
+    title=
+    "Web of Things (WoT) Architecture">WOT-ARCHITECTURE</a></cite>].</p>
+    <p>In addition, this specification introduces the following
+    definitions:</p>
+    <dl>
+      <dt><dfn id="dfn-context-ext" data-dfn-type="dfn"
+      data-plurals="td context extensions">TD Context
+      Extension</dfn></dt>
+      <dd>
+        A mechanism to extend <a href="#dfn-thing-description"
+        class="internalDFN" data-link-type="dfn">Thing
+        Descriptions</a> with additional <a href="#dfn-vocab-term"
+        class="internalDFN" data-link-type="dfn">Vocabulary
+        Terms</a> using <code>@context</code> as specified in
+        JSON-LD[<cite><a class="bibref" data-link-type="biblio"
+        href="#bib-json-ld11" title=
+        "JSON-LD 1.1">json-ld11</a></cite>]. It is the basis for
+        semantic annotations and extensions to core mechanisms such
+        as Protocol Bindings, Security Schemes, and Data Schemas.
+      </dd>
+      <dt><dfn id="dfn-vocab" data-dfn-type=
+      "dfn">Vocabulary</dfn></dt>
+      <dd>
+        A collection of <a href="#dfn-vocab-term" class=
+        "internalDFN" data-link-type="dfn">Vocabulary Terms</a>,
+        identified by a namespace IRI.
+      </dd>
+      <dt><dfn id="dfn-term" data-dfn-type="dfn">Term</dfn> and
+      <dfn id="dfn-vocab-term" data-dfn-type="dfn" data-plurals=
+      "vocabulary terms">Vocabulary Term</dfn></dt>
+      <dd>
+        A character string. When a <a href="#dfn-term" class=
+        "internalDFN" data-link-type="dfn">Term</a> is part of a
+        <a href="#dfn-vocab" class="internalDFN" data-link-type=
+        "dfn">Vocabulary</a>, i.e., prefixed by a namespace
+        IRI[<cite><a class="bibref" data-link-type="biblio" href=
+        "#bib-rfc3987" title=
+        "Internationalized Resource Identifiers (IRIs)">RFC3987</a></cite>],
+        it is called a <a href="#dfn-vocab-term" class=
+        "internalDFN" data-link-type="dfn">Vocabulary Term</a>. For
+        the sake of readability, <a href="#dfn-vocab-term" class=
+        "internalDFN" data-link-type="dfn">Vocabulary Terms</a>
+        present in this document are always written in a compact
+        form and not as full IRIs.
+      </dd>
+    </dl>
+  </section>
+  <section id="binding-overview" class="informative">
+    <h2 id="x4-binding-templates-overview"><bdi class=
+    "secno">4.</bdi> Binding Templates Overview<a class="self-link"
+    aria-label="§" href="#binding-overview"></a></h2>
+    <p><em>This section is non-normative.</em></p>
+    <p>This section describes the mechanisms of binding templates
+    with examples.</p>
+    <section id="sec-data-schema">
+      <h3 id="x4-1-data-schema"><bdi class="secno">4.1</bdi> Data
+      Schema<a class="self-link" aria-label="§" href=
+      "#sec-data-schema"></a></h3>
+      <p>A data schema describes the payload structure and included
+      data items that are passed between the Consumer and the Thing
+      during interactions.</p>
+      <section id="payload-structure">
+        <h4 id="x4-1-1-payload-structure"><bdi class=
+        "secno">4.1.1</bdi> Payload Structure<a class="self-link"
+        aria-label="§" href="#payload-structure"></a></h4>
+        <p>Payload Structure is determined by
+        <code>DataSchema</code> elements of a Thing Description.
+        DataSchema elements should be used by an instance of a
+        <code>PropertyAffordance</code>,
+        <code>input</code>/<code>output</code> of
+        <code>ActionAffordance</code>,
+        <code>data</code>/<code>subscription</code>/<code>cancellation</code>
+        of an <code>EventAffordance</code> or by a
+        <code>uriVariable</code> of the
+        <code>InteractionAffordance</code>. As indicated in the
+        [<cite><a class="bibref" data-link-type="biblio" href=
+        "#bib-wot-thing-description" title=
+        "Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>],
+        <code>DataSchema</code> Vocabulary is a subset of JSON
+        Schema [<cite><a class="bibref" data-link-type="biblio"
+        href="#bib-json-schema" title=
+        "JSON Schema: core definitions and terminology">json-schema</a></cite>]</p>
+        <p>In the case of Action Affordances, the additional
+        keywords <code>input</code> and <code>output</code> are
+        used to provide two different schemas when data might be
+        exchanged in both directions, such as in the case of
+        invoking an Action Affordance with input parameters and
+        receiving status information.</p>
+        <p>In the case of Event Affordances, the additional
+        keywords <code>data</code>, <code>subscription</code> and
+        <code>cancellation</code> are used to describe the payload
+        when the event data is delivered by the Exposed Thing, the
+        payload needed to subscribe to the event and the payload
+        needed to cancel receiving event data from the Exposed
+        Thing, respectively.</p>
+        <p>In addition to the example pattern in [<cite><a class=
+        "bibref" data-link-type="biblio" href=
+        "#bib-wot-thing-description" title=
+        "Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>]
+        of an object with name/value constructs or simple arrays,
+        Protocol Bindings for existing standards may require nested
+        arrays and objects, and some constant values to be
+        specified.</p>
+        <p>Below are examples of different payloads and their
+        corresponding <code>DataSchema</code>.</p>
+        <p>For example, a simple payload structure may use a
+        map:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-1-simple-json-object-payload">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-1-simple-json-object-payload">Example
+                    <bdi>1</bdi></a><span class="example-title">:
+                    Simple JSON Object Payload</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"level"</span>: <span class=
+"hljs-number">50</span>,
+  <span class="hljs-attr">"time"</span>: <span class=
+"hljs-number">10</span>
+}</code></pre>
+                </div>
+              </td>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-2-dataschema-for-simple-json-object-payload">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-2-dataschema-for-simple-json-object-payload">
+                    Example <bdi>2</bdi></a><span class=
+                    "example-title">: DataSchema for Simple JSON
+                    Object Payload</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+  <span class="hljs-attr">"properties"</span>: {
+    <span class="hljs-attr">"level"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span>],
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+      <span class="hljs-attr">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+      <span class="hljs-attr">"maximum"</span>: <span class=
+"hljs-number">255</span>
+    },
+    <span class="hljs-attr">"time"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTimeData"</span>],
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+      <span class="hljs-attr">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+      <span class="hljs-attr">"maximum"</span>: <span class=
+"hljs-number">65535</span>
+    }
+  }
+}</code></pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>SenML might use the following construct:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id="example-3-senml-example">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-3-senml-example">Example
+                    <bdi>3</bdi></a><span class="example-title">:
+                    SenML Example</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">[
+  {
+    <span class="hljs-attr">"bn"</span>: <span class=
+"hljs-string">"/example/light/"</span>
+  },
+  {
+    <span class="hljs-attr">"n"</span>: <span class=
+"hljs-string">"level"</span>,
+    <span class="hljs-attr">"v"</span>: <span class=
+"hljs-number">50</span>
+  },
+  {
+    <span class="hljs-attr">"n"</span>: <span class=
+"hljs-string">"time"</span>,
+    <span class="hljs-attr">"v"</span>: <span class=
+"hljs-number">10</span>
+  }
+]</code></pre>
+                </div>
+              </td>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-4-dataschema-for-senml-payload">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-4-dataschema-for-senml-payload">Example
+                    <bdi>4</bdi></a><span class="example-title">:
+                    DataSchema for SenML Payload</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"array"</span>,
+  <span class="hljs-attr">"items"</span>: [
+    {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-attr">"properties"</span>: {
+        <span class="hljs-attr">"bn"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+          <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"example/light"</span>
+        }
+      }
+    },
+    {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-attr">"properties"</span>: {
+        <span class="hljs-attr">"n"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+          <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"level"</span>
+        },
+        <span class="hljs-attr">"v"</span>: {
+          <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span>],
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+          <span class="hljs-attr">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+          <span class="hljs-attr">"maximum"</span>: <span class=
+"hljs-number">255</span>
+        }
+      }
+    },
+    {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-attr">"properties"</span>: {
+        <span class="hljs-attr">"n"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+          <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"time"</span>
+        },
+        <span class="hljs-attr">"v"</span>: {
+          <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTimeData"</span>],
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+          <span class="hljs-attr">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+          <span class="hljs-attr">"maximum"</span>: <span class=
+"hljs-number">65535</span>
+        }
+      }
+    }
+  ]
+}</code></pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>A Batch Collection according to OCF may be structured
+        like this:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-5-ocf-batch-example">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-5-ocf-batch-example">Example
+                    <bdi>5</bdi></a><span class="example-title">:
+                    OCF Batch Example</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">[
+  {
+    <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/light/level"</span>,
+    <span class="hljs-attr">"rep"</span>: {
+      <span class="hljs-attr">"dimming"</span>: <span class=
+"hljs-number">50</span>
+    }
+  },
+  {
+    <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/light/time"</span>,
+    <span class="hljs-attr">"rep"</span>: {
+      <span class="hljs-attr">"ramptime"</span>: <span class=
+"hljs-number">10</span>
+    }
+  }
+]</code></pre>
+                </div>
+              </td>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-6-dataschema-for-ocf-batch-payload">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-6-dataschema-for-ocf-batch-payload">Example
+                    <bdi>6</bdi></a><span class="example-title">:
+                    DataSchema for OCF Batch Payload</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"array"</span>,
+  <span class="hljs-attr">"items"</span>: [
+    {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-attr">"properties"</span>: {
+        <span class="hljs-attr">"href"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+          <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"/example/light/level"</span>
+        },
+        <span class="hljs-attr">"rep"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+          <span class="hljs-attr">"properties"</span>: {
+            <span class="hljs-attr">"dimming"</span>: {
+              <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span>],
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+              <span class=
+"hljs-attr">"minimum"</span>: <span class="hljs-number">0</span>,
+              <span class=
+"hljs-attr">"maximum"</span>: <span class="hljs-number">255</span>
+            }
+          }
+        }
+      }
+    },
+    {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-attr">"properties"</span>: {
+        <span class="hljs-attr">"href"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+          <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"/example/light/time"</span>
+        },
+        <span class="hljs-attr">"rep"</span>: {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+          <span class="hljs-attr">"properties"</span>: {
+            <span class="hljs-attr">"ramptime"</span>: {
+              <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTimeData"</span>],
+              <span class="hljs-attr">"type"</span>:<span class=
+"hljs-string">"integer"</span>,
+              <span class=
+"hljs-attr">"minimum"</span>: <span class="hljs-number">0</span>,
+              <span class=
+"hljs-attr">"maximum"</span>: <span class="hljs-number">65535</span>
+            }
+          }
+        }
+      }
+    }
+  ]
+}</code></pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>And an IPSO Smart Object on LWM2M might look like the
+        following:</p>
+        <table>
+          <tbody>
+            <tr>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-7-ipso-lwm2m-example">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-7-ipso-lwm2m-example">Example
+                    <bdi>7</bdi></a><span class="example-title">:
+                    IPSO/LWM2M Example</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"bn"</span>: <span class=
+"hljs-string">"/3001/0/"</span>,
+  <span class="hljs-attr">"e"</span>: [
+    {
+      <span class="hljs-attr">"n"</span>: <span class=
+"hljs-string">"5044"</span>,
+      <span class="hljs-attr">"v"</span>: <span class=
+"hljs-number">0.5</span>
+    },
+    {
+      <span class="hljs-attr">"n"</span>: <span class=
+"hljs-string">"5002"</span>,
+      <span class="hljs-attr">"v"</span>: <span class=
+"hljs-number">10.0</span>
+    }
+  ]
+}</code></pre>
+                </div>
+              </td>
+              <td style="vertical-align: top; width: 50%">
+                <div class="example" id=
+                "example-8-dataschema-for-ipso-lwm2m-payload">
+                  <div class="marker">
+                    <a class="self-link" href=
+                    "#example-8-dataschema-for-ipso-lwm2m-payload">Example
+                    <bdi>8</bdi></a><span class="example-title">:
+                    DataSchema for IPSO/LWM2M Payload</span>
+                  </div>
+                  <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+  <span class="hljs-attr">"properties"</span>: {
+    <span class="hljs-attr">"bn"</span>: {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+      <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"/3001/0/"</span>
+    },
+    <span class="hljs-attr">"e"</span>: {
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"array"</span>,
+      <span class="hljs-attr">"items"</span>: [
+        {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+          <span class="hljs-attr">"properties"</span>: {
+            <span class="hljs-attr">"n"</span>: {
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+              <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"5044"</span>
+            },
+            <span class="hljs-attr">"v"</span>: {
+              <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span>],
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"number"</span>,
+              <span class=
+"hljs-attr">"minimum"</span>: <span class="hljs-number">0.0</span>,
+              <span class=
+"hljs-attr">"maximum"</span>: <span class="hljs-number">1.0</span>
+            }
+          }
+        },
+        {
+          <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+          <span class="hljs-attr">"Properties"</span>: {
+            <span class="hljs-attr">"n"</span>: {
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>,
+              <span class="hljs-attr">"const"</span>: <span class=
+"hljs-string">"5002"</span>
+            },
+            <span class="hljs-attr">"v"</span>: {
+              <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTimeData"</span>],
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"number"</span>,
+              <span class=
+"hljs-attr">"minimum"</span>: <span class="hljs-number">0.0</span>,
+              <span class=
+"hljs-attr">"maximum"</span>: <span class="hljs-number">6553.5</span>
+            }
+          }
+        }
+      ]
+    }
+  }
+}</code></pre>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="data-types-constraints">
+        <h4 id="x4-1-2-data-types-and-value-constraints">
+        <bdi class="secno">4.1.2</bdi> Data Types and value
+        constraints<a class="self-link" aria-label="§" href=
+        "#data-types-constraints"></a></h4>
+        <p>Note that in Example 7 above, the values are floating
+        point (<code>double</code>) while the other examples have
+        integer values. In general, Consumers should follow the
+        data schemas strictly, not generating anything not given in
+        the WoT Thing Description, but should accept additional
+        data from the Thing not given explicitly in the WoT Thing
+        Description. This means that a Consumer sending the payload
+        of the Example 7 should use floating points in the
+        payload.</p>
+      </section>
+      <section id="mapping-to-xml-schema">
+        <h4 id="x4-1-3-xml-schema-binding"><bdi class=
+        "secno">4.1.3</bdi> XML Schema Binding<a class="self-link"
+        aria-label="§" href="#mapping-to-xml-schema"></a></h4>In
+        the previous sections, the examples showed what data, whose
+        value is described using the Data Schema, look like when
+        serialized to JSON. This section describes how type
+        definitions described using the Data Schema can be mapped
+        to XML schema definitions by using the same examples. Given
+        these Data Schemas, providing the mapping to XML schema
+        allows XML tools to directly validate serialized XML data,
+        for example. The XML structure for which this mapping is
+        designed is based on EXI4JSON [exi-for-json].
+        <section id="mapping-to-xml-schema-object">
+          <h5 id="x4-1-3-1-object-definition-to-xml-schema">
+          <bdi class="secno">4.1.3.1</bdi> Object Definition to XML
+          Schema<a class="self-link" aria-label="§" href=
+          "#mapping-to-xml-schema-object"></a></h5>Shown below is
+          an example Data Schema of an Object Schema. The object
+          consists of two named literals <code>id</code> (of type
+          <code>integer</code>) and <code>name</code> (of type
+          <code>string</code>) where <code>id</code> is required to
+          be present.
+          <div class="example" id=
+          "example-9-json-schema-description-of-the-required-json-object">
+            <div class="marker">
+              <a class="self-link" href=
+              "#example-9-json-schema-description-of-the-required-json-object">
+              Example <bdi>9</bdi></a><span class="example-title">:
+              JSON Schema description of the required JSON
+              Object</span>
+            </div>
+            <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+  <span class="hljs-attr">"properties"</span>: {
+      <span class="hljs-attr">"id"</span>: {
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"integer"</span>
+      },
+      <span class="hljs-attr">"name"</span>: {
+              <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"string"</span>
+      }
+  },
+  <span class="hljs-attr">"required"</span>: [
+      <span class="hljs-string">"id"</span>
+  ]
+}</code></pre>
+          </div>When the <code>object</code> is anonymous (i.e. it
+          is the root, or participates in an <code>array</code>
+          definition), the above <code>object</code> definition
+          transforms to the following XML Schema element
+          definition.
+          <div class="example" id=
+          "example-10-xml-schema-mapping-of-the-above-json-schema-with-an-anonymous-object">
+            <div class="marker">
+              <a class="self-link" href=
+              "#example-10-xml-schema-mapping-of-the-above-json-schema-with-an-anonymous-object">
+              Example <bdi>10</bdi></a><span class=
+              "example-title">: XML Schema mapping of the above
+              JSON Schema with an anonymous object</span>
+            </div>
+            <pre aria-busy="false"><code class="hljs xml">  
+<span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"object"</span> <span class=
+"hljs-attr">xmlns:xs</span>=<span class=
+"hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:all</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"id"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"integer"</span> <span class=
+"hljs-attr">type</span>=<span class=
+"hljs-string">"xs:integer"</span> /&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"name"</span> <span class=
+"hljs-attr">minOccurs</span>=<span class=
+"hljs-string">"0"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"string"</span> <span class=
+"hljs-attr">type</span>=<span class=
+"hljs-string">"xs:string"</span> /&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:all</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span></code></pre>
+          </div>Otherwise (i.e. the <code>object</code> is a member
+          of another <code>object</code> definition, thus has a
+          name), the object definition transforms to the following
+          XML schema element definition. Note <code>$name</code>
+          represents the name of the <code>object</code>, and needs
+          to be replaced by the actual name of the
+          <code>object</code>.
+          <div class="example" id=
+          "example-11-xml-schema-mapping-of-the-above-json-schema-with-a-non-anonymous-object">
+            <div class="marker">
+              <a class="self-link" href=
+              "#example-11-xml-schema-mapping-of-the-above-json-schema-with-a-non-anonymous-object">
+              Example <bdi>11</bdi></a><span class=
+              "example-title">: XML Schema mapping of the above
+              JSON Schema with a non-anonymous object</span>
+            </div>
+            <pre aria-busy="false"><code class="hljs xml">  
+<span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"$name"</span> <span class=
+"hljs-attr">xmlns:xs</span>=<span class=
+"hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+        <span class=
+"hljs-comment">&lt;!--Until the next comment, it is a copy of the previous example--&gt;</span>
+            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"object"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:all</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"id"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+                              <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                                <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"integer"</span> <span class=
+"hljs-attr">type</span>=<span class=
+"hljs-string">"xs:integer"</span> /&gt;</span>
+                              <span class=
+"hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                            <span class=
+"hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"name"</span> <span class=
+"hljs-attr">minOccurs</span>=<span class=
+"hljs-string">"0"</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+                              <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                                <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"string"</span> <span class=
+"hljs-attr">type</span>=<span class=
+"hljs-string">"xs:string"</span> /&gt;</span>
+                              <span class=
+"hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                            <span class=
+"hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:all</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--Until here--&gt;</span>
+        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span></code></pre>
+          </div>
+        </section>
+        <section id="mapping-to-xml-schema-array">
+          <h5 id="x4-1-3-2-array-schema-to-xml-schema"><bdi class=
+          "secno">4.1.3.2</bdi> Array Schema to XML Schema<a class=
+          "self-link" aria-label="§" href=
+          "#mapping-to-xml-schema-array"></a></h5>Shown below is an
+          example Data Schema of an Array Schema. The
+          <code>array</code> consists of exactly three number
+          literals with each value within the value range of [ 0
+          ... 2047 ].
+          <div class="example" id=
+          "example-12-json-schema-description-of-the-required-json-array">
+            <div class="marker">
+              <a class="self-link" href=
+              "#example-12-json-schema-description-of-the-required-json-array">
+              Example <bdi>12</bdi></a><span class=
+              "example-title">: JSON Schema description of the
+              required JSON Array</span>
+            </div>
+            <pre aria-busy="false"><code class="hljs json">{
+    <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"array"</span>,
+    <span class="hljs-attr">"items"</span>: {
+        <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"number"</span>,
+        <span class="hljs-attr">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+        <span class="hljs-attr">"maximum"</span>: <span class=
+"hljs-number">2047</span>
+    },
+    <span class="hljs-attr">"minItems"</span>: <span class=
+"hljs-number">3</span>,
+    <span class="hljs-attr">"maxItems"</span>: <span class=
+"hljs-number">3</span>
+}</code></pre>
+          </div>When the <code>array</code> is anonymous (i.e. it
+          is the root, or participates in another
+          <code>array</code> definition), the above
+          <code>array</code> definition transforms to the following
+          XML Schema element definition.
+          <div class="example" id=
+          "example-13-xml-schema-mapping-of-the-above-json-schema-with-an-anonymous-array">
+            <div class="marker">
+              <a class="self-link" href=
+              "#example-13-xml-schema-mapping-of-the-above-json-schema-with-an-anonymous-array">
+              Example <bdi>13</bdi></a><span class=
+              "example-title">: XML Schema mapping of the above
+              JSON Schema with an anonymous array</span>
+            </div>
+            <pre aria-busy="false"><code class=
+            "hljs xml">          
+<span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"array"</span> <span class=
+"hljs-attr">xmlns:xs</span>=<span class=
+"hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"double"</span> <span class=
+"hljs-attr">minOccurs</span>=<span class=
+"hljs-string">"3"</span> <span class=
+"hljs-attr">maxOccurs</span>=<span class=
+"hljs-string">"3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:simpleType</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"minInclusive"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:restriction</span> <span class=
+"hljs-attr">base</span>=<span class=
+"hljs-string">"xs:double"</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:minInclusive</span> <span class=
+"hljs-attr">value</span>=<span class=
+"hljs-string">"0"</span>/&gt;</span>
+                        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:maxInclusive</span> <span class=
+"hljs-attr">value</span>=<span class=
+"hljs-string">"2047"</span>/&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:restriction</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:simpleType</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span></code></pre>
+          </div>Otherwise (i.e. the <code>array</code> is a member
+          of an <code>object</code> definition, thus has a name),
+          the <code>array</code> definition transforms to the
+          following XML schema element definition. Note
+          <code>$name</code> represents the name of the
+          <code>array</code>, and needs to be replaced by the
+          actual name of the <code>array</code>.
+          <div class="example" id=
+          "example-14-xml-schema-mapping-of-the-above-json-schema-with-a-non-anonymous-array">
+            <div class="marker">
+              <a class="self-link" href=
+              "#example-14-xml-schema-mapping-of-the-above-json-schema-with-a-non-anonymous-array">
+              Example <bdi>14</bdi></a><span class=
+              "example-title">: XML Schema mapping of the above
+              JSON Schema with a non-anonymous array</span>
+            </div>
+            <pre aria-busy="false"><code class=
+            "hljs xml">          
+<span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"$name"</span> <span class=
+"hljs-attr">xmlns:xs</span>=<span class=
+"hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+        <span class=
+"hljs-comment">&lt;!--Until the next comment, it is a copy of the previous example--&gt;</span>
+            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"array"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                        <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:element</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"double"</span> <span class=
+"hljs-attr">minOccurs</span>=<span class=
+"hljs-string">"3"</span> <span class=
+"hljs-attr">maxOccurs</span>=<span class=
+"hljs-string">"3"</span> &gt;</span>
+                            <span class="hljs-tag">&lt;<span class=
+"hljs-name">xs:simpleType</span> <span class=
+"hljs-attr">name</span>=<span class=
+"hljs-string">"minInclusive"</span>&gt;</span>
+                                <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:restriction</span> <span class=
+"hljs-attr">base</span>=<span class=
+"hljs-string">"xs:double"</span>&gt;</span>
+                                    <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:minInclusive</span> <span class=
+"hljs-attr">value</span>=<span class=
+"hljs-string">"0"</span>/&gt;</span>
+                                    <span class=
+"hljs-tag">&lt;<span class=
+"hljs-name">xs:maxInclusive</span> <span class=
+"hljs-attr">value</span>=<span class=
+"hljs-string">"2047"</span>/&gt;</span>
+                                <span class=
+"hljs-tag">&lt;/<span class=
+"hljs-name">xs:restriction</span>&gt;</span>
+                            <span class=
+"hljs-tag">&lt;/<span class="hljs-name">xs:simpleType</span>&gt;</span>
+                        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+                    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--Until here--&gt;</span>
+        <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:sequence</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:complexType</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class=
+"hljs-name">xs:element</span>&gt;</span></code></pre>
+          </div>
+        </section>
+      </section>
+    </section>
+    <section id="form-element">
+      <h3 id="x4-2-forms-element"><bdi class="secno">4.2</bdi>
+      Forms Element<a class="self-link" aria-label="§" href=
+      "#form-element"></a></h3>
+      <p>The form elements contain the URI [<cite><a class="bibref"
+      data-link-type="biblio" href="#bib-rfc3986" title=
+      "Uniform Resource Identifier (URI): Generic Syntax">RFC3986</a></cite>]
+      pointing to an instance of the interaction and descriptions
+      of the protocol settings and options expected to be used when
+      between the Consumer and the Thing for the interaction.</p>
+      <section id="operation-types">
+        <h4 id="x4-2-1-operation-types"><bdi class=
+        "secno">4.2.1</bdi> Operation Types<a class="self-link"
+        aria-label="§" href="#operation-types"></a></h4>
+        <p>Form Operation Types describe the intended semantics of
+        performing the operation described by the form.</p>
+        <p>For example, the Property interaction allows read and
+        write operations. The protocol binding may contain a form
+        for the read operation and a different form for the write
+        operation. The value of the <code>op</code> attribute of
+        the form indicates which form is which and allows the
+        Consumer to select the correct form for the operation
+        required.</p>
+        <div class="example" id="example-15-form-operation-types">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-15-form-operation-types">Example
+            <bdi>15</bdi></a><span class="example-title">: Form
+            Operation Types</span>
+          </div>
+          <pre aria-busy="false"><code class=
+          "hljs javascript"><span class=
+          "hljs-string">"op"</span>: <span class=
+          "hljs-string">"readproperty"</span>
+<span class="hljs-string">"op"</span>: <span class=
+"hljs-string">"writeproperty"</span></code></pre>
+        </div>
+        <p>The vocabulary in section 4 lists the recommended set of
+        form operations, and the full TD examples in section 5
+        contain example uses of form operations types.</p>
+      </section>
+      <section id="content-types">
+        <h4 id="x4-2-2-content-types"><bdi class=
+        "secno">4.2.2</bdi> Content Types<a class="self-link"
+        aria-label="§" href="#content-types"></a></h4>
+        <p>Content Types define the serialization details and other
+        rules for processing the payloads. The content type is used
+        to select a serializer/deserializer and to select an
+        additional set of rules and constraints for the protocol
+        driver. Content type includes the media type and potential
+        parameters for the media type.</p>
+        <p>For example, the media type
+        <code>application/ocf+cbor</code> indicates that CBOR
+        serialization is used, but also that OCF rules and
+        namespaces apply to the processing of the
+        representations.</p>
+        <p>Some special protocol drivers may be invoked by using a
+        non-registered media type (e.g.,
+        <code>x-&lt;echonet&gt;</code>) along with a custom URI
+        Scheme [<cite><a class="bibref" data-link-type="biblio"
+        href="#bib-rfc3986" title=
+        "Uniform Resource Identifier (URI): Generic Syntax">RFC3986</a></cite>]
+        and its own set of protocol methods and options defined for
+        that URI Scheme.</p>
+        <p>When the media type is <code>application/xml</code> (or
+        its binary representation <code>application/exi</code>) and
+        there is a Data Schema provided for the payload, the
+        payloads are constrained by a XML Schema derived from the
+        Data Schema. See <a href="#mapping-to-xml-schema" class=
+        "sec-ref">§&nbsp; <bdi class="secno">3.1.3</bdi> XML Schema
+        Binding</a> Schema Binding for how to derive a XML Schema
+        from a Data Schema definition.</p>
+        <p>Below are some examples of payloads in JSON and their
+        corresponding equivalent payloads in XML.</p>
+        <div class="example" id=
+        "example-16-json-payload-of-object-type-for-specifying-the-desired-brightness-and-flashing-frequency-of-a-lamp">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-16-json-payload-of-object-type-for-specifying-the-desired-brightness-and-flashing-frequency-of-a-lamp">
+            Example <bdi>16</bdi></a><span class="example-title">:
+            JSON Payload of Object type for specifying the desired
+            brightness and flashing frequency of a lamp</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"brightness"</span>: <span class=
+"hljs-number">200</span>,
+  <span class="hljs-attr">"frequency"</span>: <span class=
+"hljs-string">"fast"</span>
+}</code></pre>
+        </div>
+        <div class="example" id=
+        "example-17-corresponding-xml-payload-for-the-previous-json-payload">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-17-corresponding-xml-payload-for-the-previous-json-payload">
+            Example <bdi>17</bdi></a><span class="example-title">:
+            Corresponding XML Payload for the previous JSON
+            Payload</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs xml"><span class=
+          "hljs-tag">&lt;<span class=
+          "hljs-name">object</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class=
+"hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class=
+"hljs-name">integer</span>&gt;</span>200<span class=
+"hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class=
+"hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class=
+"hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class=
+"hljs-name">string</span>&gt;</span>fast<span class=
+"hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class=
+"hljs-name">frequency</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class=
+"hljs-name">object</span>&gt;</span></code></pre>
+        </div>
+        <div class="example" id=
+        "example-18-json-payload-of-array-type-for-specifying-the-desired-brightness-and-flashing-frequency-of-a-lamp">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-18-json-payload-of-array-type-for-specifying-the-desired-brightness-and-flashing-frequency-of-a-lamp">
+            Example <bdi>18</bdi></a><span class="example-title">:
+            JSON Payload of Array type for specifying the desired
+            brightness and flashing frequency of a lamp</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs json">[
+  <span class="hljs-number">520</span>,
+  <span class="hljs-number">184</span>,
+  <span class="hljs-number">1314</span>
+]</code></pre>
+        </div>
+        <div class="example" id=
+        "example-19-corresponding-xml-payload-for-the-previous-json-payload">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-19-corresponding-xml-payload-for-the-previous-json-payload">
+            Example <bdi>19</bdi></a><span class="example-title">:
+            Corresponding XML Payload for the previous JSON
+            Payload</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs xml"><span class=
+          "hljs-tag">&lt;<span class=
+          "hljs-name">array</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class=
+"hljs-name">number</span>&gt;</span>520<span class=
+"hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class=
+"hljs-name">number</span>&gt;</span>184<span class=
+"hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class=
+"hljs-name">number</span>&gt;</span>1314<span class=
+"hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class=
+"hljs-name">array</span>&gt;</span></code></pre>
+        </div>
+      </section>
+      <section id="protocol-methods-options">
+        <h4 id="x4-2-3-protocol-methods-and-options"><bdi class=
+        "secno">4.2.3</bdi> Protocol Methods and Options<a class=
+        "self-link" aria-label="§" href=
+        "#protocol-methods-options"></a></h4>
+        <p>Each target protocol may specify different method names
+        for similar operations, and there may be semantic
+        differences between similar method names of different
+        protocols. Additionally, platforms may use different
+        methods for realizing a particular WoT Interaction
+        Affordance. For example, POST may be used for writing a
+        Property value in one platform, while PUT may be used in
+        another. For these reasons, we require the ability to
+        specify which method to use for a particular Interaction.
+        We also will provide vocabulary to differentiate between
+        methods of different protocols.</p>
+        <p>The <abbr title="World Wide Web Consortium">W3C</abbr>
+        RDF vocabulary for HTTP [<cite><a class="bibref"
+        data-link-type="biblio" href="#bib-http-in-rdf10" title=
+        "HTTP Vocabulary in RDF 1.0">HTTP-in-RDF10</a></cite>] is
+        used to identify the methods and options specified in the
+        HTTP protocol bindings.</p>
+        <p>For the sake of consistency, we will use the same
+        ontology design pattern to derive a vocabulary for each
+        target protocol, e.g. CoAP, MQTT.</p>
+        <p>The example below shows some method definitions for
+        various protocols.</p>
+        <div class="example" id=
+        "example-20-vocabulary-example-for-methods">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-20-vocabulary-example-for-methods">Example
+            <bdi>20</bdi></a><span class="example-title">:
+            Vocabulary Example for Methods</span>
+          </div>
+          <pre aria-busy="false"><code class=
+          "hljs javascript"><span class=
+          "hljs-string">"htv:methodName"</span>: <span class=
+          "hljs-string">"GET"</span>
+
+<span class=
+"hljs-string">"mqv:controlPacketValue"</span>: <span class=
+"hljs-string">"SUBSCRIBE"</span>
+
+<span class="hljs-string">"cov:methodName"</span>: <span class=
+"hljs-string">"GET"</span></code></pre>
+        </div>
+        <p>Header options in HTTP, CoAP, MQTT sometimes must be
+        included in a protocol binding in order to successfully
+        interact with the underlying protocol. The example below
+        shows the structure of the definition for HTTP header
+        options, according to the <abbr title=
+        "World Wide Web Consortium">W3C</abbr> HTTP Vocabulary in
+        RDF.</p>
+        <div class="example" id=
+        "example-21-http-vocabulary-example-for-header-options">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-21-http-vocabulary-example-for-header-options">
+            Example <bdi>21</bdi></a><span class="example-title">:
+            HTTP Vocabulary Example for Header Options</span>
+          </div>
+          <pre aria-busy="false"><code class=
+          "hljs javascript"><span class=
+          "hljs-string">"htv:headers"</span>:
+  [
+    {
+      <span class=
+"hljs-string">"htv:fieldName"</span>: <span class="hljs-string">"Accept"</span>,
+      <span class=
+"hljs-string">"htv:fieldValue"</span>: <span class=
+"hljs-string">"application/json"</span>
+    },
+    {
+      <span class=
+"hljs-string">"htv:fieldName"</span>: <span class="hljs-string">"Transfer-Encoding"</span>,
+      <span class=
+"hljs-string">"htv:fieldValue"</span>: <span class=
+"hljs-string">"chunked"</span>
+    }
+  ]</code></pre>
+        </div>
+        <p>Note: different forms in a binding may need different
+        header constructions, therefore the
+        <code>htv:headers</code> construct is an extension of the
+        TD "form" element.</p>
+        <p>Protocols may have defined sub-protocols that can be
+        used for some interaction types. For example, to receive
+        asynchronous notifications using HTTP, some servers may
+        support long polling (<code>longpoll</code>), WebSub
+        [<cite><a class="bibref" data-link-type="biblio" href=
+        "#bib-websub" title="WebSub">WebSub</a></cite>]
+        (<code>websub</code>) and Server-Sent Events
+        [<cite><a class="bibref" data-link-type="biblio" href=
+        "#bib-eventsource" title=
+        "Server-Sent Events">eventsource</a></cite>]
+        (<code>sse</code>). The <code>subprotocol</code> item may
+        be defined in a form instance to indicate the use of one of
+        these protocols, for example long polling with its special
+        use of HTTP:</p>
+        <div class="example" id="example-22-subprotocol">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-22-subprotocol">Example
+            <bdi>22</bdi></a><span class="example-title">:
+            subprotocol</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"op"</span>: <span class=
+"hljs-string">"subscribeevent"</span>,
+  <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"https://mylamp.example.com/overheating"</span>,
+  <span class="hljs-attr">"subprotocol"</span>: <span class=
+"hljs-string">"longpoll"</span>
+}</code></pre>
+        </div>
+      </section>
+      <section id="uri-variables">
+        <h4 id="x4-2-4-uri-template-variables"><bdi class=
+        "secno">4.2.4</bdi> URI Template Variables<a class=
+        "self-link" aria-label="§" href="#uri-variables"></a></h4>
+        <p>When Interaction Affordances require dynamic variables
+        in the <code>href</code>, they can be described using
+        <code>uriVariables</code> in the Data Schema of the
+        interaction. For example, <code>p</code> and <code>d</code>
+        in <code>http://192.168.1.25/left?p=2&amp;d=1</code> can be
+        described with a template as defined in [<cite><a class=
+        "bibref" data-link-type="biblio" href="#bib-rfc6570" title=
+        "URI Template">RFC6570</a></cite>] ]:
+        <code>http://192.168.1.25/left{?p,d}</code>.</p>
+        <p>In such a case, the URI Template variables <i><em class=
+        "rfc2119" title="MUST">MUST</em></i> be collected in the
+        JSON-object based <code>uriVariables</code> member with the
+        associated (unique) variable names as JSON names.</p>
+        <p>The serialization of each value in the map assigned to
+        <code>uriVariables</code> in an instance of
+        <code>Form</code> <i><em class="rfc2119" title=
+        "MUST">MUST</em></i> rely on the DataSchema as explained in
+        <a href="#sec-data-schema" class="sec-ref">§&nbsp;
+        <bdi class="secno">3.1</bdi> Data Schema</a>.</p>
+        <p>An action affordance snippet using a URI Template and
+        <code>uriVariables</code> is given below:</p>
+        <div class="example" id=
+        "example-23-action-affordance-using-uri-template-variables">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-23-action-affordance-using-uri-template-variables">
+            Example <bdi>23</bdi></a><span class="example-title">:
+            Action Affordance using URI Template Variables</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs javascript">...
+<span class="hljs-string">"actions"</span>: {
+    <span class="hljs-string">"LeftDown"</span>: {
+        ...
+        <span class="hljs-string">"uriVariables"</span>: {
+            <span class="hljs-string">"p"</span> : { <span class=
+"hljs-string">"type"</span>: <span class=
+"hljs-string">"integer"</span>, <span class=
+"hljs-string">"minimum"</span>: <span class=
+"hljs-number">0</span>, <span class=
+"hljs-string">"maximum"</span>: <span class=
+"hljs-number">16</span> },
+            <span class="hljs-string">"d"</span> : { <span class=
+"hljs-string">"type"</span>: <span class=
+"hljs-string">"integer"</span>, <span class=
+"hljs-string">"minimum"</span>: <span class=
+"hljs-number">0</span>, <span class=
+"hljs-string">"maximum"</span>: <span class=
+"hljs-number">1</span> }
+        },
+        <span class="hljs-string">"forms"</span>: [{
+          <span class="hljs-string">"href"</span> : <span class=
+"hljs-string">"http://192.168.1.25/left{?p,d}"</span>,
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"GET"</span>
+        }]
+    },
+    ...
+},
+...</code></pre>
+        </div>
+      </section>
+    </section>
+    <section id="sec-interaction-patterns" class="informative">
+      <h3 id="x4-3-interaction-affordances"><bdi class=
+      "secno">4.3</bdi> Interaction Affordances<a class="self-link"
+      aria-label="§" href="#sec-interaction-patterns"></a></h3>
+      <p><em>This section is non-normative.</em></p>
+      <p>This section describes unique aspects of protocol bindings
+      for the three WoT Interaction Affordances.</p>
+      <section id="property-bindings">
+        <h4 id="x4-3-1-bindings-for-properties"><bdi class=
+        "secno">4.3.1</bdi> Bindings for Properties<a class=
+        "self-link" aria-label="§" href=
+        "#property-bindings"></a></h4>
+        <p>This section describes unique aspects of protocol
+        bindings for WoT Property interactions.</p>
+        <p>The abstract operations exposed for the Property
+        Interaction are <code>readproperty</code>,
+        <code>writeproperty</code>, <code>observeproperty</code>
+        and <code>unobserveproperty</code>. These are mapped by
+        using form operations that describe how the abstract
+        operation is performed, resulting in a semantic
+        interpretation similar to HTML form submission.</p>
+        <p>Additionally, the abstract operations exposed for
+        multiple Property Interactions are
+        <code>readallproperties</code>,
+        <code>writeallproperties</code>,
+        <code>readmultipleproperties</code> and
+        <code>writemultipleproperties</code>.</p>
+        <div class="example" id=
+        "example-24-example-use-of-form-operation-for-property">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-24-example-use-of-form-operation-for-property">
+            Example <bdi>24</bdi></a><span class="example-title">:
+            Example use of form operation for Property</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"op"</span>: <span class=
+"hljs-string">"writeproperty"</span>,
+  <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/level"</span>,
+  <span class="hljs-attr">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+}</code></pre>
+        </div>
+        <p>The form element in the example above conveys the
+        statement: <i>"To do a <code>writeproperty</code> of the
+        subject Property (context of the form), perform an
+        <code>HTTP POST</code> on the resource at the target URI
+        <code>/example/level</code>."</i></p>
+        <p>Properties may be observable, defined by the TD keyword
+        "observable". If there is an observe form and a retrieve
+        form, the observe form may be indicated by including
+        <code>op=observeproperty</code> in the form. The observe
+        form may also specify header options to use, as specified
+        in Observing in CoAP[<cite><a class="bibref"
+        data-link-type="biblio" href="#bib-rfc7641" title=
+        "Observing Resources in the Constrained Application Protocol (CoAP)">RFC7641</a></cite>]for
+        example setting the CoAP Observe option to <code>0</code>
+        in the header, starts observation.</p>
+      </section>
+      <section id="action-bindings" class="informative">
+        <h4 id="x4-3-2-bindings-for-actions"><bdi class=
+        "secno">4.3.2</bdi> Bindings for Actions<a class=
+        "self-link" aria-label="§" href=
+        "#action-bindings"></a></h4>
+        <p><em>This section is non-normative.</em></p>
+        <p>This section describes unique aspects of protocol
+        bindings for Actions.</p>
+        <p>The abstract operation on Actions is
+        <code>invokeaction</code>. In the same way that the
+        abstract operations on Properties are mapped using form
+        operation types, the abstract operation of Actions is also
+        mapped.</p>
+        <div class="example" id=
+        "example-25-example-use-of-form-operation-for-action">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-25-example-use-of-form-operation-for-action">Example
+            <bdi>25</bdi></a><span class="example-title">: Example
+            use of form operation for Action</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"op"</span>: <span class=
+"hljs-string">"invokeaction"</span>,
+  <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/levelaction"</span>,
+  <span class="hljs-attr">"http:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+}</code></pre>
+        </div>
+        <p>The form element in the example above conveys the
+        statement: <i>"To do an <code>invokeaction</code> of the
+        subject Action (context of the form), perform a
+        <code>POST</code> on the resource at the target URI
+        <code>/example/levelaction</code>."</i></p>
+      </section>
+      <section id="event-bindings" class="informative">
+        <h4 id="x4-3-3-bindings-for-events"><bdi class=
+        "secno">4.3.3</bdi> Bindings for Events<a class="self-link"
+        aria-label="§" href="#event-bindings"></a></h4>
+        <p><em>This section is non-normative.</em></p>
+        <p>This section describes unique aspects of protocol
+        bindings for WoT Event Interaction Affordances.</p>
+        <p>The abstract operations on Events are
+        <code>subscribeevent</code> and
+        <code>unsubscribeevent</code>. The
+        <code>subscribeevent</code> operation may directly enable
+        event instance delivery from the pre-defined URI to
+        observable resources or pubsub topics encoded in URIs.
+        Alternatively, it may return a location or resource URI
+        from which event instance may be obtained, either by
+        observation or some other mechanism, depending on the
+        transfer protocol.</p>
+        <p>Usually, the <code>unsubscribeevent</code> only occurs
+        when the transfer protocol has no implicit unsubscribe
+        operation such as closing the connection. Examples are
+        Webhooks that require particular unsubscribe requests.</p>
+        <p>If the binding offers an observable Event resource from
+        which events are obtained, there will be a form which
+        describes the required transfer layer operation, for
+        example CoAP Observe or HTTP Long Polling.</p>
+        <div class="example" id=
+        "example-26-example-use-of-form-operation-for-events">
+          <div class="marker">
+            <a class="self-link" href=
+            "#example-26-example-use-of-form-operation-for-events">Example
+            <bdi>26</bdi></a><span class="example-title">: Example
+            use of form operation for Events</span>
+          </div>
+          <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"op"</span>: <span class=
+"hljs-string">"subscribeevent"</span>,
+  <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"mqtt://wot.example.com/levelevent"</span>,
+  <span class=
+"hljs-attr">"mqv:controlPacketValue"</span>: <span class=
+"hljs-string">"SUBSCRIBE"</span>
+}</code></pre>
+        </div>
+        <p>The form element in the example above conveys the
+        statement: <i>"To do an <code>subscribeevent</code> of the
+        subject Event (context of the form), perform an <code>MQTT
+        SUBSCRIBE</code> on the topic <code>/levelevent</code> on
+        the broker at <code>wot.example.com</code> using the
+        default MQTT port."</i></p>
+      </section>
+    </section>
+    <section id="processing-model" class="informative">
+      <h3 id="x4-4-processing-model-and-runtime"><bdi class=
+      "secno">4.4</bdi> Processing Model and Runtime<a class=
+      "self-link" aria-label="§" href="#processing-model"></a></h3>
+      <p><em>This section is non-normative.</em></p>
+      <p>This section describes the processing model for Protocol
+      Bindings with respect to the abstract WoT Interactions
+      provided by the Scripting API.</p>
+      <p><code>DataSchema</code> elements (see <a href=
+      "#sec-data-schema" class="sec-ref">§&nbsp; <bdi class=
+      "secno">3.1</bdi> Data Schema</a> ) are processed, and value
+      scaling is performed, in the application library or
+      adaptation layer.</p>
+      <p>Form elements that specify href, method, options, and
+      contentType are processed in a driver context which is
+      isolated from the application.</p>
+      <p>The application, or a protocol adaptation layer,
+      constructs an instance of the appropriate DataSchema element
+      and sends it along with the selected form contents to the
+      protocol driver or, in the case of get, receives a payload
+      form the protocol driver and uses the appropriate
+      <code>DataSchema</code> element to extract the field values
+      of interest.</p>
+      <p>The separation of execution context between the
+      application and the protocol driver enables isolation of
+      fault domains and isolation of security domains.</p>
+      <div class="note" id="issue-container-generatedID-1">
+        <div role="heading" class="ednote-title marker" id=
+        "h-ednote-1" aria-level="4">
+          <span>Editor's note</span><span class="issue-label">:
+          Multiple Security Bindings</span>
+        </div>
+        <p class="">Additional information in the Thing Description
+        may be considered part of the Protocol Binding, relating to
+        security protocols. There is currently a single declaration
+        of security bindings for each TD instance, with no defined
+        way to indicate a different security protocol for each form
+        element, which may specify a different transfer
+        protocol.</p>
+      </div>
+      <p>Protocol Bindings may be used by proxies, where a Consumed
+      Thing has its Protocol Binding, and the corresponding Exposed
+      Thing may have a different Protocol Binding.</p>
+    </section>
+  </section>
+  <section id="vocabulary" class="normative">
+    <h2 id="x5-vocabulary"><bdi class="secno">5.</bdi>
+    Vocabulary<a class="self-link" aria-label="§" href=
+    "#vocabulary"></a></h2>
+    <p>This section summarizes the vocabulary used for Binding
+    Templates. The vocabulary is defined in other documents, in
+    particular the WoT Thing Description [<cite><a class="bibref"
+    data-link-type="biblio" href="#bib-wot-thing-description"
+    title="Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>]</p>
+    <section id="dataschema-vocabulary">
+      <h3 id="x5-1-dataschema-vocabulary"><bdi class=
+      "secno">5.1</bdi> <code>DataSchema</code> Vocabulary<a class=
+      "self-link" aria-label="§" href=
+      "#dataschema-vocabulary"></a></h3>
+      <p><code>DataSchema</code> elements describe the structure of
+      the payload. The <code>DataSchema</code> class and vocabulary
+      is defined in [<cite><a class="bibref" data-link-type=
+      "biblio" href="#bib-wot-thing-description" title=
+      "Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>].
+      Properties and Events directly implement the
+      <code>DataSchema</code> class (i.e., they contain the
+      corresponding fields such as <code>type</code>), which
+      describes the data transfer in either direction. Actions may
+      define an <code>input</code> data schema for actuation data
+      being sent to the Action and/or an <code>output</code> data
+      schema for result or status data being returned from the
+      Action.</p>
+    </section>
+    <section id="form-operation-type-vocabulary">
+      <h3 id="x5-2-form-operation-type-vocabulary"><bdi class=
+      "secno">5.2</bdi> Form Operation Type Vocabulary<a class=
+      "self-link" aria-label="§" href=
+      "#form-operation-type-vocabulary"></a></h3>
+      <p>Each interaction affordance has associated form operation
+      types (i.e. <code>op</code>) that are used to select the form
+      element corresponding to the intended interaction from the
+      Array of forms. For example, for one interaction, a Consumer
+      can choose the form element corresponding to reading a
+      Property, observing a Property or writing to Property by
+      using the form operation type.</p>
+      <section id="property-forms">
+        <h4 id="x5-2-1-property-forms"><bdi class=
+        "secno">5.2.1</bdi> Property Forms<a class="self-link"
+        aria-label="§" href="#property-forms"></a></h4>
+        <p>Properties can provide <code>readproperty</code> and
+        <code>writeproperty</code> operations, which map to GET and
+        PUT/POST of a REST API, respectively. Properties may also
+        by observed if they provide an <code>observeproperty</code>
+        operation and the observation can be stopped if the
+        property provides an <code>unobserveproperty</code>
+        operation.</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th><code>op</code> Term</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>Read a Property. Requires <code>writeOnly</code>
+              to be set to <code>false</code>.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>Write a Property. Requires <code>readOnly</code>
+              to be set to <code>false</code>.</td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td>Observe a Property. Requires
+              <code>observable</code> to be set to
+              <code>true</code>.</td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td>Unobserve a Property. Requires
+              <code>observable</code> to be set to
+              <code>true</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="action-forms">
+        <h4 id="x5-2-2-action-forms"><bdi class="secno">5.2.2</bdi>
+        Action Forms<a class="self-link" aria-label="§" href=
+        "#action-forms"></a></h4>
+        <p>Actions only provide <code>invokeaction</code>
+        operations. For completeness, there is also a form
+        operation type defined.</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th><code>op</code> Term</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>invokeaction</code></td>
+              <td>Invoke an Action.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="event-forms">
+        <h4 id="x5-2-3-event-forms"><bdi class="secno">5.2.3</bdi>
+        Event Forms<a class="self-link" aria-label="§" href=
+        "#event-forms"></a></h4>
+        <p>Events describe subscription endpoints from which to
+        event instances can be received and unsubscription
+        endpoints to stop receiving event instances.</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th><code>op</code> Term</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>subscribeevent</code></td>
+              <td>Subscribe to an Event.</td>
+            </tr>
+            <tr>
+              <td><code>unsubscribeevent</code></td>
+              <td>Unsubscribe from an Event.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+    <section id="protocol-vocabulary">
+      <h3 id="x5-3-protocol-vocabulary"><bdi class=
+      "secno">5.3</bdi> Protocol Vocabulary<a class="self-link"
+      aria-label="§" href="#protocol-vocabulary"></a></h3>
+      <p>Extensions to the Thing Description core vocabulary can
+      inform the Consumer about protocol-specific message
+      configurations such as methods, options, and status codes. By
+      using such information, the Consumer can build the protocol
+      specific request that allows interaction with the Exposed
+      Thing. Per default the Thing Description includes HTTP
+      Vocabulary by including the HTTP RDF vocabulary definitions
+      from HTTP Vocabulary in RDF 1.0 [HTTP-in-RDF10].</p>
+      <div class="note" id="issue-container-generatedID-2">
+        <div role="heading" class="ednote-title marker" id=
+        "h-ednote-2" aria-level="4">
+          <span>Editor's note</span><span class="issue-label">:
+          Protocol Vocabulary Definitions</span>
+        </div>
+        <p class="">The WoT Working Group is investigating good
+        ways to also provide COAP and MQTT Vocabulary in RDF.
+        Whether the WG will publish corresponding WG Notes is still
+        subject to discussion.</p>
+      </div>The protocol vocabularies for each protocol are
+      presented as two tables per protocol. The first table details
+      the vocabulary terms, whereas the second one lists a default
+      mapping of the <code>op</code> for the given protocol, if
+      that <code>op</code> value is defined for the given protocol.
+      <section id="http-vocabulary">
+        <h4 id="x5-3-1-http-vocabulary"><bdi class=
+        "secno">5.3.1</bdi> HTTP Vocabulary<a class="self-link"
+        aria-label="§" href="#http-vocabulary"></a></h4>
+        <section id="http-vocabulary-terms">
+          <h5 id="x5-3-1-1-http-vocabulary-terms"><bdi class=
+          "secno">5.3.1.1</bdi> HTTP Vocabulary Terms<a class=
+          "self-link" aria-label="§" href=
+          "#http-vocabulary-terms"></a></h5>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Vocabulary term</th>
+                <th>Description</th>
+                <th>Assignment</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>htv:methodName</code></td>
+                <td>HTTP method name (Literal).</td>
+                <td>optional</td>
+                <td>
+                  <a href=
+                  "http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                  <p>(one of <code>"GET"</code>,
+                  <code>"PUT"</code>, <code>"POST"</code>,
+                  <code>"DELETE"</code>, <code>"PATCH"</code>)</p>
+                </td>
+              </tr>
+              <tr>
+                <td><code>htv:headers</code></td>
+                <td>HTTP headers sent with the message.</td>
+                <td>optional</td>
+                <td>
+                  array of <a href=
+                  "https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass">
+                  <code>htv:MessageHeader</code></a>
+                </td>
+              </tr>
+              <tr>
+                <td><code>htv:fieldName</code></td>
+                <td>Header name (Literal), e.g.,
+                <code>"Accept"</code>,
+                <code>"Transfer-Encoding"</code>.</td>
+                <td>mandatory within
+                <code>htv:MessageHeader</code></td>
+                <td>
+                  <a href=
+                  "http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                </td>
+              </tr>
+              <tr>
+                <td><code>htv:fieldValue</code></td>
+                <td>Header value (Literal).</td>
+                <td>mandatory within
+                <code>htv:MessageHeader</code></td>
+                <td>
+                  <a href=
+                  "http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="http-default-vocabulary-terms">
+          <h5 id="x5-3-1-2-http-default-vocabulary-terms">
+          <bdi class="secno">5.3.1.2</bdi> HTTP Default Vocabulary
+          Terms<a class="self-link" aria-label="§" href=
+          "#http-default-vocabulary-terms"></a></h5>
+          <table class="def">
+            <thead>
+              <tr>
+                <th><code>op</code> value</th>
+                <th>Default Binding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>readproperty</code></td>
+                <td><code>"htv:methodName": "GET"</code></td>
+              </tr>
+              <tr>
+                <td><code>writeproperty</code></td>
+                <td><code>"htv:methodName": "PUT"</code></td>
+              </tr>
+              <tr>
+                <td><code>invokeaction</code></td>
+                <td><code>"htv:methodName": "POST"</code></td>
+              </tr>
+              <tr>
+                <td><code>readallproperties</code></td>
+                <td><code>"htv:methodName": "GET"</code></td>
+              </tr>
+              <tr>
+                <td><code>writeallproperties</code></td>
+                <td><code>"htv:methodName": "PUT"</code></td>
+              </tr>
+              <tr>
+                <td><code>readmultipleproperties</code></td>
+                <td><code>"htv:methodName": "GET"</code></td>
+              </tr>
+              <tr>
+                <td><code>writemultipleproperties</code></td>
+                <td><code>"htv:methodName": "PUT"</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+      <section id="coap-vocabulary">
+        <h4 id="x5-3-2-coap-vocabulary"><bdi class=
+        "secno">5.3.2</bdi> CoAP Vocabulary<a class="self-link"
+        aria-label="§" href="#coap-vocabulary"></a></h4>
+        <section id="coap-vocabulary-terms">
+          <h5 id="x5-3-2-1-coap-vocabulary-terms"><bdi class=
+          "secno">5.3.2.1</bdi> CoAP Vocabulary Terms<a class=
+          "self-link" aria-label="§" href=
+          "#coap-vocabulary-terms"></a></h5>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Vocabulary term</th>
+                <th>Description</th>
+                <th>Assignment</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>cov:methodName</code></td>
+                <td>CoAP method name (Literal).</td>
+                <td>optional</td>
+                <td>
+                  <a href=
+                  "http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                  <p>(one of <code>"GET"</code> (1),
+                  <code>"POST"</code> (2), <code>"PUT"</code> (3),
+                  <code>"DELETE"</code> (4), <code>"FETCH"</code>
+                  (5), <code>"PATCH"</code> (6),
+                  <code>"iPATCH"</code> (7))</p>
+                </td>
+              </tr>
+              <tr>
+                <td><code>cov:options</code></td>
+                <td>CoAP options sent with the message, e.g.,
+                <code>[ { "cov:optionName": "Accept",
+                "cov:optionValue": 110 }]</code> to observe.</td>
+                <td>optional</td>
+                <td>array of <code>cov:MessageOption</code></td>
+              </tr>
+              <tr>
+                <td><code>cov:optionName</code></td>
+                <td>
+                  Option name (Literal), see <a href=
+                  "https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-names">
+                  CoRE Parameters</a>.
+                </td>
+                <td>mandatory within
+                <code>cov:MessageOption</code></td>
+                <td>
+                  <a href=
+                  "http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                </td>
+              </tr>
+              <tr>
+                <td><code>cov:optionValue</code></td>
+                <td>Header value (Literal).</td>
+                <td>mandatory within
+                <code>cov:MessageOption</code></td>
+                <td>
+                  <a href=
+                  "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType">
+                  <code>anyType</code></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="coap-default-vocabulary-terms">
+          <h5 id="x5-3-2-2-coap-default-vocabulary-terms">
+          <bdi class="secno">5.3.2.2</bdi> CoAP Default Vocabulary
+          Terms<a class="self-link" aria-label="§" href=
+          "#coap-default-vocabulary-terms"></a></h5>
+          <table class="def">
+            <thead>
+              <tr>
+                <th><code>op</code> value</th>
+                <th>Default Binding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>readproperty</code></td>
+                <td><code>"cov:methodName": "GET"</code></td>
+              </tr>
+              <tr>
+                <td><code>writeproperty</code></td>
+                <td><code>"cov:methodName": "PUT"</code></td>
+              </tr>
+              <tr>
+                <td><code>observeproperty</code></td>
+                <td><code>"cov:methodName":
+                "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+              </tr>
+              <tr>
+                <td><code>unobserveproperty</code></td>
+                <td><code>"cov:methodName":
+                "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+              </tr>
+              <tr>
+                <td><code>invokeaction</code></td>
+                <td><code>"cov:methodName": "POST"</code></td>
+              </tr>
+              <tr>
+                <td><code>subscribeevent</code></td>
+                <td><code>"cov:methodName":
+                "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+              </tr>
+              <tr>
+                <td><code>unsubscribeevent</code></td>
+                <td><code>"cov:methodName":
+                "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+              </tr>
+              <tr>
+                <td><code>readallproperties</code></td>
+                <td><code>"cov:methodName": "GET"</code></td>
+              </tr>
+              <tr>
+                <td><code>writeallproperties</code></td>
+                <td><code>"cov:methodName": "PUT"</code></td>
+              </tr>
+              <tr>
+                <td><code>readmultipleproperties</code></td>
+                <td><code>"cov:methodName": "GET"</code></td>
+              </tr>
+              <tr>
+                <td><code>writemultipleproperties</code></td>
+                <td><code>"cov:methodName": "PUT"</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>Observing Resources in CoAP should be done as
+        specified in [<cite><a class="bibref" data-link-type=
+        "biblio" href="#bib-rfc7641" title=
+        "Observing Resources in the Constrained Application Protocol (CoAP)">RFC7641</a></cite>].
+        Since observing and unobserving need to be indicated with
+        the Observe flag in the header, this mechanism can be also
+        described in the <code>cov:options</code> with the value
+        <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0
+        }]</code>. However, this is not enough to describe the
+        mechanism of getting asynchronous updates from the observed
+        resource. Thus, <code>"subprotocol":"cov:observe"</code> is
+        used to indicate the observation mechanism.
+        <div class="note" id="issue-container-generatedID-3">
+          <div role="heading" class="ednote-title marker" id=
+          "h-ednote-3" aria-level="5">
+            <span>Editor's note</span>
+          </div>
+          <p class="">As indicated by the <a href=
+          "#coap-default-vocabulary-terms" class="sec-ref">CoAP
+          Default Vocabulary Terms</a>, it is recommended to use
+          the <code>subprotocol</code> to describe the observation.
+          Thus, <code>cov:options</code> with the value <code>[ {
+          "cov:optionName": "Observe", "cov:optionValue": 0
+          }]</code> <em class="rfc2119" title="MUST NOT">MUST
+          NOT</em> be used together with
+          <code>"subprotocol":"cov:observe"</code>, since it can
+          lead to confusion.</p>
+        </div>
+      </section>
+      <section id="mqtt-vocabulary">
+        <h4 id="x5-3-3-mqtt-vocabulary"><bdi class=
+        "secno">5.3.3</bdi> MQTT Vocabulary<a class="self-link"
+        aria-label="§" href="#mqtt-vocabulary"></a></h4>
+        <section id="mqtt-vocabulary-terms">
+          <h5 id="x5-3-3-1-mqtt-vocabulary-terms"><bdi class=
+          "secno">5.3.3.1</bdi> MQTT Vocabulary Terms<a class=
+          "self-link" aria-label="§" href=
+          "#mqtt-vocabulary-terms"></a></h5>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Vocabulary term</th>
+                <th>Description</th>
+                <th>Assignment</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>mqv:controlPacketValue</code></td>
+                <td>MQTT Control Packet type (Literal).</td>
+                <td>optional</td>
+                <td>
+                  <a href=
+                  "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                  <p>(one of <code>"PUBLISH"</code> (3),
+                  <code>"SUBSCRIBE"</code> (8),
+                  <code>"UNSUBSCRIBE"</code> (10))</p>
+                </td>
+              </tr>
+              <tr>
+                <td><code>mqv:options</code></td>
+                <td>MQTT options sent with the message, e.g.,
+                <code>[ { "mqv:optionName": "qos",
+                "mqv:optionValue": 1 }]</code>.</td>
+                <td>optional</td>
+                <td>array of <code>mqv:MessageOption</code></td>
+              </tr>
+              <tr>
+                <td><code>mqv:optionName</code></td>
+                <td>Option name (Literal).</td>
+                <td>mandatory within
+                <code>mqv:MessageOption</code>)</td>
+                <td>
+                  <a href=
+                  "https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string">
+                  <code>string</code></a>
+                  <p>(one of <code>"qos"</code>,
+                  <code>"retain"</code>, <code>"dup"</code>)</p>
+                </td>
+              </tr>
+              <tr>
+                <td><code>mqv:optionValue</code></td>
+                <td>Header value (Literal).</td>
+                <td>mandatory within
+                <code>mqv:MessageOption</code>)</td>
+                <td>One of <code>0</code>, <code>1</code> or
+                <code>2</code> (only for <code>qos</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id="mqtt-default-vocabulary-terms">
+          <h5 id="x5-3-3-2-mqtt-default-vocabulary-terms">
+          <bdi class="secno">5.3.3.2</bdi> MQTT Default Vocabulary
+          Terms<a class="self-link" aria-label="§" href=
+          "#mqtt-default-vocabulary-terms"></a></h5>
+          <table class="def">
+            <thead>
+              <tr>
+                <th><code>op</code> value</th>
+                <th>Default Binding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>readproperty</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "SUBSCRIBE",<br></code></td>
+              </tr>
+              <tr>
+                <td><code>writeproperty</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "PUBLISH"</code></td>
+              </tr>
+              <tr>
+                <td><code>observeproperty</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "SUBSCRIBE"</code></td>
+              </tr>
+              <tr>
+                <td><code>unobserveproperty</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "UNSUBSCRIBE"</code></td>
+              </tr>
+              <tr>
+                <td><code>invokeaction</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "PUBLISH"</code></td>
+              </tr>
+              <tr>
+                <td><code>subscribeevent</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "SUBSCRIBE"</code></td>
+              </tr>
+              <tr>
+                <td><code>unsubscribeevent</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "UNSUBSCRIBE"</code></td>
+              </tr>
+              <tr>
+                <td><code>readallproperties</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "SUBSCRIBE"</code></td>
+              </tr>
+              <tr>
+                <td><code>writeallproperties</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "PUBLISH"</code></td>
+              </tr>
+              <tr>
+                <td><code>readmultipleproperties</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "SUBSCRIBE"</code></td>
+              </tr>
+              <tr>
+                <td><code>writemultipleproperties</code></td>
+                <td><code>"mqv:controlPacketValue":
+                "PUBLISH"</code></td>
+              </tr>
+            </tbody>
+          </table>For the MQTT protocol, if an MQTT client
+          publishes a message to a topic with the retain flag set
+          to true, the future subscribers of the topic will also
+          get this message. Outside of this case, it is not
+          possible to read a property but only possible to observe
+          it. Additionally, in a Form element with MQTT protocol,
+          if the <code>op</code> contains <code>readproperty</code>
+          (meaning that retain flag is set to true), it <em class=
+          "rfc2119" title="SHOULD">SHOULD</em> also contain
+          <code>observeproperty</code>. On the other hand, if the
+          MQTT publisher does not set the retain flag to true, the
+          property will be only observable. In this case, the
+          property in the exposed Thing Description <em class=
+          "rfc2119" title="SHOULD NOT">SHOULD NOT</em> have Form
+          elements with MQTT protocol containing
+          <code>readproperty</code> operation.
+        </section>
+      </section>
+      <section id="subprotocol-vocabulary">
+        <h4 id="x5-3-4-subprotocol-vocabulary"><bdi class=
+        "secno">5.3.4</bdi> <code>subprotocol</code>
+        Vocabulary<a class="self-link" aria-label="§" href=
+        "#subprotocol-vocabulary"></a></h4>
+        <p>The <code>subprotocol</code> field is defined in
+        [<cite><a class="bibref" data-link-type="biblio" href=
+        "#bib-wot-thing-description" title=
+        "Web of Things (WoT) Thing Description">WOT-THING-DESCRIPTION</a></cite>].</p>
+        <p>Currently, the supported values are
+        <code>longpoll</code>, <code>websub</code> and
+        <code>sse</code> defined for HTTP. Subprotocols can be used
+        for asynchronous event delivery or observing
+        Properties.</p>
+        <p>For WebSockets, the IANA-registered Websocket
+        Subprotocols [<cite><a class="bibref" data-link-type=
+        "biblio" href="#bib-iana-web-socket-registry" title=
+        "IANA Registry for Websocket Subprotocols">iana-web-socket-registry</a></cite>]
+        may be used.</p>
+        <p>For CoAP, <code>"subprotocol":"cov:observe"</code> can
+        be used to describe asynchronous observation operations as
+        defined by [<cite><a class="bibref" data-link-type="biblio"
+        href="#bib-rfc6741" title=
+        "Identifier-Locator Network Protocol (ILNP) Engineering Considerations">RFC6741</a></cite>]</p>
+      </section>
+    </section>
+  </section>
+  <section id="binding-examples" class="informative">
+    <h2 id=
+    "x6-examples-of-thing-descriptions-including-protocol-bindings">
+    <bdi class="secno">6.</bdi> Examples of Thing Descriptions
+    including protocol bindings<a class="self-link" aria-label="§"
+    href="#binding-examples"></a></h2>
+    <p><em>This section is non-normative.</em></p>
+    <p>The following TD examples uses a fictional CoAP and MQTT
+    Protocol Bindings, as no such Protocol Binding is available at
+    the time of writing this specification. These <a href=
+    "#dfn-context-ext" class="internalDFN" data-link-type="dfn">TD
+    Context Extensions</a> assume that there is a CoAP and MQTT in
+    RDF vocabulary similar to [<cite><a class="bibref"
+    data-link-type="biblio" href="#bib-http-in-rdf10" title=
+    "HTTP Vocabulary in RDF 1.0">HTTP-in-RDF10</a></cite>] that is
+    accessible via the namespace
+    <code>http://www.example.org/coap-binding#</code> and
+    <code>http://www.example.org/mqtt-binding#</code>,
+    respectively. The supplemented <code>cov:methodName</code>
+    member instructs the Consumer which CoAP method has to be
+    applied (e.g., <code>GET</code> for the CoAP Method Code 0.01,
+    <code>POST</code> for the CoAP Method Code 0.02, or
+    <code>iPATCH</code> for CoAP Method Code 0.07). The
+    supplemented <code>"mqv:controlPacketValue"</code> member
+    instructs the Consumer which MQTT command has to be applied
+    (e.g., <code>8</code> for the subscribing and <code>10</code>
+    for unsubscribing).</p>
+    <p>A TD with simple payload format and protocols can be seen
+    below. Here each interaction affordance has one form with one
+    protocol.</p>
+    <div class="example" id="example-27-td-with-a-simple-payload">
+      <div class="marker">
+        <a class="self-link" href=
+        "#example-27-td-with-a-simple-payload">Example
+        <bdi>27</bdi></a><span class="example-title">: TD with a
+        Simple Payload</span>
+      </div>
+      <pre aria-busy="false"><code class="hljs json">{
+  <span class="hljs-attr">"@context"</span>: [
+    <span class=
+"hljs-string">"https://www.w3.org/2019/wot/td/v1"</span>,
+    {
+      <span class="hljs-attr">"iot"</span>: <span class=
+"hljs-string">"http://iotschema.org/"</span>,
+      <span class="hljs-attr">"cov"</span>: <span class=
+"hljs-string">"http://www.example.org/coap-binding#"</span>
+      <span class="hljs-string">"mqv"</span>: <span class=
+"hljs-string">"http://www.example.org/mqtt-binding#"</span>
+    }
+  ],
+  <span class="hljs-attr">"@type"</span>: [ <span class=
+"hljs-string">"Thing"</span>, <span class=
+"hljs-string">"iot:Light"</span>, <span class=
+"hljs-string">"iot:LevelCapability"</span>, <span class=
+"hljs-string">"iot:BinarySwitchCapability"</span> ],
+  <span class="hljs-attr">"base"</span>: <span class=
+"hljs-string">"http://example.com"</span>,
+  <span class="hljs-attr">"title"</span>: <span class=
+"hljs-string">"Lamp"</span>,
+  <span class="hljs-attr">"id"</span>: <span class=
+"hljs-string">"urn:dev:ops:32473-WoTLamp-1234"</span>,
+  <span class=
+"hljs-attr">"securityDefinitions"</span>: {<span class=
+"hljs-attr">"basic_sc"</span>: {
+    <span class="hljs-attr">"scheme"</span>: <span class=
+"hljs-string">"basic"</span>,
+    <span class="hljs-attr">"in"</span>: <span class=
+"hljs-string">"header"</span>
+  }},
+  <span class="hljs-attr">"security"</span>: [<span class=
+"hljs-string">"basic_sc"</span>],
+  <span class="hljs-attr">"properties"</span>: {
+    <span class="hljs-attr">"switchState"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchStatus"</span>, <span class=
+"hljs-string">"iot:SwitchData"</span>],
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"boolean"</span>,
+      <span class="hljs-attr">"writeOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-attr">"readOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-attr">"observable"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-attr">"forms"</span>: [
+        {
+          <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class="hljs-attr">"op"</span>: [<span class=
+"hljs-string">"readproperty"</span>, <span class=
+"hljs-string">"writeproperty"</span>],
+          <span class=
+"hljs-attr">"contentType"</span>: <span class="hljs-string">"application/json"</span>
+        }
+      ]
+    },
+    <span class="hljs-attr">"brightness"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:CurrentLevel"</span>, <span class=
+"hljs-string">"iot:LevelData"</span>],
+      <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"number"</span>,
+      <span class="hljs-attr">"writeOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-attr">"readOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-attr">"observable"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-attr">"forms"</span>: [
+        {
+          <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"coap://example.com/example/light/currentdimmer"</span>,
+          <span class="hljs-attr">"op"</span>: [<span class=
+"hljs-string">"readproperty"</span>, <span class=
+"hljs-string">"writeproperty"</span>],
+          <span class=
+"hljs-attr">"contentType"</span>: <span class="hljs-string">"application/json"</span>
+        }
+      ]
+    }
+  },
+  <span class="hljs-attr">"actions"</span>: {
+    <span class="hljs-attr">"switchOn"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchOnAction"</span>],
+      <span class="hljs-attr">"input"</span>:  {
+        <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"boolean"</span>,
+        <span class="hljs-attr">"const"</span>: <span class=
+"hljs-literal">true</span>
+      },
+      <span class="hljs-attr">"forms"</span>: [
+        {
+          <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class="hljs-attr">"op"</span>: [<span class=
+"hljs-string">"invokeaction"</span>],
+          <span class=
+"hljs-attr">"contentType"</span>: <span class="hljs-string">"application/json"</span>
+        }
+      ]
+    },
+    <span class="hljs-attr">"switchOff"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchOff"</span>],
+      <span class="hljs-attr">"input"</span>:  {
+        <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"boolean"</span>,
+        <span class="hljs-attr">"const"</span>: <span class=
+"hljs-literal">false</span>
+      },
+      <span class="hljs-attr">"forms"</span>: [
+        {
+          <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class="hljs-attr">"op"</span>: [<span class=
+"hljs-string">"invokeaction"</span>],
+          <span class=
+"hljs-attr">"contentType"</span>: <span class="hljs-string">"application/json"</span>
+        }
+      ]
+    },
+    <span class="hljs-attr">"setBrightness"</span>: {
+      <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:SetLevelAction"</span>],
+      <span class="hljs-attr">"input"</span>:  {
+        <span class="hljs-attr">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span>],
+        <span class="hljs-attr">"type"</span>: <span class=
+"hljs-string">"number"</span>
+      },
+      <span class="hljs-attr">"forms"</span>: [
+        {
+          <span class="hljs-attr">"href"</span>: <span class=
+"hljs-string">"/example/light/currentdimmer"</span>,
+          <span class="hljs-attr">"op"</span>: [<span class=
+"hljs-string">"invokeaction"</span>],
+          <span class=
+"hljs-attr">"contentType"</span>: <span class="hljs-string">"application/json"</span>
+        }
+      ]
+    }
+  }
+}</code></pre>
+    </div>
+    <p>Another version of the previous TD with complex payload and
+    multiple protocol options is shown below. Notably, the
+    <code>brightness</code> property can be read via HTTP, written
+    to via CoAP and observed via MQTT.</p>
+    <div class="example" id=
+    "example-28-td-with-protocol-options-and-complex-payload">
+      <div class="marker">
+        <a class="self-link" href=
+        "#example-28-td-with-protocol-options-and-complex-payload">Example
+        <bdi>28</bdi></a><span class="example-title">: TD with
+        protocol options and complex payload</span>
+      </div>
+      <pre aria-busy="false"><code class="hljs javascript">{
+  <span class="hljs-string">"@context"</span>: [
+    <span class=
+"hljs-string">"https://www.w3.org/2019/wot/td/v1"</span>,
+    {
+      <span class="hljs-string">"iot"</span>: <span class=
+"hljs-string">"http://iotschema.org/"</span>,
+      <span class="hljs-string">"cov"</span>: <span class=
+"hljs-string">"http://www.example.org/coap-binding#"</span>
+      <span class="hljs-string">"mqv"</span>: <span class=
+"hljs-string">"http://www.example.org/mqtt-binding#"</span>
+    }
+  ],
+  <span class="hljs-string">"base"</span>: <span class=
+"hljs-string">"http://example.com/"</span>,
+  <span class="hljs-string">"@type"</span>: [ <span class=
+"hljs-string">"Thing"</span>, <span class=
+"hljs-string">"iot:Light"</span>, <span class=
+"hljs-string">"iot:LevelCapability"</span>, <span class=
+"hljs-string">"iot:BinarySwitch"</span> ],
+  <span class="hljs-string">"title"</span>: <span class=
+"hljs-string">"Lamp"</span>,
+  <span class="hljs-string">"id"</span>: <span class=
+"hljs-string">"urn:dev:ops:32473-WoTLamp-1234"</span>,
+  <span class=
+"hljs-string">"securityDefinitions"</span>: {<span class=
+"hljs-string">"basic_sc"</span>: {
+    <span class="hljs-string">"scheme"</span>: <span class=
+"hljs-string">"basic"</span>,
+    <span class="hljs-string">"in"</span>: <span class=
+"hljs-string">"header"</span>
+  }},
+  <span class="hljs-string">"security"</span>: [<span class=
+"hljs-string">"basic_sc"</span>],
+  <span class="hljs-string">"properties"</span>: {
+    <span class="hljs-string">"switchState"</span>: {
+      <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchStatus"</span>],
+      <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-string">"properties"</span>: {
+        <span class="hljs-string">"switch"</span>: {
+          <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchData"</span>],
+          <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"boolean"</span>
+        }
+      },
+      <span class="hljs-string">"writeOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"readOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"observable"</span>: <span class=
+"hljs-literal">true</span>,
+      <span class="hljs-string">"forms"</span>: [
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"readproperty"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"GET"</span>
+        },
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"writeproperty"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+        },
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"mqtt://example.com/example/light/currentswitch"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"observeproperty"</span>],
+          <span class=
+"hljs-string">"mqv:controlPacketValue"</span>: <span class=
+"hljs-string">"SUBSCRIBE"</span>
+        }
+      ]
+    },
+    <span class="hljs-string">"brightness"</span>: {
+      <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:CurrentLevel"</span>],
+      <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-string">"properties"</span>: {
+        <span class="hljs-string">"brightness"</span>: {
+          <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span> ],
+          <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+          <span class="hljs-string">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+          <span class="hljs-string">"maximum"</span>: <span class=
+"hljs-number">255</span>
+        }
+      },
+      <span class="hljs-string">"writeOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"readOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"observable"</span>: <span class=
+"hljs-literal">true</span>,
+      <span class="hljs-string">"forms"</span>: [
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"coap://example.com/example/light/currentdimmer"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"readproperty"</span>],
+          <span class=
+"hljs-string">"cov:methodName"</span>: <span class=
+"hljs-string">"GET"</span>
+        },
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/currentdimmer"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"writeproperty"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+        },
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"mqtt://example.com/example/light/currentdimmer"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"observeproperty"</span>],
+          <span class=
+"hljs-string">"mqv:controlPacketValue"</span>: <span class=
+"hljs-string">"SUBSCRIBE"</span>
+        }
+      ]
+    },
+    <span class="hljs-string">"transitionTime"</span>: {
+      <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTime"</span>],
+      <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+      <span class="hljs-string">"properties"</span>: {
+        <span class="hljs-string">"transitionTime"</span>: {
+          <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTimeData"</span> ],
+          <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+          <span class="hljs-string">"minimum"</span>: <span class=
+"hljs-number">0</span>,
+          <span class="hljs-string">"maximum"</span>: <span class=
+"hljs-number">255</span>
+        }
+      },
+      <span class="hljs-string">"writeOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"readOnly"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"observable"</span>: <span class=
+"hljs-literal">false</span>,
+      <span class="hljs-string">"forms"</span>: [
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/transitiontime"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"readproperty"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"GET"</span>
+        },
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/transitiontime"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"writeproperty"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+        }
+      ]
+    }
+  },
+  <span class="hljs-string">"actions"</span>: {
+    <span class="hljs-string">"switchOn"</span>: {
+      <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchOnAction"</span>],
+      <span class="hljs-string">"input"</span>:  {
+        <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+        <span class="hljs-string">"properties"</span>: {
+          <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"boolean"</span>,
+          <span class="hljs-string">"const"</span>: <span class=
+"hljs-literal">true</span>
+        }
+      },
+      <span class="hljs-string">"forms"</span>: [
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"invokeaction"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+        }
+      ]
+    },
+    <span class="hljs-string">"switchOff"</span>: {
+      <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:SwitchOffAction"</span>],
+      <span class="hljs-string">"input"</span>: {
+            <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"boolean"</span>,
+            <span class="hljs-string">"const"</span>: <span class=
+"hljs-literal">false</span>
+        }
+      },
+      <span class="hljs-string">"forms"</span>: [
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/currentswitch"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"invokeaction"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+        }
+      ]
+    },
+    <span class="hljs-string">"setBrightness"</span>: {
+      <span class="hljs-string">"title"</span>: <span class=
+"hljs-string">"Set Brightness Level"</span>,
+      <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:SetLevelAction"</span>],
+      <span class="hljs-string">"input"</span>: {
+        <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"object"</span>,
+        <span class="hljs-string">"properties"</span>: {
+          <span class="hljs-string">"brightness"</span>: {
+            <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:LevelData"</span>],
+            <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+            <span class=
+"hljs-string">"minimum"</span>: <span class="hljs-number">0</span>,
+            <span class=
+"hljs-string">"maximum"</span>: <span class="hljs-number">255</span>
+            }
+          },
+          <span class="hljs-string">"transitionTime"</span>: {
+            <span class="hljs-string">"@type"</span>: [<span class=
+"hljs-string">"iot:TransitionTimeData"</span>],
+            <span class="hljs-string">"type"</span>: <span class=
+"hljs-string">"integer"</span>,
+            <span class=
+"hljs-string">"minimum"</span>: <span class="hljs-number">0</span>,
+            <span class=
+"hljs-string">"maximum"</span>: <span class="hljs-number">65535</span>
+          }
+      },
+      <span class="hljs-string">"forms"</span>: [
+        {
+          <span class="hljs-string">"href"</span>: <span class=
+"hljs-string">"/example/light/"</span>,
+          <span class=
+"hljs-string">"contentType"</span>: <span class=
+"hljs-string">"application/json"</span>,
+          <span class="hljs-string">"op"</span>: [<span class=
+"hljs-string">"invokeaction"</span>],
+          <span class=
+"hljs-string">"htv:methodName"</span>: <span class=
+"hljs-string">"POST"</span>
+        }
+      ]
+    }
+  }
+}</code></pre>
+    </div>
+  </section>
+  <section id="sec-security-considerations">
+    <h2 id="x7-security-and-privacy-considerations"><bdi class=
+    "secno">7.</bdi> Security and Privacy Considerations<a class=
+    "self-link" aria-label="§" href=
+    "#sec-security-considerations"></a></h2>
+    <div class="note" id="issue-container-generatedID-4">
+      <div role="heading" class="ednote-title marker" id=
+      "h-ednote-4" aria-level="3">
+        <span>Editor's note</span>
+      </div>
+      <p class="">Security and privacy considerations are still
+      under discussion and development; the content below should be
+      considered preliminary. Due to the complexity of the subject
+      we are considering producing a separate document containing a
+      detailed security and privacy considerations discussion
+      including a risk analysis, threat model, recommended
+      mitigations, and appropriate references to best practices. A
+      summary will be included here. Work in progress is located in
+      the <a href="https://github.com/w3c/wot-security/">WoT
+      Security and Privacy</a> repository. Please file any security
+      or privacy considerations and/or concerns using the <a href=
+      "https://github.com/w3c/wot-security/issues">GitHub Issue</a>
+      feature.</p>
+    </div>
+    <p>Security is a cross-cutting issue that needs to be taken
+    into account in all WoT building blocks. The <abbr title=
+    "World Wide Web Consortium">W3C</abbr> WoT does not define any
+    new security mechanisms, but provides guidelines to apply the
+    best practices from Web security, IoT security, and information
+    security for general software and hardware considerations.</p>
+    <p>The <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing-description-td">
+    WoT Thing Description</a> must be used together with integrity
+    protection mechanisms and access control policies. Users must
+    ensure that no sensitive information is included in the
+    <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-td">
+    TDs</a> themselves.</p>
+    <p>The <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">
+    WoT Binding Templates</a> must correctly cover the security
+    mechanisms employed by the underlying <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">
+    IoT platform</a>. Due to the automation of network interactions
+    necessary in the IoT, operators need to ensure that <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">
+    Things</a> are exposed and consumed in a way that is compliant
+    with their security policies.</p>
+    <p>The <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-wot-runtime">
+    WoT Runtime</a> implementation for the <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-scripting-api">
+    WoT Scripting API</a> must have mechanisms to prevent malicious
+    access to the system and isolate scripts in multi-tenant
+    <a href=
+    "https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-servient">
+    Servients</a>.</p>
+  </section>
+  <section id="appendix-example-sequences" class=
+  "appendix informative">
+    <h2 id="a-example-sequences-of-interaction-affordances">
+    <bdi class="secno">A.</bdi> Example Sequences of Interaction
+    Affordances<a class="self-link" aria-label="§" href=
+    "#appendix-example-sequences"></a></h2>
+    <p><em>This section is non-normative.</em></p>
+    <p>This section illustrates example sequences of application
+    and protocol transactions that correspond to operations
+    (defined in the Thing Description Specification) implementing
+    various interactions among WoT Consumer and WoT Things. The
+    illustrations show both the concrete protocol transactions and
+    the interactions between the applications running inside the
+    WoT Consumer and WoT Thing and the Consumed Thing and Exposed
+    Thing abstractions.</p>
+    <p>For the sake of simplicity, remote and local proxies between
+    the Consumer and the Thing are omitted from the following
+    sequences. We also assume HTTP as the concrete protocol and
+    omit any additional transactions for implementing security,
+    such as those that would be used for authentication or to set
+    up a secure connection for HTTPS. Other concrete protocols and
+    the addition of security transactions however would only affect
+    the concrete protocol transactions, not the application-level
+    interactions with the Consumed Thing and Exposed Thing
+    abstractions.</p>
+    <section id="property-interactions">
+      <h3 id="a-1-property-interactions"><bdi class=
+      "secno">A.1</bdi> Property Interactions<a class="self-link"
+      aria-label="§" href="#property-interactions"></a></h3>
+      <section id="read-property-http-binding">
+        <h4 id="a-1-1-read-property-http-binding"><bdi class=
+        "secno">A.1.1</bdi> Read property (HTTP binding)<a class=
+        "self-link" aria-label="§" href=
+        "#read-property-http-binding"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>readproperty</code> operation with an HTTP protocol
+        binding.</p>
+        <p><img src="images/message-flows/A_1_1_readProperty.png"
+        alt="Read property (HTTP binding)" height="385" width=
+        "568"></p>
+      </section>
+      <section id="write-property-http-binding">
+        <h4 id="a-1-2-write-property-http-binding"><bdi class=
+        "secno">A.1.2</bdi> Write property (HTTP binding)<a class=
+        "self-link" aria-label="§" href=
+        "#write-property-http-binding"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>writeproperty</code> operation with an HTTP protocol
+        binding.</p>
+        <p><img src="images/message-flows/A_1_2_writeProperty.png"
+        alt="Write property (HTTP binding)" height="355" width=
+        "579"></p>
+      </section>
+      <section id=
+      "observe-property-http-binding-with-long-polling-subprotocol">
+        <h4 id=
+        "a-1-3-observe-property-http-binding-with-long-polling-subprotocol">
+        <bdi class="secno">A.1.3</bdi> Observe property (HTTP
+        binding with Long Polling subprotocol)<a class="self-link"
+        aria-label="§" href=
+        "#observe-property-http-binding-with-long-polling-subprotocol"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>observeproperty</code> operation with an HTTP
+        protocol binding using the "longpolling" (Long Polling)
+        subprotocol.</p>
+        <p><img src=
+        "images/message-flows/A_1_3a_observePropertyLongPoll.png"
+        alt=
+        "Observe property (HTTP binding with Long Polling subprotocol)"></p>
+      </section>
+      <section id=
+      "observe-property-http-binding-with-server-sent-event-subprotocol">
+        <h4 id=
+        "a-1-4-observe-property-http-binding-with-server-sent-event-subprotocol">
+        <bdi class="secno">A.1.4</bdi> Observe property (HTTP
+        binding with Server Sent Event subprotocol)<a class=
+        "self-link" aria-label="§" href=
+        "#observe-property-http-binding-with-server-sent-event-subprotocol"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>observeproperty</code> operation with an HTTP
+        protocol binding using the "sse" (Server Sent Event)
+        subprotocol.</p>
+        <p><img src=
+        "images/message-flows/A_1_3b_observePropertySSE.png" alt=
+        "Observe property (HTTP binding with Server Sent Event subprotocol)"></p>
+      </section>
+      <section id=
+      "observe-property-http-binding-with-websocket-subprotocol">
+        <h4 id=
+        "a-1-5-observe-property-http-binding-with-websocket-subprotocol">
+        <bdi class="secno">A.1.5</bdi> Observe property (HTTP
+        binding with WebSocket subprotocol)<a class="self-link"
+        aria-label="§" href=
+        "#observe-property-http-binding-with-websocket-subprotocol"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>observeproperty</code> operation with an HTTP
+        protocol binding using a WebSocket-based subprotocol.</p>
+        <p><img src=
+        "images/message-flows/A_1_3c_observePropertyWebSocket.png"
+        alt=
+        "Observe property (HTTP binding with a WebSocket subprotocol)"></p>
+      </section>
+    </section>
+    <section id="action-interactions">
+      <h3 id="a-2-action-interactions"><bdi class="secno">A.2</bdi>
+      Action Interactions<a class="self-link" aria-label="§" href=
+      "#action-interactions"></a></h3>
+      <section id="invoke-action-http-binding">
+        <h4 id="a-2-1-invoke-action-http-binding"><bdi class=
+        "secno">A.2.1</bdi> Invoke action (HTTP binding)<a class=
+        "self-link" aria-label="§" href=
+        "#invoke-action-http-binding"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>invokeaction</code> operation with an HTTP protocol
+        binding, where the operation is synchronous and the
+        response from the server is delayed until after the action
+        completes.</p>
+        <p><img src="images/message-flows/A_2_1_invokeAction.png"
+        alt="Invoke action (HTTP binding)"></p>
+      </section>
+    </section>
+    <section id="event-interactions">
+      <h3 id="a-3-event-interactions"><bdi class="secno">A.3</bdi>
+      Event Interactions<a class="self-link" aria-label="§" href=
+      "#event-interactions"></a></h3>
+      <p>In the following, note that there is no explicit operation
+      defined for event notification itself. The subprotocol used
+      for notification is associated with the
+      <code>subscribeevent</code> operation, and any necessary
+      concrete protocol transactions are managed by the Protocol
+      Binding subsystem.</p>
+      <p>There are also several subprotocols possible for event
+      notification using WebSockets. The interaction diagrams show
+      only one of several possible implementations.</p>
+      <section id=
+      "subscribe-notify-and-unsubscribe-event-http-binding-with-long-polling-subprotocol">
+        <h4 id=
+        "a-3-1-subscribe-notify-and-unsubscribe-event-http-binding-with-long-polling-subprotocol">
+        <bdi class="secno">A.3.1</bdi> Subscribe, notify and
+        unsubscribe event (HTTP binding with Long Polling
+        subprotocol)<a class="self-link" aria-label="§" href=
+        "#subscribe-notify-and-unsubscribe-event-http-binding-with-long-polling-subprotocol"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>subscribeevent</code> and
+        <code>unsubscribeevent</code> operations with an HTTP
+        protocol binding using the Long Polling subprotocol.</p>
+        <p><img src="images/message-flows/A_3_1a_eventLongPoll.png"
+        alt=
+        "Subscribe, notify, and unsubscribe event (HTTP binding with Long Polling subprotocol)"></p>
+      </section>
+      <section id=
+      "subscribe-notify-and-unsubscribe-event-http-binding-with-server-sent-event-subprotocol">
+        <h4 id=
+        "a-3-2-subscribe-notify-and-unsubscribe-event-http-binding-with-server-sent-event-subprotocol">
+        <bdi class="secno">A.3.2</bdi> Subscribe, notify and
+        unsubscribe event (HTTP binding with Server Sent Event
+        subprotocol)<a class="self-link" aria-label="§" href=
+        "#subscribe-notify-and-unsubscribe-event-http-binding-with-server-sent-event-subprotocol"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>subscribeevent</code> and
+        <code>unsubscribeevent</code> operations with an HTTP
+        protocol binding using the Server Sent Event
+        subprotocol.</p>
+        <p><img src="images/message-flows/A_3_1b_eventSSE.png" alt=
+        "Subscribe, notify and unsubscribe event (HTTP binding with Server Sent Event subprotocol)"></p>
+      </section>
+      <section id=
+      "subscribe-notify-and-unsubscribe-event-http-binding-with-websocket-subprotocol">
+        <h4 id=
+        "a-3-3-subscribe-notify-and-unsubscribe-event-http-binding-with-websocket-subprotocol">
+        <bdi class="secno">A.3.3</bdi> Subscribe, notify and
+        unsubscribe event (HTTP binding with WebSocket
+        subprotocol)<a class="self-link" aria-label="§" href=
+        "#subscribe-notify-and-unsubscribe-event-http-binding-with-websocket-subprotocol"></a></h4>
+        <p>The following sequence illustrates application and
+        network transactions to implement the
+        <code>subscribeevent</code> and
+        <code>unsubscribeevent</code> operations with an HTTP
+        protocol binding using a WebSocket subprotocol.</p>
+        <p><img src=
+        "images/message-flows/A_3_1c_eventWebSocket.png" alt=
+        "Subscribe, notify and unsubscribe event (HTTP binding with WebSocket subprotocol)"></p>
+      </section>
+    </section>
+  </section>
+  <section id="sec-acknowledgements" class="appendix">
+    <h2 id="b-acknowledgements"><bdi class="secno">B.</bdi>
+    Acknowledgements<a class="self-link" aria-label="§" href=
+    "#sec-acknowledgements"></a></h2>
+    <p>Special thanks to all active participants of the
+    <abbr title="World Wide Web Consortium">W3C</abbr> Web of
+    Things Interest Group and Working Group for their technical
+    input and suggestions that led to improvements to this
+    document.</p>
+  </section>
+  <script id="dstimer" language="javascript">
+    //<![CDATA[
+    if (dschk() == 1) {
+      if (typeof (dsSetTimers) != "undefined") {
+        dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
+          1000), 1);
+      }
+    }
+    //]]>
+  </script>
+  <section id="references" class="appendix">
+    <h2 id="c-references"><bdi class="secno">C.</bdi>
+    References<a class="self-link" aria-label="§" href=
+    "#references"></a></h2>
+    <section id="normative-references">
+      <h3 id="c-1-normative-references"><bdi class=
+      "secno">C.1</bdi> Normative references<a class="self-link"
+      aria-label="§" href="#normative-references"></a></h3>
+      <dl class="bibliography">
+        <dt id="bib-iana-media-types">[IANA-MEDIA-TYPES]</dt>
+        <dd>
+          <a href=
+          "https://www.iana.org/assignments/media-types/"><cite>Media
+          Types</cite></a>. IANA. URL: <a href=
+          "https://www.iana.org/assignments/media-types/">https://www.iana.org/assignments/media-types/</a>
+        </dd>
+        <dt id="bib-iana-web-socket-registry">
+        [iana-web-socket-registry]</dt>
+        <dd>
+          <a href=
+          "https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">
+          <cite>IANA Registry for Websocket
+          Subprotocols</cite></a>. IANA. 24 May 2019. URL: <a href=
+          "https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name">
+          https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name</a>
+        </dd>
+        <dt id="bib-rfc2119">[RFC2119]</dt>
+        <dd>
+          <a href="https://tools.ietf.org/html/rfc2119"><cite>Key
+          words for use in RFCs to Indicate Requirement
+          Levels</cite></a>. S. Bradner. IETF. March 1997. Best
+          Current Practice. URL: <a href=
+          "https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+        </dd>
+        <dt id="bib-rfc6741">[RFC6741]</dt>
+        <dd>
+          <a href=
+          "https://tools.ietf.org/html/rfc6741"><cite>Identifier-Locator
+          Network Protocol (ILNP) Engineering
+          Considerations</cite></a>. RJ Atkinson; SN Bhatti. IETF.
+          November 2012. Experimental. URL: <a href=
+          "https://tools.ietf.org/html/rfc6741">https://tools.ietf.org/html/rfc6741</a>
+        </dd>
+        <dt id="bib-rfc7641">[RFC7641]</dt>
+        <dd>
+          <a href=
+          "https://tools.ietf.org/html/rfc7641"><cite>Observing
+          Resources in the Constrained Application Protocol
+          (CoAP)</cite></a>. K. Hartke. IETF. September 2015.
+          Proposed Standard. URL: <a href=
+          "https://tools.ietf.org/html/rfc7641">https://tools.ietf.org/html/rfc7641</a>
+        </dd>
+        <dt id="bib-rfc8174">[RFC8174]</dt>
+        <dd>
+          <a href=
+          "https://tools.ietf.org/html/rfc8174"><cite>Ambiguity of
+          Uppercase vs Lowercase in RFC 2119 Key Words</cite></a>.
+          B. Leiba. IETF. May 2017. Best Current Practice. URL:
+          <a href=
+          "https://tools.ietf.org/html/rfc8174">https://tools.ietf.org/html/rfc8174</a>
+        </dd>
+        <dt id="bib-wot-thing-description">
+        [WOT-THING-DESCRIPTION]</dt>
+        <dd>
+          <a href=
+          "https://www.w3.org/TR/wot-thing-description/"><cite>Web
+          of Things (WoT) Thing Description</cite></a>. Sebastian
+          Käbisch; Takuki Kamiya; Michael McCool; Victor Charpenay;
+          Matthias Kovatsch. W3C. 6 November 2019. W3C Candidate
+          Recommendation. URL: <a href=
+          "https://www.w3.org/TR/wot-thing-description/">https://www.w3.org/TR/wot-thing-description/</a>
+        </dd>
+      </dl>
+    </section>
+    <section id="informative-references">
+      <h3 id="c-2-informative-references"><bdi class=
+      "secno">C.2</bdi> Informative references<a class="self-link"
+      aria-label="§" href="#informative-references"></a></h3>
+      <dl class="bibliography">
+        <dt id="bib-eventsource">[eventsource]</dt>
+        <dd>
+          <a href=
+          "https://www.w3.org/TR/eventsource/"><cite>Server-Sent
+          Events</cite></a>. Ian Hickson. W3C. 3 February 2015. W3C
+          Recommendation. URL: <a href=
+          "https://www.w3.org/TR/eventsource/">https://www.w3.org/TR/eventsource/</a>
+        </dd>
+        <dt id="bib-http-in-rdf10">[HTTP-in-RDF10]</dt>
+        <dd>
+          <a href="https://www.w3.org/TR/HTTP-in-RDF10/"><cite>HTTP
+          Vocabulary in RDF 1.0</cite></a>. Johannes Koch; Carlos
+          A. Velasco; Philip Ackermann. W3C. 2 February 2017. W3C
+          Note. URL: <a href=
+          "https://www.w3.org/TR/HTTP-in-RDF10/">https://www.w3.org/TR/HTTP-in-RDF10/</a>
+        </dd>
+        <dt id="bib-json-ld11">[json-ld11]</dt>
+        <dd>
+          <a href="https://www.w3.org/TR/json-ld11/"><cite>JSON-LD
+          1.1</cite></a>. Gregg Kellogg; Pierre-Antoine Champin;
+          Dave Longley. W3C. 18 October 2019. W3C Working Draft.
+          URL: <a href=
+          "https://www.w3.org/TR/json-ld11/">https://www.w3.org/TR/json-ld11/</a>
+        </dd>
+        <dt id="bib-json-schema">[json-schema]</dt>
+        <dd>
+          <a href=
+          "https://tools.ietf.org/html/draft-zyp-json-schema"><cite>
+          JSON Schema: core definitions and terminology</cite></a>.
+          K. Zyp. Internet Engineering Task Force (IETF). 31
+          January 2013. Internet-Draft. URL: <a href=
+          "https://tools.ietf.org/html/draft-zyp-json-schema">https://tools.ietf.org/html/draft-zyp-json-schema</a>
+        </dd>
+        <dt id="bib-mqtt">[MQTT]</dt>
+        <dd>
+          <a href=
+          "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html">
+          <cite>MQTT Version 5.0</cite></a>. Andrew Banks; Ed
+          Briggs; Ken Borgendale; Rahul Gupta. MQTT. 07 March 2019.
+          URL: <a href=
+          "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html">
+          https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html</a>
+        </dd>
+        <dt id="bib-rfc3986">[RFC3986]</dt>
+        <dd>
+          <a href=
+          "https://tools.ietf.org/html/rfc3986"><cite>Uniform
+          Resource Identifier (URI): Generic Syntax</cite></a>. T.
+          Berners-Lee; R. Fielding; L. Masinter. IETF. January
+          2005. Internet Standard. URL: <a href=
+          "https://tools.ietf.org/html/rfc3986">https://tools.ietf.org/html/rfc3986</a>
+        </dd>
+        <dt id="bib-rfc3987">[RFC3987]</dt>
+        <dd>
+          <a href=
+          "https://tools.ietf.org/html/rfc3987"><cite>Internationalized
+          Resource Identifiers (IRIs)</cite></a>. M. Duerst; M.
+          Suignard. IETF. January 2005. Proposed Standard. URL:
+          <a href=
+          "https://tools.ietf.org/html/rfc3987">https://tools.ietf.org/html/rfc3987</a>
+        </dd>
+        <dt id="bib-rfc6570">[RFC6570]</dt>
+        <dd>
+          <a href="https://tools.ietf.org/html/rfc6570"><cite>URI
+          Template</cite></a>. J. Gregorio; R. Fielding; M. Hadley;
+          M. Nottingham; D. Orchard. IETF. March 2012. Proposed
+          Standard. URL: <a href=
+          "https://tools.ietf.org/html/rfc6570">https://tools.ietf.org/html/rfc6570</a>
+        </dd>
+        <dt id="bib-rfc7231">[RFC7231]</dt>
+        <dd>
+          <a href=
+          "https://httpwg.org/specs/rfc7231.html"><cite>Hypertext
+          Transfer Protocol (HTTP/1.1): Semantics and
+          Content</cite></a>. R. Fielding, Ed.; J. Reschke, Ed..
+          IETF. June 2014. Proposed Standard. URL: <a href=
+          "https://httpwg.org/specs/rfc7231.html">https://httpwg.org/specs/rfc7231.html</a>
+        </dd>
+        <dt id="bib-rfc7252">[RFC7252]</dt>
+        <dd>
+          <a href="https://tools.ietf.org/html/rfc7252"><cite>The
+          Constrained Application Protocol (CoAP)</cite></a>. Z.
+          Shelby; K. Hartke; C. Bormann. IETF. June 2014. Proposed
+          Standard. URL: <a href=
+          "https://tools.ietf.org/html/rfc7252">https://tools.ietf.org/html/rfc7252</a>
+        </dd>
+        <dt id="bib-websub">[WebSub]</dt>
+        <dd>
+          <a href=
+          "https://www.w3.org/TR/websub/"><cite>WebSub</cite></a>.
+          Julien Genestoux; Aaron Parecki. W3C. 23 January 2018.
+          W3C Recommendation. URL: <a href=
+          "https://www.w3.org/TR/websub/">https://www.w3.org/TR/websub/</a>
+        </dd>
+        <dt id="bib-wot-architecture">[WOT-ARCHITECTURE]</dt>
+        <dd>
+          <a href=
+          "https://www.w3.org/TR/wot-architecture/"><cite>Web of
+          Things (WoT) Architecture</cite></a>. Matthias Kovatsch;
+          Ryuichi Matsukura; Michael Lagally; Toru Kawaguchi;
+          Kunihiko Toumura. W3C. 6 November 2019. W3C Candidate
+          Recommendation. URL: <a href=
+          "https://www.w3.org/TR/wot-architecture/">https://www.w3.org/TR/wot-architecture/</a>
+        </dd>
+      </dl>
+    </section>
+  </section>
+  <p role="navigation" id="back-to-top"><a href=
+  "#title"><abbr title="Back to Top">↑</abbr></a></p>
+  <script src=
+  "https://www.w3.org/scripts/TR/2016/fixup.js"></script>
+</body>
+</html>

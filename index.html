@@ -77,6 +77,18 @@
           authors: [
             "Andrew Banks", "Ed Briggs", "Ken Borgendale", "Rahul Gupta"
         ]
+        },
+        "LWM2M":{
+          href: "https://www.omaspecworks.org/what-is-oma-specworks/iot/lightweight-m2m-lwm2m/",
+          title: "Lightweight M2M",
+          status: "",
+          publisher:"Open Mobility Alliance"
+        },
+        "OCF":{
+          href: "https://openconnectivity.org/developer/specifications/",
+          title: "OCF Specification",
+          publisher: "Open Connectivity Foundation",
+          date:"Last accessed: February 2020"
         }
       }
     };
@@ -366,7 +378,7 @@
 
 
         <p>
-          SenML might use the following construct:
+          SenML [[RFC8428]] might use the following construct:
         </p>
 
         <table>
@@ -442,7 +454,7 @@
         </table>
 
           <p>
-            A Batch Collection according to OCF may be structured like this:
+            A Batch Collection according to OCF[[OCF]] may be structured like this:
           </p>
 
           <table>
@@ -454,13 +466,13 @@
                       {
                         "href": "/example/light/level",
                         "rep": {
-                          "dimming": 50
+                          "dimmingSetting": 50
                         }
                       },
                       {
                         "href": "/example/light/time",
                         "rep": {
-                          "ramptime": 10
+                          "rampTime": 10
                         }
                       }
                     ]
@@ -481,7 +493,7 @@
                             "rep": {
                               "type": "object",
                               "properties": {
-                                "dimming": {
+                                "dimmingSetting": {
                                   "@type": ["iot:LevelData"],
                                   "type": "integer",
                                   "minimum": 0,
@@ -501,7 +513,7 @@
                             "rep": {
                               "type": "object",
                               "properties": {
-                                "ramptime": {
+                                "rampTime": {
                                   "@type": ["iot:TransitionTimeData"],
                                   "type":"integer",
                                   "minimum": 0,
@@ -522,7 +534,7 @@
 
 
           <p>
-            And an IPSO Smart Object on LWM2M might look like the following:
+            And an IPSO Smart Object on LWM2M [[LWM2M]] might look like the following:
           </p>
 
           <table>
@@ -933,9 +945,9 @@
         <pre class="example" title="Corresponding XML Payload for the previous JSON Payload">
 
 <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">object</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">brightness</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>200<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">brightness</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>fast<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
@@ -1205,12 +1217,12 @@
       </section>
 
     </section>
-
+<!-- 
     <section id="processing-model" class="informative">
       <h1>Processing Model and Runtime</h1>
       <p>
         This section describes the processing model for Protocol Bindings with
-        respect to the abstract WoT Interactions provided by the Scripting API.
+        respect to the abstract WoT operations provided by the Scripting API.
       </p>
       <p>
         <code>DataSchema</code> elements (see <a href="#sec-data-schema" class="sec-ref">§&nbsp;
@@ -1234,19 +1246,12 @@
         The separation of execution context between the application and the protocol
         driver enables isolation of fault domains and isolation of security domains.
       </p>
-      <p class="ednote" title="Multiple Security Bindings">
-        Additional information in the Thing Description may be considered part
-        of the Protocol Binding, relating to security protocols. There is currently
-        a single declaration of security bindings for each TD instance, with
-        no defined way to indicate a different security protocol for each form
-        element, which may specify a different transfer protocol.
-      </p>
       <p>
         Protocol Bindings may be used by proxies, where a Consumed Thing has its
         Protocol Binding, and the corresponding Exposed Thing may have a different
         Protocol Binding.
       </p>
-    </section>
+    </section> -->
 
   </section>
 
@@ -1379,9 +1384,16 @@
         Whether the WG will publish corresponding WG Notes is still subject to discussion.
       </p>
 
+    <p>
       The protocol vocabularies for each protocol are presented as two tables per protocol.
       The first table details the vocabulary terms, whereas the second one lists a default mapping of the <code>op</code> for the given protocol, if that <code>op</code> value is defined for the given protocol.
-
+    </p>
+    <p>   
+      Other protocols can be easily integrated into a Thing Description. 
+      To do so, the vocabulary of the protocol should be linked via <code>@context</code> context extension, in which the different vocabulary terms used for the protocol should be described.
+      A URI Scheme of the protocol is also necessary to identify it in the <code>href</code> value.
+      A Consumer should be able to construct the appropriate requests based vocabulary terms defined in the Thing Description and should not rely on out-of-band information.
+    </p>
       <section>
 
         <h3>HTTP Vocabulary</h3>
@@ -1795,7 +1807,7 @@
             "https://www.w3.org/2019/wot/td/v1",
             {
               "iot": "http://iotschema.org/",
-              "cov": "http://www.example.org/coap-binding#"
+              "cov": "http://www.example.org/coap-binding#",
               "mqv": "http://www.example.org/mqtt-binding#"
             }
           ],
@@ -1894,7 +1906,7 @@
             "https://www.w3.org/2019/wot/td/v1",
             {
               "iot": "http://iotschema.org/",
-              "cov": "http://www.example.org/coap-binding#"
+              "cov": "http://www.example.org/coap-binding#",
               "mqv": "http://www.example.org/mqtt-binding#"
             }
           ],
@@ -2069,7 +2081,6 @@
               ]
             }
           }
-        }
       </pre>
   </section>
 

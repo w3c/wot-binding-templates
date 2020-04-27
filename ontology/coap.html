@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [],
+            edDraftURI: "https://www.w3.org/2019/wot/coap",
+            shortName: "wot-binding-templates"
+        };
+    </script>
+    <title>CoAP in RDF</title>
+    </head>
+    <body>
+        <section id='abstract'>
+            <p>Vocabulary to represent CoAP messages in RDF.</p>
+        </section>
+        <section id='sotd'>
+            <p>
+                <em>This document is a work in progress</em>
+            </p>
+        </section>
+        <section>
+            <h2>Introduction</h2>
+
+            <p>
+                To use in TD forms. 
+            </p>
+        </section>
+
+        <section><h2>Axiomatization</h2><section><h3>Classes</h3><section><h4>Code</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#Code</code></p><span>code</span><table class="def"><tbody><tr><td>Super-class of</td><td><code><a href="https://www.w3.org/2019/wot/coap#MethodCode">MethodCode</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#ResponseCode">ResponseCode</a></code></td></tr></tbody></table></section>
+<section><h4>Message</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#Message</code></p><span>message</span><table class="def"><tbody><tr><td>Super-class of</td><td><code><a href="https://www.w3.org/2019/wot/coap#Request">Request</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#Response">Response</a></code></td></tr><tr><td>In the domain of</td><td><code><a href="https://www.w3.org/2019/wot/coap#options">options</a></code></td></tr></tbody></table></section>
+<section><h4>MessageOption</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#MessageOption</code></p><span>message option</span><table class="def"><tbody><tr><td>In the domain of</td><td><code><a href="https://www.w3.org/2019/wot/coap#optionNumber">optionNumber</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#optionValue">optionValue</a></code></td></tr><tr><td>In the range of</td><td><code><a href="https://www.w3.org/2019/wot/coap#options">options</a></code></td></tr></tbody></table></section>
+<section><h4>MethodCode</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#MethodCode</code></p><span>method code</span><table class="def"><tbody><tr><td>Sub-class of</td><td><code><a href="https://www.w3.org/2019/wot/coap#Code">Code</a></code></td></tr><tr><td>In the range of</td><td><code><a href="https://www.w3.org/2019/wot/coap#methodCode">methodCode</a></code></td></tr><tr><td>Enumeration members</td><td><code><a href="https://www.w3.org/2019/wot/coap#0.01">0.01</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#0.02">0.02</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#0.03">0.03</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#0.04">0.04</a></code></td></tr></tbody></table></section>
+<section><h4>Request</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#Request</code></p><span>request</span><table class="def"><tbody><tr><td>Sub-class of</td><td><code><a href="https://www.w3.org/2019/wot/coap#Message">Message</a></code></td></tr><tr><td>In the domain of</td><td><code><a href="https://www.w3.org/2019/wot/coap#methodCode">methodCode</a></code></td></tr></tbody></table></section>
+<section><h4>Response</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#Response</code></p><span>response</span><table class="def"><tbody><tr><td>Sub-class of</td><td><code><a href="https://www.w3.org/2019/wot/coap#Message">Message</a></code></td></tr><tr><td>In the domain of</td><td><code><a href="https://www.w3.org/2019/wot/coap#responseCode">responseCode</a></code></td></tr></tbody></table></section>
+<section><h4>ResponseCode</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#ResponseCode</code></p><span>response code</span><table class="def"><tbody><tr><td>Sub-class of</td><td><code><a href="https://www.w3.org/2019/wot/coap#Code">Code</a></code></td></tr><tr><td>In the range of</td><td><code><a href="https://www.w3.org/2019/wot/coap#responseCode">responseCode</a></code></td></tr><tr><td>Enumeration members</td><td><code><a href="https://www.w3.org/2019/wot/coap#2.01">2.01</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#2.02">2.02</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#2.03">2.03</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#2.04">2.04</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#2.05">2.05</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.00">4.00</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.01">4.01</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.02">4.02</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.03">4.03</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.04">4.04</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.05">4.05</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.06">4.06</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.12">4.12</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.13">4.13</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#4.15">4.15</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#5.00">5.00</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#5.01">5.01</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#5.02">5.02</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#5.03">5.03</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#5.04">5.04</a></code><br><code><a href="https://www.w3.org/2019/wot/coap#5.05">5.05</a></code></td></tr></tbody></table></section></section><section><h3>Object Properties</h3><section><h4>methodCode</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#methodCode</code></p><span>method code</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="https://www.w3.org/2019/wot/coap#Request">Request</a></code></td></tr><tr><td>Range includes</td><td><code><a href="https://www.w3.org/2019/wot/coap#MethodCode">MethodCode</a></code></td></tr></tbody></table></section>
+<section><h4>responseCode</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#responseCode</code></p><span>response code</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="https://www.w3.org/2019/wot/coap#Response">Response</a></code></td></tr><tr><td>Range includes</td><td><code><a href="https://www.w3.org/2019/wot/coap#ResponseCode">ResponseCode</a></code></td></tr></tbody></table></section></section><section><h3>Datatype Properties</h3><section><h4>optionNumber</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#optionNumber</code></p><span>option number</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="https://www.w3.org/2019/wot/coap#MessageOption">MessageOption</a></code></td></tr></tbody></table></section>
+<section><h4>optionValue</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#optionValue</code></p><span>option value</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="https://www.w3.org/2019/wot/coap#MessageOption">MessageOption</a></code></td></tr></tbody></table></section></section></section>
+    </body>
+</html>

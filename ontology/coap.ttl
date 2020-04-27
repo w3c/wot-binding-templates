@@ -1,371 +1,188 @@
-@prefix : <http://www.w3.org/ns/coa#> .
+@prefix : <https://www.w3.org/2019/wot/coap#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://www.w3.org/ns/coap> .
+@prefix schema: <http://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@base <https://www.w3.org/2019/wot/coap> .
 
-<http://www.w3.org/ns/coap> rdf:type owl:Ontology ;
-                            
-                            rdfs:label "CoAP in RDF"@en .
-
-
-#################################################################
-#
-#    Object Properties
-#
-#################################################################
-
-
-###  http://www.w3.org/ns/coap#methodCode
+<> rdf:type owl:Ontology ;
+   rdfs:label "CoAP in RDF"@en ;
+   rdfs:comment "Vocabulary to represent CoAP messages in RDF."@en ;
+   vann:preferredNamespacePrefix "cov" ;
+   vann:preferredNamespaceUri : .
 
 :methodCode rdf:type owl:ObjectProperty ;
-            
-            rdfs:range :MethodCode ;
-            
-            rdfs:domain :Request .
-
-
-
-###  http://www.w3.org/ns/coap#options
+            rdfs:isDefinedBy <> ;
+            rdfs:label "methodCode"@en ;
+            rdfs:comment "method code"@en ;
+            schema:rangeIncludes :MethodCode ;
+            schema:domainIncludes :Request .
 
 :options rdf:type owl:ObjectProperty ;
-         
-         rdfs:domain :Message ;
-         
-         rdfs:range :MessageOption .
-
-
-
-###  http://www.w3.org/ns/coap#responseCode
+         rdfs:isDefinedBy <> ;
+         rdfs:label "options"@en ;
+         rdfs:lcommentabel "options"@en ;
+         schema:domainIncludes :Message ;
+         schema:rangeIncludes :MessageOption .
 
 :responseCode rdf:type owl:ObjectProperty ;
-              
-              rdfs:domain :Response ;
-              
-              rdfs:range :ResponseCode .
-
-
-
-
-
-#################################################################
-#
-#    Data properties
-#
-#################################################################
-
-
-###  http://www.w3.org/ns/coap#optionNumber
+              rdfs:isDefinedBy <> ;
+              rdfs:label "responseCode"@en ;
+              rdfs:comment "response code"@en ;
+              schema:domainIncludes :Response ;              
+              schema:rangeIncludes :ResponseCode .
 
 :optionNumber rdf:type owl:DatatypeProperty ;
-              
-              rdfs:domain :MessageOption .
-
-
-
-###  http://www.w3.org/ns/coap#optionValue
+              rdfs:isDefinedBy <> ;
+              rdfs:label "optionNumber"@en ;
+              rdfs:comment "option number"@en ;
+              schema:domainIncludes :MessageOption .
 
 :optionValue rdf:type owl:DatatypeProperty ;
-             
-             rdfs:domain :MessageOption .
+             rdfs:isDefinedBy <> ;
+             rdfs:label "optionValue"@en ;
+             rdfs:comment "option value"@en ;
+             schema:domainIncludes :MessageOption .
 
+:Code rdf:type owl:Class ;
+      rdfs:isDefinedBy <> ;
+      rdfs:label "Code"@en ;
+      rdfs:comment "code"@en .
 
+:Message rdf:type owl:Class ;
+         rdfs:isDefinedBy <> ;
+         rdfs:label "Message"@en ;
+         rdfs:comment "message"@en .
 
-
-
-#################################################################
-#
-#    Classes
-#
-#################################################################
-
-
-###  http://www.w3.org/ns/coap#Code
-
-:Code rdf:type owl:Class .
-
-
-
-###  http://www.w3.org/ns/coap#Message
-
-:Message rdf:type owl:Class .
-
-
-
-###  http://www.w3.org/ns/coap#MessageOption
-
-:MessageOption rdf:type owl:Class .
-
-
-
-###  http://www.w3.org/ns/coap#MethodCode
+:MessageOption rdf:type owl:Class ;
+               rdfs:isDefinedBy <> ;
+               rdfs:label "MessageOption"@en ;
+               rdfs:comment "message option"@en .
 
 :MethodCode rdf:type owl:Class ;
-            
-            rdfs:subClassOf :Code .
-
-
-
-###  http://www.w3.org/ns/coap#Request
+            rdfs:isDefinedBy <> ;
+            rdfs:label "MethodCode"@en ;
+            rdfs:comment "method code"@en ;
+            rdfs:subClassOf :Code, schema:Enumeration .
 
 :Request rdf:type owl:Class ;
-         
+         rdfs:isDefinedBy <> ;
+         rdfs:label "Request"@en ;
+         rdfs:comment "request"@en ;
          rdfs:subClassOf :Message .
 
-
-
-###  http://www.w3.org/ns/coap#Response
-
 :Response rdf:type owl:Class ;
-          
+          rdfs:isDefinedBy <> ;
+          rdfs:label "Response"@en ;
+          rdfs:comment "response"@en ;
           rdfs:subClassOf :Message .
 
-
-
-###  http://www.w3.org/ns/coap#ResponseCode
-
 :ResponseCode rdf:type owl:Class ;
-              
-              rdfs:subClassOf :Code .
-
-
-
-
-
-#################################################################
-#
-#    Individuals
-#
-#################################################################
-
-
-###  http://www.w3.org/ns/coap#0.01
-
-<http://www.w3.org/ns/coap#0.01> rdf:type owl:NamedIndividual ,
-                                          :MethodCode ;
-                                 
-                                 rdfs:label "GET" .
-
-
-
-###  http://www.w3.org/ns/coap#0.02
-
-<http://www.w3.org/ns/coap#0.02> rdf:type owl:NamedIndividual ,
-                                          :MethodCode ;
-                                 
-                                 rdfs:label "POST" .
-
-
-
-###  http://www.w3.org/ns/coap#0.03
-
-<http://www.w3.org/ns/coap#0.03> rdf:type owl:NamedIndividual ,
-                                          :MethodCode ;
-                                 
-                                 rdfs:label "PUT" .
-
-
-
-###  http://www.w3.org/ns/coap#0.04
-
-<http://www.w3.org/ns/coap#0.04> rdf:type owl:NamedIndividual ,
-                                          :MethodCode ;
-                                 
-                                 rdfs:label "DELETE" .
-
-
-
-###  http://www.w3.org/ns/coap#2.01
-
-<http://www.w3.org/ns/coap#2.01> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Created" .
-
-
-
-###  http://www.w3.org/ns/coap#2.02
-
-<http://www.w3.org/ns/coap#2.02> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Deleted" .
-
-
-
-###  http://www.w3.org/ns/coap#2.03
-
-<http://www.w3.org/ns/coap#2.03> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Valid" .
-
-
-
-###  http://www.w3.org/ns/coap#2.04
-
-<http://www.w3.org/ns/coap#2.04> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Changed" .
-
-
-
-###  http://www.w3.org/ns/coap#2.05
-
-<http://www.w3.org/ns/coap#2.05> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Content" .
-
-
-
-###  http://www.w3.org/ns/coap#4.00
-
-<http://www.w3.org/ns/coap#4.00> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Bad Request" .
-
-
-
-###  http://www.w3.org/ns/coap#4.01
-
-<http://www.w3.org/ns/coap#4.01> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Unauthorized" .
-
-
-
-###  http://www.w3.org/ns/coap#4.02
-
-<http://www.w3.org/ns/coap#4.02> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Bad Option" .
-
-
-
-###  http://www.w3.org/ns/coap#4.03
-
-<http://www.w3.org/ns/coap#4.03> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Forbidden" .
-
-
-
-###  http://www.w3.org/ns/coap#4.04
-
-<http://www.w3.org/ns/coap#4.04> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Not Found" .
-
-
-
-###  http://www.w3.org/ns/coap#4.05
-
-<http://www.w3.org/ns/coap#4.05> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Method Not Allowed" .
-
-
-
-###  http://www.w3.org/ns/coap#4.06
-
-<http://www.w3.org/ns/coap#4.06> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Not Acceptable" .
-
-
-
-###  http://www.w3.org/ns/coap#4.12
-
-<http://www.w3.org/ns/coap#4.12> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Precondition Failed" .
-
-
-
-###  http://www.w3.org/ns/coap#4.13
-
-<http://www.w3.org/ns/coap#4.13> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Request Entity Too Large" .
-
-
-
-###  http://www.w3.org/ns/coap#4.15
-
-<http://www.w3.org/ns/coap#4.15> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Unsupported Content-Format" .
-
-
-
-###  http://www.w3.org/ns/coap#5.00
-
-<http://www.w3.org/ns/coap#5.00> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Internal Server Error" .
-
-
-
-###  http://www.w3.org/ns/coap#5.01
-
-<http://www.w3.org/ns/coap#5.01> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Not Implemented" .
-
-
-
-###  http://www.w3.org/ns/coap#5.02
-
-<http://www.w3.org/ns/coap#5.02> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Bad Gateway" .
-
-
-
-###  http://www.w3.org/ns/coap#5.03
-
-<http://www.w3.org/ns/coap#5.03> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Service Unavailable" .
-
-
-
-###  http://www.w3.org/ns/coap#5.04
-
-<http://www.w3.org/ns/coap#5.04> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Gateway Timeout" .
-
-
-
-###  http://www.w3.org/ns/coap#5.05
-
-<http://www.w3.org/ns/coap#5.05> rdf:type owl:NamedIndividual ,
-                                          :ResponseCode ;
-                                 
-                                 rdfs:label "Proxying Not Supported" .
-
-
-
-
-###  Generated by the OWL API (version 3.5.0) http://owlapi.sourceforge.net
-
+              rdfs:isDefinedBy <> ;
+              rdfs:label "ResponseCode"@en ;
+              rdfs:comment "response code"@en ;
+              rdfs:subClassOf :Code, schema:Enumeration .
+
+
+<#0.01> rdf:type owl:NamedIndividual, :MethodCode ;
+        rdfs:isDefinedBy <> ;
+        rdfs:label "GET" .
+
+<#0.02> rdf:type owl:NamedIndividual, :MethodCode ;
+        rdfs:isDefinedBy <> ;
+        rdfs:label "POST" .
+
+<#0.03> rdf:type owl:NamedIndividual, :MethodCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "PUT" .
+
+<#0.04> rdf:type owl:NamedIndividual, :MethodCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "DELETE" . 
+
+<#2.01> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Created" .
+ 
+<#2.02> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Deleted" .
+
+<#2.03> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Valid" . 
+
+<#2.04> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Changed" . 
+
+<#2.05> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Content" . 
+
+<#4.00> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Bad Request" . 
+
+<#4.01> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Unauthorized" . 
+
+<#4.02> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Bad Option" . 
+
+<#4.03> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Forbidden" . 
+
+<#4.04> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Not Found" . 
+
+<#4.05> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Method Not Allowed" . 
+
+<#4.06> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Not Acceptable" . 
+
+<#4.12> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Precondition Failed" . 
+
+<#4.13> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Request Entity Too Large" . 
+
+<#4.15> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Unsupported Content-Format" . 
+
+<#5.00> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Internal Server Error" . 
+
+<#5.01> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Not Implemented" . 
+
+<#5.02> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Bad Gateway" . 
+
+<#5.03> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Service Unavailable" . 
+
+<#5.04> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Gateway Timeout" . 
+
+<#5.05> rdf:type owl:NamedIndividual, :ResponseCode ; 
+        rdfs:isDefinedBy <> ;
+        rdfs:label "Proxying Not Supported" .

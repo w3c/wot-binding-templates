@@ -1,0 +1,76 @@
+@prefix : <https://www.w3.org/2019/wot/mqtt#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@base <https://www.w3.org/2019/wot/mqtt> .
+
+<> rdf:type owl:Ontology ;
+   rdfs:label "MQTT in RDF"@en ;
+   rdfs:comment "Vocabulary to represent MQTT messages in RDF."@en ;
+   vann:preferredNamespacePrefix "mqv" ;
+   vann:preferredNamespaceUri : ;
+   dct:author <https://www.vcharpenay.link/#me> ;
+   dct:contributor _:ege .
+
+<https://www.vcharpenay.link/#me> a schema:Person ;
+                                  schema:name "Victor Charpenay" ;
+                                  schema:affiliation _:siemens .
+
+_:ege a schema:Person ;
+      schema:name "Ege Korkan" ;
+      schema:affiliation _:siemens .
+
+_:siemens a schema:Organization ;
+          schema:name "Siemens AG" ;
+          schema:url "https://www.siemens.com/" .
+
+:options rdf:type owl:ObjectProperty ;
+         rdfs:isDefinedBy <> ;
+         rdfs:label "options"@en ;
+         rdfs:comment "options"@en ;
+         schema:domainIncludes :Message ;
+         schema:rangeIncludes :MessageOption .
+
+:optionName rdf:type owl:DatatypeProperty ;
+            rdfs:isDefinedBy <> ;
+            rdfs:label "optionName"@en ;
+            rdfs:comment "option name"@en ;
+            schema:domainIncludes :MessageOption .
+
+:optionValue rdf:type owl:DatatypeProperty ;
+             rdfs:isDefinedBy <> ;
+             rdfs:label "optionValue"@en ;
+             rdfs:comment "option value"@en ;
+             schema:domainIncludes :MessageOption .
+
+:controlPacketValue rdf:type owl:DatatypeProperty ;
+                    rdfs:isDefinedBy <> ;
+                    rdfs:label "controlPacketValue"@en ;
+                    rdfs:comment "control packet value"@en ;
+                    schema:domainIncludes :ControlPacket .
+
+:ControlPacket rdf:type owl:Class ;
+               rdfs:isDefinedBy <> ;
+               rdfs:label "ControlPacket"@en ;
+               rdfs:comment "control packet"@en .
+
+:Message rdf:type owl:Class ;
+         rdfs:isDefinedBy <> ;
+         rdfs:label "Message"@en ;
+         rdfs:comment "message"@en .
+
+:MessageOption rdf:type owl:Class ;
+               rdfs:isDefinedBy <> ;
+               rdfs:label "MessageOption"@en ;
+               rdfs:comment "message option"@en .
+
+
+# TODO:
+#  - define control packet values as control packet types (sub-classes of control packet)
+#  - options seem to be options of control packets
+#  - (application) messages seem to be the payload of a publish control packet

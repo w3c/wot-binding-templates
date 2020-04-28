@@ -16,14 +16,16 @@ sttl.connect(q => {
 });
 
 const src = [
-    'ontology/coap.ttl'
-    // TODO mqtt.ttl
+    'ontology/coap.ttl',
+    'ontology/mqtt.ttl'
 ];
 
-src.forEach(f => {
+src.reduce((p, f) => {
     let ttl = fs.readFileSync(f, 'UTF-8');
     
-    urdf.load(ttl, { format: 'text/turtle' })
+    return p.then(() => urdf.clear())
+
+    .then(() => urdf.load(ttl, { format: 'text/turtle' }))
 
     .then(() => sttl.callTemplate(main, ttl))
 
@@ -32,4 +34,4 @@ src.forEach(f => {
     .catch((e) => {
         console.error('Error while rendering ' + f + ': ' + e);
     });
-});
+}, Promise.resolve());

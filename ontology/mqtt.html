@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [{name:"Victor Charpenay",company:"Siemens AG",companyURL:"https://www.siemens.com/"},{name:"Ege Korkan",company:"Siemens AG",companyURL:"https://www.siemens.com/"}],
+            edDraftURI: "https://www.w3.org/2019/wot/mqtt",
+            shortName: "wot-binding-templates"
+        };
+    </script>
+    <title>MQTT in RDF</title>
+    </head>
+    <body>
+        <section id='abstract'>
+            <p>Vocabulary to represent MQTT messages in RDF.</p>
+        </section>
+        <section id='sotd'>
+            <p>
+                <em>This document is a work in progress</em>
+            </p>
+        </section>
+        <section>
+            <h2>Introduction</h2>
+
+            <p>
+                To use in TD forms. 
+            </p>
+        </section>
+
+        <section><h2>Axiomatization</h2><section><h3>Classes</h3><section><h4>ControlPacket</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#ControlPacket</code></p><span>control packet</span><table class="def"><tbody><tr><td>In the domain of</td><td><code><a href="#controlpacketvalue">controlPacketValue</a></code></td></tr></tbody></table></section>
+<section><h4>Message</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#Message</code></p><span>message</span><table class="def"><tbody><tr><td>In the domain of</td><td><code><a href="#options">options</a></code></td></tr></tbody></table></section>
+<section><h4>MessageOption</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#MessageOption</code></p><span>message option</span><table class="def"><tbody><tr><td>In the domain of</td><td><code><a href="#optionname">optionName</a></code><br><code><a href="#optionvalue">optionValue</a></code></td></tr><tr><td>In the range of</td><td><code><a href="#options">options</a></code></td></tr></tbody></table></section></section><section><h3>Object Properties</h3><section><h4>options</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#options</code></p><span>options</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="#message">Message</a></code></td></tr><tr><td>Range includes</td><td><code><a href="#messageoption">MessageOption</a></code></td></tr></tbody></table></section></section><section><h3>Datatype Properties</h3><section><h4>controlPacketValue</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#controlPacketValue</code></p><span>control packet value</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="#controlpacket">ControlPacket</a></code></td></tr></tbody></table></section>
+<section><h4>optionName</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#optionName</code></p><span>option name</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="#messageoption">MessageOption</a></code></td></tr></tbody></table></section>
+<section><h4>optionValue</h4><p>IRI: <code>https://www.w3.org/2019/wot/mqtt#optionValue</code></p><span>option value</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="#messageoption">MessageOption</a></code></td></tr></tbody></table></section></section></section>
+    </body>
+</html>

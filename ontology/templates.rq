@@ -4,6 +4,7 @@ prefix st: <http://ns.inria.fr/sparql-template/>
 prefix schema: <http://schema.org/>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix vann: <http://purl.org/vocab/vann/>
+prefix dct: <http://purl.org/dc/terms/>
 prefix : <http://w3c.github.io/wot-binding-templates/ontology#>
 
 template :main(?ns) {
@@ -17,7 +18,7 @@ template :main(?ns) {
     <script class='remove'>
         var respecConfig = {
             specStatus: "ED",
-            editors: [],
+            editors: [%s],
             edDraftURI: "%s",
             shortName: "wot-binding-templates"
         };
@@ -45,13 +46,29 @@ template :main(?ns) {
     </body>
 </html>
 """
-        ?o ?title ?desc st:call-template(:axioms, ?o, ?prefix)
+        st:call-template(:editor, ?o)
+        ?o
+        ?title
+        ?desc
+        st:call-template(:axioms, ?o, ?prefix)
     }
 } where {
     ?o a owl:Ontology ;
        rdfs:label ?title ;
        rdfs:comment ?desc ;
        vann:preferredNamespacePrefix ?prefix
+}
+
+template :editor(?o) {
+    "{"
+    "name:" ?name ","
+    "company:" ?company ","
+    "companyURL:" ?url
+    "}" ; separator = ","
+} where {
+    { ?o dct:author ?ed } union { ?o dct:contributor ?ed }
+    ?ed schema:name ?name ; schema:affiliation ?org .
+    ?org schema:name ?company ; schema:url ?url .
 }
 
 template :axioms(?ns ?prefix) {

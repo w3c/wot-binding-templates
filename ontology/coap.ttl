@@ -6,20 +6,35 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dct: <http://purl.org/dc/terms/> .
 @base <https://www.w3.org/2019/wot/coap> .
 
 <> rdf:type owl:Ontology ;
    rdfs:label "CoAP in RDF"@en ;
    rdfs:comment "Vocabulary to represent CoAP messages in RDF."@en ;
    vann:preferredNamespacePrefix "cov" ;
-   vann:preferredNamespaceUri : .
+   vann:preferredNamespaceUri : ;
+   dct:author <https://www.vcharpenay.link/#me> ;
+   dct:contributor _:ege .
 
-:methodCode rdf:type owl:ObjectProperty ;
-            rdfs:isDefinedBy <> ;
-            rdfs:label "methodCode"@en ;
-            rdfs:comment "method code"@en ;
-            schema:rangeIncludes :MethodCode ;
-            schema:domainIncludes :Request .
+<https://www.vcharpenay.link/#me> a schema:Person ;
+                                  schema:name "Victor Charpenay" ;
+                                  schema:affiliation _:siemens .
+
+_:ege a schema:Person ;
+      schema:name "Ege Korkan" ;
+      schema:affiliation _:siemens .
+
+_:siemens a schema:Organization ;
+          schema:name "Siemens AG" ;
+          schema:url "https://www.siemens.com/" .
+
+:mthd rdf:type owl:ObjectProperty ;
+      rdfs:isDefinedBy <> ;
+      rdfs:label "mthd"@en ;
+      rdfs:comment "method (expects a method code as range)"@en ;
+      schema:rangeIncludes :MethodCode ;
+      schema:domainIncludes :Request .
 
 :options rdf:type owl:ObjectProperty ;
          rdfs:isDefinedBy <> ;
@@ -34,6 +49,12 @@
               rdfs:comment "response code"@en ;
               schema:domainIncludes :Response ;              
               schema:rangeIncludes :ResponseCode .
+
+:methodName rdf:type owl:DatatypeProperty ;
+            rdfs:isDefinedBy <> ;
+            rdfs:label "methodName"@en ;
+              rdfs:comment "method name"@en ;
+              schema:domainIncludes :Request .
 
 :optionNumber rdf:type owl:DatatypeProperty ;
               rdfs:isDefinedBy <> ;

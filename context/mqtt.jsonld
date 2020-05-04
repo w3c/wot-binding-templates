@@ -1,0 +1,35 @@
+{
+    "@context": {
+        "mqv": "https://www.w3.org/2019/wot/mqtt#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "packetValueType": {
+            "@id": "@type",
+            "@type": "@vocab"
+        },
+        "PUBLISH": {
+            "@id": "mqv:PUBLISHPacket"
+        },
+        "SUBSCRIBE": {
+            "@id": "mqv:SUBSCRIBEPacket"
+        },
+        "UNSUBSCRIBE": {
+            "@id": "mqv:UNSUBSCRIBEPacket"
+        },
+        "dup": {
+            "@id": "mqv:hasDUPFlag",
+            "@type": "xsd:boolean"
+        },
+        "qos": {
+            "@id": "mqv:hasQoSFlag",
+            "@type": "xsd:integer"
+        },
+        "retain": {
+            "@id": "mqv:hasRETAINFlag",
+            "@type": "xsd:boolean"
+        },
+        "payload": {
+            "@id": "mqv:payload",
+            "@type": "@vocab"
+        }
+    }
+}

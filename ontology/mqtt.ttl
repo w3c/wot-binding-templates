@@ -11,7 +11,7 @@
 
 <> rdf:type owl:Ontology ;
    rdfs:label "MQTT in RDF"@en ;
-   rdfs:comment "Vocabulary to represent MQTT messages in RDF."@en ;
+   rdfs:comment "Vocabulary to represent MQTT packets in RDF."@en ;
    vann:preferredNamespacePrefix "mqv" ;
    vann:preferredNamespaceUri : ;
    dct:author <https://www.vcharpenay.link/#me> ;

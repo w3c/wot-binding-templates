@@ -29,48 +29,66 @@ _:siemens a schema:Organization ;
           schema:name "Siemens AG" ;
           schema:url "https://www.siemens.com/" .
 
-:options rdf:type owl:ObjectProperty ;
+:payload rdf:type owl:ObjectProperty ;
          rdfs:isDefinedBy <> ;
-         rdfs:label "options"@en ;
-         rdfs:comment "options"@en ;
-         schema:domainIncludes :Message ;
-         schema:rangeIncludes :MessageOption .
+         rdfs:label "payload"@en ;
+         rdfs:comment "Some MQTT Control Packets contain a Payload as the final part of the packet. In the PUBLISH packet this is the Application Message."@en ;
+         schema:domainIncludes :ControlPacket .
 
-:optionName rdf:type owl:DatatypeProperty ;
-            rdfs:isDefinedBy <> ;
-            rdfs:label "optionName"@en ;
-            rdfs:comment "option name"@en ;
-            schema:domainIncludes :MessageOption .
+:fixedHeaderFlag rdf:type owl:DatatypeProperty ;
+                 rdfs:isDefinedBy <> ;
+                 rdfs:label "fixedHeaderFlag"@en ;
+                 rdfs:comment "Each MQTT Control Packet contains a Fixed Header."@en ;
+                 schema:domainIncludes :ControlPacket .
 
-:optionValue rdf:type owl:DatatypeProperty ;
-             rdfs:isDefinedBy <> ;
-             rdfs:label "optionValue"@en ;
-             rdfs:comment "option value"@en ;
-             schema:domainIncludes :MessageOption .
-
-:controlPacketValue rdf:type owl:DatatypeProperty ;
+:variableHeaderFlag rdf:type owl:DatatypeProperty ;
                     rdfs:isDefinedBy <> ;
-                    rdfs:label "controlPacketValue"@en ;
-                    rdfs:comment "control packet value"@en ;
+                    rdfs:label "variableHeaderFlag"@en ;
+                    rdfs:comment "Some types of MQTT Control Packet contain a Variable Header component. It resides between the Fixed Header and the Payload. The content of the Variable Header varies depending on the packet type."@en ;
                     schema:domainIncludes :ControlPacket .
+
+:hasDUPFlag rdf:type owl:DatatypeProperty ;
+            rdfs:isDefinedBy <> ;
+            rdfs:subPropertyOf :fixedHeaderFlag ;
+            rdfs:label "hasDUPFlag"@en ;
+            rdfs:comment "If the DUP flag is set, it indicates that this might be re-delivery of an earlier attempt to send the packet."@en ;
+            schema:domainIncludes :SUBSCRIBEPacket .
+
+:hasQoSFlag rdf:type owl:DatatypeProperty ;
+            rdfs:isDefinedBy <> ;
+            rdfs:subPropertyOf :fixedHeaderFlag ;
+            rdfs:label "hasQoSFlag"@en ;
+            rdfs:comment "This field indicates the level of assurance for delivery of an Application Message."@en ;
+            schema:domainIncludes :SUBSCRIBEPacket .
+
+:hasRETAINFlag rdf:type owl:DatatypeProperty ;
+               rdfs:isDefinedBy <> ;
+               rdfs:subPropertyOf :fixedHeaderFlag ;
+               rdfs:label "hasRETAINFlag"@en ;
+               rdfs:comment "If the RETAIN flag is set to 1 in a PUBLISH packet sent by a Client to a Server, the Server must replace any existing retained message for this topic and store the Application Message, so that it can be delivered to future subscribers whose subscriptions match its Topic Name."@en ;
+               schema:domainIncludes :SUBSCRIBEPacket .
 
 :ControlPacket rdf:type owl:Class ;
                rdfs:isDefinedBy <> ;
                rdfs:label "ControlPacket"@en ;
-               rdfs:comment "control packet"@en .
+               rdfs:comment "An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header, payload"@en .
 
-:Message rdf:type owl:Class ;
-         rdfs:isDefinedBy <> ;
-         rdfs:label "Message"@en ;
-         rdfs:comment "message"@en .
-
-:MessageOption rdf:type owl:Class ;
+:PUBLISHPacket rdf:type owl:Class ;
                rdfs:isDefinedBy <> ;
-               rdfs:label "MessageOption"@en ;
-               rdfs:comment "message option"@en .
+               rdfs:subClassOf :ControlPacket ;
+               rdfs:label "PUBLISHPacket"@en ;
+               rdfs:comment "A PUBLISH packet is sent from a Client to a Server or from a Server to a Client to transport an Application Message."@en .
 
+:SUBSCRIBEPacket rdf:type owl:Class ;
+                 rdfs:isDefinedBy <> ;
+                 rdfs:subClassOf :ControlPacket ;
+                 rdfs:label "SUBSCRIBEPacket"@en ;
+                 rdfs:comment "The SUBSCRIBE packet is sent from the Client to the Server to create one or more Subscriptions. Each Subscription registers a Client’s interest in one or more Topics."@en .
 
-# TODO:
-#  - define control packet values as control packet types (sub-classes of control packet)
-#  - options seem to be options of control packets
-#  - (application) messages seem to be the payload of a publish control packet
+:UNSUBSCRIBEPacket rdf:type owl:Class ;
+                   rdfs:isDefinedBy <> ;
+                   rdfs:subClassOf :ControlPacket ;
+                   rdfs:label "UNSUBSCRIBEPacket"@en ;
+                   rdfs:comment "An UNSUBSCRIBE packet is sent by the Client to the Server, to unsubscribe from topics."@en .
+
+# TODO other packet types?

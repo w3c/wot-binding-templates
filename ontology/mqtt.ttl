@@ -14,8 +14,8 @@
    rdfs:comment "Vocabulary to represent MQTT packets in RDF."@en ;
    vann:preferredNamespacePrefix "mqv" ;
    vann:preferredNamespaceUri : ;
-   dct:author <https://www.vcharpenay.link/#me> ;
-   dct:contributor _:ege .
+   dct:author _:michael ;
+   dct:contributor _:ege, _:seb, <https://www.vcharpenay.link/#me> .
 
 <https://www.vcharpenay.link/#me> a schema:Person ;
                                   schema:name "Victor Charpenay" ;
@@ -25,9 +25,21 @@ _:ege a schema:Person ;
       schema:name "Ege Korkan" ;
       schema:affiliation _:siemens .
 
+_:michael a schema:Person ;
+          schema:name "Michael Koster" ;
+          schema:affiliation _:smartthings .
+
+_:seb a schema:Person ;
+      schema:name "Sebastian Käbisch" ;
+      schema:affiliation _:siemens .
+
 _:siemens a schema:Organization ;
           schema:name "Siemens AG" ;
           schema:url "https://www.siemens.com/" .
+
+_:smartthings a schema:Organization ;
+              schema:name "SmartThings" ;
+              schema:url "https://www.smartthings.com/" .
 
 :payload rdf:type owl:ObjectProperty ;
          rdfs:isDefinedBy <> ;

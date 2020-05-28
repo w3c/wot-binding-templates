@@ -14,8 +14,8 @@
    rdfs:comment "Vocabulary to represent CoAP messages in RDF."@en ;
    vann:preferredNamespacePrefix "cov" ;
    vann:preferredNamespaceUri : ;
-   dct:author <https://www.vcharpenay.link/#me> ;
-   dct:contributor _:ege .
+   dct:author _:klaus ;
+   dct:contributor _:ege, _:seb, _:michael, <https://www.vcharpenay.link/#me> .
 
 <https://www.vcharpenay.link/#me> a schema:Person ;
                                   schema:name "Victor Charpenay" ;
@@ -25,9 +25,29 @@ _:ege a schema:Person ;
       schema:name "Ege Korkan" ;
       schema:affiliation _:siemens .
 
+_:klaus a schema:Person ;
+        schema:name "Klaus Hartke" ;
+        schema:affiliation _:ericsson .
+
+_:seb a schema:Person ;
+      schema:name "Sebastian Käbisch" ;
+      schema:affiliation _:siemens .
+
+_:michael a schema:Person ;
+          schema:name "Michael Koster" ;
+          schema:affiliation _:smartthings .
+
 _:siemens a schema:Organization ;
           schema:name "Siemens AG" ;
           schema:url "https://www.siemens.com/" .
+
+_:ericsson a schema:Organization ;
+           schema:name "Ericsson" ;
+           schema:url "https://www.ericsson.com/" .
+
+_:smartthings a schema:Organization ;
+              schema:name "SmartThings" ;
+              schema:url "https://www.smartthings.com/" .
 
 :mthd rdf:type owl:ObjectProperty ;
       rdfs:isDefinedBy <> ;

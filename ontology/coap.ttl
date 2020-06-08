@@ -14,8 +14,8 @@
    rdfs:comment "Vocabulary to represent CoAP messages in RDF."@en ;
    vann:preferredNamespacePrefix "cov" ;
    vann:preferredNamespaceUri : ;
-   dct:author _:klaus ;
-   dct:contributor _:ege, _:seb, _:michael, <https://www.vcharpenay.link/#me> .
+   dct:author <https://www.vcharpenay.link/#me> ; # TODO _:klaus?
+   dct:contributor _:ege, _:seb, _:michael .
 
 <https://www.vcharpenay.link/#me> a schema:Person ;
                                   schema:name "Victor Charpenay" ;

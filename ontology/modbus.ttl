@@ -103,19 +103,19 @@ _:jakob a schema:Person ;
 	
 	
 	
-	:Length rdf:type owl:ObjectProperty ;
+	:length rdf:type owl:ObjectProperty ;
 			rdfs:comment "Specifies the amount of either registers or coils to be read/written"@en ;
 			rdfs:label "Length of requested registers/coils"@en ;
 			rdf:range xsd:integer ;
 			rdfs:domain :RequestOption .
 	
-	:UnitID rdf:type owl:ObjectProperty;
+	:unitID rdf:type owl:ObjectProperty;
 			rdfs:label "UnitID"@en ;
 			rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included";
 			rdf:range xsd:integer ;
 			rdfs:domain :RequestOption .
 	
-	:WriteValue rdf:type owl:ObjectProperty;
+	:writeValue rdf:type owl:ObjectProperty;
 			rdfs:label "Write Value"@en ;
 			rdfs:comment "The value to write to the register or coil, encoded as integer, omitted and ignored for reading operations"@en ;
 			rdf:range xsd:integer ;
@@ -145,7 +145,7 @@ _:jakob a schema:Person ;
 						 rdf:range xsd:boolean ;
 						 rdfs:domain :RequestOption .
 	
-	:pollingRate         rdf:type owl:ObjectProperty;
+	:pollingTime         rdf:type owl:ObjectProperty;
 						 rdfs:label "Modbus TCP maximum polling rate"@en;
 						 rdfs:comment "The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.";
 						 rdf:range xsd:integer ;
@@ -160,77 +160,77 @@ _:jakob a schema:Person ;
 	
 	
 	###  http://www.example.com/ns/modbus#FC1 == :FC1
-	<#FC1>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#1>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Read Single Coils"@en;
-			rdfs:comment  "Read a single coil (i.e. boolean/bit access) value. Usually in the address range 000001-099999"@en.
+			rdfs:comment  "Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999"@en.
 	
-	<#FC2>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#2>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
-			rdfs:comment  "Read Physical Discrete Inputs (bit access) "@en;
+			rdfs:comment  "Read Physical Discrete Inputs (bit access). Address range 10001-19999"@en;
 			rdfs:label  "Read Discrete Inputs"@en.
 	
-	<#FC3>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#3>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
-			rdfs:comment  "Read Multiple Hodling Registers"@en ;
-			rdfs:label  "Read Multiple Hodling Registers (16 bit access)"@en .
+			rdfs:label  "Read Multiple Holding Registers"@en ;
+			rdfs:comment  "Read Multiple Holding Registers (16 bit access). Address range 40001-49999"@en.
 	
-	<#FC4>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#4>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
-			rdfs:comment  "Read Multiple Input Registers" @en;
-			rdfs:label  "Read Multiple Physica Input Registers (16 bits)" @en.
+			rdfs:label  "Read Multiple Input Registers" @en;
+			rdfs:comment  "Read Multiple Physica Input Registers (16 bits). Address range 30001-39999"@en.
 	
-	<#FC5>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#5>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
-			rdfs:comment  "Write Single Coil"@en ;
-			rdfs:label  "Write Single Physical Coil (internal bit)"@en .
+			rdfs:label  "Write Single Coil"@en ;
+			rdfs:comment  "Write Single Physical Coil (internal bit). Address range 00001-09999"@en.
 	
-	<#FC15>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#15>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
-			rdfs:comment  "Write Multiple Coils"@en ;
-			rdfs:label  "Write Multiple Physical Coils (internal bits)"@en .
+			rdfs:label  "Write Multiple Coils"@en ;
+			rdfs:comment  "Write Multiple Physical Coils (internal bits). Address range 00001-09999"@en.
 	
-	<#FC16>   rdf:type    owl:NamedIndividual ,
+	<#functionCode#16>   rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
-			rdfs:comment  "Write Multiple Hodling Registers"@en ;
-			rdfs:label  "Write Multiple Hodling Registers (output registers, 16 bit)"@en .
+			rdfs:label  "Write Multiple Holding Registers"@en ;
+			rdfs:comment  "Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999"@en.
 	
-	<#FC43>    rdf:type    owl:NamedIndividual ,
+	<#functionCode#43>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:comment  "Read Device Identification for diagnostic purposes. Avaiable in the majority of Modbus implementations"@en ;
-			rdfs:label  "Read Device Identification"@en .
+			rdfs:label  "Read Device Identification"@en.
 	
 	
 	### Modbus responses
 	
 	###  http://www.example.com/ns/modbus#2.01
 	
-	<#EC01>   rdf:type    owl:NamedIndividual ,
+	<#errorCode#01>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
 			rdfs:comment "Function code received in the query is not recognized or allowed by slave"@en;
 			rdfs:label "ILLEGAL FUNCTION"@en .
 	
-	<#EC02>   rdf:type    owl:NamedIndividual ,
+	<#errorCode#02>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
 			rdfs:comment "Data address of some or all the required entities are not allowed or do not exist in slave"@en ;
 			rdfs:label "ILLEGAL DATA ADDRESS"@en .
 	
-	<#EC03>   rdf:type    owl:NamedIndividual ,
+	<#errorCode#03>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
 			rdfs:comment "Value is not accepted by slave"@en ;
 			rdfs:label "ILLEGAL DATA VALUE"@en .
 	
-	<#EC04>   rdf:type    owl:NamedIndividual ,
+	<#errorCode#04>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
 			rdfs:label "SLAVEDEVICE FAILURE" ;
 			rdfs:comment "An unrecoverable error occurred while the slave was attempting to perform the requested action"@en .
 			
-	<#EC05>   rdf:type    owl:NamedIndividual ,
+	<#errorCode#05>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;
 			rdfs:label  "ACKNOWLEDGE" ;
 			rdfs:comment "The server has accepted the request and is processing it, but a long duration of time will be required to do so. This response is returned to prevent a timeout error from occurring in the client. The client can next issue a Poll Program Complete  message to determine if processing is completed"@en.
 	
-	<#EC06>   rdf:type    owl:NamedIndividual ,
+	<#errorCode#06>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
 			rdfs:comment "Slave is engaged in processing a long-duration command. Master should retry later "@en ;
 			rdfs:label "SLAVEDEVICE BUISY"@en .

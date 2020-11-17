@@ -1216,6 +1216,29 @@
         </p>
       </section>
 
+
+
+    </section>
+    <section>
+      <h1>Guideline to write new Protocol Binding</h1>
+      <p>To provide a new binding specification, e.g. based on a new communication protocol, a 
+        minimal requirements for information are required, which can then be used for distinct 
+        implementation and to ensure interoperability based on the new binding.
+      <p>
+        <!--be associated with WoT's <a>Properties</a>,
+      <a>Actions</a>, and <a>Events</a> the following minimum of requirment of information is required:</p>
+        -->
+      <p>
+        Please ensure that following information are provided and common shared:
+        <li>For identification of the used protocol a standardized protocol scheme value has to be used in the URI scheme of top level <code>base</code> or <code>href</code> term of the <code>forms</code> container (also see [[RFC3986]]). E.g., <code>"https://..."</code>, <code>"mqtt://..."</code>, <code>"modbus://..."</code></li>  
+        <li>Depending of the complexity of the protocol a corresponding and established context may be introduced within the <code>@context</code> to decleare all needed protocol features by corresponding vocabulary terms (e.g., <code>baudrate</code>). </li>
+        <li>
+          A protocol binding MUST be able to map WoT operation types (readproperty, invokeaction, etc.) for the <code>op</code> term to concrete protocol methods. 
+          This includes that the <code>href</code> term of the <code>forms</code> container have to be used to encode the address information of the protocol for the 
+          associated <a>Property</a>, <a>Action</a>, or <a>Event</a>. If a URI pattern cannot be used or is not sufficient to successfully apply the corresponding protocol method, 
+          additional vocabulary terms from the provided protocol context must be used to provide additional address information.  
+        </li>
+      </p>
     </section>
 <!-- 
     <section id="processing-model" class="informative">

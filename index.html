@@ -1901,188 +1901,184 @@
       Notably, the <code>brightness</code> property can be read via HTTP, written to via CoAP and observed via MQTT.
     </p>
     <pre class="example" title="TD with protocol options and complex payload">
-        {
-          "@context": [
-            "https://www.w3.org/2019/wot/td/v1",
-            {
-              "iot": "http://iotschema.org/",
-              "cov": "http://www.example.org/coap-binding#",
-              "mqv": "http://www.example.org/mqtt-binding#"
-            }
-          ],
-          "base": "http://example.com/",
-          "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
-          "title": "Lamp",
-          "id": "urn:dev:ops:32473-WoTLamp-1234",
-          "securityDefinitions": {"basic_sc": {
-            "scheme": "basic",
-            "in": "header"
-          }},
-          "security": ["basic_sc"],
-          "properties": {
-            "switchState": {
-              "@type": ["iot:SwitchStatus"],
-              "type": "object",
-              "properties": {
-                "switch": {
-                  "@type": ["iot:SwitchData"],
-                  "type": "boolean"
-                }
-              },
-              "writeOnly": false,
-              "readOnly": false,
-              "observable": true,
-              "forms": [
-                {
-                  "href": "/example/light/currentswitch",
-                  "contentType": "application/json",
-                  "op": ["readproperty"],
-                  "htv:methodName": "GET"
-                },
-                {
-                  "href": "/example/light/currentswitch",
-                  "contentType": "application/json",
-                  "op": ["writeproperty"],
-                  "htv:methodName": "POST"
-                },
-                {
-                  "href": "mqtt://example.com/example/light/currentswitch",
-                  "op": ["observeproperty"],
-                  "mqv:controlPacketValue": "SUBSCRIBE"
-                }
-              ]
+      {
+        "@context": [
+          "https://www.w3.org/2019/wot/td/v1",
+          {
+            "iot": "http://iotschema.org/",
+            "cov": "http://www.example.org/coap-binding#",
+            "mqv": "http://www.example.org/mqtt-binding#"
+          }
+        ],
+        "base": "http://example.com/",
+        "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
+        "title": "Lamp",
+        "id": "urn:dev:ops:32473-WoTLamp-1234",
+        "securityDefinitions": {"basic_sc": {
+          "scheme": "basic",
+          "in": "header"
+        }},
+        "security": ["basic_sc"],
+        "properties": {
+          "switchState": {
+            "@type": ["iot:SwitchStatus"],
+            "type": "object",
+            "properties": {
+              "switch": {
+                "@type": ["iot:SwitchData"],
+                "type": "boolean"
+              }
             },
-            "brightness": {
-              "@type": ["iot:CurrentLevel"],
+            "writeOnly": false,
+            "readOnly": false,
+            "observable": true,
+            "forms": [
+              {
+                "href": "/example/light/currentswitch",
+                "contentType": "application/json",
+                "op": ["readproperty"],
+                "htv:methodName": "GET"
+              },
+              {
+                "href": "/example/light/currentswitch",
+                "contentType": "application/json",
+                "op": ["writeproperty"],
+                "htv:methodName": "POST"
+              },
+              {
+                "href": "mqtt://example.com/example/light/currentswitch",
+                "op": ["observeproperty"],
+                "mqv:controlPacketValue": "SUBSCRIBE"
+              }
+            ]
+          },
+          "brightness": {
+            "@type": ["iot:CurrentLevel"],
+            "type": "object",
+            "properties": {
+              "brightness": {
+                "@type": ["iot:LevelData" ],
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              }
+            },
+            "writeOnly": false,
+            "readOnly": false,
+            "observable": true,
+            "forms": [
+              {
+                "href": "coap://example.com/example/light/currentdimmer",
+                "contentType": "application/json",
+                "op": ["readproperty"],
+                "cov:methodName": "GET"
+              },
+              {
+                "href": "/example/light/currentdimmer",
+                "contentType": "application/json",
+                "op": ["writeproperty"],
+                "htv:methodName": "POST"
+              },
+              {
+                "href": "mqtt://example.com/example/light/currentdimmer",
+                "op": ["observeproperty"],
+                "mqv:controlPacketValue": "SUBSCRIBE"
+              }
+            ]
+          },
+          "transitionTime": {
+            "@type": ["iot:TransitionTime"],
+            "type": "object",
+            "properties": {
+              "transitionTime": {
+                "@type": ["iot:TransitionTimeData" ],
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              }
+            },
+            "writeOnly": false,
+            "readOnly": false,
+            "observable": false,
+            "forms": [
+              {
+                "href": "/example/light/transitiontime",
+                "contentType": "application/json",
+                "op": ["readproperty"],
+                "htv:methodName": "GET"
+              },
+              {
+                "href": "/example/light/transitiontime",
+                "contentType": "application/json",
+                "op": ["writeproperty"],
+                "htv:methodName": "POST"
+              }
+            ]
+          }
+        },
+        "actions": {
+          "switchOn": {
+            "@type": ["iot:SwitchOnAction"],
+            "input":  {
+              "type": "boolean",
+              "const": true
+            },
+            "forms": [
+              {
+                "href": "/example/light/currentswitch",
+                "contentType": "application/json",
+                "op": ["invokeaction"],
+                "htv:methodName": "POST"
+              }
+            ]
+          },
+          "switchOff": {
+            "@type": ["iot:SwitchOffAction"],
+            "input": {
+              "type": "boolean",
+              "const": false
+            },
+            "forms": [
+              {
+                "href": "/example/light/currentswitch",
+                "contentType": "application/json",
+                "op": ["invokeaction"],
+                "htv:methodName": "POST"
+              }
+            ]
+          },
+          "setBrightness": {
+            "title": "Set Brightness Level",
+            "@type": ["iot:SetLevelAction"],
+            "input": {
               "type": "object",
               "properties": {
                 "brightness": {
-                  "@type": ["iot:LevelData" ],
+                  "@type": ["iot:LevelData"],
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 255
-                }
-              },
-              "writeOnly": false,
-              "readOnly": false,
-              "observable": true,
-              "forms": [
-                {
-                  "href": "coap://example.com/example/light/currentdimmer",
-                  "contentType": "application/json",
-                  "op": ["readproperty"],
-                  "cov:methodName": "GET"
-                },
-                {
-                  "href": "/example/light/currentdimmer",
-                  "contentType": "application/json",
-                  "op": ["writeproperty"],
-                  "htv:methodName": "POST"
-                },
-                {
-                  "href": "mqtt://example.com/example/light/currentdimmer",
-                  "op": ["observeproperty"],
-                  "mqv:controlPacketValue": "SUBSCRIBE"
-                }
-              ]
-            },
-            "transitionTime": {
-              "@type": ["iot:TransitionTime"],
-              "type": "object",
-              "properties": {
-                "transitionTime": {
-                  "@type": ["iot:TransitionTimeData" ],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 255
-                }
-              },
-              "writeOnly": false,
-              "readOnly": false,
-              "observable": false,
-              "forms": [
-                {
-                  "href": "/example/light/transitiontime",
-                  "contentType": "application/json",
-                  "op": ["readproperty"],
-                  "htv:methodName": "GET"
-                },
-                {
-                  "href": "/example/light/transitiontime",
-                  "contentType": "application/json",
-                  "op": ["writeproperty"],
-                  "htv:methodName": "POST"
-                }
-              ]
-            }
-          },
-          "actions": {
-            "switchOn": {
-              "@type": ["iot:SwitchOnAction"],
-              "input":  {
-                "type": "object",
-                "properties": {
-                  "type": "boolean",
-                  "const": true
-                }
-              },
-              "forms": [
-                {
-                  "href": "/example/light/currentswitch",
-                  "contentType": "application/json",
-                  "op": ["invokeaction"],
-                  "htv:methodName": "POST"
-                }
-              ]
-            },
-            "switchOff": {
-              "@type": ["iot:SwitchOffAction"],
-              "input": {
-                    "type": "boolean",
-                    "const": false
-                }
-              },
-              "forms": [
-                {
-                  "href": "/example/light/currentswitch",
-                  "contentType": "application/json",
-                  "op": ["invokeaction"],
-                  "htv:methodName": "POST"
-                }
-              ]
-            },
-            "setBrightness": {
-              "title": "Set Brightness Level",
-              "@type": ["iot:SetLevelAction"],
-              "input": {
-                "type": "object",
-                "properties": {
-                  "brightness": {
-                    "@type": ["iot:LevelData"],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 255
-                    }
-                  },
-                  "transitionTime": {
-                    "@type": ["iot:TransitionTimeData"],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 65535
                   }
-              },
-              "forms": [
-                {
-                  "href": "/example/light/",
-                  "contentType": "application/json",
-                  "op": ["invokeaction"],
-                  "htv:methodName": "POST"
+                },
+                "transitionTime": {
+                  "@type": ["iot:TransitionTimeData"],
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535
                 }
-              ]
-            }
+            },
+            "forms": [
+              {
+                "href": "/example/light/",
+                "contentType": "application/json",
+                "op": ["invokeaction"],
+                "htv:methodName": "POST"
+              }
+            ]
           }
-      </pre>
-  </section>
+        }
+      }
+    </pre>  </section>
 
 
   <section id="sec-security-considerations">

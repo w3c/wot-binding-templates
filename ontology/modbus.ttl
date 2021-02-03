@@ -167,6 +167,13 @@ _:jakob a schema:Person ;
 						 rdf:range xsd:integer ;
 						 rdfs:domain :RequestOption;
 						 om:usesUnit om:milliseconds.
+	
+	:timeout         rdf:type owl:ObjectProperty;
+						 rdfs:label "Modbus response maximum waiting time"@en;
+						 rdfs:comment "Defines how much time the runtime should wait until it receives a reply from the device.";
+						 rdf:range xsd:integer ;
+						 rdfs:domain :RequestOption;
+						 om:usesUnit om:milliseconds.
 
 	:functionName		 rdf:type owl:ObjectProperty;
 						 rdfs:label "Function name of a function Code"@en;

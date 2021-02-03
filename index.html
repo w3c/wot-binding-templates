@@ -2119,12 +2119,11 @@
                       {
                           "op": "readproperty",
                           "href": "modbus+tcp://192.168.178.32:502/10003",
-                          "modv:FunctionCodes": "FC2",
-                          "modv:Length": 1,
-                          "modv:Address": "10003",
-                          "modv:UnitID": "1",
-                          "modv:PollingRate": 100,
-                          "contentType": "octet-stream"
+                          "modv:function": "2",
+                          "modv:length": 1,
+                          "modv:offset": "10003",
+                          "modv:unitID": "1",
+                          "contentType": "application/octet-stream"
                       }
                   ]
               },
@@ -2136,12 +2135,11 @@
                       {
                           "op": "readproperty",
                           "href": "modbus+tcp://192.168.178.32:502/10002",
-                          "modv:FunctionCodes": "FC2",
-                          "modv:Length": 1,
-                          "modv:Address": "10002",
-                          "modv:UnitID": "1",
-                          "modv:PollingRate": 100,
-                          "contentType": "octet-stream"
+                          "modv:function": "readDiscreteInput",
+                          "modv:length": 1,
+                          "modv:offset": "10002",
+                          "modv:unitID": "1",
+                          "contentType": "application/octet-stream"
                       }
                   ]
               },
@@ -2153,18 +2151,16 @@
                       {
                           "op": [
                               "writeproperty",
+                              "observeproperty",
                               "readproperty"
                           ],
                           "href": "modbus+tcp://192.168.178.32:502/00006",
-                          "modv:FunctionCodes": [
-                              "FC1",
-                              "FC5"
-                          ],
-                          "modv:Length": 1,
-                          "modv:Address": "00006",
-                          "modv:UnitID": "1",
-                          "modv:PollingRate": 100,
-                          "contentType": "octet-stream"
+                          "modv:entity": "Coil",
+                          "modv:length": 1,
+                          "modv:offset": "00006",
+                          "modv:unitID": "1",
+                          "modv:pollingTime": 100,
+                          "contentType": "application/octet-stream"
                       }
                   ]
               },
@@ -2174,20 +2170,18 @@
                   "description": "Forward Motor Status (single coil). PLC output, can be written to control the motor.",
                   "forms": [
                       {
-                          "op": [
+                           "op": [
                               "writeproperty",
+                              "observeproperty",
                               "readproperty"
                           ],
                           "href": "modbus+tcp://192.168.178.32:502/00003",
-                          "modv:FunctionCodes": [
-                              "FC1",
-                              "FC5"
-                          ],
-                          "modv:Length": 1,
-                          "modv:Address": "00003",
-                          "modv:UnitID": "1",
-                          "modv:PollingRate": 100,
-                          "contentType": "octet-stream"
+                          "modv:entity": "Coil",
+                          "modv:length": 1,,
+                          "modv:offset": "00003",
+                          "modv:unitID": "1",
+                          "modv:pollingRate": 100,
+                          "contentType": "application/octet-stream"
                       }
                   ]
               }

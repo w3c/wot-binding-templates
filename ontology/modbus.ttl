@@ -65,7 +65,16 @@ _:jakob a schema:Person ;
 				rdfs:label "Function Code"@en ;
 
 				rdfs:subClassOf :Code, schema:Enumeration .
-	
+
+	:FunctionName rdf:type owl:Class ;
+				rdfs:comment "A Modbus human readable function name"@en ;
+				rdfs:label "Function Name"@en ;
+				rdfs:subClassOf schema:Enumeration .
+
+	:Entity rdf:type owl:Class ;
+				rdfs:comment "A Modbus registry type"@en ;
+				rdfs:label "Entity"@en ;
+				rdfs:subClassOf schema:Enumeration .
 	
 	:ResponseCode rdf:type owl:Class ;
 				  rdfs:comment "Response Code"@en ;
@@ -78,12 +87,19 @@ _:jakob a schema:Person ;
 	
 	# ###  http://www.example.com/ns/modbus#options
 	
-	:functionCode   rdf:type owl:ObjectProperty ;
+	:function   rdf:type owl:ObjectProperty ;
 					rdfs:isDefinedBy <> ;
 					rdfs:comment "Function Code sent by the master in every request. Specifying the desired interaction."@en ;
-					rdfs:label "Function Code"@en ;
+					rdfs:label "Function"@en ;
 					rdfs:domain :Request ;
-					rdfs:range :FunctionCode .
+					rdfs:range :FunctionCode, :FunctionName .
+
+	:entity   rdf:type owl:ObjectProperty ;
+					rdfs:isDefinedBy <> ;
+					rdfs:comment "A registry type to let the runtime automatically detect the right function code"@en ;
+					rdfs:label "Entity"@en ;
+					rdfs:domain :Request ;
+					rdfs:range :Entity .
 	
 	
 	:responseCode rdf:type owl:ObjectProperty ;
@@ -151,6 +167,16 @@ _:jakob a schema:Person ;
 						 rdf:range xsd:integer ;
 						 rdfs:domain :RequestOption;
 						 om:usesUnit om:milliseconds.
+
+	:functionName		 rdf:type owl:ObjectProperty;
+						 rdfs:label "Function name of a function Code"@en;
+						 rdf:range :FunctionName ;
+						 rdfs:domain :FunctionCode.
+
+	:functionCode		 rdf:type owl:ObjectProperty;
+						 rdfs:label "Function code of a function Name"@en;
+						 rdf:range :FunctionCode ;
+						 rdfs:domain :FunctionName.
 	
 	#################################################################
 	#
@@ -163,44 +189,127 @@ _:jakob a schema:Person ;
 	<functionCode#1>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Read Single Coils"@en;
-			rdfs:comment  "Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999"@en.
+			rdfs:comment  "Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999"@en;
+			:functionName <#readCoil>.
 	
 	<functionCode#2>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:comment  "Read Physical Discrete Inputs (bit access). Address range 10001-19999"@en;
-			rdfs:label  "Read Discrete Inputs"@en.
+			rdfs:label  "Read Discrete Inputs"@en;
+			:functionName <#readDiscreteInput>.
 	
 	<functionCode#3>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Read Multiple Holding Registers"@en ;
-			rdfs:comment  "Read Multiple Holding Registers (16 bit access). Address range 40001-49999"@en.
+			rdfs:comment  "Read Multiple Holding Registers (16 bit access). Address range 40001-49999"@en;
+			:functionName <#readHoldingRegisters>.
 	
 	<functionCode#4>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Read Multiple Input Registers" @en;
-			rdfs:comment  "Read Multiple Physica Input Registers (16 bits). Address range 30001-39999"@en.
+			rdfs:comment  "Read Multiple Physica Input Registers (16 bits). Address range 30001-39999"@en;
+			:functionName <#readInputRegisters>.
 	
 	<functionCode#5>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Write Single Coil"@en ;
-			rdfs:comment  "Write Single Physical Coil (internal bit). Address range 00001-09999"@en.
+			rdfs:comment  "Write Single Physical Coil (internal bit). Address range 00001-09999"@en;
+			:functionName <#writeSingleCoil>.
 	
+	<functionCode#6>    rdf:type    owl:NamedIndividual ,
+						:FunctionCode ;
+			rdfs:label  "Write Single HoldingRegister"@en ;
+			rdfs:comment  "Write Single HoldingRegister (internal bits). Address range 40001-49999"@en;
+			:functionName <#writeSingleHoldingRegister>.
+
 	<functionCode#15>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Write Multiple Coils"@en ;
-			rdfs:comment  "Write Multiple Physical Coils (internal bits). Address range 00001-09999"@en.
-	
+			rdfs:comment  "Write Multiple Physical Coils (internal bits). Address range 00001-09999"@en;
+			:functionName <#writeMultipleCoils>.
+
 	<functionCode#16>   rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:label  "Write Multiple Holding Registers"@en ;
-			rdfs:comment  "Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999"@en.
+			rdfs:comment  "Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999"@en;
+			:functionName <#writeMultipleHoldingRegisters>.
+
 	
 	<functionCode#43>    rdf:type    owl:NamedIndividual ,
 						:FunctionCode ;
 			rdfs:comment  "Read Device Identification for diagnostic purposes. Avaiable in the majority of Modbus implementations"@en ;
 			rdfs:label  "Read Device Identification"@en.
 	
+	### Modbus Function names
+
+	<#readCoil>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Read Single Coils"@en;
+			rdfs:comment  "Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999"@en;
+			:functionCode <functionCode#1>.
 	
+	<#readDiscreteInput>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:comment  "Read Physical Discrete Inputs (bit access). Address range 10001-19999"@en;
+			rdfs:label  "Read Discrete Inputs"@en;
+			:functionCode <functionCode#2>.
+	
+	<#readHoldingRegisters>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Read Multiple Holding Registers"@en ;
+			rdfs:comment  "Read Multiple Holding Registers (16 bit access). Address range 40001-49999"@en;
+			:functionCode <functionCode#3>.
+
+	<#readInputRegisters>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Read Multiple Input Registers" @en;
+			rdfs:comment  "Read Multiple Physical Input Registers (16 bits). Address range 30001-39999"@en;
+			:functionCode <functionCode#4>.
+	
+	<#writeSingleCoil>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Write Single Coil"@en ;
+			rdfs:comment  "Write Single Physical Coil (internal bit). Address range 00001-09999"@en;
+			:functionCode <functionCode#5>.
+
+	<#writeSingleHoldingRegister>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Write Single HoldingRegister"@en ;
+			rdfs:comment  "Write Single HoldingRegister (internal bits). Address range 40001-49999"@en;
+			:functionCode <functionCode#6>.
+
+	<#writeMultipleCoils>    rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Write Multiple Coils"@en ;
+			rdfs:comment  "Write Multiple Physical Coils (internal bits). Address range 00001-09999"@en;
+			:functionCode <functionCode#15>.
+
+	<#writeMultipleHoldingRegisters>   rdf:type    owl:NamedIndividual ,
+						:FunctionName ;
+			rdfs:label  "Write Multiple Holding Registers"@en ;
+			rdfs:comment  "Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999"@en;
+			:functionCode <functionCode#16>.
+
+	### Modbus Entities
+	<#Coil>   rdf:type    owl:NamedIndividual ,
+						:Entity ;
+			rdfs:label  "Coil"@en ;
+			rdfs:comment  "Represent a modbus coil register.  These entities can be read or written"@en.
+
+	<#DiscreteInput>   rdf:type    owl:NamedIndividual ,
+						:Entity ;
+			rdfs:label  "Discrete Input"@en ;
+			rdfs:comment  "Represent a modbus discrete input. These entities can only be read"@en.
+	<#InputRegister>   rdf:type    owl:NamedIndividual ,
+						:Entity ;
+			rdfs:label  "Input Register"@en ;
+			rdfs:comment  "Represent a modbus input register. These entities can only be read"@en.
+	<#HoldingRegister>   rdf:type    owl:NamedIndividual ,
+						:Entity ;
+			rdfs:label  "Holding Register"@en ;
+			rdfs:comment  "Represent a modbus holding register.  These entities can be read or written"@en.
+
+
 	### Modbus responses
 	
 	###  http://www.example.com/ns/modbus#2.01

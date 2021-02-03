@@ -17,7 +17,8 @@ sttl.connect(q => {
 
 const src = [
     'ontology/coap.ttl',
-    'ontology/mqtt.ttl'
+    'ontology/mqtt.ttl',
+    'ontology/modbus.ttl'
 ];
 
 src.reduce((p, f) => {

@@ -124,6 +124,12 @@ _:jakob a schema:Person ;
 			rdfs:label "Length of requested registers/coils"@en ;
 			rdf:range xsd:integer ;
 			rdfs:domain :RequestOption .
+
+	:offset rdf:type owl:ObjectProperty ;
+			rdfs:comment "Specifies the starting address of the modbus operations"@en ;
+			rdfs:label "Offset"@en ;
+			rdf:range xsd:integer ;
+			rdfs:domain :RequestOption .
 	
 	:unitID rdf:type owl:ObjectProperty;
 			rdfs:label "UnitID"@en ;

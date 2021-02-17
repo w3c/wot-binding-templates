@@ -1,0 +1,10 @@
+{
+    "name": "render",
+    "description": "Renders vocabulary pages",
+    "version": "1.0.0",
+    "main": "render.js",
+    "dependencies": {
+        "sttl": "github:vcharpenay/STTL.js",
+        "urdf": "github:vcharpenay/uRDF.js"
+    }
+}

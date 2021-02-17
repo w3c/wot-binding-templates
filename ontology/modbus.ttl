@@ -7,6 +7,7 @@
 @prefix schema: <http://schema.org/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix binding: <https://www.w3.org/2019/wot/binding#> .
 @base <https://www.w3.org/2019/wot/modbus> .
 
 @prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/>.
@@ -122,75 +123,95 @@ _:jakob a schema:Person ;
 	:length rdf:type owl:ObjectProperty ;
 			rdfs:comment "Specifies the amount of either registers or coils to be read/written"@en ;
 			rdfs:label "Length of requested registers/coils"@en ;
-			rdf:range xsd:integer ;
-			rdfs:domain :RequestOption .
+			rdfs:range xsd:integer ;
+			rdfs:domain :Request .
 
 	:offset rdf:type owl:ObjectProperty ;
 			rdfs:comment "Specifies the starting address of the modbus operations"@en ;
 			rdfs:label "Offset"@en ;
-			rdf:range xsd:integer ;
-			rdfs:domain :RequestOption .
+			rdfs:range xsd:integer ;
+			rdfs:domain :Request .
 	
 	:unitID rdf:type owl:ObjectProperty;
 			rdfs:label "UnitID"@en ;
 			rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included";
-			rdf:range xsd:integer ;
-			rdfs:domain :RequestOption .
+			rdfs:range xsd:integer ;
+			rdfs:domain :Request .
 	
 	:writeValue rdf:type owl:ObjectProperty;
 			rdfs:label "Write Value"@en ;
 			rdfs:comment "The value to write to the register or coil, encoded as integer, omitted and ignored for reading operations"@en ;
-			rdf:range xsd:integer ;
+			rdfs:range xsd:integer ;
 			rdfs:domain :RequestOption .
 	
 	:encodingOption rdf:type owl:ObjectProperty;
 					rdf:type xsd:string ;
-					rdfs:domain :RequestOption;
+					rdfs:domain :Request;
 					rdfs:label "Byte Encoding"@en;
 					rdfs:comment "Little Endian or Big Endian encoding of bytes, i.e. the bit order within each register. Default is Big Endian"@en.
 	
 	:firstWordLow rdf:type owl:ObjectProperty;
-				  rdf:range xsd:boolean ;
-				  rdfs:domain :RequestOption ;
+				  rdfs:range xsd:boolean ;
+				  rdfs:domain :Request ;
 				  rdfs:label "First Word Low Flag"@en;
 				  rdfs:comment "Data encoding for 32-bit values to chose which of the register is the low value"@en.
 	
 	:firstDWordLow  rdf:type owl:ObjectProperty;
-					rdf:range xsd:boolean ;
-					rdfs:domain :RequestOption ;
+					rdfs:range xsd:boolean ;
+					rdfs:domain :Request ;
 					rdfs:label "First DoubleWord Low Flag"@en;
 					rdfs:comment "Data encoding for 64-bit values; same as firstWordLow but based on DWORDS (i.e. 2 registers) instead of WORDS (1 register)"@en.
 	
 	:zeroBasedAddressing rdf:type owl:ObjectProperty;
 						 rdfs:label "Zero Based Addressing Flag"@en;
 						 rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as '0' or '1'. Default is '0'."@en;
-						 rdf:range xsd:boolean ;
-						 rdfs:domain :RequestOption .
+						 rdfs:range xsd:boolean ;
+						 rdfs:domain :Request .
 	
 	:pollingTime         rdf:type owl:ObjectProperty;
 						 rdfs:label "Modbus TCP maximum polling rate"@en;
 						 rdfs:comment "The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.";
-						 rdf:range xsd:integer ;
-						 rdfs:domain :RequestOption;
+						 rdfs:range xsd:integer ;
+						 rdfs:domain :Request;
 						 om:usesUnit om:milliseconds.
 	
 	:timeout         rdf:type owl:ObjectProperty;
 						 rdfs:label "Modbus response maximum waiting time"@en;
 						 rdfs:comment "Defines how much time the runtime should wait until it receives a reply from the device.";
-						 rdf:range xsd:integer ;
-						 rdfs:domain :RequestOption;
+						 rdfs:range xsd:integer ;
+						 rdfs:domain :Request;
 						 om:usesUnit om:milliseconds.
 
 	:functionName		 rdf:type owl:ObjectProperty;
 						 rdfs:label "Function name of a function Code"@en;
-						 rdf:range :FunctionName ;
+						 rdfs:range :FunctionName ;
 						 rdfs:domain :FunctionCode.
 
 	:functionCode		 rdf:type owl:ObjectProperty;
 						 rdfs:label "Function code of a function Name"@en;
-						 rdf:range :FunctionCode ;
+						 rdfs:range :FunctionCode ;
 						 rdfs:domain :FunctionName.
 	
+	# Default mappings
+	binding:readproperty binding:mapped _:readMapping.
+	binding:writeproperty binding:mapped _:writeMapping.
+	binding:invokeaction binding:mapped _:writeMapping.
+	binding:readallproperties binding:mapped _:allReadMapping.
+	binding:writeallproperties binding:mapped _:allWriteMapping.
+	binding:readmultipleproperties binding:mapped _:allReadMapping.
+	binding:writemultipleproperties binding:mapped _:allWriteMapping.
+
+	_:readMapping binding:mappedProperty :function;
+				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#1> .
+	
+	_:writeMapping binding:mappedProperty :function;
+				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#5> .
+	
+	_:allReadMapping binding:mappedProperty :function;
+				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#3> .
+	_:allWriteMapping binding:mappedProperty :function;
+				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#16> .
+
 	#################################################################
 	#
 	#    Individuals

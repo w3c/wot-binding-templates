@@ -44,7 +44,6 @@ template :modbus(?ns) {
             </p>
         </section>
         %s
-        %s
     </body>
 </html>
 """
@@ -52,7 +51,6 @@ template :modbus(?ns) {
         ?o
         ?title
         ?desc
-        st:call-template(:vocab, ?o, ?prefix)
         st:call-template(:axioms, ?o, ?prefix)
     }
 } where {
@@ -73,94 +71,6 @@ template :editor(?o) {
     ?ed schema:name ?name ; schema:affiliation ?org .
     ?org schema:name ?company ; schema:url ?url .
 }
-
-template :vocab(?ns ?prefix) {
-    """
-         <section>
-            <h2>Modbus Vocabulary</h2>
-            <section>
-                <h3>Form terms</h3>
-                <table class=\"def\">
-                    <thead>
-                        <tr>
-                            <th>Vocabulary term</th>
-                            <th>Description</th>
-                            <th>Assignment</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        """
-                    st:call-template(:formTerms, ?ns, ?prefix)
-        """
-                    </tbody>
-                </table>
-            </section>
-            <section>
-                <h3>Default mappings</h3>
-                <table class=\"def\">
-                    <thead>
-                        <tr>
-                            <th>Operation</th>
-                            <th>Default Biding</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    """
-                    st:call-template(:mappings, ?ns, ?prefix)
-                    """
-                    </tbody>
-                </table>
-            </section>
-        </section>
-    """
-}where {}
-
-template :formTerms(?ns ?prefix){
-    format {
-        """
-        <tr>
-            <td><code>%s</code></td>
-            <td>%s</td>
-            <td></td>
-            <td><a href=\"%s\">%s</a></td>
-        <tr>
-        """
-        replace(?o,concat(?ns,"#"),concat(?prefix,":"),"g")
-        ?desc
-        if(strstarts(?range,str(?ns)), lcase(replace(?range, ?ns,"","g")),?range )
-        strafter(?range,"#")
-    }
-}where {
-     ?o a owl:ObjectProperty ;
-        rdfs:domain ?request ;
-        rdfs:range ?range ;
-        rdfs:comment ?desc .
-    bind(IRI(CONCAT(STR( ?ns),"#Request")) as ?request)
-    filter(?o != IRI(CONCAT(STR( ?ns),"#options")))
-}
-
-template :mappings(?ns ?prefix){
-    format {
-        """
-        <tr>
-            <td><code>%s</code></td>
-            <td><code>\"%s\":%s</code></td>
-        <tr>
-        """
-        strafter(?op,"#")
-        replace(?type,concat(?ns,"#"),concat(?prefix,":"),"g")
-        strafter(?value,"#")
-       
-    }
-}where {
-     ?op binding:mapped ?mapping.
-
-     ?mapping binding:mappedProperty ?type;
-          binding:mappedValue ?value .
-    
-}
-
 
 template :axioms(?ns ?prefix) {
     "<section>"

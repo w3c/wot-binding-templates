@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [],
+            edDraftURI: "",
+            shortName: "wot-modbus-template",
+            otherLinks: [
+                {
+                    key: "Other documentation",
+                    data: [{
+                        value: "MODBUS ontology",
+                        href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                    }]
+                }
+            ]
+        };
+    </script>
+    <title>MODBUS binding template</title>
+</head>
+
+<body>
+    <section id='abstract'>
+        <p class="ednote">TODO:</p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+    <section>
+        <h2>Modbus Vocabulary</h2>
+        <section>
+            <h3>Form terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+                    %s
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h3>Default mappings</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default Biding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate mappings from the mapping ontology -->
+                    %s
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h3>Entity</h3>
+            <p class="ednote">TODO:provide a developer oriented explanation of modbus:Entity. 
+                Possibly list all the admitted values.
+            </p>
+        </section>
+        <section id="functioncode">
+            <h3>Function Code</h3>
+            <p class="ednote">TODO:provide a developer oriented explanation of modbus:FunctionCode 
+                Possibly list all the admitted values.
+            </p>
+        </section>
+        <section id="functionname">
+            <h3>Function Name</h3>
+            <p class="ednote">TODO:provide a developer oriented explanation of modbus:FunctionName
+                Possibly list all the admitted values.
+            </p>
+        </section>
+    </section>
+    <section>
+        <h2>Examples</h2>
+        <pre class="example" title="TD of a Thing with Modbus interface">
+                {
+                  "@context": [
+                      "https://www.w3.org/2019/wot/td/v1",
+                      {
+                          "modv": "https://www.example.com/ns/modbustcp"
+                      }
+                  ],
+                  "title": "ModbusPLC",
+                  "description": "An industrial machine, retrofitted to be IoT capable.",
+                  "id": "uri:dev:ModbusTCPThing",
+                  "securityDefinitions": {
+                      "nosec_sc": {
+                          "scheme": "nosec"
+                      }
+                  },
+                  "security": "nosec_sc",
+              
+                  "base": "",
+                  "properties": {
+                      "limitSwitch1": {
+                          "title": "downLimitSwitch",
+                          "type": "boolean",
+                          "description": "Limit switch moving downwards",
+                          "forms": [
+                              {
+                                  "op": "readproperty",
+                                  "href": "modbus+tcp://192.168.178.32:502/10003",
+                                  "modv:function": "2",
+                                  "modv:length": 1,
+                                  "modv:offset": "10003",
+                                  "modv:unitID": "1",
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      },
+                      "limitSwitch2": {
+                          "title": "forwardLimitSwitch",
+                          "type": "boolean",
+                          "description": "Limit Switch moving forward",
+                          "forms": [
+                              {
+                                  "op": "readproperty",
+                                  "href": "modbus+tcp://192.168.178.32:502/10002",
+                                  "modv:function": "readDiscreteInput",
+                                  "modv:length": 1,
+                                  "modv:offset": "10002",
+                                  "modv:unitID": "1",
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      },
+                      "moveDown": {
+                          "title": "moveDown",
+                          "type": "boolean",
+                          "description": "Down Motor Status (single coil). PLC output, can be written to control the motor.",
+                          "forms": [
+                              {
+                                  "op": [
+                                      "writeproperty",
+                                      "observeproperty",
+                                      "readproperty"
+                                  ],
+                                  "href": "modbus+tcp://192.168.178.32:502/00006",
+                                  "modv:entity": "Coil",
+                                  "modv:length": 1,
+                                  "modv:offset": "00006",
+                                  "modv:unitID": "1",
+                                  "modv:pollingTime": 100,
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      },
+                      "moveForward": {
+                          "title": "moveForward",
+                          "type": "boolean",
+                          "description": "Forward Motor Status (single coil). PLC output, can be written to control the motor.",
+                          "forms": [
+                              {
+                                   "op": [
+                                      "writeproperty",
+                                      "observeproperty",
+                                      "readproperty"
+                                  ],
+                                  "href": "modbus+tcp://192.168.178.32:502/00003",
+                                  "modv:entity": "Coil",
+                                  "modv:length": 1,,
+                                  "modv:offset": "00003",
+                                  "modv:unitID": "1",
+                                  "modv:pollingRate": 100,
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      }
+                  }
+              }
+              </pre>
+    </section>
+</body>
+
+</html>

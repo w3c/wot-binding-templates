@@ -191,27 +191,6 @@ _:jakob a schema:Person ;
 						 rdfs:label "Function code of a function Name"@en;
 						 rdfs:range :FunctionCode ;
 						 rdfs:domain :FunctionName.
-	
-	# Default mappings
-	binding:readproperty binding:mapped _:readMapping.
-	binding:writeproperty binding:mapped _:writeMapping.
-	binding:invokeaction binding:mapped _:writeMapping.
-	binding:readallproperties binding:mapped _:allReadMapping.
-	binding:writeallproperties binding:mapped _:allWriteMapping.
-	binding:readmultipleproperties binding:mapped _:allReadMapping.
-	binding:writemultipleproperties binding:mapped _:allWriteMapping.
-
-	_:readMapping binding:mappedProperty :function;
-				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#1> .
-	
-	_:writeMapping binding:mappedProperty :function;
-				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#5> .
-	
-	_:allReadMapping binding:mappedProperty :function;
-				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#3> .
-	_:allWriteMapping binding:mappedProperty :function;
-				  binding:mappedValue <https://www.w3.org/2019/wot/modbus/functionCode#16> .
-
 	#################################################################
 	#
 	#    Individuals

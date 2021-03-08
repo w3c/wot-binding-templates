@@ -1,0 +1,70 @@
+prefix st: <http://ns.inria.fr/sparql-template/>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix jsonld: <http://www.w3.org/ns/json-ld#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix binding: <https://www.w3.org/2019/wot/binding#> 
+prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
+
+
+template :modbus {
+    format {
+        <file://./bindings/modbus/index.template.html>
+        st:call-template(:formTerms, ?modbusBase, ?prefix)
+        st:call-template(:mappings, ?modbusBase, ?prefix)
+    }
+}  where {
+    ?mappings a owl:Ontology ;
+        owl:imports ?modbusBase .
+    ?modbusBase a owl:Ontology;
+       vann:preferredNamespacePrefix ?prefix
+}
+
+template :formTerms(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+            <td></td>
+            <td><a href=\"%s\">%s</a></td>
+        <tr>
+        """
+        replace(?o,concat(?ns,"#"),concat(?prefix,":"),"g")
+        ?desc
+        if(strstarts(?range,str(?ns)), lcase(replace(?range, ?ns,"","g")),?range )
+        strafter(?range,"#")
+    }
+}where {
+     ?o a owl:ObjectProperty ;
+        rdfs:domain ?request ;
+        rdfs:range ?range ;
+        rdfs:comment ?desc .
+    bind(IRI(CONCAT(STR( ?ns),"#Request")) as ?request)
+    filter(?o != IRI(CONCAT(STR( ?ns),"#options")))
+}
+
+template :mappings(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td><code>\"%s\":%s</code></td>
+        <tr>
+        """
+        strafter(?op,"#")
+        replace(?type,concat(?ns,"#"),concat(?prefix,":"),"g")
+        strafter(?value,"#")
+       
+    }
+}where {
+     ?op binding:mapped ?mapping.
+
+     ?mapping binding:mappedProperty ?type;
+          binding:mappedValue ?value .
+    
+}

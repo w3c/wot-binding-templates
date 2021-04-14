@@ -249,44 +249,13 @@
       <dfn>Event</dfn>,
       <dfn>Protocol Binding</dfn>,
       <dfn>Servient</dfn>,
+      <dfn>Vocabulary</dfn>,
       <dfn>WoT Interface</dfn>,
       <dfn>WoT Runtime</dfn>,
       etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
       of the WoT Architecture specification [[WOT-ARCHITECTURE]].
     </p>
 
-    <p>
-      In addition, this specification introduces the following definitions:
-    </p>
-
-    <dl>
-      <dt>
-        <dfn id="dfn-context-ext">TD Context Extension</dfn>
-      </dt>
-      <dd>
-        A mechanism to extend <a>Thing Descriptions</a> with additional <a>Vocabulary
-          Terms</a> using <code>@context</code> as specified in JSON-LD[[?json-ld11]]. 
-          It is the basis for semantic annotations and extensions to core
-        mechanisms such as Protocol Bindings, Security Schemes, and Data Schemas.
-      </dd>
-      <dt>
-        <dfn id="dfn-vocab">Vocabulary</dfn>
-      </dt>
-      <dd>
-        A collection of <a>Vocabulary Terms</a>, identified by a namespace IRI.
-      </dd>
-      <dt>
-        <dfn id="dfn-term">Term</dfn>
-        and
-        <dfn id="dfn-vocab-term">Vocabulary Term</dfn>
-      </dt>
-      <dd>
-        A character string. When a <a>Term</a> is part of a <a>Vocabulary</a>, i.e., prefixed by
-        a namespace IRI[[RFC3987]], it is called a <a>Vocabulary Term</a>. For the sake of readability,
-        <a>Vocabulary Terms</a> present in this document are always written in a compact
-        form and not as full IRIs.
-      </dd>
-    </dl>
   </section>
 
   <section id="binding-overview" class="informative">

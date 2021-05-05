@@ -55,7 +55,7 @@ template :mappings(?ns ?prefix){
         """
         <tr>
             <td><code>%s</code></td>
-            <td><code>\"%s\":%s</code></td>
+            <td><code>\"%s\": \"%s\"</code></td>
         <tr>
         """
         strafter(?op,"#")

@@ -32,6 +32,12 @@
             <em>This document is a work in progress</em>
         </p>
     </section>
+    <section id="url">
+        <h2>URL format</h2>
+        <pre>
+            modbus+tcp://{address}:{port}/{?unitID}
+        </pre>
+    </section>
     <section>
         <h2>Modbus Vocabulary</h2>
         <section>
@@ -215,7 +221,104 @@
     </section>
     <section>
         <h2>Examples</h2>
-        <pre class="example" title="TD of a Thing with Modbus interface">
+        This section will present a set of examples about how the terms defined in this document can be used
+        to describe and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimal set of terms 
+        to configure a single coil reading using modbus. Notice that the unitID is contained in the href as the 
+        first element of the path. 
+        <pre id="example-read-coil" class="example" title="Read a single coil">
+            {
+                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "op": [
+                    "readproperty"
+                ],
+                "modbus:function": "readCoil",
+                "modbus:offset": 1
+            }
+        </pre>
+        To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
+        a short description of the modbus endpoint.
+        <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
+                    {
+                        "href": "modbus+tcp://127.0.0.1:60000/1",
+                        "op": [
+                            "readproperty",
+                            "writeproperty"
+                        ],
+                        "modbus:entity": "Coil",
+                        "modbus:offset": 1
+                    }
+        </pre>
+        A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
+        <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "readproperty",
+                                ],
+                                "modbus:function": "readCoil",
+                                "modbus:offset": 1
+                            },
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "writeproperty",
+                                ],
+                                "modbus:function": "writeCoil",
+                                "modbus:offset": 1
+                            },
+        </pre>
+        Reducing effectively the verbosity of a TD. 
+
+        Thanks to the expressiveness of the modbus ontology users can describe also the total 
+        number of registries read or wrote in a WoT operation. [[[#example-read-holding]]] shows how to read or write 
+        8 HoldingRegisters. 
+        <pre id="example-read-holding" class="example" title="Read 8 holding registers">
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "readproperty",
+                                    "writeproperty"
+                                ],
+                                "modbus:entity": "HoldingRegister",
+                                "modbus:offset": 40001,
+                                "modbus:length": 8
+                            }
+                </pre>
+        When possible WoT consumers will use modbus features to read the desired amount of data with a single
+        protocol request. However, it may be possible to still specify a total length for modbus operations
+        that do not support reading or writing on a range of registers (see [[[#example-read-coil-range]]]). 
+        In these circumstances consumers will perform different requests to satisfy the configuration requirements. 
+        <pre id="example-read-coil-range" class="example" title="Read and write 8 single coils with one form">
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "readproperty",
+                                    "writeproperty"
+                                ],
+                                "modbus:entity": "Coil",
+                                "modbus:offset": 1,
+                                "modbus:length": 8
+                            }
+                </pre>
+        Another notable configuration of a form using the modbus vocabulary is the polling mechanism. Thanks
+        to the keyword <code>pollingTime</code> the user can indicate the intervals for observing a particular
+        set of registers. Supposing that the device knows that the value of coil register 1 does change every 
+        1000 ms, in [[[#example-polling]]], it suggest that the polling time should not be faster than 10 ms. WoT 
+        consumers may still create requests faster than the specified time but it should be taken as a reasonable
+        default for observing a property. 
+        <pre  id="example-polling" class="example" title="A complete TD example">
+            {
+                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "op": [
+                    "observeproperty"
+                ],
+                "modbus:entity": "Coil",
+                "modbus:pollingTime: 1000,
+                "modbus:offset": 1
+            }
+        </pre>
+        Finally, [[[#full-td]]] shows a complete device described using modbus ontology.
+        <pre id="full-td" class="example" title="A complete TD example">
                 {
                   "@context": [
                       "https://www.w3.org/2019/wot/td/v1",

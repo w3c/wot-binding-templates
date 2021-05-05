@@ -43,6 +43,7 @@ template :formTerms(?ns ?prefix){
 }where {
      ?o a owl:ObjectProperty ;
         rdfs:domain ?request ;
+        binding:assignment ?assignment;
         rdfs:range ?range ;
         rdfs:comment ?desc .
     bind(IRI(CONCAT(STR( ?ns),"#Request")) as ?request)

@@ -19,6 +19,19 @@
     rdfs:comment "Vocabulary to map MODBUS concepts to the standard Thing Interaction model."@en ;
     rdfs:label "Modbus protocol binding"@en .
     
+	# Assigments
+	modbus:entity binding:assignment binding:optional .
+	modbus:firstDWordLow binding:assignment binding:optional .
+	modbus:firstWordLow binding:assignment binding:optional .
+	modbus:function binding:assignment binding:optional .
+	modbus:length binding:assignment binding:optional .
+	modbus:offset binding:assignment binding:required .
+	modbus:pollingTime binding:assignment binding:optional .
+	modbus:timeout binding:assignment binding:optional .
+	modbus:unitID binding:assignment binding:optional .
+	modbus:zeroBasedAddressing binding:assignment binding:optional .
+
+
     # Default mappings
 	
     binding:readproperty binding:mapped _:readMapping.

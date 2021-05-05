@@ -92,7 +92,6 @@ _:jakob a schema:Person ;
 					rdfs:isDefinedBy <> ;
 					rdfs:comment "Function Code sent by the master in every request. Specifying the desired interaction."@en ;
 					rdfs:label "Function"@en ;
-					binding:assignment binding:optional;
 					rdfs:domain :Request ;
 					rdfs:range :FunctionCode, :FunctionName .
 
@@ -100,7 +99,6 @@ _:jakob a schema:Person ;
 					rdfs:isDefinedBy <> ;
 					rdfs:comment "A registry type to let the runtime automatically detect the right function code"@en ;
 					rdfs:label "Entity"@en ;
-					binding:assignment binding:optional;
 					rdfs:domain :Request ;
 					rdfs:range :Entity .
 	
@@ -125,7 +123,6 @@ _:jakob a schema:Person ;
 	:length rdf:type owl:ObjectProperty ;
 			rdfs:comment "Specifies the amount of either registers or coils to be read/written"@en ;
 			rdfs:label "Length of requested registers/coils"@en ;
-			binding:assignment binding:optional;
 			rdfs:range xsd:integer ;
 			rdfs:domain :Request .
 
@@ -139,7 +136,6 @@ _:jakob a schema:Person ;
 	:unitID rdf:type owl:ObjectProperty;
 			rdfs:label "UnitID"@en ;
 			rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included";
-			binding:assignment binding:optional;
 			rdfs:range xsd:integer ;
 			rdfs:domain :Request .
 	
@@ -157,29 +153,25 @@ _:jakob a schema:Person ;
 	
 	:firstWordLow rdf:type owl:ObjectProperty;
 				  rdfs:range xsd:boolean ;
-				  rdfs:domain :Request ;
-				  binding:assignment binding:optional;
+				  rdfs:domain :Request ;		  
 				  rdfs:label "First Word Low Flag"@en;
 				  rdfs:comment "Data encoding for 32-bit values to chose which of the register is the low value"@en.
 	
 	:firstDWordLow  rdf:type owl:ObjectProperty;
 					rdfs:range xsd:boolean ;
 					rdfs:domain :Request ;
-					binding:assignment binding:optional;
 					rdfs:label "First DoubleWord Low Flag"@en;
 					rdfs:comment "Data encoding for 64-bit values; same as firstWordLow but based on DWORDS (i.e. 2 registers) instead of WORDS (1 register)"@en.
 	
 	:zeroBasedAddressing rdf:type owl:ObjectProperty;
 						 rdfs:label "Zero Based Addressing Flag"@en;
 						 rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as '0' or '1'. Default is '0'."@en;
-						 binding:assignment binding:optional;
 						 rdfs:range xsd:boolean ;
 						 rdfs:domain :Request .
 	
 	:pollingTime         rdf:type owl:ObjectProperty;
 						 rdfs:label "Modbus TCP maximum polling rate"@en;
 						 rdfs:comment "The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.";
-						 binding:assignment binding:optional;
 						 rdfs:range xsd:integer ;
 						 rdfs:domain :Request;
 						 om:usesUnit om:milliseconds.
@@ -187,7 +179,6 @@ _:jakob a schema:Person ;
 	:timeout         rdf:type owl:ObjectProperty;
 						 rdfs:label "Modbus response maximum waiting time"@en;
 						 rdfs:comment "Defines how much time the runtime should wait until it receives a reply from the device.";
-						 binding:assignment binding:optional;
 						 rdfs:range xsd:integer ;
 						 rdfs:domain :Request;
 						 om:usesUnit om:milliseconds.

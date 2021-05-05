@@ -16,6 +16,9 @@ template :modbus {
         <file://./bindings/modbus/index.template.html>
         st:call-template(:formTerms, ?modbusBase, ?prefix)
         st:call-template(:mappings, ?modbusBase, ?prefix)
+        st:call-template(:entityValues, ?modbusBase, ?prefix)
+        st:call-template(:codeValues, ?modbusBase, ?prefix)
+        st:call-template(:nameValues, ?modbusBase, ?prefix)
     }
 }  where {
     ?mappings a owl:Ontology ;
@@ -69,4 +72,73 @@ template :mappings(?ns ?prefix){
      ?mapping binding:mappedProperty ?type;
           binding:mappedValue ?value .
     
+}
+
+template :entityValues(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+        <tr>
+        """
+        strafter(?op,"#")
+        ?desc
+       
+    }
+}where {
+     ?op rdf:type ?entity;
+         rdf:type  owl:NamedIndividual;
+         rdfs:label ?label;
+         rdfs:comment ?desc
+    
+    bind(IRI(CONCAT(STR( ?ns),"#Entity")) as ?entity)
+}
+
+template :codeValues(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+            <td>%s</td>
+        <tr>
+        """
+        strafter(?op,"#")
+        ?label
+        ?desc
+       
+    }
+}where {
+     ?op rdf:type ?funcode;
+         rdf:type  owl:NamedIndividual;
+         rdfs:label ?label;
+         rdfs:comment ?desc
+    
+    bind(IRI(CONCAT(STR( ?ns),"#FunctionCode")) as ?funcode)
+}
+
+template :nameValues(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td><code>%s</code</td>
+            <td>%s</td>
+        <tr>
+        """
+        strafter(?op,"#")
+        strafter(?code,"#")
+        ?desc
+       
+    }
+}where {
+     ?op rdf:type ?funcode;
+         rdf:type  owl:NamedIndividual;
+         rdfs:label ?label;
+         rdfs:comment ?desc;
+         ?funcodeProp ?code
+    
+    bind(IRI(CONCAT(STR( ?ns),"#FunctionName")) as ?funcode)
+    bind(IRI(CONCAT(STR( ?ns),"#functionCode")) as ?funcodeProp)
 }

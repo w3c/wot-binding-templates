@@ -74,21 +74,66 @@
         </section>
         <section>
             <h3>Entity</h3>
-            <p class="ednote">TODO:provide a developer oriented explanation of modbus:Entity. 
-                Possibly list all the admitted values.
+            <p class="ednote"> the following is just a draft description of the Entity class
             </p>
+            A more user-friendly property to specify [[[#functioncode]]] or [[[#functionname]]]. The client will then determine the right function code to be applied in
+            the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modv:function</code> cannot (See the
+            [[[#example-read-coil-entity]]])
+            
+            <table class="def" title="Entity values">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate possible values of the entity class-->
+                    %s
+                </tbody>
+            </table>
+            <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of <code>modv:function</code> property is ignored.
         </section>
         <section id="functioncode">
             <h3>Function Code</h3>
-            <p class="ednote">TODO:provide a developer oriented explanation of modbus:FunctionCode 
-                Possibly list all the admitted values.
+            <p class="ednote"> the following is just a draft description of the Function Code class
             </p>
+            Function Code class represent the value of the function field in a Modbus frame. The 
+            following table list the supported codes and their description:
+            <table class="def" title="Entity values">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Label</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate possible values of the function codes-->
+                    %s
+                </tbody>
+            </table>
         </section>
         <section id="functionname">
             <h3>Function Name</h3>
-            <p class="ednote">TODO:provide a developer oriented explanation of modbus:FunctionName
-                Possibly list all the admitted values.
+            <p class="ednote">The following is just a draft description of the Function Name class
             </p>
+            This class rapresents a mapping between [[[#functioncode]]] and the most accepted label for the 
+            corresponding operation.The following table contains the values assiagnable to Function Name toghert
+            with the reference their [[[#functioncode]]].
+            <table class="def" title="Entity values">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Function Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate possible values of the function Name-->
+                    %s
+                </tbody>
+            </table>
         </section>
     </section>
     <section>

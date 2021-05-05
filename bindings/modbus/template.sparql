@@ -30,12 +30,13 @@ template :formTerms(?ns ?prefix){
         <tr>
             <td><code>%s</code></td>
             <td>%s</td>
-            <td></td>
+            <td>%s</td>
             <td><a href=\"%s\">%s</a></td>
         <tr>
         """
         replace(?o,concat(?ns,"#"),concat(?prefix,":"),"g")
         ?desc
+        strafter(?assignment,"#")
         if(strstarts(?range,str(?ns)), lcase(replace(?range, ?ns,"","g")),?range )
         strafter(?range,"#")
     }

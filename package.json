@@ -5,8 +5,8 @@
     "main": "render.js",
     "watch":{
         "build" : {
-            "patterns": ["bindings/modbus"],
-            "extensions": "ttl,template.html,sparql"
+            "patterns": ["bindings/modbus","ontology"],
+            "extensions": "ttl,template.html,sparql,rq"
         }
     },
     "scripts": {

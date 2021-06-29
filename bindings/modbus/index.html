@@ -62,7 +62,7 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
-            <td><code>modv:offset</code></td>
+            <td><code>modbus:offset</code></td>
             <td>Specifies the starting address of the modbus operations</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -71,7 +71,7 @@
         
 
         <tr>
-            <td><code>modv:timeout</code></td>
+            <td><code>modbus:timeout</code></td>
             <td>Defines how much time the runtime should wait until it receives a reply from the device.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -80,7 +80,7 @@
         
 
         <tr>
-            <td><code>modv:zeroBasedAddressing</code></td>
+            <td><code>modbus:zeroBasedAddressing</code></td>
             <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as '0' or '1'. Default is '0'.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -89,7 +89,7 @@
         
 
         <tr>
-            <td><code>modv:length</code></td>
+            <td><code>modbus:length</code></td>
             <td>Specifies the amount of either registers or coils to be read/written</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -98,7 +98,7 @@
         
 
         <tr>
-            <td><code>modv:pollingTime</code></td>
+            <td><code>modbus:pollingTime</code></td>
             <td>The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -107,7 +107,7 @@
         
 
         <tr>
-            <td><code>modv:entity</code></td>
+            <td><code>modbus:entity</code></td>
             <td>A registry type to let the runtime automatically detect the right function code</td>
             <td>optional</td>
             <td><a href="#entity">Entity</a></td>
@@ -116,7 +116,7 @@
         
 
         <tr>
-            <td><code>modv:function</code></td>
+            <td><code>modbus:function</code></td>
             <td>Function Code sent by the master in every request. Specifying the desired interaction.</td>
             <td>optional</td>
             <td><a href="#functioncode">FunctionCode</a></td>
@@ -125,7 +125,7 @@
         
 
         <tr>
-            <td><code>modv:function</code></td>
+            <td><code>modbus:function</code></td>
             <td>Function Code sent by the master in every request. Specifying the desired interaction.</td>
             <td>optional</td>
             <td><a href="#functionname">FunctionName</a></td>
@@ -149,43 +149,43 @@
                     
         <tr>
             <td><code>readproperty</code></td>
-            <td><code>"modv:function": "readCoil"</code></td>
+            <td><code>"modbus:function": "readCoil"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writeproperty</code></td>
-            <td><code>"modv:function": "writeSingleCoil"</code></td>
+            <td><code>"modbus:function": "writeSingleCoil"</code></td>
         <tr>
         
 
         <tr>
             <td><code>invokeaction</code></td>
-            <td><code>"modv:function": "writeSingleCoil"</code></td>
+            <td><code>"modbus:function": "writeSingleCoil"</code></td>
         <tr>
         
 
         <tr>
             <td><code>readallproperties</code></td>
-            <td><code>"modv:function": "readHoldingRegisters"</code></td>
+            <td><code>"modbus:function": "readHoldingRegisters"</code></td>
         <tr>
         
 
         <tr>
             <td><code>readmultipleproperties</code></td>
-            <td><code>"modv:function": "readHoldingRegisters"</code></td>
+            <td><code>"modbus:function": "readHoldingRegisters"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writeallproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
+            <td><code>"modbus:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writemultipleproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
+            <td><code>"modbus:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
                 </tbody>

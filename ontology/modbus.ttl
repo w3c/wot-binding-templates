@@ -17,7 +17,7 @@
 <> 	rdf:type owl:Ontology ;					
 	rdfs:label "Modbus in RDF"@en;
 	rdfs:comment "Vocabulary to represent Modbus messages in RDF."@en ;
-	vann:preferredNamespacePrefix "modv" ;
+	vann:preferredNamespacePrefix "modbus" ;
    	vann:preferredNamespaceUri : ;
 	dct:author _:jakob;
 	dct:contributor _:jakob .

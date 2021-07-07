@@ -1,0 +1,46 @@
+{
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "modbusForm": {
+            "type": "object",
+            "properties": {
+                "modbus:pollingTime": {
+                    "type": "number"
+                }
+            }
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/modbusForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        },
+        "lama": {
+            "$ref": "#/definitions/affordance"
+        }
+    }
+}

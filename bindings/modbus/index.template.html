@@ -32,7 +32,11 @@
 
 <body>
     <section id='abstract'>
-        <p class="ednote">TODO:</p>
+        <p class="ednote">TODO: Provide a short overview of the document and the protocol binding features.</p>
+    </section>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p class="ednote">TODO: Introduce the protocol binding and its peculiarities within the Web of Things. </p>
     </section>
     <section id='sotd'>
         <p>
@@ -45,7 +49,7 @@
             modbus+tcp://{address}:{port}/{?unitID}
         </pre>
     </section>
-    <section>
+    <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
         <section>
             <h3>Form terms</h3>
@@ -60,21 +64,6 @@
                 </thead>
                 <tbody>
                     <!-- Generate forms terms from the ontology-->
-                    %s
-                </tbody>
-            </table>
-        </section>
-        <section>
-            <h3>Default mappings</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Operation</th>
-                        <th>Default Biding</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Generate mappings from the mapping ontology -->
                     %s
                 </tbody>
             </table>
@@ -141,6 +130,28 @@
                     %s
                 </tbody>
             </table>
+        </section>
+    </section>
+    <section id="mapppings">
+        <h2>Mappings</h2>
+        <section id="defautl-mappings">
+            <h3>Default mappings</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default Biding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate mappings from the mapping ontology -->
+                    %s
+                </tbody>
+            </table>
+        </section>
+        <section id="possible-mappings">
+            <h3>Possible mappings</h3>
+            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is meant to be informative but it provides guidelines for implementers.</p>
         </section>
     </section>
     <section>

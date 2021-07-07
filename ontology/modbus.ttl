@@ -90,7 +90,7 @@ _:jakob a schema:Person ;
 	
 	:function   rdf:type owl:ObjectProperty ;
 					rdfs:isDefinedBy <> ;
-					rdfs:comment "Function Code sent by the master in every request. Specifying the desired interaction."@en ;
+					rdfs:comment "Function Code sent by the client in every request. Specifying the desired interaction."@en ;
 					rdfs:label "Function"@en ;
 					rdfs:domain :Request ;
 					rdfs:range :FunctionCode, :FunctionName .
@@ -104,7 +104,7 @@ _:jakob a schema:Person ;
 	
 	
 	:responseCode rdf:type owl:ObjectProperty ;
-				  rdfs:comment "Response Code returned by the slave after a request"@en ;
+				  rdfs:comment "Response Code returned by the server after a request"@en ;
 				  rdfs:label "Response Code"@en ;
 				  rdfs:isDefinedBy <> ;
 				  rdfs:domain :Response ;			  
@@ -329,23 +329,23 @@ _:jakob a schema:Person ;
 	
 	<https://www.w3.org/2019/wot/modbus/errorCode#01>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
-			rdfs:comment "Function code received in the query is not recognized or allowed by slave"@en;
+			rdfs:comment "Function code received in the query is not recognized or allowed by server"@en;
 			rdfs:label "ILLEGAL FUNCTION"@en .
 	
 	<https://www.w3.org/2019/wot/modbus/errorCode#02>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
-			rdfs:comment "Data address of some or all the required entities are not allowed or do not exist in slave"@en ;
+			rdfs:comment "Data address of some or all the required entities are not allowed or do not exist in server"@en ;
 			rdfs:label "ILLEGAL DATA ADDRESS"@en .
 	
 	<https://www.w3.org/2019/wot/modbus/errorCode#03>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
-			rdfs:comment "Value is not accepted by slave"@en ;
+			rdfs:comment "Value is not accepted by server"@en ;
 			rdfs:label "ILLEGAL DATA VALUE"@en .
 	
 	<https://www.w3.org/2019/wot/modbus/errorCode#04>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
-			rdfs:label "SLAVEDEVICE FAILURE" ;
-			rdfs:comment "An unrecoverable error occurred while the slave was attempting to perform the requested action"@en .
+			rdfs:label "serverDEVICE FAILURE" ;
+			rdfs:comment "An unrecoverable error occurred while the server was attempting to perform the requested action"@en .
 			
 	<https://www.w3.org/2019/wot/modbus/errorCode#05>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;
@@ -354,5 +354,5 @@ _:jakob a schema:Person ;
 	
 	<https://www.w3.org/2019/wot/modbus/errorCode#06>   rdf:type    owl:NamedIndividual ,
 						:ResponseCode ;                         
-			rdfs:comment "Slave is engaged in processing a long-duration command. Master should retry later "@en ;
-			rdfs:label "SLAVEDEVICE BUISY"@en .
+			rdfs:comment "Server is engaged in processing a long-duration command. Client should retry later "@en ;
+			rdfs:label "ServerDEVICE BUISY"@en .

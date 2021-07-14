@@ -1,0 +1,47 @@
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "modbus":"https://www.w3.org/2019/wot/modbus#",
+        "offset": {
+            "@id": "modbus:offset",
+            "@type": "xsd:integer"
+        },
+        "timeout" : {
+            "@id": "modbus:timeout",
+            "@type": "xsd:integer"
+        }, 
+        "zeroBasedAddressing" : {
+            "@id": "modbus:zeroBasedAddressing",
+            "@type": "xsd:integer"
+        }, 
+        "length" : {
+            "@id": "modbus:length",
+            "@type": "xsd:integer"
+        }, 
+        "pollingTime" : {
+            "@id": "modbus:pollingTime",
+            "@type": "xsd:integer"
+        }, 
+        "entity" : {
+            "@id": "modbus:entity",
+            "@type": "@vocab"
+        }, 
+        "function" : {
+            "@id": "modbus:function",
+            "@type": "@vocab"
+        },
+        "Coil": "modbus:Coil",
+        "DiscreteInput" : "modbus:DiscreteInput",
+        "HoldingRegister": "modbus:HoldingRegister",
+        "InputRegister": "modbus:InputRegister",
+        "readCoil": "modbus:readCoil",
+        "readDiscreteInput": "modbus:readDiscreteInput",
+        "readHoldingRegister" : "modbus:readHoldingRegister",
+        "readInputRegister": "modbus:readInputRegister",
+        "writeSingleCoil": "modbus:writeSingleCoil",
+        "writeMultipleCoils": "modbus:writeMultipleCoils",
+        "writeMultipleHoldingRegister": "modbus:writeMultipleHoldingRegister",
+        "writeSingleHoldingRegister" : "modbus:writeSingleHoldingRegister"
+
+    }
+}

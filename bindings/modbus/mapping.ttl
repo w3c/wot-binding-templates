@@ -1,0 +1,113 @@
+@prefix : <https://www.w3.org/ns/wot/binding/modbus-validation#> .
+@prefix td: <https://www.w3.org/ns/wot/td#> .
+@prefix wotsec: <https://www.w3.org/2019/wot/security#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix modbus: <https://www.w3.org/2019/wot/modbus#> .
+@prefix binding: <https://www.w3.org/2019/wot/binding#> .
+@base <https://www.w3.org/ns/wot/binding/modbus-validation#> .
+
+<> rdf:type owl:Ontology ;
+    owl:imports <https://www.w3.org/2019/wot/modbus> ;
+    vann:preferredNamespacePrefix "modv" ;
+    vann:preferredNamespaceUri : ;
+    rdfs:comment "Vocabulary to map MODBUS concepts to the standard Thing Interaction model."@en ;
+    rdfs:label "Modbus protocol binding"@en .
+
+:ModbusFormShape a sh:NodeShape ;
+    sh:targetClass hctl:Form ;
+	sh:order 1 ; # Used to select the shape
+    sh:closed false ;
+    sh:property [
+        sh:path modbus:entity ;
+		sh:class modbus:Entity ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path modbus:function ;
+		sh:class modbus:FunctionCode , modbus:FunctionName ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path modbus:length ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path modbus:offset ;
+		sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path modbus:pollingTime ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path modbus:timeout ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path modbus:zeroBasedAddressing ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] .
+
+# Default mappings
+
+:ReadModubsPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 2 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:readProperty
+    ], [
+        sh:path modbus:function ;
+        sh:defaultValue modbus:readCoil
+    ] .
+:WriteModubsPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form ;
+    sh:order 3 ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:writeProperty , td:invokeAction
+    ], [
+        sh:path modbus:function ;
+        sh:defaultValue  modbus:writeSingleCoil
+    ] .
+
+:ReadAllModubsPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 4 ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:readAllProperties , td:readMultipleProperties
+    ], [
+        sh:path modbus:function ;
+        sh:defaultValue  modbus:readHoldingRegisters
+    ] .
+:WriteAllModubsPropertyForm a sh:NodeShape ;
+    sh:order 5 ;
+    sh:targetClass hctl:Form ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:writeAllProperties , td:writeMultipleProperties
+    ], [
+        sh:path modbus:function ;
+        sh:defaultValue  modbus:writeMultipleHoldingRegisters
+    ] .

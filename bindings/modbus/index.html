@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [
+                { 
+                    name: "Cristiano Aguzzi", 
+                    w3cid: "105495", 
+                    company: "Invited Expert", 
+                    companyURL: "https://github.com/relu91" 
+                }
+            ],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/modbus",
+            shortName: "wot-modbus-template",
+            otherLinks: [
+                {
+                    key: "Other documentation",
+                    data: [{
+                        value: "MODBUS ontology",
+                        href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                    }]
+                }
+            ]
+        };
+    </script>
+    <title>MODBUS binding template</title>
+</head>
+
+<body>
+    <section id='abstract'>
+        <p class="ednote">TODO: Provide a short overview of the document and the protocol binding features.</p>
+    </section>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p class="ednote">the following is a draft introduction</p>
+        <p>
+            The ModBus is a data communication protocol originally developed by Modicon which is now a part of Schneider Electric.
+            The protocol was specifically designed for the remote management of the hardware devices in the industrial environment.
+            For this reason, it has low level of abstraction and it has built in bit handling capabilities oriented to the direct
+            control of the relays and generic contact statuses.
+            The physical layer it is mainly an RS485 differential bus which has less susceptibility to the EMC interference. This Limit
+            the usability of the protocol in short distance networks, typically within a kilometer. 
+            Due to its age the protocol does not implement any safety system, so usually when wide internet access is needed it is
+            encapsulated in a TCP/IP protocol and with Ethernet as a physical layer. Thanks to this encapsulation strategy, the ModBus protocol
+            can reach remote nodes deployed in distant facilities over the internet. Moreover, in the years due to its simplicity and cost-effectiveness 
+            the ModBus protocol becomes a standard all over the world. This fame together with the advancement of the microcontroller/microprocessor led to 
+            a shift on how applications pack the information. Today it is usual to store and read any type of data in the Holdings Registers like bit,bytes,words, float etc.
+        </p>
+        <p>
+            This document describes how the Web of Things specification can be use to present devices that use the ModBus protocol in a <a>Thing Description</a>. In 
+            particular, the document explain how to create valid URLs and Forms for the different operations that the ModBus protocol can perform. Developers are 
+            encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations. The following sections
+            will cover the URL format, the Vocabulary and a list of Form examples. 
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+    <section id="url">
+        <h2>URL format</h2>
+        <pre>
+            modbus+tcp://{address}:{port}/{?unitID}
+        </pre>
+    </section>
+    <section id="vocabulary">
+        <h2>Modbus Vocabulary</h2>
+        <section>
+            <h3>Form terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+                    
+        <tr>
+            <td><code>modbus:offset</code></td>
+            <td>Specifies the starting address of the modbus operations</td>
+            <td>required</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:timeout</code></td>
+            <td>Defines how much time the runtime should wait until it receives a reply from the device.</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:zeroBasedAddressing</code></td>
+            <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as '0' or '1'. Default is '0'.</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:length</code></td>
+            <td>Specifies the amount of either registers or coils to be read/written</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:pollingTime</code></td>
+            <td>The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:entity</code></td>
+            <td>A registry type to let the runtime automatically detect the right function code</td>
+            <td>optional</td>
+            <td><a href="#entity">Entity</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:function</code></td>
+            <td>Function Code sent by the client in every request. Specifying the desired interaction.</td>
+            <td>optional</td>
+            <td><a href="#functioncode">FunctionCode</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:function</code></td>
+            <td>Function Code sent by the client in every request. Specifying the desired interaction.</td>
+            <td>optional</td>
+            <td><a href="#functionname">FunctionName</a></td>
+
+        <tr>
+        
+                </tbody>
+            </table>
+        </section>
+        <section id="entity">
+            <h3>Entity</h3>
+            <p class="ednote"> the following is just a draft description of the Entity class
+            </p>
+            A more user-friendly property to specify [[[#functioncode]]] or [[[#functionname]]]. The client will then determine the right function code to be applied in
+            the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modv:function</code> cannot (See the
+            [[[#example-read-coil-entity]]])
+            
+            <table class="def" title="Entity values">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate possible values of the entity class-->
+                    
+        <tr>
+            <td><code>Coil</code></td>
+            <td>Represent a modbus coil register.  These entities can be read or written</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>DiscreteInput</code></td>
+            <td>Represent a modbus discrete input. These entities can only be read</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>HoldingRegister</code></td>
+            <td>Represent a modbus holding register.  These entities can be read or written</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>InputRegister</code></td>
+            <td>Represent a modbus input register. These entities can only be read</td>
+        <tr>
+        
+                </tbody>
+            </table>
+            <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of <code>modv:function</code> property is ignored.
+        </section>
+        <section id="functioncode">
+            <h3>Function Code</h3>
+            <p class="ednote"> the following is just a draft description of the Function Code class
+            </p>
+            Function Code class represent the value of the function field in a Modbus frame. The 
+            following table list the supported codes and their description:
+            <table class="def" title="Entity values">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Label</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate possible values of the function codes-->
+                    
+        <tr>
+            <td><code>1</code></td>
+            <td>Read Single Coils</td>
+            <td>Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>15</code></td>
+            <td>Write Multiple Coils</td>
+            <td>Write Multiple Physical Coils (internal bits). Address range 00001-09999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>16</code></td>
+            <td>Write Multiple Holding Registers</td>
+            <td>Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>2</code></td>
+            <td>Read Discrete Inputs</td>
+            <td>Read Physical Discrete Inputs (bit access). Address range 10001-19999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>3</code></td>
+            <td>Read Multiple Holding Registers</td>
+            <td>Read Multiple Holding Registers (16 bit access). Address range 40001-49999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>4</code></td>
+            <td>Read Multiple Input Registers</td>
+            <td>Read Multiple Physica Input Registers (16 bits). Address range 30001-39999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>43</code></td>
+            <td>Read Device Identification</td>
+            <td>Read Device Identification for diagnostic purposes. Avaiable in the majority of Modbus implementations</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>5</code></td>
+            <td>Write Single Coil</td>
+            <td>Write Single Physical Coil (internal bit). Address range 00001-09999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>6</code></td>
+            <td>Write Single HoldingRegister</td>
+            <td>Write Single HoldingRegister (internal bits). Address range 40001-49999</td>
+        <tr>
+        
+                </tbody>
+            </table>
+        </section>
+        <section id="functionname">
+            <h3>Function Name</h3>
+            <p class="ednote">The following is just a draft description of the Function Name class
+            </p>
+            This class rapresents a mapping between [[[#functioncode]]] and the most accepted label for the 
+            corresponding operation.The following table contains the values assiagnable to Function Name toghert
+            with the reference their [[[#functioncode]]].
+            <table class="def" title="Entity values">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Function Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate possible values of the function Name-->
+                    
+        <tr>
+            <td><code>readCoil</code></td>
+            <td><code>1</code</td>
+            <td>Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>readDiscreteInput</code></td>
+            <td><code>2</code</td>
+            <td>Read Physical Discrete Inputs (bit access). Address range 10001-19999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>readHoldingRegisters</code></td>
+            <td><code>3</code</td>
+            <td>Read Multiple Holding Registers (16 bit access). Address range 40001-49999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>readInputRegisters</code></td>
+            <td><code>4</code</td>
+            <td>Read Multiple Physical Input Registers (16 bits). Address range 30001-39999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeMultipleCoils</code></td>
+            <td><code>15</code</td>
+            <td>Write Multiple Physical Coils (internal bits). Address range 00001-09999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeMultipleHoldingRegisters</code></td>
+            <td><code>16</code</td>
+            <td>Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeSingleCoil</code></td>
+            <td><code>5</code</td>
+            <td>Write Single Physical Coil (internal bit). Address range 00001-09999</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeSingleHoldingRegister</code></td>
+            <td><code>6</code</td>
+            <td>Write Single HoldingRegister (internal bits). Address range 40001-49999</td>
+        <tr>
+        
+                </tbody>
+            </table>
+        </section>
+    </section>
+    <section id="mapppings">
+        <h2>Mappings</h2>
+        <p>This section describes strategies and default values to employ protocol specific concepts within the <a>WoT Interaction
+        model</a>. </p>
+        <section id="defautl-mappings">
+            <h3>Default mappings</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default Biding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate mappings from the mapping ontology -->
+                    
+        <tr>
+            <td><code>readproperty</code></td>
+            <td><code>"modbus:function": "readCoil"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeproperty</code></td>
+            <td><code>"modbus:function": "writeSingleCoil"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>invokeaction</code></td>
+            <td><code>"modbus:function": "writeSingleCoil"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>readallproperties</code></td>
+            <td><code>"modbus:function": "readHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>readmultipleproperties</code></td>
+            <td><code>"modbus:function": "readHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeallproperties</code></td>
+            <td><code>"modbus:function": "writeMultipleHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writemultipleproperties</code></td>
+            <td><code>"modbus:function": "writeMultipleHoldingRegisters"</code></td>
+        <tr>
+        
+                </tbody>
+            </table>
+        </section>
+        <section id="possible-mappings">
+            <h3>Possible mappings</h3>
+            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is meant to be informative but it provides guidelines for implementers.</p>
+        </section>
+    </section>
+    <section>
+        <h2>Examples</h2>
+        This section will present a set of examples about how the terms defined in this document can be used
+        to describe and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimal set of terms 
+        to configure a single coil reading using modbus. Notice that the unitID is contained in the href as the 
+        first element of the path. 
+        <pre id="example-read-coil" class="example" title="Read a single coil">
+            {
+                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "op": [
+                    "readproperty"
+                ],
+                "modbus:function": "readCoil",
+                "modbus:offset": 1
+            }
+        </pre>
+        To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
+        a short description of the modbus endpoint.
+        <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
+                    {
+                        "href": "modbus+tcp://127.0.0.1:60000/1",
+                        "op": [
+                            "readproperty",
+                            "writeproperty"
+                        ],
+                        "modbus:entity": "Coil",
+                        "modbus:offset": 1
+                    }
+        </pre>
+        A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
+        <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "readproperty",
+                                ],
+                                "modbus:function": "readCoil",
+                                "modbus:offset": 1
+                            },
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "writeproperty",
+                                ],
+                                "modbus:function": "writeCoil",
+                                "modbus:offset": 1
+                            },
+        </pre>
+        Reducing effectively the verbosity of a TD. 
+
+        Thanks to the expressiveness of the modbus ontology users can describe also the total 
+        number of registries read or wrote in a WoT operation. [[[#example-read-holding]]] shows how to read or write 
+        8 HoldingRegisters. 
+        <pre id="example-read-holding" class="example" title="Read 8 holding registers">
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "readproperty",
+                                    "writeproperty"
+                                ],
+                                "modbus:entity": "HoldingRegister",
+                                "modbus:offset": 40001,
+                                "modbus:length": 8
+                            }
+                </pre>
+        When possible WoT consumers will use modbus features to read the desired amount of data with a single
+        protocol request. However, it may be possible to still specify a total length for modbus operations
+        that do not support reading or writing on a range of registers (see [[[#example-read-coil-range]]]). 
+        In these circumstances consumers will perform different requests to satisfy the configuration requirements. 
+        <pre id="example-read-coil-range" class="example" title="Read and write 8 single coils with one form">
+                            {
+                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "op": [
+                                    "readproperty",
+                                    "writeproperty"
+                                ],
+                                "modbus:entity": "Coil",
+                                "modbus:offset": 1,
+                                "modbus:length": 8
+                            }
+                </pre>
+        Another notable configuration of a form using the modbus vocabulary is the polling mechanism. Thanks
+        to the keyword <code>pollingTime</code> the user can indicate the intervals for observing a particular
+        set of registers. Supposing that the device knows that the value of coil register 1 does change every 
+        1000 ms, in [[[#example-polling]]], it suggest that the polling time should not be faster than 10 ms. WoT 
+        consumers may still create requests faster than the specified time but it should be taken as a reasonable
+        default for observing a property. 
+        <pre  id="example-polling" class="example" title="A complete TD example">
+            {
+                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "op": [
+                    "observeproperty"
+                ],
+                "modbus:entity": "Coil",
+                "modbus:pollingTime: 1000,
+                "modbus:offset": 1
+            }
+        </pre>
+        Finally, [[[#full-td]]] shows a complete device described using modbus ontology.
+        <pre id="full-td" class="example" title="A complete TD example">
+                {
+                  "@context": [
+                      "https://www.w3.org/2019/wot/td/v1",
+                      {
+                          "modv": "https://www.example.com/ns/modbustcp"
+                      }
+                  ],
+                  "title": "ModbusPLC",
+                  "description": "An industrial machine, retrofitted to be IoT capable.",
+                  "id": "uri:dev:ModbusTCPThing",
+                  "securityDefinitions": {
+                      "nosec_sc": {
+                          "scheme": "nosec"
+                      }
+                  },
+                  "security": "nosec_sc",
+              
+                  "base": "",
+                  "properties": {
+                      "limitSwitch1": {
+                          "title": "downLimitSwitch",
+                          "type": "boolean",
+                          "description": "Limit switch moving downwards",
+                          "forms": [
+                              {
+                                  "op": "readproperty",
+                                  "href": "modbus+tcp://192.168.178.32:502/10003",
+                                  "modv:function": "2",
+                                  "modv:length": 1,
+                                  "modv:offset": "10003",
+                                  "modv:unitID": "1",
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      },
+                      "limitSwitch2": {
+                          "title": "forwardLimitSwitch",
+                          "type": "boolean",
+                          "description": "Limit Switch moving forward",
+                          "forms": [
+                              {
+                                  "op": "readproperty",
+                                  "href": "modbus+tcp://192.168.178.32:502/10002",
+                                  "modv:function": "readDiscreteInput",
+                                  "modv:length": 1,
+                                  "modv:offset": "10002",
+                                  "modv:unitID": "1",
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      },
+                      "moveDown": {
+                          "title": "moveDown",
+                          "type": "boolean",
+                          "description": "Down Motor Status (single coil). PLC output, can be written to control the motor.",
+                          "forms": [
+                              {
+                                  "op": [
+                                      "writeproperty",
+                                      "observeproperty",
+                                      "readproperty"
+                                  ],
+                                  "href": "modbus+tcp://192.168.178.32:502/00006",
+                                  "modv:entity": "Coil",
+                                  "modv:length": 1,
+                                  "modv:offset": "00006",
+                                  "modv:unitID": "1",
+                                  "modv:pollingTime": 100,
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      },
+                      "moveForward": {
+                          "title": "moveForward",
+                          "type": "boolean",
+                          "description": "Forward Motor Status (single coil). PLC output, can be written to control the motor.",
+                          "forms": [
+                              {
+                                   "op": [
+                                      "writeproperty",
+                                      "observeproperty",
+                                      "readproperty"
+                                  ],
+                                  "href": "modbus+tcp://192.168.178.32:502/00003",
+                                  "modv:entity": "Coil",
+                                  "modv:length": 1,,
+                                  "modv:offset": "00003",
+                                  "modv:unitID": "1",
+                                  "modv:pollingRate": 100,
+                                  "contentType": "application/octet-stream"
+                              }
+                          ]
+                      }
+                  }
+              }
+              </pre>
+    </section>
+</body>
+
+</html>

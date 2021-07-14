@@ -1,0 +1,102 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "modbusForm": {
+            "type": "object",
+            "properties": {
+                "modbus:pollingTime": {"type": "number", "minimum": 0},
+                "modbus:entity": {
+                    "type":"string",
+                    "enum": [
+                        "Coil",
+                        "DiscreteInput",
+                        "HoldingRegister",
+                        "InputRegister"
+                    ]
+                },
+                "modbus:functionCode": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        15,
+                        16,
+                        43
+                    ]
+                },
+                "modbus:functionName": {
+                    "type": "number",
+                    "enum": [
+                        "readCoil",
+                        "readDiscreteInput",
+                        "readHoldingRegister",
+                        "readInputRegister",
+                        "writeSingleCoil",
+                        "writeMultipleCoils",
+                        "writeMultipleHoldingRegister",
+                        "writeSingleHoldingRegister"
+                    ]
+                },
+                "modbus:offset" : { "type" : "integer", "minimum": 0},
+                "modbus:length" : { "type": "integer", "minimum": 1},
+                "modbus:zeroBasedAddressing" : { "type" : "boolean"},
+                "modbus:timeout" : { "type": "number", "minimum": 0}
+            },
+            "required": [
+                "modbus:offset"
+            ]
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/modbusForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "array",
+            "contains": {
+                "type": "object",
+                "properties": {
+                    "modbus": {
+                        "type": "string",
+                        "enum": [
+                            "https://www.w3.org/2019/wot/modbus"
+                        ]
+                    }
+                }
+            }
+        },
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        },
+        "lama": {
+            "$ref": "#/definitions/affordance"
+        }
+    }
+}

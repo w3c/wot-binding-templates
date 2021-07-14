@@ -36,7 +36,26 @@
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>
-        <p class="ednote">TODO: Introduce the protocol binding and its peculiarities within the Web of Things. </p>
+        <p class="ednote">the following is a draft introduction</p>
+        <p>
+            The ModBus is a data communication protocol originally developed by Modicon which is now a part of Schneider Electric.
+            The protocol was specifically designed for the remote management of the hardware devices in the industrial environment.
+            For this reason, it has low level of abstraction and it has built in bit handling capabilities oriented to the direct
+            control of the relays and generic contact statuses.
+            The physical layer it is mainly an RS485 differential bus which has less susceptibility to the EMC interference. This Limit
+            the usability of the protocol in short distance networks, typically within a kilometer. 
+            Due to its age the protocol does not implement any safety system, so usually when wide internet access is needed it is
+            encapsulated in a TCP/IP protocol and with Ethernet as a physical layer. Thanks to this encapsulation strategy, the ModBus protocol
+            can reach remote nodes deployed in distant facilities over the internet. Moreover, in the years due to its simplicity and cost-effectiveness 
+            the ModBus protocol becomes a standard all over the world. This fame togheter with the advancament of the microcontroller/microprocesso led to 
+            a shift on how applications pack the information. Today it is usual to store and read any type of data in the Holdings Registers like bit,bytes,words, float etc.
+        </p>
+        <p>
+            This document describes how the Web of Things specification can be use to present devices that use the ModBus protocol in a <a>Thing Description</a>. In 
+            particular, the document explain how to create valid URLs and Forms for the different operations that the ModBus protocol can perform. Developers are 
+            encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations. The following sections
+            will cover the URL format, the Vocabulary and a list of Form examples. 
+        </p>
     </section>
     <section id='sotd'>
         <p>

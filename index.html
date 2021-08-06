@@ -125,14 +125,13 @@
     </p>
     <p>
       Binding Templates enable a Thing Description to be adapted to
-      the specific protocol or data payload usage across the different standards. This is done
-      through additional descriptive vocabulary that is used in the Thing Description.
+      a specific protocol, data payload formats or platforms that combine both in specific ways. 
+      This is done through additional descriptive vocabularies or Thing Models.
     </p>
     <p>
-      This document describes the initial set of vocabulary
-      extensions to the WoT Thing Description that make up the Binding
-      Templates. It is expected over time that additional protocols and payload structures will be
-      accommodated by further extending the Binding Templates.
+      This document acts as the base and explains how other binding templates should be designed.
+      Concrete binding templates are then provided in their respective documents that are linked to
+      from this document.
     </p>
   </section>
 
@@ -153,22 +152,26 @@
   <section>
     <h1>Introduction</h1>
     <p>
-      Binding Templates consist of reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format that enable an application client (a Consumer) to interact, using a consistent interaction model, with Things that expose diverse protocols and protocol usage.
+      Binding Templates consist of multiple specifications that enable an application client (a Consumer) to interact, 
+      using WoT Thing Description[[WOT-THING-DESCRIPTION] (TD), with Things that exhibit diverse protocols, payload formats and their usage. 
+      These multiple specifications are categorized into three:
+      <ul>
+        <li> Protocols: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing Description[[WOT-THING-DESCRIPTION]] via reusable vocabulary and extensions.</li>
+        <li> Payload Formats: Different payload formats and media types [[IANA-MEDIA-TYPES]] which can be represented in a TD.</li>
+        <li> Platforms: Platforms and frameworks who use protocols and payloads in a certain way.</li>
+      </ul>
     </p>
 
-      <p>
-        Binding Templates enable Consumers to adapt to the underlying
-        protocol and network-facing API constructions. Once the base protocol
-        (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) is identified, the following adaptions
-        specify the particular use within the given platform.
-      </p>
-      <p class="ednote" title="Additional Protocol Bindings">
+    that reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format
+
+
+      <!-- <p class="ednote" title="Additional Protocol Bindings">
         This document contains examples of Protocol Bindings for HTTP, CoAP,
         and MQTT. Other protocols may be added following the same design style
         and using payload mappings that can be expressed as JSON compatible
         entities. Future extensions to other payload definition formats are
         also contemplated.
-      </p>
+      </p> -->
 
       <section>
         <h3>Protocol Methods and Options</h3>

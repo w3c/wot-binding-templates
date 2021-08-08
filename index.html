@@ -68,6 +68,13 @@
           publisher: "IANA",
           date: "24 May 2019"
         },
+        "iana-uri-schemes":{
+          href: "https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml",
+          title: "Uniform Resource Identifier (URI) Schemes",
+          status: "",
+          publisher: "IANA",
+          date: "21 July 2021"
+        },
         "MQTT": {
           href: "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html",
           title: "MQTT Version 5.0",
@@ -152,18 +159,19 @@
   <section>
     <h1>Introduction</h1>
     <p>
-      Binding Templates consist of multiple specifications that enable an application client (a Consumer) to interact, 
+      Binding Templates consist of multiple specifications, referred to as a subspecification in this document, that enable an application client (a Consumer) to interact, 
       using WoT Thing Description[[WOT-THING-DESCRIPTION] (TD), with Things that exhibit diverse protocols, payload formats and their usage. 
-      These multiple specifications are categorized into three:
+      These subspecifications are categorized into three:
       <ul>
-        <li> Protocols: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing Description[[WOT-THING-DESCRIPTION]] via reusable vocabulary and extensions.</li>
-        <li> Payload Formats: Different payload formats and media types [[IANA-MEDIA-TYPES]] which can be represented in a TD.</li>
-        <li> Platforms: Platforms and frameworks who use protocols and payloads in a certain way.</li>
+        <li> <a href="#protocols"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing Description[[WOT-THING-DESCRIPTION]] via reusable vocabulary and extensions.</li>
+        <li> <a href="#payload-representation"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which can be represented in a TD.</li>
+        <li> <a href="#platforms"></a>: Platforms and frameworks who combine the use of protocols and payloads in a certain way.</li>
       </ul>
     </p>
 
-    that reusable vocabulary and extensions to the WoT Thing Description[[WOT-THING-DESCRIPTION]] format
-
+    Each subspecification is an independent document that has separate list of authors and publication dates.
+    This document explains what each subspecification should contain given their respective category and also 
+    links to the respective specification.
 
       <!-- <p class="ednote" title="Additional Protocol Bindings">
         This document contains examples of Protocol Bindings for HTTP, CoAP,
@@ -174,7 +182,7 @@
       </p> -->
 
       <section>
-        <h3>Protocol Methods and Options</h3>
+        <h3>Protocols</h3>
         <p>
           Most protocols have a relatively small set of methods that define
           the message type, the semantic intention of the message.
@@ -183,24 +191,87 @@
           Binding Templates describe how these existing methods and vocabularies can be described in a Thing Description.
         </p>
         <p>
-          This is done by mapping the protocol methods to the abstract WoT Interaction Affordance terms
-          <code>readproperty</code>, <code>writeproperty</code>,
-          <code>observeproperty</code>, <code>unobserveproperty</code>, <code>invokeaction</code>,
-          <code>subscribeevent</code>, <code>unsubscribeevent</code>,
-          <code>readallproperties</code>, <code>writeallproperties</code>,
-          <code>readmultipleproperties</code>, <code>writemultipleproperties</code>.
+          This is done by defining the URI scheme of the protocol and mapping the protocol
+           methods to the abstract WoT operations such as <code>readproperty</code>, <code>invokeaction</code> and <code>subscribeevent</code>.
           <!-- modifyAction, cancelAction is still undefined -->
         </p>
-        <p>
+        <!-- <p>
           Possible protocol options are also specified in the Protocol Binding.
           They are used to select transfer modes, to request notifications from
           observable resources, or otherwise extend the semantics of the protocol
           methods.
-        </p>
+        </p> -->
+
+        The table below summarizes the currently specified protocols in their respective subspecification.
+
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Abbreviation</th>
+              <th>Name</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HTTP</td>
+              <td>Hypertext Transfer Protocol</td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>CoAP</td>
+              <td>Constrained Application Protocol</td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>MQTT</td>
+              <td>Message Queuing Telemetry Transport</td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>Modbus</td>
+              <td>Modbus</td>
+              <td><a href="./bindings/protocols/modbus/index.html">Link</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <section>
+          <h4>Creating a new Protocol Binding</h4>
+
+          <p>
+            When creating a new protocol binding subspecification, e.g. based on a new communication protocol,
+            the proposed document should enable implementations of this binding in an interoperable way for 
+            Consumer and Producer implementations.
+            More specifically, each binding MUST specify the following:
+            <ul>
+              <li>
+                <b>URI Scheme:</b> For identification of the used protocol, a standardized URI scheme [[RFC3986]] value MUST be declared in the form of a string. This URI Scheme is used in TDs at top level <code>base</code> or in the <code>href</code> term of the <code>forms</code> container. These can be officially registered ones at IANA [[iana-uri-schemes]] (e.g.  <code>"https://"</code>,  <code>"coap://"</code>) or they can be declared in the protocol subspecification (e.g.  <code>"mqtt://"</code>,  <code>"modbus+tcp://"</code>). How the full URI can be constructed for different affordances (or resources) MUST be specified as well.
+              <li>
+                <b>Mapping to WoT Operations:</b> Most protocols have a set of methods or verbs that adds a meaning to the messages of the protocol.
+                A protocol binding MUST be able to map WoT operation types (<code>readproperty</code>, <code>invokeaction</code>, etc.) to concrete protocol message types or methods. When specifying the mapping, the mapping SHOULD be bidirectional, i.e. it should be clear how to 
+                do a <code>readproperty</code> operation with the given protocol and how an existing implementation's endpoints can be mapped to a WoT operation should be also clear.
+                A vocabulary detailing the operations methods SHOULD be provided to allow semantic annotations of the operations with protocol specific information.
+              </li>
+            </ul>
+
+            <p>
+              A template is also provided for new protocol binding specifications at <a href="https://github.com/w3c/wot-binding-templates/blob/main/bindings/index.template.html">the GitHub Repository.</a> 
+            </p>
+
+        </section>
+
       </section>
 
       <section>
-        <h3>Media Types</h3>
+        <h3>Payload Representation</h3>
+
+
+        Two ways
+        TD uses JS Schema -> use when possible
+        Media Types -> always use it
+
+        <h4>Media Types</h4>
         <p>
           Maximum use should be made of IANA-registered Media Types [[IANA-MEDIA-TYPES]] (e.g.,
           <code>application/json</code>) in order to decouple applications from connected Things. 
@@ -212,10 +283,26 @@
           This way, the documents can be exchanged in any format and allow the upper layers of an application
           to adapt to different formats.
         </p>
-      </section>
 
+        <h4>Data Types and Value Constraints</h4>
+        <p>
+          Simple data types and value constraints are currently used in a layered
+          and descriptive way in [[WOT-THING-DESCRIPTION]]. Additional forms of
+          constraints are available to help adapt to the underlying data types.
+          A platform-specific 8-bit unsigned integer, for instance, can be defined
+          as Integer with a minimum of 0 and maximum of 255; the system-specific
+          representation (e.g., exact number of bits) on the Thing and the Consumer is not
+          relevant for interoperability.
+        </p>
+      </section>
       <section>
-        <h3>Payload Structure</h3>
+        <h3>
+          Platforms
+        </h3>
+
+
+        <h4>Payload Structure</h4>
+        <!-- TODO: Remove? -->
         <p>
           Data serialized to a standard Media Type still remains in a structure
           specific to the platform data model and needs to be understood by
@@ -227,19 +314,8 @@
           structures by nesting of arrays and objects. Constants and
           variable specifications may be intermixed.
         </p>
-      </section>
 
-      <section>
-        <h3>Data Types and Value Constraints</h3>
-        <p>
-          Simple data types and value constraints are currently used in a layered
-          and descriptive way in [[WOT-THING-DESCRIPTION]]. Additional forms of
-          constraints are available to help adapt to the underlying data types.
-          A platform-specific 8-bit unsigned integer, for instance, can be defined
-          as Integer with a minimum of 0 and maximum of 255; the system-specific
-          representation (e.g., exact number of bits) on the Thing and the Consumer is not
-          relevant for interoperability.
-        </p>
+
       </section>
   </section>
 
@@ -265,6 +341,10 @@
       etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
       of the WoT Architecture specification [[WOT-ARCHITECTURE]].
     </p>
+
+  </section>
+
+  <section id="protocols" class="informative">
 
   </section>
 
@@ -1739,7 +1819,7 @@
          </section>
       </section>
       <section id="modbus">
-        <h3><a href="./bindings/modbus/index.html">MODBUS Vocabulary</a></h3>
+        <h3><a href="./bindings/protocols/modbus/index.html">MODBUS Vocabulary</a></h3>
       </section>
       <section>
 

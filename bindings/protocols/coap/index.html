@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [{
+                name: "Michael Koster",
+                w3cid: "110658",
+                company: "SmartThings",
+                companyURL: "https://www.smartthings.com/"
+                },
+                {
+                name: "Ege Korkan",
+                w3cid: "110131",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+                }
+            ],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/coap",
+            shortName: "wot-coap-template",
+            otherLinks: [
+                {
+                    key: "Other documentation",
+                    data: [{
+                        value: "In the GitHub repository",
+                        href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                    }]
+                }
+            ]
+        };
+    </script>
+    <title>CoAP Binding Template</title>
+</head>
+
+<body>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p class="ednote">the following is a draft introduction</p>
+        <p>
+            This document describes how to map the CoAP protocol to the W3C Web of Things.
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+        
+    <section>
+      <h3>CoAP Vocabulary</h3>
+
+      <section>
+      <h4>CoAP Vocabulary Terms</h4>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Vocabulary term</th>
+            <th>Description</th>
+            <th>Assignment</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>cov:methodName</code></td>
+            <td>CoAP method name (Literal).</td>
+            <td>optional</td>
+            <td>
+              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              <p>(one of <code>"GET"</code> (1), <code>"POST"</code> (2), <code>"PUT"</code> (3), <code>"DELETE"</code> (4),
+                <code>"FETCH"</code> (5), <code>"PATCH"</code> (6), <code>"iPATCH"</code> (7))</p>
+            </td>
+          </tr>
+          <tr>
+            <td><code>cov:options</code></td>
+            <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionName": "Accept", "cov:optionValue": 110 }]</code> to observe.</td>
+            <td>optional</td>
+            <td>
+              array of <code>cov:MessageOption</code>
+            </td>
+          </tr>
+          <tr>
+            <td><code>cov:optionName</code></td>
+            <td>Option name (Literal), see <a
+                href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-names">CoRE
+                Parameters</a>.</td>
+            <td>mandatory within <code>cov:MessageOption</code></td>
+            <td>
+              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+            </td>
+          </tr>
+          <tr>
+            <td><code>cov:optionValue</code></td>
+            <td>Header value (Literal).</td>
+            <td>mandatory within <code>cov:MessageOption</code></td>
+            <td>
+              <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h4>CoAP Default Vocabulary Terms</h4>
+      <table class="def">
+        <thead>
+          <tr>
+            <th><code>op</code> value</th>
+            <th>Default Binding</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>readproperty</code></td>
+            <td><code>"cov:methodName": "GET"</code></td>
+          </tr>
+          <tr>
+            <td><code>writeproperty</code></td>
+            <td><code>"cov:methodName": "PUT"</code></td>
+          </tr>
+          <tr>
+            <td><code>observeproperty</code></td>
+            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+          </tr>
+          <tr>
+            <td><code>unobserveproperty</code></td>
+            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+          </tr>
+          <tr>
+            <td><code>invokeaction</code></td>
+            <td><code>"cov:methodName": "POST"</code></td>
+          </tr>
+          <tr>
+            <td><code>subscribeevent</code></td>
+            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+          </tr>
+          <tr>
+            <td><code>unsubscribeevent</code></td>
+            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
+
+          </tr>
+          <tr>
+            <td><code>readallproperties</code></td>
+            <td> <code>"cov:methodName": "GET"</code></td>
+          </tr>
+          <tr>
+            <td><code>writeallproperties</code></td>
+            <td> <code>"cov:methodName": "PUT"</code></td>
+          </tr>
+          <tr>
+            <td><code>readmultipleproperties</code></td>
+            <td> <code>"cov:methodName": "GET"</code></td>
+          </tr>
+          <tr>
+            <td><code>writemultipleproperties</code></td>
+            <td> <code>"cov:methodName": "PUT"</code></td>
+          </tr>
+        </tbody>
+      </table>
+      </section>
+
+      Observing Resources in CoAP should be done as specified in [[!RFC7641]].
+      Since observing and unobserving need to be indicated with the Observe flag in the header, this mechanism can be also described in the <code> cov:options </code> with the value <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code>. 
+      However, this is not enough to describe the mechanism of getting asynchronous updates from the observed resource.
+      Thus, <code>"subprotocol":"cov:observe"</code> is used to indicate the observation mechanism.
+
+      <p class="ednote">
+        As indicated by the <a href="#coap-default-vocabulary-terms" class="sec-ref">CoAP Default Vocabulary Terms</a>, it is recommended to use the <code>subprotocol</code> to describe the observation. Thus, <code> cov:options </code> with the value <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code> MUST NOT be used together with <code>"subprotocol":"cov:observe"</code>, since it can lead to confusion.
+      </p>
+
+    </section>
+
+    <script id="dstimer" language="javascript">
+        //<![CDATA[
+        if (dschk() == 1) {
+          if (typeof (dsSetTimers) != "undefined") {
+            dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
+              1000), 1);
+          }
+        }
+        //]]>
+      </script>
+
+</body>
+
+</html>

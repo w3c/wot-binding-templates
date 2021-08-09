@@ -266,34 +266,71 @@
       <section>
         <h3>Payload Representation</h3>
 
+        Various payloads sent in the messages of protocols can be described in TDs using two mechanisms:
+        <ul>
+          <li>
+            <b>Media Types:</b> Media Types [[IANA-MEDIA-TYPES]] describe the encoding used for sending and receiving the data with a protocol.
+            They are represented with the <code>contentType</code> in the Forms of a TD, which is mandatory for each Interaction Affordance.
+            In some cases such as images, videos or any unstructured data, they are enough to describe the payload.
+            Correct indication of Media Types enables proper processing of the serialized documents.
+            This way, the documents can be exchanged in any format and allow the upper layers of an application to adapt to different formats.
+          </li>
+          <li>
+            <b>Data Schema:</b> The TD specification defines the Data Schema concept to describe the structure of the data payloads. 
+            Even though it is largely inspired by JSON Schema [[json-schema]], it can be used for describing other payload types such as [[XML]], string-encoded images, bit representations of integers, etc.
+            Data Schema SHOULD be used in addition to the media types.
+          </li>
+        </ul>
 
-        Two ways
-        TD uses JS Schema -> use when possible
-        Media Types -> always use it
+        The table below summarizes the currently specified payload formats.
 
-        <h4>Media Types</h4>
-        <p>
-          Maximum use should be made of IANA-registered Media Types [[IANA-MEDIA-TYPES]] (e.g.,
-          <code>application/json</code>) in order to decouple applications from connected Things. 
-          Standard bridges and translations from proprietary formats to Web-friendly languages 
-          such as JSON and XML are part of the adaptation needed.
-        </p>
-        <p>
-          Correct indication of Media Types enables proper processing of the serialized documents.
-          This way, the documents can be exchanged in any format and allow the upper layers of an application
-          to adapt to different formats.
-        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Abbreviation</th>
+              <th>Name</th>
+              <th>Media Type</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>JSON</td>
+              <td>JavaScript Object Notation</td>
+              <td><code>application/json</code></td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>XML</td>
+              <td>eXtensible Markup Language</td>
+              <td><code>application/xml</code></td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>text</td>
+              <td><code>text/plain</code></td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>Unstructured Data</td>
+              <td>Unstructured Data</td>
+              <td>various</td>
+              <td>TODO</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <h4>Data Types and Value Constraints</h4>
-        <p>
-          Simple data types and value constraints are currently used in a layered
-          and descriptive way in [[WOT-THING-DESCRIPTION]]. Additional forms of
-          constraints are available to help adapt to the underlying data types.
-          A platform-specific 8-bit unsigned integer, for instance, can be defined
-          as Integer with a minimum of 0 and maximum of 255; the system-specific
-          representation (e.g., exact number of bits) on the Thing and the Consumer is not
-          relevant for interoperability.
-        </p>
+        <section>
+          <h4>Creating a new Payload Format Binding</h4>
+
+          <p>
+            Each payload format binding document, SHOULD contain the respective media type.
+            Ideally this media type has been registered at the IANA registry [[IANA-MEDIA-TYPES]].
+            If it is not registered, the binding document can propose one. Additionally, how that media type should be represented
+            in a Data Schema SHOULD be demonstrated with examples.
+          </p>
+        </section>
       </section>
       <section>
         <h3>

@@ -111,1481 +111,1346 @@
 
 <body>
 
-  <section id="abstract">
-    <p>
-      W3C Web of Things enables applications to interact with and orchestrate
-      connected Things at Web scale. The standardized abstract interaction
-      model exposed by the WoT Thing Description enables applications to scale and
-      evolve independently of the individual Things.
-    </p>
-    <p>
-      Many network-level protocols and standards for connected Things have
-      already been developed, and have millions of devices deployed in the
-      field today. These standards are converging on a common set of transport
-      protocols and transfer layers, but each has peculiar content formats,
-      payload schemas, and data types.
-    </p>
-    <p>
-      Despite using unique formats and data models, the high-level interactions
-      exposed by most connected things can be modeled using the Property, Action,
-      and Event interaction affordances of the WoT Thing Description.
-    </p>
-    <p>
-      Binding Templates enable a Thing Description to be adapted to
-      a specific protocol, data payload formats or platforms that combine both in specific ways. 
-      This is done through additional descriptive vocabularies or Thing Models.
-    </p>
-    <p>
-      This document acts as the base and explains how other binding templates should be designed.
-      Concrete binding templates are then provided in their respective documents that are linked to
-      from this document.
-    </p>
-  </section>
-
-
-  <section id="sotd">
-    <p class="ednote" title="The W3C WoT WG is asking for feedback">
-      Please contribute to this draft using the
-      <a href="https://github.com/w3c/wot-binding-templates/issues">GitHub Issue</a>
-      feature of the <a href="https://github.com/w3c/wot-binding-templates/">
-        WoT Binding Templates</a> repository.
-      For feedback on security and privacy considerations, please use the
-      <a href="https://github.com/w3c/wot-security/issues">WoT Security and Privacy</a>
-      Issues, as they are cross-cutting over all our documents.
-    </p>
-  </section>
-
-
-  <section>
-    <h1>Introduction</h1>
-    <p>
-      Binding Templates consist of multiple specifications, referred to as a subspecification in this document, that enable an application client (a Consumer) to interact, 
-      using WoT Thing Description[[WOT-THING-DESCRIPTION] (TD), with Things that exhibit diverse protocols, payload formats and their usage. 
-      These subspecifications are categorized into three:
-      <ul>
-        <li> <a href="#protocols"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing Description[[WOT-THING-DESCRIPTION]] via reusable vocabulary and extensions.</li>
-        <li> <a href="#payload-representation"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which can be represented in a TD.</li>
-        <li> <a href="#platforms"></a>: Platforms and frameworks who combine the use of protocols and payloads in a certain way.</li>
-      </ul>
-    </p>
-
-    Each subspecification is an independent document that has separate list of authors and publication dates.
-    This document explains what each subspecification should contain given their respective category and also 
-    links to the respective specification.
-
-      <!-- <p class="ednote" title="Additional Protocol Bindings">
-        This document contains examples of Protocol Bindings for HTTP, CoAP,
-        and MQTT. Other protocols may be added following the same design style
-        and using payload mappings that can be expressed as JSON compatible
-        entities. Future extensions to other payload definition formats are
-        also contemplated.
-      </p> -->
-
-      <section>
-        <h3>Protocols</h3>
+    <section id="abstract">
         <p>
-          Most protocols have a relatively small set of methods that define
-          the message type, the semantic intention of the message.
-          REST and PubSub architecture patterns result in different protocols with different methods.
-          Common methods found in these protocols are GET, PUT, POST, DELETE, PUBLISH, and SUBSCRIBE.
-          Binding Templates describe how these existing methods and vocabularies can be described in a Thing Description.
+        W3C Web of Things enables applications to interact with and orchestrate
+        connected Things at Web scale. The standardized abstract interaction
+        model exposed by the WoT Thing Description enables applications to scale and
+        evolve independently of the individual Things.
         </p>
         <p>
-          This is done by defining the URI scheme of the protocol and mapping the protocol
-           methods to the abstract WoT operations such as <code>readproperty</code>, <code>invokeaction</code> and <code>subscribeevent</code>.
-          <!-- modifyAction, cancelAction is still undefined -->
+        Many network-level protocols and standards for connected Things have
+        already been developed, and have millions of devices deployed in the
+        field today. These standards are converging on a common set of transport
+        protocols and transfer layers, but each has peculiar content formats,
+        payload schemas, and data types.
         </p>
-        <!-- <p>
-          Possible protocol options are also specified in the Protocol Binding.
-          They are used to select transfer modes, to request notifications from
-          observable resources, or otherwise extend the semantics of the protocol
-          methods.
-        </p> -->
+        <p>
+        Despite using unique formats and data models, the high-level interactions
+        exposed by most connected things can be modeled using the Property, Action,
+        and Event interaction affordances of the WoT Thing Description.
+        </p>
+        <p>
+        Binding Templates enable a Thing Description to be adapted to
+        a specific protocol, data payload formats or platforms that combine both in specific ways. 
+        This is done through additional descriptive vocabularies or Thing Models.
+        </p>
+        <p>
+        This document acts as the base and explains how other binding templates should be designed.
+        Concrete binding templates are then provided in their respective documents that are linked to
+        from this document.
+        </p>
+    </section>
 
-        The table below summarizes the currently specified protocols in their respective subspecification.
+    <section id="sotd">
+        <p class="ednote" title="The W3C WoT WG is asking for feedback">
+        Please contribute to this draft using the
+        <a href="https://github.com/w3c/wot-binding-templates/issues">GitHub Issue</a>
+        feature of the <a href="https://github.com/w3c/wot-binding-templates/">
+            WoT Binding Templates</a> repository.
+        For feedback on security and privacy considerations, please use the
+        <a href="https://github.com/w3c/wot-security/issues">WoT Security and Privacy</a>
+        Issues, as they are cross-cutting over all our documents.
+        </p>
+    </section>
 
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Abbreviation</th>
-              <th>Name</th>
-              <th>Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>HTTP</td>
-              <td>Hypertext Transfer Protocol</td>
-              <td><a href="./bindings/protocols/http/index.html">Link</a></td>
-            </tr>
-            <tr>
-              <td>CoAP</td>
-              <td>Constrained Application Protocol</td>
-              <td><a href="./bindings/protocols/coap/index.html">Link</a></td>
-            </tr>
-            <tr>
-              <td>MQTT</td>
-              <td>Message Queuing Telemetry Transport</td>
-              <td><a href="./bindings/protocols/mqtt/index.html">Link</a></td>
-            </tr>
-            <tr>
-              <td>Modbus</td>
-              <td>Modbus</td>
-              <td><a href="./bindings/protocols/modbus/index.html">Link</a></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <section>
-          <h4>Creating a new Protocol Binding</h4>
-
-          <p>
-            When creating a new protocol binding subspecification, e.g. based on a new communication protocol,
-            the proposed document should enable implementations of this binding in an interoperable way for 
-            Consumer and Producer implementations.
-            More specifically, each binding MUST specify the following:
+    <section id="introduction">
+        <h1>Introduction</h1>
+        <p>
+            Binding Templates consist of multiple specifications, referred to as a subspecification in this document, that enable an application client (a Consumer) to interact, 
+            using WoT Thing Description[[WOT-THING-DESCRIPTION] (TD), with Things that exhibit diverse protocols, payload formats and their usage. 
+            These subspecifications are categorized into three:
             <ul>
-              <li>
-                <b>URI Scheme:</b> For identification of the used protocol, a standardized URI scheme [[RFC3986]] value MUST be declared in the form of a string. This URI Scheme is used in TDs at top level <code>base</code> or in the <code>href</code> term of the <code>forms</code> container. These can be officially registered ones at IANA [[iana-uri-schemes]] (e.g.  <code>"https://"</code>,  <code>"coap://"</code>) or they can be declared in the protocol subspecification (e.g.  <code>"mqtt://"</code>,  <code>"modbus+tcp://"</code>). How the full URI can be constructed for different affordances (or resources) MUST be specified as well.
-              <li>
-                <b>Mapping to WoT Operations:</b> Most protocols have a set of methods or verbs that adds a meaning to the messages of the protocol.
-                A protocol binding MUST be able to map WoT operation types (<code>readproperty</code>, <code>invokeaction</code>, etc.) to concrete protocol message types or methods. When specifying the mapping, the mapping SHOULD be bidirectional, i.e. it should be clear how to 
-                do a <code>readproperty</code> operation with the given protocol and how an existing implementation's endpoints can be mapped to a WoT operation should be also clear.
-                A vocabulary detailing the operations methods SHOULD be provided to allow semantic annotations of the operations with protocol specific information.
-              </li>
+                <li> <a href="#protocol-intro"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]], MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing Description[[WOT-THING-DESCRIPTION]] via reusable vocabulary and extensions.</li>
+                <li> <a href="#payloads-intro"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which can be represented in a TD.</li>
+                <li> <a href="#platforms-intro"></a>: Platforms and frameworks who combine the use of protocols and payloads in a certain way.</li>
+            </ul>
+        </p>
+        <p>
+            Each subspecification is an independent document that has separate list of authors and publication dates.
+            This document explains what each subspecification should contain given their respective category and also 
+            links to the respective specification.
+        </p>
+
+
+        <section id="protocol-intro">
+            <h3>Protocols</h3>
+            <p>
+                Most protocols have a relatively small set of methods that define
+                the message type, the semantic intention of the message.
+                REST and PubSub architecture patterns result in different protocols with different methods.
+                Common methods found in these protocols are GET, PUT, POST, DELETE, PUBLISH, and SUBSCRIBE.
+                Binding Templates describe how these existing methods and vocabularies can be described in a Thing Description.
+            </p>
+            <p>
+                This is done by defining the URI scheme of the protocol and mapping the protocol
+                methods to the abstract WoT operations such as <code>readproperty</code>, <code>invokeaction</code> and <code>subscribeevent</code>.
+            </p>
+            <p> 
+                The table below summarizes the currently specified protocols in their respective subspecification.
+            </p>
+            <table class="def">
+            <thead>
+                <tr>
+                <th>Abbreviation</th>
+                <th>Name</th>
+                <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>HTTP</td>
+                <td>Hypertext Transfer Protocol</td>
+                <td><a href="./bindings/protocols/http/index.html">Link</a></td>
+                </tr>
+                <tr>
+                <td>CoAP</td>
+                <td>Constrained Application Protocol</td>
+                <td><a href="./bindings/protocols/coap/index.html">Link</a></td>
+                </tr>
+                <tr>
+                <td>MQTT</td>
+                <td>Message Queuing Telemetry Transport</td>
+                <td><a href="./bindings/protocols/mqtt/index.html">Link</a></td>
+                </tr>
+                <tr>
+                <td>Modbus</td>
+                <td>Modbus</td>
+                <td><a href="./bindings/protocols/modbus/index.html">Link</a></td>
+                </tr>
+            </tbody>
+            </table>
+
+            <section>
+                <h4>Creating a new Protocol Binding</h4>
+
+                <p>
+                    When creating a new protocol binding subspecification, e.g. based on a new communication protocol,
+                    the proposed document should enable implementations of this binding in an interoperable way for 
+                    Consumer and Producer implementations.
+                    More specifically, each binding MUST specify the following:
+                </p>
+                <ul>
+                <li>
+                    <b>URI Scheme:</b> For identification of the used protocol, a standardized URI scheme [[RFC3986]] value MUST be declared in the form of a string. This URI Scheme is used in TDs at top level <code>base</code> or in the <code>href</code> term of the <code>forms</code> container. These can be officially registered ones at IANA [[iana-uri-schemes]] (e.g.  <code>"https://"</code>,  <code>"coap://"</code>) or they can be declared in the protocol subspecification (e.g.  <code>"mqtt://"</code>,  <code>"modbus+tcp://"</code>). How the full URI can be constructed for different affordances (or resources) MUST be specified as well.
+                <li>
+                    <b>Mapping to WoT Operations:</b> Most protocols have a set of methods or verbs that adds a meaning to the messages of the protocol.
+                    A protocol binding MUST be able to map WoT operation types (<code>readproperty</code>, <code>invokeaction</code>, etc.) to concrete protocol message types or methods. When specifying the mapping, the mapping SHOULD be bidirectional, i.e. it should be clear how to 
+                    do a <code>readproperty</code> operation with the given protocol and how an existing implementation's endpoints can be mapped to a WoT operation should be also clear.
+                    A vocabulary detailing the operations methods SHOULD be provided to allow semantic annotations of the operations with protocol specific information.
+                </li>
+                </ul>
+
+                <p>
+                A template is also provided for new protocol binding specifications at <a href="https://github.com/w3c/wot-binding-templates/blob/main/bindings/index.template.html">the GitHub Repository.</a> 
+                </p>
+
+            </section>
+
+        </section>
+
+        <section id="payloads-intro">
+            <h3>Payload Representation</h3>
+
+            Various payloads sent in the messages of protocols can be described in TDs using two mechanisms:
+            <ul>
+            <li>
+                <b>Media Types:</b> Media Types [[IANA-MEDIA-TYPES]] describe the encoding used for sending and receiving the data with a protocol.
+                They are represented with the <code>contentType</code> in the Forms of a TD, which is mandatory for each Interaction Affordance.
+                In some cases such as images, videos or any unstructured data, they are enough to describe the payload.
+                Correct indication of Media Types enables proper processing of the serialized documents.
+                This way, the documents can be exchanged in any format and allow the upper layers of an application to adapt to different formats.
+            </li>
+            <li>
+                <b>Data Schema:</b> The TD specification defines the Data Schema concept to describe the structure of the data payloads. 
+                Even though it is largely inspired by JSON Schema [[json-schema]], it can be used for describing other payload types such as [[XML]], string-encoded images, bit representations of integers, etc.
+                Data Schema SHOULD be used in addition to the media types.
+            </li>
             </ul>
 
+            The table below summarizes the currently specified payload formats.
+
+            <table class="def">
+            <thead>
+                <tr>
+                <th>Abbreviation</th>
+                <th>Name</th>
+                <th>Media Type</th>
+                <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>JSON</td>
+                <td>JavaScript Object Notation</td>
+                <td><code>application/json</code></td>
+                <td>TODO</td>
+                </tr>
+                <tr>
+                <td>XML</td>
+                <td>eXtensible Markup Language</td>
+                <td><code>application/xml</code></td>
+                <td><a href="./bindings/payloads/xml/index.html">Link</a></td>
+                </tr>
+                <tr>
+                <td>text</td>
+                <td>text</td>
+                <td><code>text/plain</code></td>
+                <td>TODO</td>
+                </tr>
+                <tr>
+                <td>Unstructured Data</td>
+                <td>Unstructured Data</td>
+                <td>various</td>
+                <td>TODO</td>
+                </tr>
+            </tbody>
+            </table>
+
+            <section>
+            <h4>Creating a new Payload Format Binding</h4>
+
             <p>
-              A template is also provided for new protocol binding specifications at <a href="https://github.com/w3c/wot-binding-templates/blob/main/bindings/index.template.html">the GitHub Repository.</a> 
+                Each payload format binding document, SHOULD contain the respective media type.
+                Ideally this media type has been registered at the IANA registry [[IANA-MEDIA-TYPES]] with a corresponding mime type (e.g. <code>application/json</code>).
+                If it is not registered, the binding document can propose a mime type. Additionally, how that media type is represented
+                in a Data Schema SHOULD be demonstrated with examples.
+                In all cases, the following information SHOULD be provided:
+                <ul>
+                    <li>
+                        <b>Protocol:</b> The protocol used by the platform SHOULD be specified and linked to a protocol binding document when a corresponding one exists.
+                    </li>
+                    <li>
+                        <b>Media Type:</b> The media type used by the platform SHOULD be specified and linked to a payload binding document when a corresponding one exists.
+                    </li>
+                    <li>
+                        <b>API Documentation:</b> A static link pointing to the used API Documentation or Specification of the platform SHOULD be provided. When the documentation is not 
+                        publicly available and cannot be included in a static version in the respective folder, an editor's note should be provided in the introduction, explaining how to 
+                        get access to the documentation. 
+                    </li>
+                </ul>
+            </p>
+            </section>
+        </section>
+
+        <section id="platforms-intro">
+            <h3>
+            Platforms
+            </h3>
+
+            There are already various IoT platforms on the market that allows exposing physical and virtual Things 
+            to the Internet. 
+            These platforms generally propose a certain API specification over a protocol and media type.
+            Platform subspecifications provide Thing Models and examples of TDs on how to integrate these 
+            platforms in to the W3C Web of Things.
+
+            The table below summarizes the currently specified platforms.
+
+            <table class="def">
+            <thead>
+                <tr>
+                <th>Name</th>
+                <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>Philips Hue</td>
+                <td>TODO</td>
+                </tr>
+            </tbody>
+            </table>
+
+            <section>
+            <h4>Creating a new Platform Binding</h4>
+
+            <p>
+                Depending on the platform and the variety of devices it proposes, each binding specification will be 
+                structured differently. 
+                When the platforms offer a <i>reasonable</i> set of device types, a Thing Model for each device type 
+                SHOULD be provided. 
+                In other cases, possible devices SHOULD be generalized by providing a set of example Thing Models or TDs.
+                In all cases, the following information SHOULD be provided:
+                <ul>
+                    <li>
+                        <b>Protocol:</b> The protocol used by the platform SHOULD be specified and linked to a protocol binding document when a corresponding one exists.
+                    </li>
+                    <li>
+                        <b>Media Type:</b> The media type used by the platform SHOULD be specified and linked to a payload binding document when a corresponding one exists.
+                    </li>
+                    <li>
+                        <b>API Documentation:</b> A static link pointing to the used API Documentation or Specification of the platform SHOULD be provided. When the documentation is not 
+                        publicly available and cannot be included in a static version in the respective folder, an editor's note should be provided in the introduction, explaining how to 
+                        get access to the documentation. 
+                    </li>
+                </ul>
+            </p>
+            </section>
+        </section>
+    </section>
+
+    <section id="conformance"></section>
+
+    <section id="terminology" class="informative">
+        <h2>Terminology</h2>
+
+        <p>The fundamental WoT terminology such as
+        <dfn>Thing</dfn>,
+        <dfn>Consumer</dfn>,
+        <dfn>Thing Description</dfn> (<dfn>TD</dfn>),
+        <dfn>Interaction Model</dfn>,
+        <dfn>Interaction Affordance</dfn>,
+        <dfn>Property</dfn>,
+        <dfn>Action</dfn>,
+        <dfn>Event</dfn>,
+        <dfn>Protocol Binding</dfn>,
+        <dfn>Servient</dfn>,
+        <dfn>Vocabulary</dfn>,
+        <dfn>WoT Interface</dfn>,
+        <dfn>WoT Runtime</dfn>,
+        etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
+        of the WoT Architecture specification [[WOT-ARCHITECTURE]].
+        </p>
+
+    </section>
+
+    <section id="binding-overview" class="informative">
+        <h1>Binding Templates Overview</h1>
+        <p>
+        This section describes the mechanisms of binding templates with
+        examples.
+        </p>
+
+        <section id="sec-data-schema">
+        <h2>Data Schema</h2>
+        <p>
+            A data schema describes the payload structure and included
+            data items that are passed between the Consumer and the Thing during interactions.
+        </p>
+
+        <section id="payload-structure">
+            <h2>Payload Structure</h2>
+            <p>
+            Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
+            DataSchema elements should be used by an instance of a <code>PropertyAffordance</code>,
+            <code>input</code>/<code>output</code> of <code>ActionAffordance</code>,
+            <code>data</code>/<code>subscription</code>/<code>cancellation</code> of an <code>EventAffordance</code> or by
+            a <code>uriVariable</code> of the <code>InteractionAffordance</code>.
+            As indicated in the [[WOT-THING-DESCRIPTION]], <code>DataSchema</code> Vocabulary is a subset of JSON Schema [[json-schema]]
+            </p>
+            <p>
+            In the case of Action Affordances, the additional keywords <code>input</code> and
+            <code>output</code> are used to provide two different schemas when data
+            might be exchanged in both directions, such as in the case of invoking an Action Affordance
+            with input parameters and receiving status information.
+            </p>
+            <p>
+            In the case of Event Affordances, the additional keywords <code>data</code>, <code>subscription</code> and
+            <code>cancellation</code> are used to describe the payload when the event data is delivered by the Exposed
+            Thing,
+            the payload needed to subscribe to the event and the payload needed to cancel receiving event data from the
+            Exposed Thing, respectively.
+            </p>
+            <p>
+            In addition to the example pattern in [[WOT-THING-DESCRIPTION]] of an object with name/value
+            constructs or simple arrays, Protocol Bindings for existing standards
+            may require nested arrays and objects, and some constant values to
+            be specified.
             </p>
 
-        </section>
-
-      </section>
-
-      <section>
-        <h3>Payload Representation</h3>
-
-        Various payloads sent in the messages of protocols can be described in TDs using two mechanisms:
-        <ul>
-          <li>
-            <b>Media Types:</b> Media Types [[IANA-MEDIA-TYPES]] describe the encoding used for sending and receiving the data with a protocol.
-            They are represented with the <code>contentType</code> in the Forms of a TD, which is mandatory for each Interaction Affordance.
-            In some cases such as images, videos or any unstructured data, they are enough to describe the payload.
-            Correct indication of Media Types enables proper processing of the serialized documents.
-            This way, the documents can be exchanged in any format and allow the upper layers of an application to adapt to different formats.
-          </li>
-          <li>
-            <b>Data Schema:</b> The TD specification defines the Data Schema concept to describe the structure of the data payloads. 
-            Even though it is largely inspired by JSON Schema [[json-schema]], it can be used for describing other payload types such as [[XML]], string-encoded images, bit representations of integers, etc.
-            Data Schema SHOULD be used in addition to the media types.
-          </li>
-        </ul>
-
-        The table below summarizes the currently specified payload formats.
-
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Abbreviation</th>
-              <th>Name</th>
-              <th>Media Type</th>
-              <th>Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>JSON</td>
-              <td>JavaScript Object Notation</td>
-              <td><code>application/json</code></td>
-              <td>TODO</td>
-            </tr>
-            <tr>
-              <td>XML</td>
-              <td>eXtensible Markup Language</td>
-              <td><code>application/xml</code></td>
-              <td><a href="./bindings/payloads/xml/index.html">Link</a></td>
-            </tr>
-            <tr>
-              <td>text</td>
-              <td>text</td>
-              <td><code>text/plain</code></td>
-              <td>TODO</td>
-            </tr>
-            <tr>
-              <td>Unstructured Data</td>
-              <td>Unstructured Data</td>
-              <td>various</td>
-              <td>TODO</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <section>
-          <h4>Creating a new Payload Format Binding</h4>
-
-          <p>
-            Each payload format binding document, SHOULD contain the respective media type.
-            Ideally this media type has been registered at the IANA registry [[IANA-MEDIA-TYPES]].
-            If it is not registered, the binding document can propose one. Additionally, how that media type should be represented
-            in a Data Schema SHOULD be demonstrated with examples.
-          </p>
-        </section>
-      </section>
-      <section>
-        <h3>
-          Platforms
-        </h3>
-
-        There are already various IoT platforms on the market that allows exposing physical and virtual Things 
-        to the Internet. 
-        These platforms generally propose a certain API specification over a protocol and media type.
-        Platform subspecifications provide Thing Models and examples of TDs on how to integrate these 
-        platforms in to the W3C Web of Things.
-
-        The table below summarizes the currently specified platforms.
-
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Philips Hue</td>
-              <td>TODO</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <section>
-          <h4>Creating a new Platform Binding</h4>
-
-          <p>
-            Depending on the platform and the variety of devices it proposes, each binding specification will be 
-            structured differently. 
-            When the platforms offer a <i>reasonable</i> set of device types, a Thing Model for each device type 
-            SHOULD be provided. 
-            In other cases, possible devices SHOULD be generalized by providing a set of Thing Models or TDs.
-          </p>
-        </section>
-      </section>
-  </section>
-
-  <section id="conformance"></section>
-
-  <section id="terminology" class="informative">
-    <h2>Terminology</h2>
-
-    <p>The fundamental WoT terminology such as
-      <dfn>Thing</dfn>,
-      <dfn>Consumer</dfn>,
-      <dfn>Thing Description</dfn> (<dfn>TD</dfn>),
-      <dfn>Interaction Model</dfn>,
-      <dfn>Interaction Affordance</dfn>,
-      <dfn>Property</dfn>,
-      <dfn>Action</dfn>,
-      <dfn>Event</dfn>,
-      <dfn>Protocol Binding</dfn>,
-      <dfn>Servient</dfn>,
-      <dfn>Vocabulary</dfn>,
-      <dfn>WoT Interface</dfn>,
-      <dfn>WoT Runtime</dfn>,
-      etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
-      of the WoT Architecture specification [[WOT-ARCHITECTURE]].
-    </p>
-
-  </section>
-
-  <section id="protocols" class="informative">
-
-  </section>
-
-  <section id="binding-overview" class="informative">
-    <h1>Binding Templates Overview</h1>
-    <p>
-      This section describes the mechanisms of binding templates with
-      examples.
-    </p>
-
-    <section id="sec-data-schema">
-      <h2>Data Schema</h2>
-      <p>
-        A data schema describes the payload structure and included
-        data items that are passed between the Consumer and the Thing during interactions.
-      </p>
-
-      <section id="payload-structure">
-        <h2>Payload Structure</h2>
-        <p>
-          Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
-          DataSchema elements should be used by an instance of a <code>PropertyAffordance</code>,
-          <code>input</code>/<code>output</code> of <code>ActionAffordance</code>,
-          <code>data</code>/<code>subscription</code>/<code>cancellation</code> of an <code>EventAffordance</code> or by
-          a <code>uriVariable</code> of the <code>InteractionAffordance</code>.
-          As indicated in the [[WOT-THING-DESCRIPTION]], <code>DataSchema</code> Vocabulary is a subset of JSON Schema [[json-schema]]
-        </p>
-        <p>
-          In the case of Action Affordances, the additional keywords <code>input</code> and
-          <code>output</code> are used to provide two different schemas when data
-          might be exchanged in both directions, such as in the case of invoking an Action Affordance
-          with input parameters and receiving status information.
-        </p>
-        <p>
-          In the case of Event Affordances, the additional keywords <code>data</code>, <code>subscription</code> and
-          <code>cancellation</code> are used to describe the payload when the event data is delivered by the Exposed
-          Thing,
-          the payload needed to subscribe to the event and the payload needed to cancel receiving event data from the
-          Exposed Thing, respectively.
-        </p>
-        <p>
-          In addition to the example pattern in [[WOT-THING-DESCRIPTION]] of an object with name/value
-          constructs or simple arrays, Protocol Bindings for existing standards
-          may require nested arrays and objects, and some constant values to
-          be specified.
-        </p>
-
-        <p>
-          Below are examples of different payloads and their corresponding <code>DataSchema</code>. 
-        </p>
-            
-        <p>
-          For example, a simple payload structure may use a map:
-        </p>
-        <table>
-          <tbody>
-          <tr>
-            <td style="vertical-align: top; width: 50%"> 
-              <pre class="example" title="Simple JSON Object Payload">
-                {
-                  "level": 50,
-                  "time": 10
-                }
-              </pre> 
-            </td>
-            <td style="vertical-align: top; width: 50%"> 
-              <pre class="example" title="DataSchema for Simple JSON Object Payload">
-                {
-                  "type": "object",
-                  "properties": {
-                    "level": {
-                      "@type": ["iot:LevelData"],
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 255
-                    },
-                    "time": {
-                      "@type": ["iot:TransitionTimeData"],
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 65535
-                    }
-                  }
-                }
-              </pre> 
-            </td>
-          </tr>
-          </tbody>
-        </table>
-
-
-        <p>
-          SenML [[RFC8428]] might use the following construct:
-        </p>
-
-        <table>
-          <tbody>
-            <tr>
-              <td style="vertical-align: top; width: 50%">
-                <pre class="example" title="SenML Example">
-                  [
-                    {
-                      "bn": "/example/light/"
-                    },
-                    {
-                      "n": "level",
-                      "v": 50
-                    },
-                    {
-                      "n": "time",
-                      "v": 10
-                    }
-                  ]
-                </pre>
-              </td>
-              <td style="vertical-align: top; width: 50%">
-                <pre class="example" title="DataSchema for SenML Payload">
-                  {
-                    "type": "array",
-                    "items": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "bn": {
-                            "type": "string",
-                            "const": "example/light"
-                          }
-                        }
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "n": {
-                            "type": "string",
-                            "const": "level"
-                          },
-                          "v": {
-                            "@type": ["iot:LevelData"],
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                          }
-                        }
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "n": {
-                            "type": "string",
-                            "const": "time"
-                          },
-                          "v": {
-                            "@type": ["iot:TransitionTimeData"],
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 65535
-                          }
-                        }
-                      }
-                    ]
-                  }
-                </pre>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-          <p>
-            A Batch Collection according to OCF[[OCF]] may be structured like this:
-          </p>
-
-          <table>
+            <p>
+            Below are examples of different payloads and their corresponding <code>DataSchema</code>. 
+            </p>
+                
+            <p>
+            For example, a simple payload structure may use a map:
+            </p>
+            <table>
             <tbody>
-              <tr>
+            <tr>
+                <td style="vertical-align: top; width: 50%"> 
+                <pre class="example" title="Simple JSON Object Payload">
+                    {
+                    "level": 50,
+                    "time": 10
+                    }
+                </pre> 
+                </td>
+                <td style="vertical-align: top; width: 50%"> 
+                <pre class="example" title="DataSchema for Simple JSON Object Payload">
+                    {
+                    "type": "object",
+                    "properties": {
+                        "level": {
+                        "@type": ["iot:LevelData"],
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 255
+                        },
+                        "time": {
+                        "@type": ["iot:TransitionTimeData"],
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 65535
+                        }
+                    }
+                    }
+                </pre> 
+                </td>
+            </tr>
+            </tbody>
+            </table>
+
+
+            <p>
+            SenML [[RFC8428]] might use the following construct:
+            </p>
+
+            <table>
+            <tbody>
+                <tr>
                 <td style="vertical-align: top; width: 50%">
-                  <pre class="example" title="OCF Batch Example">
+                    <pre class="example" title="SenML Example">
                     [
-                      {
-                        "href": "/example/light/level",
-                        "rep": {
-                          "dimmingSetting": 50
+                        {
+                        "bn": "/example/light/"
+                        },
+                        {
+                        "n": "level",
+                        "v": 50
+                        },
+                        {
+                        "n": "time",
+                        "v": 10
                         }
-                      },
-                      {
-                        "href": "/example/light/time",
-                        "rep": {
-                          "rampTime": 10
-                        }
-                      }
                     ]
-                  </pre>
+                    </pre>
                 </td>
                 <td style="vertical-align: top; width: 50%">
-                  <pre class="example" title="DataSchema for OCF Batch Payload">
+                    <pre class="example" title="DataSchema for SenML Payload">
                     {
-                      "type": "array",
-                      "items": [
+                        "type": "array",
+                        "items": [
                         {
-                          "type": "object",
-                          "properties": {
-                            "href": {
-                              "type": "string",
-                              "const": "/example/light/level"
-                            },
-                            "rep": {
-                              "type": "object",
-                              "properties": {
-                                "dimmingSetting": {
-                                  "@type": ["iot:LevelData"],
-                                  "type": "integer",
-                                  "minimum": 0,
-                                  "maximum": 255
-                                }
-                              }
+                            "type": "object",
+                            "properties": {
+                            "bn": {
+                                "type": "string",
+                                "const": "example/light"
                             }
-                          }
+                            }
                         },
                         {
-                          "type": "object",
-                          "properties": {
-                            "href": {
-                              "type": "string",
-                              "const": "/example/light/time"
+                            "type": "object",
+                            "properties": {
+                            "n": {
+                                "type": "string",
+                                "const": "level"
                             },
-                            "rep": {
-                              "type": "object",
-                              "properties": {
-                                "rampTime": {
-                                  "@type": ["iot:TransitionTimeData"],
-                                  "type":"integer",
-                                  "minimum": 0,
-                                  "maximum": 65535
-                                }
-                              }
+                            "v": {
+                                "@type": ["iot:LevelData"],
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 255
                             }
-                          }
+                            }
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                            "n": {
+                                "type": "string",
+                                "const": "time"
+                            },
+                            "v": {
+                                "@type": ["iot:TransitionTimeData"],
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 65535
+                            }
+                            }
                         }
-                      ]
+                        ]
                     }
-                  </pre>
+                    </pre>
                 </td>
-              </tr>
+                </tr>
             </tbody>
-          </table>
+            </table>
 
+            <p>
+                A Batch Collection according to OCF[[OCF]] may be structured like this:
+            </p>
 
-
-          <p>
-            And an IPSO Smart Object on LWM2M [[LWM2M]] might look like the following:
-          </p>
-
-          <table>
-            <tbody>
-              <tr>
-                <td style="vertical-align: top; width: 50%">
-                  <pre class="example" title="IPSO/LWM2M Example">
-                    {
-                      "bn": "/3001/0/",
-                      "e": [
+            <table>
+                <tbody>
+                <tr>
+                    <td style="vertical-align: top; width: 50%">
+                    <pre class="example" title="OCF Batch Example">
+                        [
                         {
-                          "n": "5044",
-                          "v": 0.5
+                            "href": "/example/light/level",
+                            "rep": {
+                            "dimmingSetting": 50
+                            }
                         },
                         {
-                          "n": "5002",
-                          "v": 10.0
+                            "href": "/example/light/time",
+                            "rep": {
+                            "rampTime": 10
+                            }
                         }
-                      ]
-                    }
-                  </pre>
-                </td>
-                <td style="vertical-align: top; width: 50%">
-                  <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
-                    {
-                      "type": "object",
-                      "properties": {
-                        "bn": {
-                          "type": "string",
-                          "const": "/3001/0/"
-                        },
-                        "e": {
-                          "type": "array",
-                          "items": [
+                        ]
+                    </pre>
+                    </td>
+                    <td style="vertical-align: top; width: 50%">
+                    <pre class="example" title="DataSchema for OCF Batch Payload">
+                        {
+                        "type": "array",
+                        "items": [
                             {
-                              "type": "object",
-                              "properties": {
-                                "n": {
-                                  "type": "string",
-                                  "const": "5044"
+                            "type": "object",
+                            "properties": {
+                                "href": {
+                                "type": "string",
+                                "const": "/example/light/level"
                                 },
-                                "v": {
-                                  "@type": ["iot:LevelData"],
-                                  "type": "number",
-                                  "minimum": 0.0,
-                                  "maximum": 1.0
+                                "rep": {
+                                "type": "object",
+                                "properties": {
+                                    "dimmingSetting": {
+                                    "@type": ["iot:LevelData"],
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                    }
                                 }
-                              }
+                                }
+                            }
                             },
                             {
-                              "type": "object",
-                              "Properties": {
-                                "n": {
-                                  "type": "string",
-                                  "const": "5002"
+                            "type": "object",
+                            "properties": {
+                                "href": {
+                                "type": "string",
+                                "const": "/example/light/time"
                                 },
-                                "v": {
-                                  "@type": ["iot:TransitionTimeData"],
-                                  "type": "number",
-                                  "minimum": 0.0,
-                                  "maximum": 6553.5
+                                "rep": {
+                                "type": "object",
+                                "properties": {
+                                    "rampTime": {
+                                    "@type": ["iot:TransitionTimeData"],
+                                    "type":"integer",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                    }
                                 }
-                              }
+                                }
                             }
-                          ]
+                            }
+                        ]
                         }
-                      }
-                    }
-                  </pre>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          
-      </section>
+                    </pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-      <section id="data-types-constraints">
-        <h2>Data Types and value constraints</h2>
-        <p>
-          Note that in Example 7 above, the values are floating point (<code>double</code>) while the other examples have integer values.
-          In general, Consumers should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
-          This means that a Consumer sending the payload of the Example 7 should use floating points in the payload.
-        </p>
-      </section>
 
-    <section id="form-element">
-      <h2>Forms Element</h2>
-      <p>
-        The form elements contain the URI [[RFC3986]] pointing to an instance of the interaction
-        and descriptions of the protocol settings and options expected to be used when
-        between the Consumer and the Thing for the interaction.
-      </p>
 
-      <section id="operation-types">
-        <h2>Operation Types</h2>
-        <p>
-          Form Operation Types describe the intended semantics of performing the operation
-          described by the form.
-        </p>
-        <p>
-          For example, the Property interaction allows read and write operations. The
-          protocol binding may contain a form for the read operation and a different
-          form for the write operation. The value of the <code>op</code> attribute of the form
-          indicates which form is which and allows the Consumer to select the correct
-          form for the operation required.
-        </p>
+            <p>
+                And an IPSO Smart Object on LWM2M [[LWM2M]] might look like the following:
+            </p>
 
-        <pre class="example" title="Form Operation Types">
-            "op": "readproperty"
-            "op": "writeproperty"
-          </pre>
+            <table>
+                <tbody>
+                <tr>
+                    <td style="vertical-align: top; width: 50%">
+                    <pre class="example" title="IPSO/LWM2M Example">
+                        {
+                        "bn": "/3001/0/",
+                        "e": [
+                            {
+                            "n": "5044",
+                            "v": 0.5
+                            },
+                            {
+                            "n": "5002",
+                            "v": 10.0
+                            }
+                        ]
+                        }
+                    </pre>
+                    </td>
+                    <td style="vertical-align: top; width: 50%">
+                    <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
+                        {
+                        "type": "object",
+                        "properties": {
+                            "bn": {
+                            "type": "string",
+                            "const": "/3001/0/"
+                            },
+                            "e": {
+                            "type": "array",
+                            "items": [
+                                {
+                                "type": "object",
+                                "properties": {
+                                    "n": {
+                                    "type": "string",
+                                    "const": "5044"
+                                    },
+                                    "v": {
+                                    "@type": ["iot:LevelData"],
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "maximum": 1.0
+                                    }
+                                }
+                                },
+                                {
+                                "type": "object",
+                                "Properties": {
+                                    "n": {
+                                    "type": "string",
+                                    "const": "5002"
+                                    },
+                                    "v": {
+                                    "@type": ["iot:TransitionTimeData"],
+                                    "type": "number",
+                                    "minimum": 0.0,
+                                    "maximum": 6553.5
+                                    }
+                                }
+                                }
+                            ]
+                            }
+                        }
+                        }
+                    </pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            
+        </section>
 
-        <p>
-          The vocabulary in section 4 lists the recommended set of form operations,
-          and the full TD examples in section 5 contain example uses of form operations types.
-        </p>
-      </section>
+        <section id="data-types-constraints">
+            <h2>Data Types and value constraints</h2>
+            <p>
+            Note that in Example 7 above, the values are floating point (<code>double</code>) while the other examples have integer values.
+            In general, Consumers should follow the data schemas strictly, not generating anything not given in the WoT Thing Description, but should accept additional data from the Thing not given explicitly in the WoT Thing Description.
+            This means that a Consumer sending the payload of the Example 7 should use floating points in the payload.
+            </p>
+        </section>
 
-      <section id="content-types">
-        <h2>Content Types</h2>
+        <section id="form-element">
+        <h2>Forms Element</h2>
         <p>
-          Content Types define the serialization details and other rules for processing the payloads. 
-          The content type is used to select a serializer/deserializer and to select an additional set of rules and constraints for the protocol driver. 
-          Content type includes the media type and potential parameters for the media type.
-        </p>
-        
-        <p>
-          For example, the media type <code>application/ocf+cbor</code> indicates that CBOR
-          serialization is used, but also that OCF rules and namespaces
-          apply to the processing of the representations.
-        </p>
-        <p>
-          Some special protocol drivers may be invoked by using a non-registered
-          media type (e.g., <code>x-<echonet></code>) along with a custom URI Scheme [[RFC3986]] and its own
-          set of protocol methods and options defined for that URI Scheme.
-        </p>
-
-        <p> When the media type is <code>application/xml</code> (or its binary representation
-          <code>application/exi</code>) and
-          there is a Data Schema provided for the payload, the payloads are constrained by a XML Schema derived from the
-          Data Schema.
-          See <a href="#mapping-to-xml-schema" class="sec-ref">§&nbsp;
-            <bdi class="secno">
-              3.1.3
-            </bdi>XML Schema Binding
-          </a> Schema Binding for how to derive a XML Schema from a Data Schema definition.
-        </p>
-
-        
-
-      </section>
-
-      <section id="protocol-methods-options">
-        <h2>Protocol Methods and Options</h2>
-        <p>
-          Each target protocol may specify different method names for similar
-          operations, and there may be semantic differences between similar method names of
-          different protocols. Additionally, platforms may use different methods
-          for realizing a particular WoT Interaction Affordance. For example, POST may
-          be used for writing a Property value in one platform, while PUT may be
-          used in another. For these reasons, we require the ability to specify
-          which method to use for a particular Interaction. We also will provide
-          vocabulary to differentiate between methods of different protocols.
-        </p>
-        <p>
-          The W3C RDF vocabulary for HTTP [[HTTP-in-RDF10]] is used to identify the methods
-          and options specified in the HTTP protocol bindings.
-        </p>
-        <p>
-          For the sake of consistency, we will use the same ontology design pattern
-          to derive a vocabulary for each target protocol, e.g. CoAP, MQTT.
+            The form elements contain the URI [[RFC3986]] pointing to an instance of the interaction
+            and descriptions of the protocol settings and options expected to be used when
+            between the Consumer and the Thing for the interaction.
         </p>
 
-        <p>
-          The example below shows some method definitions for various protocols.
-        </p>
+        <section id="operation-types">
+            <h2>Operation Types</h2>
+            <p>
+            Form Operation Types describe the intended semantics of performing the operation
+            described by the form.
+            </p>
+            <p>
+            For example, the Property interaction allows read and write operations. The
+            protocol binding may contain a form for the read operation and a different
+            form for the write operation. The value of the <code>op</code> attribute of the form
+            indicates which form is which and allows the Consumer to select the correct
+            form for the operation required.
+            </p>
 
-        <pre class="example" title="Vocabulary Example for Methods">
-            "htv:methodName": "GET"
-
-            "mqv:controlPacketValue": "SUBSCRIBE"
-
-            "cov:methodName": "GET"
-          </pre>
-
-        <p>
-          Header options in HTTP, CoAP, MQTT sometimes must be included in a
-          protocol binding in order to successfully interact with the underlying
-          protocol. The example below shows the structure of the definition for
-          HTTP header options, according to the W3C HTTP Vocabulary in RDF.
-        </p>
-
-        <pre class="example" title="HTTP Vocabulary Example for Header Options">
-            "htv:headers":
-              [
-                {
-                  "htv:fieldName": "Accept",
-                  "htv:fieldValue": "application/json"
-                },
-                {
-                  "htv:fieldName": "Transfer-Encoding",
-                  "htv:fieldValue": "chunked"
-                }
-              ]
-          </pre>
-        <p>
-          Note: different forms in a binding may need different header constructions,
-          therefore the <code>htv:headers</code> construct is an extension of the TD "form" element.
-        </p>
-        <p>
-          Protocols may have defined sub-protocols that can be used for some interaction
-          types. For example, to receive asynchronous notifications using HTTP, some
-          servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>)
-          and Server-Sent Events [[eventsource]] (<code>sse</code>).
-
-          The <code>subprotocol</code> item may be defined in a form instance to indicate the
-          use of one of these protocols, for example long polling with its special use of HTTP:
-          <pre class="example" title="subprotocol">
-              {
-                "op": "subscribeevent",
-                "href": "https://mylamp.example.com/overheating",
-                "subprotocol": "longpoll"
-              }
+            <pre class="example" title="Form Operation Types">
+                "op": "readproperty"
+                "op": "writeproperty"
             </pre>
-          </thead>
 
-        </p>
-      </section>
+            <p>
+            The vocabulary in section 4 lists the recommended set of form operations,
+            and the full TD examples in section 5 contain example uses of form operations types.
+            </p>
+        </section>
 
-      <!-- <section id="uri-variables">
-        <h2>URI Template Variables</h2>
-        <p>
-          When Interaction Affordances require dynamic variables in the <code>href</code>,
-          they can be described using <code>uriVariables</code> in the Data Schema of the interaction.
-          For example, <code>p</code> and <code>d</code> in <code>http://192.168.1.25/left?p=2&d=1</code>
-          can be described with a template as defined in [[RFC6570]]
-          ]: <code>http://192.168.1.25/left{?p,d}</code>.
-        </p>
+        <section id="content-types">
+            <h2>Content Types</h2>
+            <p>
+            Content Types define the serialization details and other rules for processing the payloads. 
+            The content type is used to select a serializer/deserializer and to select an additional set of rules and constraints for the protocol driver. 
+            Content type includes the media type and potential parameters for the media type.
+            </p>
+            
+            <p>
+            For example, the media type <code>application/ocf+cbor</code> indicates that CBOR
+            serialization is used, but also that OCF rules and namespaces
+            apply to the processing of the representations.
+            </p>
+            <p>
+            Some special protocol drivers may be invoked by using a non-registered
+            media type (e.g., <code>x-<echonet></code>) along with a custom URI Scheme [[RFC3986]] and its own
+            set of protocol methods and options defined for that URI Scheme.
+            </p>
 
-        <p>
-          In such a case, the URI Template variables <i>MUST</i> be collected in the JSON-object based
-          <code>uriVariables</code>
-          member with the associated (unique) variable names as JSON names.
-        </p>
+            <p> When the media type is <code>application/xml</code> (or its binary representation
+            <code>application/exi</code>) and
+            there is a Data Schema provided for the payload, the payloads are constrained by a XML Schema derived from the
+            Data Schema.
+            See <a href="#mapping-to-xml-schema" class="sec-ref">§&nbsp;
+                <bdi class="secno">
+                3.1.3
+                </bdi>XML Schema Binding
+            </a> Schema Binding for how to derive a XML Schema from a Data Schema definition.
+            </p>
 
-        <p>
-          The serialization of each value in the map assigned to <code>uriVariables</code> in an instance of
-          <code>Form</code> <i>MUST</i> rely on
-          the DataSchema as explained in <a href="#sec-data-schema" class="sec-ref">§&nbsp;
-            <bdi class="secno">
-              3.1
-            </bdi>Data Schema</a>.
-        </p>
+            
 
-        <p>
-          An action affordance snippet using a URI Template and <code>uriVariables</code> is given below:
-        </p>
-        <pre class="example" title="Action Affordance using URI Template Variables">
-                ...
-                "actions": {
-                    "LeftDown": {
-                        ...
-                        "uriVariables": {
-                            "p" : { "type": "integer", "minimum": 0, "maximum": 16 },
-                            "d" : { "type": "integer", "minimum": 0, "maximum": 1 }
+        </section>
+
+        <section id="protocol-methods-options">
+            <h2>Protocol Methods and Options</h2>
+            <p>
+            Each target protocol may specify different method names for similar
+            operations, and there may be semantic differences between similar method names of
+            different protocols. Additionally, platforms may use different methods
+            for realizing a particular WoT Interaction Affordance. For example, POST may
+            be used for writing a Property value in one platform, while PUT may be
+            used in another. For these reasons, we require the ability to specify
+            which method to use for a particular Interaction. We also will provide
+            vocabulary to differentiate between methods of different protocols.
+            </p>
+            <p>
+            The W3C RDF vocabulary for HTTP [[HTTP-in-RDF10]] is used to identify the methods
+            and options specified in the HTTP protocol bindings.
+            </p>
+            <p>
+            For the sake of consistency, we will use the same ontology design pattern
+            to derive a vocabulary for each target protocol, e.g. CoAP, MQTT.
+            </p>
+
+            <p>
+            The example below shows some method definitions for various protocols.
+            </p>
+
+            <pre class="example" title="Vocabulary Example for Methods">
+                "htv:methodName": "GET"
+
+                "mqv:controlPacketValue": "SUBSCRIBE"
+
+                "cov:methodName": "GET"
+            </pre>
+
+            <p>
+            Header options in HTTP, CoAP, MQTT sometimes must be included in a
+            protocol binding in order to successfully interact with the underlying
+            protocol. The example below shows the structure of the definition for
+            HTTP header options, according to the W3C HTTP Vocabulary in RDF.
+            </p>
+
+            <pre class="example" title="HTTP Vocabulary Example for Header Options">
+                "htv:headers":
+                [
+                    {
+                    "htv:fieldName": "Accept",
+                    "htv:fieldValue": "application/json"
+                    },
+                    {
+                    "htv:fieldName": "Transfer-Encoding",
+                    "htv:fieldValue": "chunked"
+                    }
+                ]
+            </pre>
+            <p>
+            Note: different forms in a binding may need different header constructions,
+            therefore the <code>htv:headers</code> construct is an extension of the TD "form" element.
+            </p>
+            <p>
+            Protocols may have defined sub-protocols that can be used for some interaction
+            types. For example, to receive asynchronous notifications using HTTP, some
+            servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>)
+            and Server-Sent Events [[eventsource]] (<code>sse</code>).
+
+            The <code>subprotocol</code> item may be defined in a form instance to indicate the
+            use of one of these protocols, for example long polling with its special use of HTTP:
+            <pre class="example" title="subprotocol">
+                {
+                    "op": "subscribeevent",
+                    "href": "https://mylamp.example.com/overheating",
+                    "subprotocol": "longpoll"
+                }
+                </pre>
+            </thead>
+
+            </p>
+        </section>
+
+        <!-- <section id="uri-variables">
+            <h2>URI Template Variables</h2>
+            <p>
+            When Interaction Affordances require dynamic variables in the <code>href</code>,
+            they can be described using <code>uriVariables</code> in the Data Schema of the interaction.
+            For example, <code>p</code> and <code>d</code> in <code>http://192.168.1.25/left?p=2&d=1</code>
+            can be described with a template as defined in [[RFC6570]]
+            ]: <code>http://192.168.1.25/left{?p,d}</code>.
+            </p>
+
+            <p>
+            In such a case, the URI Template variables <i>MUST</i> be collected in the JSON-object based
+            <code>uriVariables</code>
+            member with the associated (unique) variable names as JSON names.
+            </p>
+
+            <p>
+            The serialization of each value in the map assigned to <code>uriVariables</code> in an instance of
+            <code>Form</code> <i>MUST</i> rely on
+            the DataSchema as explained in <a href="#sec-data-schema" class="sec-ref">§&nbsp;
+                <bdi class="secno">
+                3.1
+                </bdi>Data Schema</a>.
+            </p>
+
+            <p>
+            An action affordance snippet using a URI Template and <code>uriVariables</code> is given below:
+            </p>
+            <pre class="example" title="Action Affordance using URI Template Variables">
+                    ...
+                    "actions": {
+                        "LeftDown": {
+                            ...
+                            "uriVariables": {
+                                "p" : { "type": "integer", "minimum": 0, "maximum": 16 },
+                                "d" : { "type": "integer", "minimum": 0, "maximum": 1 }
+                            },
+                            "forms": [{
+                            "href" : "http://192.168.1.25/left{?p,d}",
+                            "htv:methodName": "GET"
+                            }]
                         },
-                        "forms": [{
-                          "href" : "http://192.168.1.25/left{?p,d}",
-                          "htv:methodName": "GET"
-                        }]
+                        ...
                     },
                     ...
+                </pre>
+
+        </section> -->
+
+        </section>
+
+
+        <section id="sec-interaction-patterns" class="informative">
+        <h1>Interaction Affordances</h1>
+        <p>
+            This section describes unique aspects of protocol bindings for the three
+            WoT Interaction Affordances.
+        </p>
+
+        <section id="property-bindings">
+            <h2>Bindings for Properties</h2>
+            <p>
+            This section describes unique aspects of protocol bindings for
+            WoT Property interactions.
+            </p>
+            <p>
+
+            The abstract operations exposed for the Property Interaction are <code>readproperty</code>,
+            <code>writeproperty</code>, <code>observeproperty</code> and <code>unobserveproperty</code>.
+            These are mapped by using form operations that describe how
+            the abstract operation is performed, resulting in a semantic interpretation similar to
+            HTML form submission.
+            </p>
+
+            <p>
+            Additionally, the abstract operations exposed for multiple Property Interactions are
+            <code>readallproperties</code>,
+            <code>writeallproperties</code>, <code>readmultipleproperties</code> and <code>writemultipleproperties</code>.
+            </p>
+
+            <pre class="example" title="Example use of form operation for Property">
+            {
+                "op": "writeproperty",
+                "href": "/example/level",
+                "htv:methodName": "POST"
+            }
+            </pre>
+
+            <p>
+            The form element in the example above conveys the statement: <i>"To do a <code>writeproperty</code> of the
+                subject Property (context of the form),
+                perform an <code> HTTP POST</code> on the resource at the target URI <code>/example/level</code>."</i>
+            </p>
+            <p>
+            Properties may be observable, defined by the TD keyword "observable".
+            If there is an observe form and a retrieve form, the observe form may be
+            indicated by including <code>op=observeproperty</code> in the form. The observe form may
+            also specify header options to use, as specified in Observing in CoAP[[?RFC7641]]for example setting the CoAP Observe option to <code>0</code> in the header, starts observation.
+            </p>
+        </section>
+
+        <section id="action-bindings" class="informative">
+            <h2>Bindings for Actions</h2>
+            <p>
+            This section describes unique aspects of protocol bindings for Actions.
+            </p>
+            <p>
+
+            The abstract operation on Actions is <code>invokeaction</code>.
+            In the same way that the abstract operations on Properties are mapped using form operation types,
+            the abstract operation of Actions is also mapped.
+            </p>
+            <pre class="example" title="Example use of form operation for Action">
+            {
+                "op": "invokeaction",
+                "href": "/example/levelaction",
+                "http:methodName": "POST"
+            }
+
+            </pre>
+            <p>
+            The form element in the example above conveys the statement: <i>"To do an <code>invokeaction</code> of the subject Action (context of the form), perform a <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
+            </p>
+        </section>
+
+        <section id="event-bindings" class="informative">
+            <h2>Bindings for Events</h2>
+            <p>
+            This section describes unique aspects of protocol bindings for WoT
+            Event Interaction Affordances.
+            </p>
+            <p>
+
+            The abstract operations on Events are <code>subscribeevent</code> and <code>unsubscribeevent</code>.
+            The <code>subscribeevent</code> operation may directly enable event instance delivery
+            from the pre-defined URI to observable resources or pubsub topics encoded in URIs.
+            Alternatively, it may return a location or resource URI from which event instance may be obtained,
+            either by observation or some other mechanism, depending on the transfer protocol.
+            </p>
+            <p>
+            Usually, the <code>unsubscribeevent</code> only occurs when the transfer protocol has no implicit
+            unsubscribe operation such as closing the connection. Examples are Webhooks that require particular
+            unsubscribe requests.
+
+            </p>
+            <p>
+            If the binding offers an observable Event resource from which events are
+            obtained, there will be a form which describes the required transfer layer
+            operation, for example CoAP Observe or HTTP Long Polling.
+            </p>
+
+            <pre class="example" title="Example use of form operation for Events">
+            {
+                "op": "subscribeevent",
+                "href": "mqtt://wot.example.com/levelevent",
+                "mqv:controlPacketValue": "SUBSCRIBE"
+            }
+
+            </pre>
+            <p>
+            The form element in the example above conveys the statement: <i>"To do an <code>subscribeevent</code> of the subject Event (context of the form), perform an <code>MQTT SUBSCRIBE</code> on the topic <code>/levelevent</code> on the broker at <code>wot.example.com</code> using the default MQTT port."</i>
+            </p>
+        </section>
+
+        </section>
+
+        </section>
+        
+        <section>
+
+            <h3><code>subprotocol</code> Vocabulary</h3>
+            <p>
+                The <code>subprotocol</code> field is defined in [[!WOT-THING-DESCRIPTION]].
+            </p>
+            <p>
+                Currently, the supported values are <code>longpoll</code>, <code>websub</code> and <code>sse</code> defined for HTTP.
+                Subprotocols can be used for asynchronous event delivery or observing Properties.
+            </p>
+            <p>
+                For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
+            </p>
+            <p>
+                For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation operations as defined by [[RFC6741]]
+            </p>
+        </section>
+    </section>
+
+    <section id="binding-examples" class="informative">
+        <h1>Examples of Thing Descriptions including protocol bindings</h1>
+
+        <p>
+        The following TD examples uses a fictional CoAP and MQTT Protocol Bindings, as no such Protocol Binding is available at the time of writing this specification.
+        These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to
+        [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and
+        <code>http://www.example.org/mqtt-binding#</code>, respectively.
+        The supplemented <code>cov:methodName</code> member instructs the Consumer which CoAP method has to be applied
+        (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code 0.02, or
+        <code>iPATCH</code> for CoAP Method Code 0.07).
+        The supplemented <code>"mqv:controlPacketValue"</code> member instructs the Consumer which MQTT command has to be applied (e.g.,
+        <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
+        </p>
+
+        <p>
+        A TD with simple payload format and protocols can be seen below. 
+        Here each interaction affordance has one form with one protocol.
+        </p>
+        <pre class="example" title="TD with a Simple Payload">
+            {
+            "@context": [
+                "https://www.w3.org/2019/wot/td/v1",
+                {
+                "iot": "http://iotschema.org/",
+                "cov": "http://www.example.org/coap-binding#",
+                "mqv": "http://www.example.org/mqtt-binding#"
+                }
+            ],
+            "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitchCapability" ],
+            "base": "http://example.com",
+            "title": "Lamp",
+            "id": "urn:dev:ops:32473-WoTLamp-1234",
+            "securityDefinitions": {"basic_sc": {
+                "scheme": "basic",
+                "in": "header"
+            }},
+            "security": ["basic_sc"],
+            "properties": {
+                "switchState": {
+                "@type": ["iot:SwitchStatus", "iot:SwitchData"],
+                "type": "boolean",
+                "writeOnly": false,
+                "readOnly": false,
+                "observable": false,
+                "forms": [
+                    {
+                    "href": "/example/light/currentswitch",
+                    "op": ["readproperty", "writeproperty"],
+                    "contentType": "application/json"
+                    }
+                ]
                 },
-                ...
-              </pre>
-
-      </section> -->
-
-    </section>
-
-
-    <section id="sec-interaction-patterns" class="informative">
-      <h1>Interaction Affordances</h1>
-      <p>
-        This section describes unique aspects of protocol bindings for the three
-        WoT Interaction Affordances.
-      </p>
-
-      <section id="property-bindings">
-        <h2>Bindings for Properties</h2>
-        <p>
-          This section describes unique aspects of protocol bindings for
-          WoT Property interactions.
-        </p>
-        <p>
-
-          The abstract operations exposed for the Property Interaction are <code>readproperty</code>,
-          <code>writeproperty</code>, <code>observeproperty</code> and <code>unobserveproperty</code>.
-          These are mapped by using form operations that describe how
-          the abstract operation is performed, resulting in a semantic interpretation similar to
-          HTML form submission.
-        </p>
-
-        <p>
-          Additionally, the abstract operations exposed for multiple Property Interactions are
-          <code>readallproperties</code>,
-          <code>writeallproperties</code>, <code>readmultipleproperties</code> and <code>writemultipleproperties</code>.
-        </p>
-
-        <pre class="example" title="Example use of form operation for Property">
-          {
-            "op": "writeproperty",
-            "href": "/example/level",
-            "htv:methodName": "POST"
-          }
+                "brightness": {
+                "@type": ["iot:CurrentLevel", "iot:LevelData"],
+                "type": "number",
+                "writeOnly": false,
+                "readOnly": false,
+                "observable": false,
+                "forms": [
+                    {
+                    "href": "coap://example.com/example/light/currentdimmer",
+                    "op": ["readproperty", "writeproperty"],
+                    "contentType": "application/json"
+                    }
+                ]
+                }
+            },
+            "actions": {
+                "switchOn": {
+                "@type": ["iot:SwitchOnAction"],
+                "input":  {
+                    "type": "boolean",
+                    "const": true
+                },
+                "forms": [
+                    {
+                    "href": "/example/light/currentswitch",
+                    "op": ["invokeaction"],
+                    "contentType": "application/json"
+                    }
+                ]
+                },
+                "switchOff": {
+                "@type": ["iot:SwitchOff"],
+                "input":  {
+                    "type": "boolean",
+                    "const": false
+                },
+                "forms": [
+                    {
+                    "href": "/example/light/currentswitch",
+                    "op": ["invokeaction"],
+                    "contentType": "application/json"
+                    }
+                ]
+                },
+                "setBrightness": {
+                "@type": ["iot:SetLevelAction"],
+                "input":  {
+                    "@type": ["iot:LevelData"],
+                    "type": "number"
+                },
+                "forms": [
+                    {
+                    "href": "/example/light/currentdimmer",
+                    "op": ["invokeaction"],
+                    "contentType": "application/json"
+                    }
+                ]
+                }
+            }
+            }
         </pre>
 
         <p>
-          The form element in the example above conveys the statement: <i>"To do a <code>writeproperty</code> of the
-            subject Property (context of the form),
-            perform an <code> HTTP POST</code> on the resource at the target URI <code>/example/level</code>."</i>
-        </p>
-        <p>
-          Properties may be observable, defined by the TD keyword "observable".
-          If there is an observe form and a retrieve form, the observe form may be
-          indicated by including <code>op=observeproperty</code> in the form. The observe form may
-          also specify header options to use, as specified in Observing in CoAP[[?RFC7641]]for example setting the CoAP Observe option to <code>0</code> in the header, starts observation.
-        </p>
-      </section>
-
-      <section id="action-bindings" class="informative">
-        <h2>Bindings for Actions</h2>
-        <p>
-          This section describes unique aspects of protocol bindings for Actions.
-        </p>
-        <p>
-
-          The abstract operation on Actions is <code>invokeaction</code>.
-          In the same way that the abstract operations on Properties are mapped using form operation types,
-          the abstract operation of Actions is also mapped.
-        </p>
-        <pre class="example" title="Example use of form operation for Action">
-          {
-            "op": "invokeaction",
-            "href": "/example/levelaction",
-            "http:methodName": "POST"
-          }
-
-        </pre>
-        <p>
-          The form element in the example above conveys the statement: <i>"To do an <code>invokeaction</code> of the subject Action (context of the form), perform a <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
-        </p>
-      </section>
-
-      <section id="event-bindings" class="informative">
-        <h2>Bindings for Events</h2>
-        <p>
-          This section describes unique aspects of protocol bindings for WoT
-          Event Interaction Affordances.
-        </p>
-        <p>
-
-          The abstract operations on Events are <code>subscribeevent</code> and <code>unsubscribeevent</code>.
-          The <code>subscribeevent</code> operation may directly enable event instance delivery
-          from the pre-defined URI to observable resources or pubsub topics encoded in URIs.
-          Alternatively, it may return a location or resource URI from which event instance may be obtained,
-          either by observation or some other mechanism, depending on the transfer protocol.
-        </p>
-        <p>
-          Usually, the <code>unsubscribeevent</code> only occurs when the transfer protocol has no implicit
-          unsubscribe operation such as closing the connection. Examples are Webhooks that require particular
-          unsubscribe requests.
-
-        </p>
-        <p>
-          If the binding offers an observable Event resource from which events are
-          obtained, there will be a form which describes the required transfer layer
-          operation, for example CoAP Observe or HTTP Long Polling.
+        Another version of the previous TD with complex payload and multiple protocol options is shown below. 
+        Notably, the <code>brightness</code> property can be read via HTTP, written to via CoAP and observed via MQTT.
         </p>
 
-        <pre class="example" title="Example use of form operation for Events">
-          {
-            "op": "subscribeevent",
-            "href": "mqtt://wot.example.com/levelevent",
-            "mqv:controlPacketValue": "SUBSCRIBE"
-          }
-
-        </pre>
-        <p>
-          The form element in the example above conveys the statement: <i>"To do an <code>subscribeevent</code> of the subject Event (context of the form), perform an <code>MQTT SUBSCRIBE</code> on the topic <code>/levelevent</code> on the broker at <code>wot.example.com</code> using the default MQTT port."</i>
-        </p>
-      </section>
-
-    </section>
-
-  </section>
-</section>
-
-  <section id="vocabulary" class="normative">
-    <h1>Vocabulary</h1>
-    <p>
-      This section summarizes the vocabulary used for Binding Templates.
-      The vocabulary is defined in other documents, in particular the WoT Thing Description [[!WOT-THING-DESCRIPTION]]
-    </p>
-    <section>
-      <h2><code>DataSchema</code> Vocabulary</h2>
-      <p>
-        <code>DataSchema</code> elements describe the structure of the payload.
-        The <code>DataSchema</code> class and vocabulary is defined in [[!WOT-THING-DESCRIPTION]].
-        Properties and Events directly implement the <code>DataSchema</code> class
-        (i.e., they contain the corresponding fields such as <code>type</code>),
-        which describes the data transfer in either direction.
-        Actions may define an <code>input</code> data schema for actuation data being sent to the Action
-        and/or an <code>output</code> data schema for result or status data being returned from
-        the Action.
-
-      </p>
-    </section>
-
-    <section>
-      <h2>Form Operation Type Vocabulary</h2>
-      <p>
-
-        Each interaction affordance has associated form operation types (i.e. <code>op</code>)
-        that are used to select the form element corresponding to the intended interaction from the Array of forms.
-        For example, for one interaction, a Consumer can choose the form element corresponding to reading a Property, 
-        observing a Property or writing to Property by using the form operation type.
-
-      </p>
-      <section>
-        <h3>Property Forms</h3>
-        <p>
-          Properties can provide <code>readproperty</code> and <code>writeproperty</code>
-          operations, which map to GET and PUT/POST of a REST API, respectively.
-          Properties may also by observed if they provide an <code>observeproperty</code> operation and 
-          the observation can be stopped if the property provides an <code>unobserveproperty</code> operation.
-        </p>
-        <table class="def">
-          <thead>
-            <tr>
-              <th><code>op</code> Term</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>readproperty</code></td>
-              <td>Read a Property. Requires <code>writeOnly</code> to be set to <code>false</code>.</td>
-            </tr>
-            <tr>
-              <td><code>writeproperty</code></td>
-              <td>Write a Property. Requires <code>readOnly</code> to be set to <code>false</code>.</td>
-            </tr>
-            <tr>
-              <td><code>observeproperty</code></td>
-              <td>Observe a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
-            </tr>
-            <tr>
-              <td><code>unobserveproperty</code></td>
-              <td>Unobserve a Property. Requires <code>observable</code> to be set to <code>true</code>.</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h3>Action Forms</h3>
-        <p>
-          Actions only provide <code>invokeaction</code> operations.
-          For completeness, there is also a form operation type defined.
-        </p>
-        <table class="def">
-          <thead>
-            <tr>
-              <th><code>op</code> Term</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>invokeaction</code></td>
-              <td>Invoke an Action.</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h3>Event Forms</h3>
-        <p>
-          Events describe subscription endpoints from which to event instances can be received 
-          and unsubscription endpoints to stop receiving event instances.
-        </p>
-        <table class="def">
-          <thead>
-            <tr>
-              <th><code>op</code> Term</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>subscribeevent</code></td>
-              <td>Subscribe to an Event.</td>
-            </tr>
-            <tr>
-              <td><code>unsubscribeevent</code></td>
-              <td>Unsubscribe from an Event.</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </section>
-
-    <section>
-      <h2>Protocol Vocabulary</h2>
-      <p>
-        Extensions to the Thing Description core vocabulary can inform the Consumer about
-        protocol-specific message configurations such as methods, options, and status codes.
-        By using such information, the Consumer can build the protocol specific request that allows interaction with the Exposed Thing.
-        Per default the Thing Description includes HTTP Vocabulary by including the HTTP RDF vocabulary definitions from HTTP Vocabulary in RDF 1.0 [HTTP-in-RDF10].
-      </p>
-      <p class="ednote" title="Protocol Vocabulary Definitions">
-        The WoT Working Group is investigating good ways to also provide COAP and MQTT Vocabulary in RDF.
-        Whether the WG will publish corresponding WG Notes is still subject to discussion.
-      </p>
-
-    <p>
-      The protocol vocabularies for each protocol are presented as two tables per protocol.
-      The first table details the vocabulary terms, whereas the second one lists a default mapping of the <code>op</code> for the given protocol, if that <code>op</code> value is defined for the given protocol.
-    </p>
-    <p>   
-      Other protocols can be easily integrated into a Thing Description. 
-      To do so, the vocabulary of the protocol should be linked via <code>@context</code> context extension, in which the different vocabulary terms used for the protocol should be described.
-      A URI Scheme of the protocol is also necessary to identify it in the <code>href</code> value.
-      A Consumer should be able to construct the appropriate requests based vocabulary terms defined in the Thing Description and should not rely on out-of-band information.
-    </p>
-
-
-      
-
-      <section>
-
-        <h3><code>subprotocol</code> Vocabulary</h3>
-        <p>
-          The <code>subprotocol</code> field is defined in [[!WOT-THING-DESCRIPTION]].
-        </p>
-        <p>
-          Currently, the supported values are <code>longpoll</code>, <code>websub</code> and <code>sse</code> defined for HTTP.
-          Subprotocols can be used for asynchronous event delivery or observing Properties.
-        </p>
-        <p>
-          For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
-        </p>
-        <p>
-          For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation operations as defined by [[RFC6741]]
-        </p>
-      </section>
-
-    </section>
-
-  </section>
-
-  <section id="binding-examples" class="informative">
-    <h1>Examples of Thing Descriptions including protocol bindings</h1>
-
-    <p>
-      The following TD examples uses a fictional CoAP and MQTT Protocol Bindings, as no such Protocol Binding is available at the time of writing this specification.
-      These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to
-      [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code> and
-      <code>http://www.example.org/mqtt-binding#</code>, respectively.
-      The supplemented <code>cov:methodName</code> member instructs the Consumer which CoAP method has to be applied
-      (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code 0.02, or
-      <code>iPATCH</code> for CoAP Method Code 0.07).
-      The supplemented <code>"mqv:controlPacketValue"</code> member instructs the Consumer which MQTT command has to be applied (e.g.,
-      <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
-    </p>
-
-    <p>
-      A TD with simple payload format and protocols can be seen below. 
-      Here each interaction affordance has one form with one protocol.
-    </p>
-    <pre class="example" title="TD with a Simple Payload">
+        <pre class="example" title="TD with protocol options and complex payload">
         {
-          "@context": [
+            "@context": [
             "https://www.w3.org/2019/wot/td/v1",
             {
-              "iot": "http://iotschema.org/",
-              "cov": "http://www.example.org/coap-binding#",
-              "mqv": "http://www.example.org/mqtt-binding#"
+                "iot": "http://iotschema.org/",
+                "cov": "http://www.example.org/coap-binding#",
+                "mqv": "http://www.example.org/mqtt-binding#"
             }
-          ],
-          "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitchCapability" ],
-          "base": "http://example.com",
-          "title": "Lamp",
-          "id": "urn:dev:ops:32473-WoTLamp-1234",
-          "securityDefinitions": {"basic_sc": {
+            ],
+            "base": "http://example.com/",
+            "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
+            "title": "Lamp",
+            "id": "urn:dev:ops:32473-WoTLamp-1234",
+            "securityDefinitions": {"basic_sc": {
             "scheme": "basic",
             "in": "header"
-          }},
-          "security": ["basic_sc"],
-          "properties": {
+            }},
+            "security": ["basic_sc"],
+            "properties": {
             "switchState": {
-              "@type": ["iot:SwitchStatus", "iot:SwitchData"],
-              "type": "boolean",
-              "writeOnly": false,
-              "readOnly": false,
-              "observable": false,
-              "forms": [
-                {
-                  "href": "/example/light/currentswitch",
-                  "op": ["readproperty", "writeproperty"],
-                  "contentType": "application/json"
+                "@type": ["iot:SwitchStatus"],
+                "type": "object",
+                "properties": {
+                "switch": {
+                    "@type": ["iot:SwitchData"],
+                    "type": "boolean"
                 }
-              ]
+                },
+                "writeOnly": false,
+                "readOnly": false,
+                "observable": true,
+                "forms": [
+                {
+                    "href": "/example/light/currentswitch",
+                    "contentType": "application/json",
+                    "op": ["readproperty"],
+                    "htv:methodName": "GET"
+                },
+                {
+                    "href": "/example/light/currentswitch",
+                    "contentType": "application/json",
+                    "op": ["writeproperty"],
+                    "htv:methodName": "POST"
+                },
+                {
+                    "href": "mqtt://example.com/example/light/currentswitch",
+                    "op": ["observeproperty"],
+                    "mqv:controlPacketValue": "SUBSCRIBE"
+                }
+                ]
             },
             "brightness": {
-              "@type": ["iot:CurrentLevel", "iot:LevelData"],
-              "type": "number",
-              "writeOnly": false,
-              "readOnly": false,
-              "observable": false,
-              "forms": [
-                {
-                  "href": "coap://example.com/example/light/currentdimmer",
-                  "op": ["readproperty", "writeproperty"],
-                  "contentType": "application/json"
+                "@type": ["iot:CurrentLevel"],
+                "type": "object",
+                "properties": {
+                "brightness": {
+                    "@type": ["iot:LevelData" ],
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
                 }
-              ]
+                },
+                "writeOnly": false,
+                "readOnly": false,
+                "observable": true,
+                "forms": [
+                {
+                    "href": "coap://example.com/example/light/currentdimmer",
+                    "contentType": "application/json",
+                    "op": ["readproperty"],
+                    "cov:methodName": "GET"
+                },
+                {
+                    "href": "/example/light/currentdimmer",
+                    "contentType": "application/json",
+                    "op": ["writeproperty"],
+                    "htv:methodName": "POST"
+                },
+                {
+                    "href": "mqtt://example.com/example/light/currentdimmer",
+                    "op": ["observeproperty"],
+                    "mqv:controlPacketValue": "SUBSCRIBE"
+                }
+                ]
+            },
+            "transitionTime": {
+                "@type": ["iot:TransitionTime"],
+                "type": "object",
+                "properties": {
+                "transitionTime": {
+                    "@type": ["iot:TransitionTimeData" ],
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                }
+                },
+                "writeOnly": false,
+                "readOnly": false,
+                "observable": false,
+                "forms": [
+                {
+                    "href": "/example/light/transitiontime",
+                    "contentType": "application/json",
+                    "op": ["readproperty"],
+                    "htv:methodName": "GET"
+                },
+                {
+                    "href": "/example/light/transitiontime",
+                    "contentType": "application/json",
+                    "op": ["writeproperty"],
+                    "htv:methodName": "POST"
+                }
+                ]
             }
-          },
-          "actions": {
+            },
+            "actions": {
             "switchOn": {
-              "@type": ["iot:SwitchOnAction"],
-              "input":  {
+                "@type": ["iot:SwitchOnAction"],
+                "input":  {
                 "type": "boolean",
                 "const": true
-              },
-              "forms": [
+                },
+                "forms": [
                 {
-                  "href": "/example/light/currentswitch",
-                  "op": ["invokeaction"],
-                  "contentType": "application/json"
+                    "href": "/example/light/currentswitch",
+                    "contentType": "application/json",
+                    "op": ["invokeaction"],
+                    "htv:methodName": "POST"
                 }
-              ]
+                ]
             },
             "switchOff": {
-              "@type": ["iot:SwitchOff"],
-              "input":  {
+                "@type": ["iot:SwitchOffAction"],
+                "input": {
                 "type": "boolean",
                 "const": false
-              },
-              "forms": [
+                },
+                "forms": [
                 {
-                  "href": "/example/light/currentswitch",
-                  "op": ["invokeaction"],
-                  "contentType": "application/json"
+                    "href": "/example/light/currentswitch",
+                    "contentType": "application/json",
+                    "op": ["invokeaction"],
+                    "htv:methodName": "POST"
                 }
-              ]
+                ]
             },
             "setBrightness": {
-              "@type": ["iot:SetLevelAction"],
-              "input":  {
-                "@type": ["iot:LevelData"],
-                "type": "number"
-              },
-              "forms": [
-                {
-                  "href": "/example/light/currentdimmer",
-                  "op": ["invokeaction"],
-                  "contentType": "application/json"
-                }
-              ]
-            }
-          }
-        }
-      </pre>
-    <p>
-      Another version of the previous TD with complex payload and multiple protocol options is shown below. 
-      Notably, the <code>brightness</code> property can be read via HTTP, written to via CoAP and observed via MQTT.
-    </p>
-    <pre class="example" title="TD with protocol options and complex payload">
-      {
-        "@context": [
-          "https://www.w3.org/2019/wot/td/v1",
-          {
-            "iot": "http://iotschema.org/",
-            "cov": "http://www.example.org/coap-binding#",
-            "mqv": "http://www.example.org/mqtt-binding#"
-          }
-        ],
-        "base": "http://example.com/",
-        "@type": [ "Thing", "iot:Light", "iot:LevelCapability", "iot:BinarySwitch" ],
-        "title": "Lamp",
-        "id": "urn:dev:ops:32473-WoTLamp-1234",
-        "securityDefinitions": {"basic_sc": {
-          "scheme": "basic",
-          "in": "header"
-        }},
-        "security": ["basic_sc"],
-        "properties": {
-          "switchState": {
-            "@type": ["iot:SwitchStatus"],
-            "type": "object",
-            "properties": {
-              "switch": {
-                "@type": ["iot:SwitchData"],
-                "type": "boolean"
-              }
-            },
-            "writeOnly": false,
-            "readOnly": false,
-            "observable": true,
-            "forms": [
-              {
-                "href": "/example/light/currentswitch",
-                "contentType": "application/json",
-                "op": ["readproperty"],
-                "htv:methodName": "GET"
-              },
-              {
-                "href": "/example/light/currentswitch",
-                "contentType": "application/json",
-                "op": ["writeproperty"],
-                "htv:methodName": "POST"
-              },
-              {
-                "href": "mqtt://example.com/example/light/currentswitch",
-                "op": ["observeproperty"],
-                "mqv:controlPacketValue": "SUBSCRIBE"
-              }
-            ]
-          },
-          "brightness": {
-            "@type": ["iot:CurrentLevel"],
-            "type": "object",
-            "properties": {
-              "brightness": {
-                "@type": ["iot:LevelData" ],
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 255
-              }
-            },
-            "writeOnly": false,
-            "readOnly": false,
-            "observable": true,
-            "forms": [
-              {
-                "href": "coap://example.com/example/light/currentdimmer",
-                "contentType": "application/json",
-                "op": ["readproperty"],
-                "cov:methodName": "GET"
-              },
-              {
-                "href": "/example/light/currentdimmer",
-                "contentType": "application/json",
-                "op": ["writeproperty"],
-                "htv:methodName": "POST"
-              },
-              {
-                "href": "mqtt://example.com/example/light/currentdimmer",
-                "op": ["observeproperty"],
-                "mqv:controlPacketValue": "SUBSCRIBE"
-              }
-            ]
-          },
-          "transitionTime": {
-            "@type": ["iot:TransitionTime"],
-            "type": "object",
-            "properties": {
-              "transitionTime": {
-                "@type": ["iot:TransitionTimeData" ],
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 255
-              }
-            },
-            "writeOnly": false,
-            "readOnly": false,
-            "observable": false,
-            "forms": [
-              {
-                "href": "/example/light/transitiontime",
-                "contentType": "application/json",
-                "op": ["readproperty"],
-                "htv:methodName": "GET"
-              },
-              {
-                "href": "/example/light/transitiontime",
-                "contentType": "application/json",
-                "op": ["writeproperty"],
-                "htv:methodName": "POST"
-              }
-            ]
-          }
-        },
-        "actions": {
-          "switchOn": {
-            "@type": ["iot:SwitchOnAction"],
-            "input":  {
-              "type": "boolean",
-              "const": true
-            },
-            "forms": [
-              {
-                "href": "/example/light/currentswitch",
-                "contentType": "application/json",
-                "op": ["invokeaction"],
-                "htv:methodName": "POST"
-              }
-            ]
-          },
-          "switchOff": {
-            "@type": ["iot:SwitchOffAction"],
-            "input": {
-              "type": "boolean",
-              "const": false
-            },
-            "forms": [
-              {
-                "href": "/example/light/currentswitch",
-                "contentType": "application/json",
-                "op": ["invokeaction"],
-                "htv:methodName": "POST"
-              }
-            ]
-          },
-          "setBrightness": {
-            "title": "Set Brightness Level",
-            "@type": ["iot:SetLevelAction"],
-            "input": {
-              "type": "object",
-              "properties": {
-                "brightness": {
-                  "@type": ["iot:LevelData"],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 255
-                  }
+                "title": "Set Brightness Level",
+                "@type": ["iot:SetLevelAction"],
+                "input": {
+                "type": "object",
+                "properties": {
+                    "brightness": {
+                    "@type": ["iot:LevelData"],
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                    }
+                    },
+                    "transitionTime": {
+                    "@type": ["iot:TransitionTimeData"],
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 65535
+                    }
                 },
-                "transitionTime": {
-                  "@type": ["iot:TransitionTimeData"],
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 65535
+                "forms": [
+                {
+                    "href": "/example/light/",
+                    "contentType": "application/json",
+                    "op": ["invokeaction"],
+                    "htv:methodName": "POST"
                 }
-            },
-            "forms": [
-              {
-                "href": "/example/light/",
-                "contentType": "application/json",
-                "op": ["invokeaction"],
-                "htv:methodName": "POST"
-              }
-            ]
-          }
+                ]
+            }
+            }
         }
-      }
-    </pre>  
-      </pre>
-  </section>
+        </pre>
+    </section>
 
-
-  <section id="sec-security-considerations">
+    <section id="sec-security-considerations">
         <h1>Security and Privacy Considerations</h1>
+
         <p class="ednote">
-          Security and privacy considerations are still under discussion and development; the content below should be
-          considered preliminary.
-          Due to the complexity of the subject
-          we are considering producing a separate document containing a detailed security and privacy considerations
-          discussion including a risk analysis, threat model, recommended mitigations,  and appropriate references to best practices.
-          A summary will be included here.
-          Work in progress is located in the
-          <a href="https://github.com/w3c/wot-security/">WoT Security and Privacy</a> repository.
-          Please file any security or privacy considerations and/or concerns using the <a
+        Security and privacy considerations are still under discussion and development; the content below should be
+        considered preliminary.
+        Due to the complexity of the subject
+        we are considering producing a separate document containing a detailed security and privacy considerations
+        discussion including a risk analysis, threat model, recommended mitigations,  and appropriate references to best practices.
+        A summary will be included here.
+        Work in progress is located in the
+        <a href="https://github.com/w3c/wot-security/">WoT Security and Privacy</a> repository.
+        Please file any security or privacy considerations and/or concerns using the <a
             href="https://github.com/w3c/wot-security/issues">GitHub Issue</a> feature.
         </p>
+
         <p>
-          <!-- Security requirements for the the WoT -->
-          Security is a cross-cutting issue that needs to be taken into account in all WoT building blocks.
-          The W3C WoT does not define any new security mechanisms,
-          but provides guidelines to apply the best practices from
-          Web security, IoT security, and information security for general software and hardware considerations.
+        <!-- Security requirements for the the WoT -->
+        Security is a cross-cutting issue that needs to be taken into account in all WoT building blocks.
+        The W3C WoT does not define any new security mechanisms,
+        but provides guidelines to apply the best practices from
+        Web security, IoT security, and information security for general software and hardware considerations.
         </p>
+
         <p>
-          The <a
+        The <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing-description-td">WoT
             Thing Description</a> must be used together with integrity protection mechanisms and access control
-          policies.
-          Users must ensure that no sensitive information is included in the <a
+        policies.
+        Users must ensure that no sensitive information is included in the <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-td">TDs</a>
-          themselves.
+        themselves.
         </p>
+
         <p>
-          The <a
+        The <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-binding-templates">WoT
             Binding Templates</a> must correctly cover the security mechanisms employed by the underlying <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-iot-platform">IoT
             platform</a>.
-          Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a
+        Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-thing">Things</a> are
-          exposed and consumed in a way that is compliant with their security policies.
+        exposed and consumed in a way that is compliant with their security policies.
         </p>
+
         <p>
-          The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-wot-runtime">WoT
+        The <a href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-wot-runtime">WoT
             Runtime</a> implementation for the <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-scripting-api">WoT
             Scripting API</a> must have mechanisms to prevent malicious access to the system and isolate scripts in
-          multi-tenant <a
+        multi-tenant <a
             href="https://github.com/w3c/wot-architecture/blob/master/terminology.md#user-content-servient">Servients</a>.
+        </p>
+
+    </section>
+
+    <section id="sec-acknowledgements" class="appendix">
+        <h2>Acknowledgements</h2>
+        <p>
+        Special thanks to all active participants of the W3C Web of Things Interest Group and Working Group
+        for their technical input and suggestions that led to improvements to this document.
         </p>
     </section>
 
-   
-
-    <section id="sec-acknowledgements" class="appendix">
-    <h2>Acknowledgements</h2>
-    <p>
-      Special thanks to all active participants of the W3C Web of Things Interest Group and Working Group
-      for their technical input and suggestions that led to improvements to this document.
-    </p>
-    </section>
-
-    
-  </section>
-
-  <script id="dstimer" language="javascript">
-    //<![CDATA[
-    if (dschk() == 1) {
-      if (typeof (dsSetTimers) != "undefined") {
-        dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
-          1000), 1);
-      }
-    }
-    //]]>
-  </script>
+    <script id="dstimer" language="javascript">
+        //<![CDATA[
+        if (dschk() == 1) {
+        if (typeof (dsSetTimers) != "undefined") {
+            dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
+            1000), 1);
+        }
+        }
+        //]]>
+    </script>
 </body>
 
 </html>

@@ -14,7 +14,7 @@ Each commit here will sync it to the master, which will expose the content to [h
 
 To make contributions, please provide pull-requests to the corresponding file, see [GitHub help](https://help.github.com/articles/using-pull-requests/).
 
-Some HTML files are automatically rendered from RDF sources. 
+Some HTML files are automatically rendered from RDF sources.
 To render them, install [Node.js](https://nodejs.org/en/) (if necessary) and run:
 
 ```sh

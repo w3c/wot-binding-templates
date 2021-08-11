@@ -405,18 +405,18 @@
                     </p>
             
                     <pre class="example" title="HTTP Vocabulary Example for Header Options">
-                                    "htv:headers":
-                                    [
-                                        {
-                                        "htv:fieldName": "Accept",
-                                        "htv:fieldValue": "application/json"
-                                        },
-                                        {
-                                        "htv:fieldName": "Transfer-Encoding",
-                                        "htv:fieldValue": "chunked"
-                                        }
-                                    ]
-                                </pre>
+                        "htv:headers":
+                        [
+                            {
+                            "htv:fieldName": "Accept",
+                            "htv:fieldValue": "application/json"
+                            },
+                            {
+                            "htv:fieldName": "Transfer-Encoding",
+                            "htv:fieldValue": "chunked"
+                            }
+                        ]
+                    </pre>
             
                     <p>
                         Note: different forms in a binding may need different header constructions,
@@ -431,13 +431,13 @@
             
                         The <code>subprotocol</code> item may be defined in a form instance to indicate the
                         use of one of these protocols, for example long polling with its special use of HTTP:
-                    <pre class="example" title="subprotocol">
-                                        {
-                                            "op": "subscribeevent",
-                                            "href": "https://mylamp.example.com/overheating",
-                                            "subprotocol": "longpoll"
-                                        }
-                                    </pre>
+                        <pre class="example" title="subprotocol">
+                            {
+                                "op": "subscribeevent",
+                                "href": "https://mylamp.example.com/overheating",
+                                "subprotocol": "longpoll"
+                            }
+                        </pre>
                     </p>
             
                 </section>
@@ -454,8 +454,8 @@
                     <p>
                         This section describes unique aspects of protocol bindings for WoT Property interactions.
                     </p>
+
                     <p>
-            
                         The abstract operations exposed for the Property Interaction are <code>readproperty</code>,
                         <code>writeproperty</code>, <code>observeproperty</code> and <code>unobserveproperty</code>.
                         These are mapped by using form operations that describe how the abstract operation is performed,
@@ -469,18 +469,19 @@
                     </p>
             
                     <pre class="example" title="Example use of form operation for Property">
-                                    {
-                                        "op": "writeproperty",
-                                        "href": "/example/level",
-                                        "htv:methodName": "POST"
-                                    }
-                                </pre>
+                        {
+                            "op": "writeproperty",
+                            "href": "/example/level",
+                            "htv:methodName": "POST"
+                        }
+                    </pre>
             
                     <p>
                         The form element in the example above conveys the statement:
                         <i>"To do a <code>writeproperty</code> of the subject Property (context of the form), perform
                             an <code> HTTP POST</code> on the resource at the target URI <code>/example/level</code>."</i>
                     </p>
+
                     <p>
                         Properties may be observable, defined by the TD keyword "observable".
                         If there is an observe form and a retrieve form, the observe form may be
@@ -503,12 +504,12 @@
                     </p>
             
                     <pre class="example" title="Example use of form operation for Action">
-                                    {
-                                        "op": "invokeaction",
-                                        "href": "/example/levelaction",
-                                        "http:methodName": "POST"
-                                    }
-                                </pre>
+                        {
+                            "op": "invokeaction",
+                            "href": "/example/levelaction",
+                            "http:methodName": "POST"
+                        }
+                    </pre>
             
                     <p>
                         The form element in the example above conveys the statement: <i>"To do an
@@ -544,12 +545,12 @@
                     </p>
             
                     <pre class="example" title="Example use of form operation for Events">
-                                    {
-                                        "op": "subscribeevent",
-                                        "href": "mqtt://wot.example.com/levelevent",
-                                        "mqv:controlPacketValue": "SUBSCRIBE"
-                                    }
-                                </pre>
+                        {
+                            "op": "subscribeevent",
+                            "href": "mqtt://wot.example.com/levelevent",
+                            "mqv:controlPacketValue": "SUBSCRIBE"
+                        }
+                    </pre>
             
                     <p>
                         The form element in the example above conveys the statement: <i>"To do an
@@ -727,32 +728,32 @@
                             <tr>
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="Simple JSON Object Payload">
-                                {
-                                "level": 50,
-                                "time": 10
-                                }
-                            </pre>
+                                        {
+                                        "level": 50,
+                                        "time": 10
+                                        }
+                                    </pre>
                                 </td>
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="DataSchema for Simple JSON Object Payload">
-                                {
-                                "type": "object",
-                                "properties": {
-                                    "level": {
-                                    "@type": ["iot:LevelData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                    },
-                                    "time": {
-                                    "@type": ["iot:TransitionTimeData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 65535
-                                    }
-                                }
-                                }
-                            </pre>
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "level": {
+                                                    "@type": ["iot:LevelData"],
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "time": {
+                                                    "@type": ["iot:TransitionTimeData"],
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "maximum": 65535
+                                                }
+                                            }
+                                        }
+                                    </pre>
                                 </td>
                             </tr>
                         </tbody>
@@ -768,68 +769,68 @@
                             <tr>
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="SenML Example">
-                                [
-                                    {
-                                    "bn": "/example/light/"
-                                    },
-                                    {
-                                    "n": "level",
-                                    "v": 50
-                                    },
-                                    {
-                                    "n": "time",
-                                    "v": 10
-                                    }
-                                ]
-                                </pre>
+                                    [
+                                        {
+                                        "bn": "/example/light/"
+                                        },
+                                        {
+                                        "n": "level",
+                                        "v": 50
+                                        },
+                                        {
+                                        "n": "time",
+                                        "v": 10
+                                        }
+                                    ]
+                                    </pre>
                                 </td>
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="DataSchema for SenML Payload">
-                                {
-                                    "type": "array",
-                                    "items": [
                                     {
-                                        "type": "object",
-                                        "properties": {
-                                        "bn": {
-                                            "type": "string",
-                                            "const": "example/light"
-                                        }
-                                        }
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                        "n": {
-                                            "type": "string",
-                                            "const": "level"
+                                        "type": "array",
+                                        "items": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                            "bn": {
+                                                "type": "string",
+                                                "const": "example/light"
+                                            }
+                                            }
                                         },
-                                        "v": {
-                                            "@type": ["iot:LevelData"],
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "maximum": 255
-                                        }
-                                        }
-                                    },
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                        "n": {
-                                            "type": "string",
-                                            "const": "time"
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                            "n": {
+                                                "type": "string",
+                                                "const": "level"
+                                            },
+                                            "v": {
+                                                "@type": ["iot:LevelData"],
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 255
+                                            }
+                                            }
                                         },
-                                        "v": {
-                                            "@type": ["iot:TransitionTimeData"],
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "maximum": 65535
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                            "n": {
+                                                "type": "string",
+                                                "const": "time"
+                                            },
+                                            "v": {
+                                                "@type": ["iot:TransitionTimeData"],
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 65535
+                                            }
+                                            }
                                         }
-                                        }
+                                        ]
                                     }
-                                    ]
-                                }
-                                </pre>
+                                    </pre>
                                 </td>
                             </tr>
                         </tbody>
@@ -858,7 +859,7 @@
                                         }
                                     }
                                     ]
-                                </pre>
+                                    </pre>
                                 </td>
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="DataSchema for OCF Batch Payload">
@@ -907,13 +908,11 @@
                                         }
                                     ]
                                     }
-                                </pre>
+                                    </pre>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-            
-            
             
                     <p>
                         And an IPSO Smart Object on LWM2M [[LWM2M]] might look like the following:
@@ -937,7 +936,7 @@
                                         }
                                     ]
                                     }
-                                </pre>
+                                    </pre>
                                 </td>
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="DataSchema for IPSO/LWM2M Payload">
@@ -985,7 +984,7 @@
                                         }
                                     }
                                     }
-                                </pre>
+                                    </pre>
                                 </td>
                             </tr>
                         </tbody>
@@ -1049,6 +1048,7 @@
                     In other cases, possible devices SHOULD be generalized by providing a set of example Thing Models or
                     TDs.
                     In all cases, the following information SHOULD be provided:
+                </p>
                 <ul>
                     <li>
                         <b>Protocol:</b> The protocol used by the platform SHOULD be specified and linked to a protocol
@@ -1066,7 +1066,6 @@
                         get access to the documentation.
                     </li>
                 </ul>
-                </p>
             </section>
         </section>
     </section>
@@ -1213,162 +1212,162 @@
             }},
             "security": ["basic_sc"],
             "properties": {
-            "switchState": {
-                "@type": ["iot:SwitchStatus"],
-                "type": "object",
-                "properties": {
-                "switch": {
-                    "@type": ["iot:SwitchData"],
-                    "type": "boolean"
-                }
-                },
-                "writeOnly": false,
-                "readOnly": false,
-                "observable": true,
-                "forms": [
-                {
-                    "href": "/example/light/currentswitch",
-                    "contentType": "application/json",
-                    "op": ["readproperty"],
-                    "htv:methodName": "GET"
-                },
-                {
-                    "href": "/example/light/currentswitch",
-                    "contentType": "application/json",
-                    "op": ["writeproperty"],
-                    "htv:methodName": "POST"
-                },
-                {
-                    "href": "mqtt://example.com/example/light/currentswitch",
-                    "op": ["observeproperty"],
-                    "mqv:controlPacketValue": "SUBSCRIBE"
-                }
-                ]
-            },
-            "brightness": {
-                "@type": ["iot:CurrentLevel"],
-                "type": "object",
-                "properties": {
-                "brightness": {
-                    "@type": ["iot:LevelData" ],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 255
-                }
-                },
-                "writeOnly": false,
-                "readOnly": false,
-                "observable": true,
-                "forms": [
-                {
-                    "href": "coap://example.com/example/light/currentdimmer",
-                    "contentType": "application/json",
-                    "op": ["readproperty"],
-                    "cov:methodName": "GET"
-                },
-                {
-                    "href": "/example/light/currentdimmer",
-                    "contentType": "application/json",
-                    "op": ["writeproperty"],
-                    "htv:methodName": "POST"
-                },
-                {
-                    "href": "mqtt://example.com/example/light/currentdimmer",
-                    "op": ["observeproperty"],
-                    "mqv:controlPacketValue": "SUBSCRIBE"
-                }
-                ]
-            },
-            "transitionTime": {
-                "@type": ["iot:TransitionTime"],
-                "type": "object",
-                "properties": {
-                "transitionTime": {
-                    "@type": ["iot:TransitionTimeData" ],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 255
-                }
-                },
-                "writeOnly": false,
-                "readOnly": false,
-                "observable": false,
-                "forms": [
-                {
-                    "href": "/example/light/transitiontime",
-                    "contentType": "application/json",
-                    "op": ["readproperty"],
-                    "htv:methodName": "GET"
-                },
-                {
-                    "href": "/example/light/transitiontime",
-                    "contentType": "application/json",
-                    "op": ["writeproperty"],
-                    "htv:methodName": "POST"
-                }
-                ]
-            }
-            },
-            "actions": {
-            "switchOn": {
-                "@type": ["iot:SwitchOnAction"],
-                "input":  {
-                "type": "boolean",
-                "const": true
-                },
-                "forms": [
-                {
-                    "href": "/example/light/currentswitch",
-                    "contentType": "application/json",
-                    "op": ["invokeaction"],
-                    "htv:methodName": "POST"
-                }
-                ]
-            },
-            "switchOff": {
-                "@type": ["iot:SwitchOffAction"],
-                "input": {
-                "type": "boolean",
-                "const": false
-                },
-                "forms": [
-                {
-                    "href": "/example/light/currentswitch",
-                    "contentType": "application/json",
-                    "op": ["invokeaction"],
-                    "htv:methodName": "POST"
-                }
-                ]
-            },
-            "setBrightness": {
-                "title": "Set Brightness Level",
-                "@type": ["iot:SetLevelAction"],
-                "input": {
-                "type": "object",
-                "properties": {
-                    "brightness": {
-                    "@type": ["iot:LevelData"],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 255
+                "switchState": {
+                    "@type": ["iot:SwitchStatus"],
+                    "type": "object",
+                    "properties": {
+                    "switch": {
+                        "@type": ["iot:SwitchData"],
+                        "type": "boolean"
                     }
                     },
-                    "transitionTime": {
-                    "@type": ["iot:TransitionTimeData"],
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 65535
+                    "writeOnly": false,
+                    "readOnly": false,
+                    "observable": true,
+                    "forms": [
+                    {
+                        "href": "/example/light/currentswitch",
+                        "contentType": "application/json",
+                        "op": ["readproperty"],
+                        "htv:methodName": "GET"
+                    },
+                    {
+                        "href": "/example/light/currentswitch",
+                        "contentType": "application/json",
+                        "op": ["writeproperty"],
+                        "htv:methodName": "POST"
+                    },
+                    {
+                        "href": "mqtt://example.com/example/light/currentswitch",
+                        "op": ["observeproperty"],
+                        "mqv:controlPacketValue": "SUBSCRIBE"
                     }
+                    ]
                 },
-                "forms": [
-                {
-                    "href": "/example/light/",
-                    "contentType": "application/json",
-                    "op": ["invokeaction"],
-                    "htv:methodName": "POST"
+                "brightness": {
+                    "@type": ["iot:CurrentLevel"],
+                    "type": "object",
+                    "properties": {
+                    "brightness": {
+                        "@type": ["iot:LevelData" ],
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 255
+                    }
+                    },
+                    "writeOnly": false,
+                    "readOnly": false,
+                    "observable": true,
+                    "forms": [
+                    {
+                        "href": "coap://example.com/example/light/currentdimmer",
+                        "contentType": "application/json",
+                        "op": ["readproperty"],
+                        "cov:methodName": "GET"
+                    },
+                    {
+                        "href": "/example/light/currentdimmer",
+                        "contentType": "application/json",
+                        "op": ["writeproperty"],
+                        "htv:methodName": "POST"
+                    },
+                    {
+                        "href": "mqtt://example.com/example/light/currentdimmer",
+                        "op": ["observeproperty"],
+                        "mqv:controlPacketValue": "SUBSCRIBE"
+                    }
+                    ]
+                },
+                "transitionTime": {
+                    "@type": ["iot:TransitionTime"],
+                    "type": "object",
+                    "properties": {
+                    "transitionTime": {
+                        "@type": ["iot:TransitionTimeData" ],
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 255
+                    }
+                    },
+                    "writeOnly": false,
+                    "readOnly": false,
+                    "observable": false,
+                    "forms": [
+                    {
+                        "href": "/example/light/transitiontime",
+                        "contentType": "application/json",
+                        "op": ["readproperty"],
+                        "htv:methodName": "GET"
+                    },
+                    {
+                        "href": "/example/light/transitiontime",
+                        "contentType": "application/json",
+                        "op": ["writeproperty"],
+                        "htv:methodName": "POST"
+                    }
+                    ]
                 }
-                ]
-            }
+            },
+            "actions": {
+                "switchOn": {
+                    "@type": ["iot:SwitchOnAction"],
+                    "input":  {
+                    "type": "boolean",
+                    "const": true
+                    },
+                    "forms": [
+                    {
+                        "href": "/example/light/currentswitch",
+                        "contentType": "application/json",
+                        "op": ["invokeaction"],
+                        "htv:methodName": "POST"
+                    }
+                    ]
+                },
+                "switchOff": {
+                    "@type": ["iot:SwitchOffAction"],
+                    "input": {
+                    "type": "boolean",
+                    "const": false
+                    },
+                    "forms": [
+                    {
+                        "href": "/example/light/currentswitch",
+                        "contentType": "application/json",
+                        "op": ["invokeaction"],
+                        "htv:methodName": "POST"
+                    }
+                    ]
+                },
+                "setBrightness": {
+                    "title": "Set Brightness Level",
+                    "@type": ["iot:SetLevelAction"],
+                    "input": {
+                    "type": "object",
+                    "properties": {
+                        "brightness": {
+                        "@type": ["iot:LevelData"],
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 255
+                        }
+                        },
+                        "transitionTime": {
+                        "@type": ["iot:TransitionTimeData"],
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 65535
+                        }
+                    },
+                    "forms": [
+                    {
+                        "href": "/example/light/",
+                        "contentType": "application/json",
+                        "op": ["invokeaction"],
+                        "htv:methodName": "POST"
+                    }
+                    ]
+                }
             }
         }
         </pre>

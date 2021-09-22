@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [{
+                name: "Michael Koster",
+                w3cid: "110658",
+                company: "SmartThings",
+                companyURL: "https://www.smartthings.com/"
+                },
+                {
+                name: "Ege Korkan",
+                w3cid: "110131",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+                }
+            ],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/xml",
+            shortName: "wot-xml-template",
+            otherLinks: [
+                {
+                    key: "Other documentation",
+                    data: [{
+                        value: "In the GitHub repository",
+                        href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                    }]
+                }
+            ]
+        };
+    </script>
+    <title>XML Binding Template</title>
+</head>
+
+<body>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p class="ednote">The following is a draft introduction</p>
+        <p>
+            This document describes how type definitions described using the Data Schema can be mapped to XML schema
+            definitions by using examples. Given these Data Schemas, providing the mapping to XML schema allows
+            XML tools to directly validate serialized XML data, for example. The XML structure for which this mapping is
+            designed is based on EXI4JSON [exi-for-json]. 
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+        
+
+    <p>Below are some examples of payloads in JSON and their corresponding equivalent payloads in XML.</p>
+
+        <pre class="example"
+          title="JSON Payload of Object type for specifying the desired brightness and flashing frequency of a lamp">
+            {
+              "brightness": 200,
+              "frequency": "fast"
+            }
+          </pre>
+
+
+        <pre class="example" title="Corresponding XML Payload for the previous JSON Payload">
+
+<pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">object</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">brightness</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>200<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">brightness</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">frequency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>fast<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">frequency</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">object</span>&gt;</span></pre>
+        </pre>
+
+        <pre class="example"
+          title="JSON Payload of Array type for specifying the desired brightness and flashing frequency of a lamp">
+[
+  520,
+  184,
+  1314
+]
+          </pre>
+
+
+        <pre class="example" title="Corresponding XML Payload for the previous JSON Payload">
+
+<pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">number</span>&gt;</span>520<span class="hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">number</span>&gt;</span>184<span class="hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">number</span>&gt;</span>1314<span class="hljs-tag">&lt;/<span class="hljs-name">number</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></pre>
+        </pre>
+
+        <section id="mapping-to-xml-schema-object">
+          <h2>Object Definition to XML Schema</h2>
+
+          Shown below is an example Data Schema of an Object Schema. The object consists of two named literals <code>id</code> (of type <code>integer</code>) and <code>name</code> (of
+          type <code>string</code>) where <code>id</code> is required to be present.
+          <pre class="example" title="JSON Schema description of the required JSON Object">
+            {
+              "type": "object",
+              "properties": {
+                  "id": {
+                          "type": "integer"
+                  },
+                  "name": {
+                          "type": "string"
+                  }
+              },
+              "required": [
+                  "id"
+              ]
+            }
+          </pre>
+          When the <code>object</code> is anonymous (i.e. it is the root, or participates in an <code>array</code>
+          definition), the above <code>object</code> definition transforms to the following XML Schema element
+          definition.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with an anonymous object">
+            <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"object"</span> <span class="hljs-attr">xmlns:xs</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:all</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"id"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"integer"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:integer"</span> /&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">minOccurs</span>=<span class="hljs-string">"0"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"string"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:string"</span> /&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:all</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span></pre>
+          </pre>
+
+          Otherwise (i.e. the <code>object</code> is a member of another <code>object</code> definition, thus has a
+          name), the object definition transforms to the following XML schema element definition. Note
+          <code>$name</code> represents the name of the <code>object</code>, and needs to be replaced by the actual name
+          of the <code>object</code>.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous object">
+            <pre class="hljs xml" aria-busy="false"><span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"$name"</span> <span class="hljs-attr">xmlns:xs</span>=<span class="hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                  &lt!--Until the next comment, it is a copy of the previous example--&gt
+                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"object"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-name">xs:all</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"id"</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"integer"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:integer"</span> /&gt;</span>
+                                        <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">minOccurs</span>=<span class="hljs-string">"0"</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                        <span class="hljs-tag">&lt;<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                          <span class="hljs-tag">&lt;<span class="hljs-name">xs:element</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"string"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"xs:string"</span> /&gt;</span>
+                                        <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+                                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                              <span class="hljs-tag">&lt;/<span class="hljs-name">xs:all</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span>
+                  &lt!--Until here--&gt
+                  <span class="hljs-tag">&lt;/<span class="hljs-name">xs:sequence</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">xs:element</span>&gt;</span></pre>
+          </pre>
+
+        </section>
+
+        <section id="mapping-to-xml-schema-array">
+          <h2>Array Schema to XML Schema</h2>
+
+          Shown below is an example Data Schema of an Array Schema. The <code>array</code> consists of exactly three number literals with each value within the value range of [ 0 ... 2047 ].
+
+          <pre class="example" title="JSON Schema description of the required JSON Array">
+            {
+                "type": "array",
+                "items": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 2047
+                },
+                "minItems": 3,
+                "maxItems": 3
+            }
+          </pre>
+
+          When the <code>array</code> is anonymous (i.e. it is the root, or participates in another <code>array</code>
+          definition), the above <code>array</code> definition transforms to the following XML Schema element
+          definition.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with an anonymous array">
+            <pre class="hljs xml" aria-busy="false"><span class=
+              "hljs-tag">&lt;<span class=
+              "hljs-name">xs:element</span> <span class=
+              "hljs-attr">name</span>=<span class=
+              "hljs-string">"array"</span> <span class=
+              "hljs-attr">xmlns:xs</span>=<span class=
+              "hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:element</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"double"</span> <span class=
+  "hljs-attr">minOccurs</span>=<span class=
+  "hljs-string">"3"</span> <span class=
+  "hljs-attr">maxOccurs</span>=<span class=
+  "hljs-string">"3"</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:simpleType</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"minInclusive"</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:restriction</span> <span class=
+  "hljs-attr">base</span>=<span class=
+  "hljs-string">"xs:double"</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:minInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"0"</span>/&gt;</span>
+                          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:maxInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"2047"</span>/&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:restriction</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:simpleType</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span></pre>
+          </pre>
+
+          Otherwise (i.e. the <code>array</code> is a member of an <code>object</code> definition, thus has a name), the
+          <code>array</code> definition transforms to the following XML schema element definition.
+          Note <code>$name</code> represents the name of the <code>array</code>, and needs to be replaced by the actual
+          name of the <code>array</code>.
+
+          <pre class="example" title="XML Schema mapping of the above JSON Schema with a non-anonymous array">
+            <pre class="hljs xml" aria-busy="false"><span class=
+              "hljs-tag">&lt;<span class=
+              "hljs-name">xs:element</span> <span class=
+              "hljs-attr">name</span>=<span class=
+              "hljs-string">"$name"</span> <span class=
+              "hljs-attr">xmlns:xs</span>=<span class=
+              "hljs-string">"http://www.w3.org/2001/XMLSchema"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+          &lt!--Until the next comment, it is a copy of the previous example--&gt
+              <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:element</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"array"</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+                      <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+                          <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:element</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"double"</span> <span class=
+  "hljs-attr">minOccurs</span>=<span class=
+  "hljs-string">"3"</span> <span class=
+  "hljs-attr">maxOccurs</span>=<span class=
+  "hljs-string">"3"</span> &gt;</span>
+                              <span class="hljs-tag">&lt;<span class=
+  "hljs-name">xs:simpleType</span> <span class=
+  "hljs-attr">name</span>=<span class=
+  "hljs-string">"minInclusive"</span>&gt;</span>
+                                  <span class=
+  "hljs-tag">&lt;<span class=
+  "hljs-name">xs:restriction</span> <span class=
+  "hljs-attr">base</span>=<span class=
+  "hljs-string">"xs:double"</span>&gt;</span>
+                                      <span class=
+  "hljs-tag">&lt;<span class=
+  "hljs-name">xs:minInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"0"</span>/&gt;</span>
+                                      <span class=
+  "hljs-tag">&lt;<span class=
+  "hljs-name">xs:maxInclusive</span> <span class=
+  "hljs-attr">value</span>=<span class=
+  "hljs-string">"2047"</span>/&gt;</span>
+                                  <span class=
+  "hljs-tag">&lt;/<span class=
+  "hljs-name">xs:restriction</span>&gt;</span>
+                              <span class=
+  "hljs-tag">&lt;/<span class="hljs-name">xs:simpleType</span>&gt;</span>
+                          <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span>
+                      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+                  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span>
+          &lt!--Until here--&gt
+          <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:sequence</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:complexType</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class=
+  "hljs-name">xs:element</span>&gt;</span></pre>
+          </pre>
+
+        </section>
+
+      </section>
+
+    </section>
+
+    <script id="dstimer" language="javascript">
+        //<![CDATA[
+        if (dschk() == 1) {
+          if (typeof (dsSetTimers) != "undefined") {
+            dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
+              1000), 1);
+          }
+        }
+        //]]>
+      </script>
+
+</body>
+
+</html>

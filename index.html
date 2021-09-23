@@ -4,15 +4,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Web of Things (WoT) Binding Templates</title>
-    <script class="remove" async="" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
     <script class="remove">
         var respecConfig = {
             specStatus: "ED",
             processVersion: 2017,
             shortName: "wot-binding-templates",
             copyrightStart: 2017,
-            wg: "Web of Things Working Group",
-            wgURI: "https://www.w3.org/WoT/WG/",
+            group: "wg/wot",
+            noRecTrack: true,
             wgPublicList: "public-wot-wg",
             edDraftURI: "https://w3c.github.io/wot-binding-templates/",
             githubAPI: "https://api.github.com/repos/w3c/wot-binding-templates",
@@ -1086,7 +1086,7 @@
 
         <p>
             The following TD examples uses CoAP and MQTT Protocol Bindings.
-            These <a>TD Context Extensions</a> assume that there is a CoAP and MQTT in RDF vocabulary similar to
+            These TD Context Extensions assume that there is a CoAP and MQTT in RDF vocabulary similar to
             [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code>
             and <code>http://www.example.org/mqtt-binding#</code>, respectively.
             The supplemented <code>cov:methodName</code> member instructs the Consumer which CoAP method has to be

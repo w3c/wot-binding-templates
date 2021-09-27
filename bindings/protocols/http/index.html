@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [{
+                name: "Michael Koster",
+                w3cid: "110658",
+                company: "SmartThings",
+                companyURL: "https://www.smartthings.com/"
+                },
+                {
+                name: "Ege Korkan",
+                w3cid: "110131",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+                }
+            ],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/http",
+            shortName: "wot-http-template",
+            otherLinks: [
+                {
+                    key: "Other documentation",
+                    data: [{
+                        value: "In the GitHub repository",
+                        href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                    }]
+                }
+            ]
+        };
+    </script>
+    <title>HTTP Binding Template</title>
+</head>
+
+<body>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p class="ednote">the following is a draft introduction</p>
+        <p>
+            This document describes how to map the HTTP protocol to the W3C Web of Things.
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+        
+    <section>
+
+      <h3>HTTP Vocabulary</h3>
+      <section>
+      <h4>HTTP Vocabulary Terms</h4>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Vocabulary term</th>
+            <th>Description</th>
+            <th>Assignment</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>htv:methodName</code></td>
+            <td>HTTP method name (Literal).</td>
+            <td>optional</td>
+            <td>
+              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              <p>(one of <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, <code>"DELETE"</code>,
+                <code>"PATCH"</code>)</p>
+            </td>
+          </tr>
+          <tr>
+            <td><code>htv:headers</code></td>
+            <td>HTTP headers sent with the message.</td>
+            <td>optional</td>
+            <td>
+              array of <a
+                href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>htv:MessageHeader</code></a>
+            </td>
+          </tr>
+          <tr>
+            <td><code>htv:fieldName</code></td>
+            <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
+            <td>mandatory within <code>htv:MessageHeader</code></td>
+            <td>
+              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+            </td>
+          </tr>
+          <tr>
+            <td><code>htv:fieldValue</code></td>
+            <td>Header value (Literal).</td>
+            <td>mandatory within <code>htv:MessageHeader</code></td>
+            <td>
+              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h4>HTTP Default Vocabulary Terms</h4>
+      <table class="def">
+        <thead>
+          <tr>
+            <th><code>op</code> value</th>
+            <th>Default Binding</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>readproperty</code></td>
+            <td><code>"htv:methodName": "GET"</code></td>
+          </tr>
+          <tr>
+            <td><code>writeproperty</code></td>
+            <td><code>"htv:methodName": "PUT"</code></td>
+          </tr>
+          <!-- <tr>
+            <td><code>observeproperty</code></td>
+            <td> <code>
+              "htv:methodName": "GET", <br>
+              "subprotocol":"longpoll"
+            </code>
+            </td>
+          </tr>
+          <tr>
+            <td><code>unobserveproperty</code></td>
+            <td> Cancel pending HTTP GET request</td>
+          </tr> -->
+          <tr>
+            <td><code>invokeaction</code></td>
+            <td> <code>"htv:methodName": "POST" </code></td>
+          </tr>
+          <!-- <tr>
+            <td><code>subscribeevent</code></td>
+            <td> <code>
+                "htv:methodName": "GET", <br>
+                "subprotocol":"longpoll"
+              </code>
+          </tr>
+          <tr>
+            <td><code>unsubscribeevent</code></td>
+            <td> Cancel pending HTTP GET request</td>
+          </tr>
+        -->
+          <tr>
+            <td><code>readallproperties</code></td>
+            <td> <code>"htv:methodName": "GET"</code></td>
+          </tr>
+          <tr>
+            <td><code>writeallproperties</code></td>
+            <td> <code>"htv:methodName": "PUT"</code></td>
+          </tr>
+          <tr>
+            <td><code>readmultipleproperties</code></td>
+            <td> <code>"htv:methodName": "GET"</code></td>
+          </tr>
+          <tr>
+            <td><code>writemultipleproperties</code></td>
+            <td> <code>"htv:methodName": "PUT"</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+    <section id="appendix-example-sequences" class="appendix informative">
+      <h1>Example Sequences of Interaction Affordances</h1>
+      <p> This section illustrates example sequences of application and protocol
+          transactions that correspond to operations 
+          (defined in the Thing Description Specification)
+          implementing various interactions among WoT Consumer and WoT Things.
+          The illustrations show both the concrete protocol transactions
+          and the interactions between the applications running
+          inside the WoT Consumer and WoT Thing
+          and the Consumed Thing and Exposed Thing abstractions.
+      </p>
+      <p> For the sake of simplicity, remote and local proxies
+          between the Consumer and the Thing are omitted from the following sequences.
+          We also assume HTTP as the concrete protocol
+          and omit any additional transactions for implementing security,
+          such as those that would be used for authentication or
+          to set up a secure connection for HTTPS.
+          Other concrete protocols and the addition of security transactions
+          however would only affect the concrete protocol transactions,
+          not the application-level interactions with the
+          Consumed Thing and Exposed Thing abstractions.
+      </p>
+      <section>
+          <h2>Property Interactions</h2>
+          <section>
+              <h3>Read property (HTTP binding)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the 
+                 <code>readproperty</code> operation
+                 with an HTTP protocol binding.</p>
+              <p>
+                  <img
+                      src="images/message-flows/A_1_1_readProperty.png"
+                      alt="Read property (HTTP binding)" />
+              </p>
+          </section>
+          <section>
+              <h3>Write property (HTTP binding)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the 
+                 <code>writeproperty</code> operation
+                 with an HTTP protocol binding.</p>
+              <p>
+                  <img
+                      src="images/message-flows/A_1_2_writeProperty.png"
+                      alt="Write property (HTTP binding)" />
+              </p>
+          </section>
+          <section>
+              <h3>Observe property (HTTP binding with Long Polling subprotocol)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the 
+                 <code>observeproperty</code> operation
+                 with an HTTP protocol binding using 
+                 the "longpolling" (Long Polling) subprotocol.</p>
+              <p>
+                  <img
+                      src="images/message-flows/A_1_3a_observePropertyLongPoll.png"
+                      alt="Observe property (HTTP binding with Long Polling subprotocol)" />
+              </p>
+          </section>
+          <section>
+              <h3>Observe property (HTTP binding with Server Sent Event subprotocol)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the <code>observeproperty</code> operation
+                 with an HTTP protocol binding using 
+                 the "sse" (Server Sent Event) subprotocol.</p>
+              <p>
+                  <img
+                      src="images/message-flows/A_1_3b_observePropertySSE.png"
+                      alt="Observe property (HTTP binding with Server Sent Event subprotocol)" />
+              </p>
+          </section>
+          <section>
+              <h3>Observe property (HTTP binding with WebSocket subprotocol)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the <code>observeproperty</code> operation
+                 with an HTTP protocol binding using
+                 a WebSocket-based subprotocol.</p>
+              <p>
+                  <img
+                      src="images/message-flows/A_1_3c_observePropertyWebSocket.png"
+                      alt="Observe property (HTTP binding with a WebSocket subprotocol)" />
+              </p>
+          </section>
+      </section>
+      <section>
+          <h2>Action Interactions</h2>
+          <section>
+              <h3>Invoke action (HTTP binding)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the 
+                 <code>invokeaction</code> operation
+                 with an HTTP protocol binding, where the
+                 operation is synchronous and the response from the server
+                 is delayed until after the action completes.</p>
+              <p>
+                  <img
+                      src="images/message-flows/A_2_1_invokeAction.png"
+                      alt="Invoke action (HTTP binding)" />
+              </p>
+              <!-- Note: Actions with asynchronous operation is
+                   subject to further study.
+              -->
+          </section>
+      </section>
+      <section>
+          <h2>Event Interactions</h2>
+          <p>In the following, note that there is no explicit operation defined for event notification itself.
+             The subprotocol used for notification is associated with 
+             the <code>subscribeevent</code> operation, and any necessary concrete
+             protocol transactions are managed by the Protocol Binding subsystem.
+          </p>
+          <p>There are also several subprotocols possible for event notification
+             using WebSockets.
+             The interaction diagrams show only one of several possible implementations.
+          </p>
+          <section>
+              <h3>Subscribe, notify and unsubscribe event
+                  (HTTP binding with Long Polling subprotocol)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the 
+                 <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
+                 with an HTTP protocol binding using  the Long Polling subprotocol.
+              </p>
+              <p>
+                  <img
+                      src="images/message-flows/A_3_1a_eventLongPoll.png"
+                      alt="Subscribe, notify, and unsubscribe event (HTTP binding with Long Polling subprotocol)" />
+              </p>
+          </section>
+          <section>
+              <h3>Subscribe, notify and unsubscribe event
+                  (HTTP binding with Server Sent Event subprotocol)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the 
+                 <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
+                 with an HTTP protocol binding using the Server Sent Event subprotocol.
+              </p>
+              <p>
+                  <img src="images/message-flows/A_3_1b_eventSSE.png"
+                      alt="Subscribe, notify and unsubscribe event (HTTP binding with Server Sent Event subprotocol)" />
+              </p>
+          </section>
+          <section>
+              <h3>Subscribe, notify and unsubscribe event
+                  (HTTP binding with WebSocket subprotocol)</h3>
+              <p>The following sequence illustrates application and network
+                 transactions to implement the <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
+                 with an HTTP protocol binding using a WebSocket subprotocol.
+              </p>
+              <p>
+                  <img
+                      src="images/message-flows/A_3_1c_eventWebSocket.png"
+                      alt="Subscribe, notify and unsubscribe event (HTTP binding with WebSocket subprotocol)" />
+              </p>
+          </section>
+      </section>
+  </section>
+
+    <script id="dstimer" language="javascript">
+        //<![CDATA[
+        if (dschk() == 1) {
+          if (typeof (dsSetTimers) != "undefined") {
+            dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
+              1000), 1);
+          }
+        }
+        //]]>
+      </script>
+
+</body>
+
+</html>

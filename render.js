@@ -47,11 +47,11 @@ const promiseChain = ontologies.reduce((p, src) => {
 console.log("Rendering WoT binding documentation...");
 
 const mappings = [
-    ['bindings/modbus/mapping.ttl', 'ontology/modbus.ttl', 'http://w3c.github.io/wot-binding-templates/mappings#modbus','bindings/modbus/context.jsonld'],
+    ['bindings/protocols/modbus/mapping.ttl', 'ontology/modbus.ttl', 'http://w3c.github.io/wot-binding-templates/mappings#modbus','bindings/protocols/modbus/context.jsonld'],
 ];
 
 
-const modbusTemplate = fs.readFileSync('bindings/modbus/template.sparql', 'utf-8');
+const modbusTemplate = fs.readFileSync('bindings/protocols/modbus/template.sparql', 'utf-8');
 sttl.register(modbusTemplate);
 
 mappings.reduce((p, src) => {

@@ -15,7 +15,7 @@ prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
 
 template :modbus {
     format {
-        <file://./bindings/modbus/index.template.html>
+        <file://./bindings/protocols/modbus/index.template.html>
         st:call-template(:formTerms, ?modbusBase, ?prefix)
         st:call-template(:entityValues, ?modbusBase, ?prefix)
         st:call-template(:functionValues, ?modbusBase, ?prefix)

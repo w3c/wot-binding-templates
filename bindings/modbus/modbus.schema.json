@@ -46,8 +46,8 @@
                         "writeSingleHoldingRegister"
                     ]
                 },
-                "modbus:offset" : { "type" : "integer", "minimum": 0},
-                "modbus:length" : { "type": "integer", "minimum": 1},
+                "modbus:address" : { "type" : "integer", "minimum": 0},
+                "modbus:quantity" : { "type": "integer", "minimum": 1},
                 "modbus:zeroBasedAddressing" : { "type" : "boolean"},
                 "modbus:timeout" : { "type": "number", "minimum": 0}
             },

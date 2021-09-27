@@ -18,9 +18,8 @@ template :modbus {
         <file://./bindings/modbus/index.template.html>
         st:call-template(:formTerms, ?modbusBase, ?prefix)
         st:call-template(:entityValues, ?modbusBase, ?prefix)
-        st:call-template(:codeValues, ?modbusBase, ?prefix)
-        st:call-template(:nameValues, ?modbusBase, ?prefix)
-         st:call-template(:mappings, ?modbusBase, ?prefix)
+        st:call-template(:functionValues, ?modbusBase, ?prefix)
+        st:call-template(:mappings, ?modbusBase, ?prefix)
     }
 }  where {
     ?mappings a owl:Ontology ;
@@ -40,7 +39,7 @@ template :formTerms(?ns ?prefix){
 
         <tr>
         """
-        replace(?term,concat(?ns,"#"),concat(?prefix,":"),"g")
+        st:call-template(:term, ?ns, ?prefix, ?term)
         ?desc
         if(?count > 0, "required","optional")
         if(strstarts(?type,str(?ns)), lcase(replace(?type, ?ns,"","g")),?type )
@@ -68,6 +67,24 @@ template :formTerms(?ns ?prefix){
     BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
    
 } 
+
+template :term(?ns ?prefix ?term){
+    format {
+        """%s"""
+    if(?isJSONLD,
+        concat(?prefix,":",?printTerm),
+        replace(?printTerm,concat(?ns,"#"),concat(?prefix,":"),"g")
+    )
+    }
+} where {
+    optional {
+        ?mapping a jsonld:Mapping ;
+            jsonld:iri ?term ;
+            jsonld:term ?mappedTerm;
+    }
+    BIND ( BOUND (?mappedTerm) as ?isJSONLD )
+    BIND ( IF (BOUND (?mappedTerm), ?mappedTerm, ?term )  as ?printTerm  )
+}
 
 template :mappings(?ns ?prefix){
     format {
@@ -119,27 +136,30 @@ template :entityValues(?ns ?prefix){
     bind(IRI(CONCAT(STR( ?ns),"#Entity")) as ?entity)
 }
 
-template :codeValues(?ns ?prefix){
+template :functionValues(?ns ?prefix){
     format {
         """
         <tr>
             <td><code>%s</code></td>
             <td>%s</td>
             <td>%s</td>
+            <td>%s</td>
         <tr>
         """
         strafter(?op,"#")
         ?label
+        ?codeNumber
         ?desc
        
     }
 }where {
      ?op rdf:type ?funcode;
          rdf:type  owl:NamedIndividual;
+         <https://www.w3.org/2019/wot/modbus#hasCodeNumber> ?codeNumber;
          rdfs:label ?label;
          rdfs:comment ?desc
     
-    bind(IRI(CONCAT(STR( ?ns),"#FunctionCode")) as ?funcode)
+    bind(IRI(CONCAT(STR( ?ns),"#Function")) as ?funcode)
 }
 
 template :nameValues(?ns ?prefix){

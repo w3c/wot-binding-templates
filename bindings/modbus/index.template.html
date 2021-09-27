@@ -24,7 +24,8 @@
                         href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
                     }]
                 }
-            ]
+            ],
+            localBiblio: {}
         };
     </script>
     <title>MODBUS binding template</title>
@@ -51,7 +52,7 @@
             a shift on how applications pack the information. Today it is usual to store and read any type of data in the Holdings Registers like bit,bytes,words, float etc.
         </p>
         <p>
-            This document describes how the Web of Things specification can be use to present devices that use the ModBus protocol in a <a>Thing Description</a>. In 
+            This document describes how the Web of Things specification can be use to present devices that use the ModBus protocol in a <a href="https://w3c.github.io/wot-architecture/#sec-thing-description">Thing Description</a>. In 
             particular, the document explain how to create valid URLs and Forms for the different operations that the ModBus protocol can perform. Developers are 
             encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations. The following sections
             will cover the URL format, the Vocabulary and a list of Form examples. 
@@ -64,12 +65,26 @@
     </section>
     <section id="url">
         <h2>URL format</h2>
+        Historically different URL scheme has been used inside the ModBus community: <code>modbus+tpc://</code>, <code>modbus+ascii://</code> and <code>modbus+rtu://</code>.
+        Considering that in Web of Things context all protocol bindings are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
+        was selected as the only valid URL scheme. The following shows the typical structure of an URL of the ModBus protocol:
         <pre>
             modbus+tcp://{address}:{port}/{?unitID}
         </pre>
+
+        <p>
+            Where:
+            <ul>
+                <li><code>{address}</code> is the IP address of the ModBus device</li>
+                <li><code>{port}</code> is the port of the ModBus device</li>
+                <li><code>{unitID}</code> is the unit ID of the ModBus device. See <a href="#vocabulary">vocabulary</a></li>
+            </ul>
+        </p>
     </section>
     <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
+        This section describes the vocabulary used in the ModBus protocol. A protocol binding implementation should use the vocabulary defined in this section to
+        describe the different configuration that can be used to exchanged data between Web of Things.
         <section>
             <h3>Form terms</h3>
             <table class="def">
@@ -91,8 +106,8 @@
             <h3>Entity</h3>
             <p class="ednote"> the following is just a draft description of the Entity class
             </p>
-            A more user-friendly property to specify [[[#functioncode]]] or [[[#functionname]]]. The client will then determine the right function code to be applied in
-            the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modv:function</code> cannot (See the
+            A more user-friendly property to specify [[[#function]]]. The client will then determine the right function code to be applied in
+            the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modbus:function</code> cannot (See the
             [[[#example-read-coil-entity]]])
             
             <table class="def" title="Entity values">
@@ -107,19 +122,20 @@
                     %s
                 </tbody>
             </table>
-            <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of <code>modv:function</code> property is ignored.
+            <b>Notice</b> that when used in conjunction with <code>modbus:function</code>, the value of <code>modbus:function</code> property is ignored.
         </section>
-        <section id="functioncode">
-            <h3>Function Code</h3>
+        <section id="function">
+            <h3>Function</h3>
             <p class="ednote"> the following is just a draft description of the Function Code class
             </p>
             Function Code class represent the value of the function field in a Modbus frame. The 
             following table list the supported codes and their description:
-            <table class="def" title="Entity values">
+            <table class="def" title="Function values">
                 <thead>
                     <tr>
                         <th>Value</th>
                         <th>Label</th>
+                        <th>Code</th>
                         <th>Description</th>
                     </tr>
                 </thead>
@@ -129,31 +145,10 @@
                 </tbody>
             </table>
         </section>
-        <section id="functionname">
-            <h3>Function Name</h3>
-            <p class="ednote">The following is just a draft description of the Function Name class
-            </p>
-            This class rapresents a mapping between [[[#functioncode]]] and the most accepted label for the 
-            corresponding operation.The following table contains the values assiagnable to Function Name toghert
-            with the reference their [[[#functioncode]]].
-            <table class="def" title="Entity values">
-                <thead>
-                    <tr>
-                        <th>Value</th>
-                        <th>Function Code</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Generate possible values of the function Name-->
-                    %s
-                </tbody>
-            </table>
-        </section>
     </section>
     <section id="mapppings">
         <h2>Mappings</h2>
-        <p>This section describes strategies and default values to employ protocol specific concepts within the <a>WoT Interaction
+        <p>This section describes strategies and default values to employ protocol specific concepts within the <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction
         model</a>. </p>
         <section id="defautl-mappings">
             <h3>Default mappings</h3>
@@ -188,7 +183,7 @@
                     "readproperty"
                 ],
                 "modbus:function": "readCoil",
-                "modbus:offset": 1
+                "modbus:address": 1
             }
         </pre>
         To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
@@ -201,7 +196,7 @@
                             "writeproperty"
                         ],
                         "modbus:entity": "Coil",
-                        "modbus:offset": 1
+                        "modbus:address": 1
                     }
         </pre>
         A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
@@ -212,7 +207,7 @@
                                     "readproperty",
                                 ],
                                 "modbus:function": "readCoil",
-                                "modbus:offset": 1
+                                "modbus:address": 1
                             },
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1",
@@ -220,7 +215,7 @@
                                     "writeproperty",
                                 ],
                                 "modbus:function": "writeCoil",
-                                "modbus:offset": 1
+                                "modbus:address": 1
                             },
         </pre>
         Reducing effectively the verbosity of a TD. 
@@ -236,8 +231,8 @@
                                     "writeproperty"
                                 ],
                                 "modbus:entity": "HoldingRegister",
-                                "modbus:offset": 40001,
-                                "modbus:length": 8
+                                "modbus:address": 40001,
+                                "modbus:quantity": 8
                             }
                 </pre>
         When possible WoT consumers will use modbus features to read the desired amount of data with a single
@@ -252,8 +247,8 @@
                                     "writeproperty"
                                 ],
                                 "modbus:entity": "Coil",
-                                "modbus:offset": 1,
-                                "modbus:length": 8
+                                "modbus:address": 1,
+                                "modbus:quantity": 8
                             }
                 </pre>
         Another notable configuration of a form using the modbus vocabulary is the polling mechanism. Thanks
@@ -262,15 +257,15 @@
         1000 ms, in [[[#example-polling]]], it suggest that the polling time should not be faster than 10 ms. WoT 
         consumers may still create requests faster than the specified time but it should be taken as a reasonable
         default for observing a property. 
-        <pre  id="example-polling" class="example" title="A complete TD example">
+        <pre  id="example-polling" class="example" title="Polling">
             {
                 "href": "modbus+tcp://127.0.0.1:60000/1",
                 "op": [
                     "observeproperty"
                 ],
                 "modbus:entity": "Coil",
-                "modbus:pollingTime: 1000,
-                "modbus:offset": 1
+                "modbus:pollingTime": 1000,
+                "modbus:address": 1
             }
         </pre>
         Finally, [[[#full-td]]] shows a complete device described using modbus ontology.
@@ -279,7 +274,7 @@
                   "@context": [
                       "https://www.w3.org/2019/wot/td/v1",
                       {
-                          "modv": "https://www.example.com/ns/modbustcp"
+                          "modbus": "https://www.example.com/ns/modbustcp"
                       }
                   ],
                   "title": "ModbusPLC",
@@ -302,10 +297,10 @@
                               {
                                   "op": "readproperty",
                                   "href": "modbus+tcp://192.168.178.32:502/10003",
-                                  "modv:function": "2",
-                                  "modv:length": 1,
-                                  "modv:offset": "10003",
-                                  "modv:unitID": "1",
+                                  "modbus:function": "readDiscreteInput",
+                                  "modbus:quantity": 1,
+                                  "modbus:address": "10003",
+                                  "modbus:unitID": 1,
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -318,10 +313,10 @@
                               {
                                   "op": "readproperty",
                                   "href": "modbus+tcp://192.168.178.32:502/10002",
-                                  "modv:function": "readDiscreteInput",
-                                  "modv:length": 1,
-                                  "modv:offset": "10002",
-                                  "modv:unitID": "1",
+                                  "modbus:function": "readDiscreteInput",
+                                  "modbus:quantity": 1,
+                                  "modbus:address": "10002",
+                                  "modbus:unitID": 1,
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -338,11 +333,11 @@
                                       "readproperty"
                                   ],
                                   "href": "modbus+tcp://192.168.178.32:502/00006",
-                                  "modv:entity": "Coil",
-                                  "modv:length": 1,
-                                  "modv:offset": "00006",
-                                  "modv:unitID": "1",
-                                  "modv:pollingTime": 100,
+                                  "modbus:entity": "Coil",
+                                  "modbus:quantity": 1,
+                                  "modbus:address": "00006",
+                                  "modbus:unitID": 1,
+                                  "modbus:pollingTime": 100,
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -359,11 +354,11 @@
                                       "readproperty"
                                   ],
                                   "href": "modbus+tcp://192.168.178.32:502/00003",
-                                  "modv:entity": "Coil",
-                                  "modv:length": 1,,
-                                  "modv:offset": "00003",
-                                  "modv:unitID": "1",
-                                  "modv:pollingRate": 100,
+                                  "modbus:entity": "Coil",
+                                  "modbus:quantity": 1,
+                                  "modbus:address": "00003",
+                                  "modbus:unitID": 1,
+                                  "modbus:pollingRate": 100,
                                   "contentType": "application/octet-stream"
                               }
                           ]

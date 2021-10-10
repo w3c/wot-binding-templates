@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+        <script class="remove">
+            var respecConfig = {
+                specStatus: "ED",
+                editors: [
+                    {
+                        name: "Etienne Rossignon (Sterfive)",
+                        // w3cid: "1232",
+                    },
+                ],
+                edDraftURI: "https://w3c.github.io/wot-binding-templates/opcua",
+                shortName: "opcua",
+            };
+        </script>
+        <title>OPCUA binding</title>
+    </head>
+
+    <body>
+        <section id="abstract">
+            <p>This document describes how to map the OPCUA protocol to the W3C Web of Things.</p>
+        </section>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p class="ednote"></p>
+        </section>
+        <section id="sotd">
+            <p>
+                <em> This section describes the status of this document at the time of its publication.</em>
+            </p>
+        </section>
+        <section id="url">
+            <h2>URL format</h2>
+            <p class="ednote">TODO: Describe the URL format of the protocol binding. Provide syntax and examples.</p>
+        </section>
+        <section id="vocabulary">
+            <h2>OPCUA Vocabulary</h2>
+            <p class="ednote">TODO: Introduce briefly the vocabulary</p>
+            <section>
+                <h3>Form terms</h3>
+                <p class="ednote">
+                    TODO: Describe the allowed terms in a form that use this binding. Provide the terms using the table structure
+                </p>
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Vocabulary term</th>
+                            <th>Description</th>
+                            <th>Assignment</th>
+                            <th>Type</th>
+                        </tr>
+                        <tr>
+                            <td><code>opcua:nodeId</code></td>
+                            <td>refers to a node in the server address space to read write or subscribe to</td>
+                            <td>mandatory</td>
+                            <td>string</td>
+                        </tr>
+                        <tr>
+                            <td><code>opcua:method</code></td>
+                            <td>refers to a node in the server address space that indicates the method to call during an action</td>
+                            <td>mandatory</td>
+                            <td>string</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <section id="additional">
+                <h3>Additional terms</h3>
+                <p class="ednote">
+                    Bindings may introduce domain specific concepts or data types. Add a dedicated section for each domain specific
+                    term. If the term can have a finite set of values fill the table below to describe the possibilities.
+                </p>
+
+                <table class="def" title="Entity values">
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </section>
+        <section id="mapppings">
+            <h2>Mappings</h2>
+            This section describes the strategies and default values to use protocol specific concepts within the
+            <a>WoT Interaction model</a>.
+
+            <section id="defautl-mappings">
+                <h3>Default mappings</h3>
+                <p class="ednote">Map WoT Interaction model verbs to default values if any</p>
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Default Biding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>readproperty</code></td>
+                            <td>
+                                <code>
+                                    <a href="https://reference.opcfoundation.org/v104/Core/DataTypes/ReadRequest/">Read</a>
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>writeproperty</code></td>
+                            <td>
+                                <code
+                                    ><a href="https://reference.opcfoundation.org/v104/Core/DataTypes/WriteRequest/">Write</a>
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>subscribe</code></td>
+                            <td>
+                                <code>
+                                    <a href="https://reference.opcfoundation.org/v104/Core/DataTypes/CreateMonitoredItemsRequest/"
+                                        >CreateMonitoredItems</a
+                                    >
+                                </code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section id="possible-mappings">
+                <h3>Possible mappings</h3>
+                <p class="ednote">
+                    TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
+                    informative but it provides guidelines for implementers.
+                </p>
+            </section>
+        </section>
+        <section>
+            <h2>Examples</h2>
+            <p class="ednote">
+                TODO: Provide a compressive list of examples about how this binding template can be used within forms or Thing
+                Descriptions
+            </p>
+        </section>
+    </body>
+</html>

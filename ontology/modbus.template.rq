@@ -1,3 +1,4 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
 prefix st: <http://ns.inria.fr/sparql-template/>
@@ -101,7 +102,9 @@ template :individuals-section(?ns ?prefix) {
 } where {
     filter exists {
         ?i a ?c .
-        ?c rdfs:subClassOf schema:Enumeration .
+        ?c  owl:equivalentClass ?enum .
+        ?enum rdf:type owl:Class .
+        ?emum owl:oneOf ?x .
         #filter (strstarts(str(?i), str(?ns)))
     }
 }
@@ -201,13 +204,17 @@ template :enumeration-members(?c ?prefix) {
         "<td>" st:call-template(:enumeration-member, ?c, ?prefix) "</td>"
     "</tr>"
 } where {
-    ?c rdfs:subClassOf schema:Enumeration .
+    ?c owl:equivalentClass ?enum .
+        ?enum rdf:type owl:Class .
+        ?emum owl:oneOf ?x .
 }
 
 template :enumeration-member(?c ?prefix) {
     st:call-template(:term-link, ?member, ?prefix) ; separator = "<br>"
 } where {
-    ?c rdfs:subClassOf schema:Enumeration .
+    ?c owl:equivalentClass ?enum .
+        ?enum rdf:type owl:Class .
+        ?emum owl:oneOf ?x .
     ?member a ?c .
 } order by ?member
 
@@ -288,7 +295,9 @@ template :individuals(?ns ?prefix) {
     "</section>"
 } where {
     ?i a ?c .
-    ?c rdfs:subClassOf schema:Enumeration .
+    ?c owl:equivalentClass ?enum .
+        ?enum rdf:type owl:Class .
+        ?emum owl:oneOf ?x .
     filter (strstarts(str(?i), str(?ns)))
 }
 

@@ -2,32 +2,36 @@
     "@context": {
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "modbus":"https://www.w3.org/2019/wot/modbus#",
-        "offset": {
-            "@id": "modbus:offset",
+        "address": {
+            "@id": "modbus:hasAddress",
             "@type": "xsd:integer"
         },
         "timeout" : {
-            "@id": "modbus:timeout",
+            "@id": "modbus:hasTimeout",
             "@type": "xsd:integer"
         }, 
         "zeroBasedAddressing" : {
-            "@id": "modbus:zeroBasedAddressing",
-            "@type": "xsd:integer"
+            "@id": "modbus:hasZeroBasedAddressingFlag",
+            "@type": "xsd:boolean"
         }, 
-        "length" : {
-            "@id": "modbus:length",
+        "quantity" : {
+            "@id": "modbus:hasQuantity",
             "@type": "xsd:integer"
         }, 
         "pollingTime" : {
-            "@id": "modbus:pollingTime",
+            "@id": "modbus:hasPollingTime",
             "@type": "xsd:integer"
         }, 
+        "unitID": {
+            "@id": "modbus:hasUnitID",
+            "@type": "xsd:integer"
+        },
         "entity" : {
-            "@id": "modbus:entity",
+            "@id": "modbus:hasEntity",
             "@type": "@vocab"
         }, 
         "function" : {
-            "@id": "modbus:function",
+            "@id": "modbus:hasFunction",
             "@type": "@vocab"
         },
         "Coil": "modbus:Coil",

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [
+                {
+                    name: "Cristiano Aguzzi",
+                    w3cid: "105495",
+                    company: "Invited Expert",
+                    companyURL: "https://github.com/relu91"
+                }
+            ],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/text",
+            shortName: "wot-txt-template",
+            otherLinks: [
+                {
+                    key: "Other documentation",
+                    data: [{
+                        value: "In the GitHub repository",
+                        href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                    }]
+                }
+            ]
+        };
+    </script>
+    <title>Text Binding Template</title>
+</head>
+
+<body>
+    <section id="abstract">
+        <p class="ednote">TODO</p>
+    </section>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p class="ednote">The following is a draft introduction</p>
+        <p>
+            This document describes how type definitions described using the Data Schema can be mapped to text documents.
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+    <section>
+        <h2>Media type</h2>
+        <p>
+            The text binding template refers to <a href="https://www.iana.org/assignments/media-types/media-types.xhtml#text">Text Media Type</a> 
+            with <code>text/plain</code> as MIME type.
+    </section>
+    <section>
+        <h2>Supported Data Schema terms</h2>
+        <p>
+            This section describes which terms can be used when describing data with <code>text/plain</code> content type. 
+        </p>
+        <p>
+            Given the nature of <code>text/plain</code> documents and the mapping function described below, the following terms are not supported:
+            <ul>
+                <li><code>object</code></li>
+                <li><code>array</code></li>
+                <li><code>null</code></li>
+                <li><code>boolean</code></li>
+            </ul>
+            <p class="ednote">
+                Implementations may use custom serialization/deserialization functions to support these terms.
+            </p>
+        </p>
+    </section>
+    <section>
+        <h2>Mapping <code>text/plain</code> to DataSchema values</h2>
+        <p>
+            This section describes how a <code>text/plain</code> document can be de/serialized in one of the supported DataSchema types. 
+
+            <p class="ednote">
+                Proposal. We can define a simple mapping here: 
+            </p>
+            <ul>
+                <li>
+                    <code>string</code>: Simply storing the text in a string value.
+                </li>
+                <li>
+                    <code>number</code>: Read ascii characters and convert to number.
+                </li>
+                <li>
+                    <code>integer</code>: Read ascii characters and convert to integer.
+                </li>
+            </ul>
+        </p>
+    </section>
+
+    <section>
+        <h2>Examples</h2>
+        Consider this Data schema:
+        <pre class="example">
+            {
+                "type": "string",
+            }
+        </pre>
+        <p>
+            A valid document can be:
+        </p>
+        <pre class="example">
+            This is the context of ta text file sent by the remote device.
+        </pre>
+        Numbers instead can be mapped as follows:
+        <pre class="example">
+            {
+             "type": "number",
+            }
+        </pre>
+        A set of valid <code>text/plain</code> documents according to this schema are:  
+        <pre class="example">
+                    123
+        </pre>
+        <pre class="example">
+                    123.456
+        </pre>
+        <pre class="example">
+            -13
+        </pre>
+    </section>
+
+</body>
+
+</html>

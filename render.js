@@ -48,11 +48,14 @@ console.log("Rendering WoT binding documentation...");
 
 const mappings = [
     ['bindings/protocols/modbus/mapping.ttl', 'ontology/modbus.ttl', 'http://w3c.github.io/wot-binding-templates/mappings#modbus','bindings/protocols/modbus/context.jsonld'],
+    ['bindings/protocols/mqtt/mapping.ttl', 'ontology/mqtt.ttl', 'http://w3c.github.io/wot-binding-templates/mappings#mqtt', 'bindings/protocols/mqtt/context.jsonld']
 ];
 
 
 const modbusTemplate = fs.readFileSync('bindings/protocols/modbus/template.sparql', 'utf-8');
+const mqttTemplate = fs.readFileSync('bindings/protocols/mqtt/template.sparql', 'utf-8');
 sttl.register(modbusTemplate);
+sttl.register(mqttTemplate);
 
 mappings.reduce((p, src) => {
     const ontologyFile = src[0]

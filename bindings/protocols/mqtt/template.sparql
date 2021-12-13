@@ -1,0 +1,13 @@
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
+
+
+template :mqtt {
+    format {
+         <file://./bindings/protocols/mqtt/index.template.html>
+         ?mappings
+    }
+    
+}  where {
+    ?mappings a owl:Ontology ;
+}

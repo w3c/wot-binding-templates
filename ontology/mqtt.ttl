@@ -39,11 +39,6 @@ _:genid4 rdf:type schema:Organization ;
 #    Object Properties
 #################################################################
 
-###  https://www.w3.org/2019/wot/mqtt#hasControlPacketType
-:hasControlPacketType rdf:type owl:ObjectProperty ;
-                      rdfs:subPropertyOf owl:topObjectProperty .
-
-
 ###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
 :hasQoSFlag rdf:type owl:ObjectProperty ;
                rdfs:domain :SUBSCRIBE ;
@@ -61,17 +56,23 @@ _:genid4 rdf:type schema:Organization ;
             rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
             rdfs:label "hasPayload"@en .
 
-###  https://www.w3.org/2019/wot/mqtt#subscribeTopic
-:hasSubscribeTopic rdf:type owl:ObjectProperty ;
-                rdfs:subPropertyOf owl:topObjectProperty ;
-                rdfs:domain :SUBSCRIBE_payload ;
-                rdfs:range :Topic .
+###  https://www.w3.org/2019/wot/mqtt#hasTopicName
+:hasTopicName rdf:type owl:ObjectProperty ;
+                rdfs:domain :PUBLISH ;
+                schema:domainIncludes :PUBLISH ;
+                rdfs:comment "This field reports the <a href='#topic-name'>TopicName</a> of a packet"@en ;
+                rdfs:label "hasTopicName"@en ;
+                schema:rangeIncludes :TopicName ;
+                rdfs:range :TopicName .
 
-
-###  https://www.w3.org/2019/wot/mqtt#unsubscribeTopic
-:hasUnsubscribeTopic rdf:type owl:ObjectProperty ;
-                  rdfs:domain :UNSUBSCRIBE_payload ;
-                  rdfs:range :Topic .
+###  https://www.w3.org/2019/wot/mqtt#hasTopicFilters
+:hasTopicFilters rdf:type owl:ObjectProperty ;
+                rdfs:domain :SUBSCRIBE, :UNSUBSCRIBE ;
+                schema:domainIncludes :SUBSCRIBE, :UNSUBSCRIBE ;
+                rdfs:comment "This field reports the list of <a href='#topic-filter'>TopicFilter</a>s of a packet"@en ;
+                rdfs:label "hasTopicFilters"@en ;
+                schema:rangeIncludes :TopicFilter ;
+                rdfs:range :TopicFilter .
 
 #################################################################
 #    Data properties
@@ -123,7 +124,7 @@ _:genid4 rdf:type schema:Organization ;
                                      owl:oneOf(
                                            :PUBLISH
                                            :SUBSCRIBE
-                                           :UNSUBSCRIBEPacket
+                                           :UNSUBSCRIBE
                                      ) ] ;
                rdfs:comment "An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header, payload"@en ;
                rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
@@ -164,6 +165,16 @@ _:genid4 rdf:type schema:Organization ;
                    rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
                    rdfs:label "QualityOfService"@en ;
                    schema:alternateName "QoS"@en .
+
+###  https://www.w3.org/2019/wot/mqtt#TopicName
+:TopicName rdf:type owl:Class ;
+       rdfs:comment "The label attached to an Application Message which is matched against the Subscriptions known to the Server. The Server sends a copy of the Application Message to each Client that has a matching Subscription."@en ;
+       rdfs:label "Topic Name"@en .
+
+###  https://www.w3.org/2019/wot/mqtt#TopicFilter
+:TopicFilter rdf:type owl:Class ;
+       rdfs:comment "An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters."@en ;
+       rdfs:label "Topic Filter"@en .
 
 #################################################################
 #    Individuals

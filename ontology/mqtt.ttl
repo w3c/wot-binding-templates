@@ -39,37 +39,6 @@ _:genid4 rdf:type schema:Organization ;
 #    Annotation properties
 #################################################################
 
-###  http://purl.org/dc/terms/author
-dct:author rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/dc/terms/contributor
-dct:contributor rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/vocab/vann/preferredNamespacePrefix
-vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/vocab/vann/preferredNamespaceUri
-vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
-
-
-###  http://schema.org/affiliation
-schema:affiliation rdf:type owl:AnnotationProperty .
-
-
-###  http://schema.org/domainIncludes
-schema:domainIncludes rdf:type owl:AnnotationProperty .
-
-
-###  http://schema.org/name
-schema:name rdf:type owl:AnnotationProperty .
-
-
-###  http://schema.org/url
-schema:url rdf:type owl:AnnotationProperty .
-
 
 #################################################################
 #    Object Properties
@@ -133,14 +102,6 @@ schema:url rdf:type owl:AnnotationProperty .
 #################################################################
 #    Classes
 #################################################################
-
-###  http://schema.org/Organization
-schema:Organization rdf:type owl:Class .
-
-
-###  http://schema.org/Person
-schema:Person rdf:type owl:Class .
-
 
 ###  https://www.w3.org/2019/wot/mqtt#ControlPacket
 :ControlPacket rdf:type owl:Class ;

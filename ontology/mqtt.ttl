@@ -36,21 +36,42 @@ _:genid4 rdf:type schema:Organization ;
           schema:url "https://www.siemens.com/" .
 
 #################################################################
-#    Annotation properties
-#################################################################
-
-
-#################################################################
 #    Object Properties
 #################################################################
 
-###  https://www.w3.org/2019/wot/mqtt#payload
-:payload rdf:type owl:ObjectProperty ;
-         schema:domainIncludes :ControlPacket ;
-         rdfs:comment "Some MQTT Control Packets contain a Payload as the final part of the packet. In the PUBLISH packet this is the Application Message."@en ;
-         rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-         rdfs:label "payload"@en .
+###  https://www.w3.org/2019/wot/mqtt#hasControlPacketType
+:hasControlPacketType rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf owl:topObjectProperty .
 
+
+###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
+:hasQoSFlag rdf:type owl:ObjectProperty ;
+               rdfs:domain :SUBSCRIBE ;
+               rdfs:range :QualityOfService ;
+               schema:domainIncludes :SUBSCRIBE ;
+               rdfs:comment "This field indicates the level of assurance for delivery of an Application Message."@en ;
+               rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
+               rdfs:label "hasQoSFlag"@en .
+
+###  https://www.w3.org/2019/wot/mqtt#hasPayload
+:hasPayload rdf:type owl:ObjectProperty ;
+            rdfs:range :ControlPacket ;
+            schema:domainIncludes :ControlPacket ;
+            rdfs:comment "Some MQTT Control Packets contain a Payload as the final part of the packet. In the PUBLISH packet this is the Application Message."@en ;
+            rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
+            rdfs:label "hasPayload"@en .
+
+###  https://www.w3.org/2019/wot/mqtt#subscribeTopic
+:hasSubscribeTopic rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf owl:topObjectProperty ;
+                rdfs:domain :SUBSCRIBE_payload ;
+                rdfs:range :Topic .
+
+
+###  https://www.w3.org/2019/wot/mqtt#unsubscribeTopic
+:hasUnsubscribeTopic rdf:type owl:ObjectProperty ;
+                  rdfs:domain :UNSUBSCRIBE_payload ;
+                  rdfs:range :Topic .
 
 #################################################################
 #    Data properties
@@ -67,36 +88,29 @@ _:genid4 rdf:type schema:Organization ;
 ###  https://www.w3.org/2019/wot/mqtt#hasDUPFlag
 :hasDUPFlag rdf:type owl:DatatypeProperty ;
             rdfs:subPropertyOf :fixedHeaderFlag ;
-            schema:domainIncludes :SUBSCRIBEPacket ;
+            schema:domainIncludes :SUBSCRIBE ;
+            rdfs:range xsd:boolean ;
             rdfs:comment "If the DUP flag is set, it indicates that this might be re-delivery of an earlier attempt to send the packet."@en ;
             rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
             rdfs:label "hasDUPFlag"@en .
 
 
-###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
-:hasQoSFlag rdf:type owl:DatatypeProperty ;
-            rdfs:subPropertyOf :fixedHeaderFlag ;
-            schema:domainIncludes :SUBSCRIBEPacket ;
-            rdfs:comment "This field indicates the level of assurance for delivery of an Application Message."@en ;
-            rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-            rdfs:label "hasQoSFlag"@en .
-
-
-###  https://www.w3.org/2019/wot/mqtt#hasRETAINFlag
-:hasRETAINFlag rdf:type owl:DatatypeProperty ;
+###  https://www.w3.org/2019/wot/mqtt#hasRetainFlag
+:hasRetainFlag rdf:type owl:DatatypeProperty ;
                rdfs:subPropertyOf :fixedHeaderFlag ;
-               schema:domainIncludes :SUBSCRIBEPacket ;
+               schema:domainIncludes :SUBSCRIBE ;
+               rdfs:range xsd:boolean ;
                rdfs:comment "If the RETAIN flag is set to 1 in a PUBLISH packet sent by a Client to a Server, the Server must replace any existing retained message for this topic and store the Application Message, so that it can be delivered to future subscribers whose subscriptions match its Topic Name."@en ;
                rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-               rdfs:label "hasRETAINFlag"@en .
+               rdfs:label "hasRetainFlag"@en .
 
 
-###  https://www.w3.org/2019/wot/mqtt#variableHeaderFlag
-:variableHeaderFlag rdf:type owl:DatatypeProperty ;
+###  https://www.w3.org/2019/wot/mqtt#hasVariableHeaderFlag
+:hasVariableHeaderFlag rdf:type owl:DatatypeProperty ;
                     schema:domainIncludes :ControlPacket ;
                     rdfs:comment "Some types of MQTT Control Packet contain a Variable Header component. It resides between the Fixed Header and the Payload. The content of the Variable Header varies depending on the packet type."@en ;
                     rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-                    rdfs:label "variableHeaderFlag"@en .
+                    rdfs:label "hasVariableHeaderFlag"@en .
 
 
 #################################################################
@@ -105,34 +119,51 @@ _:genid4 rdf:type schema:Organization ;
 
 ###  https://www.w3.org/2019/wot/mqtt#ControlPacket
 :ControlPacket rdf:type owl:Class ;
+               owl:equivalentClass [ rdf:type owl:Class ;
+                                     owl:oneOf(
+                                           :PUBLISH
+                                           :SUBSCRIBE
+                                           :UNSUBSCRIBEPacket
+                                     ) ] ;
                rdfs:comment "An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header, payload"@en ;
                rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
                rdfs:label "ControlPacket"@en .
 
 
-###  https://www.w3.org/2019/wot/mqtt#PUBLISHPacket
-:PUBLISHPacket rdf:type owl:Class ;
+###  https://www.w3.org/2019/wot/mqtt#PUBLISH
+:PUBLISH rdf:type owl:Class ;
                rdfs:subClassOf :ControlPacket ;
                rdfs:comment "A PUBLISH packet is sent from a Client to a Server or from a Server to a Client to transport an Application Message."@en ;
                rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-               rdfs:label "PUBLISHPacket"@en .
+               rdfs:label "PublishPacket"@en .
 
 
-###  https://www.w3.org/2019/wot/mqtt#SUBSCRIBEPacket
-:SUBSCRIBEPacket rdf:type owl:Class ;
+###  https://www.w3.org/2019/wot/mqtt#SUBSCRIBE
+:SUBSCRIBE rdf:type owl:Class ;
                  rdfs:subClassOf :ControlPacket ;
                  rdfs:comment "The SUBSCRIBE packet is sent from the Client to the Server to create one or more Subscriptions. Each Subscription registers a Client’s interest in one or more Topics."@en ;
                  rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-                 rdfs:label "SUBSCRIBEPacket"@en .
+                 rdfs:label "SubscribePacket"@en .
 
 
-###  https://www.w3.org/2019/wot/mqtt#UNSUBSCRIBEPacket
-:UNSUBSCRIBEPacket rdf:type owl:Class ;
+###  https://www.w3.org/2019/wot/mqtt#UNSUBSCRIBE
+:UNSUBSCRIBE rdf:type owl:Class ;
                    rdfs:subClassOf :ControlPacket ;
                    rdfs:comment "An UNSUBSCRIBE packet is sent by the Client to the Server, to unsubscribe from topics."@en ;
                    rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-                   rdfs:label "UNSUBSCRIBEPacket"@en .
+                   rdfs:label "UnsubscribePacket"@en .
 
+
+###  https://www.w3.org/2019/wot/mqtt#QualityOfService
+:QualityOfService rdf:type owl:Class ;
+                   owl:equivalentClass [ a owl:Class ;
+                                         owl:oneOf ( <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0>
+                                                     <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#1>
+                                                     <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#2> ) ] ; 
+                   rdfs:comment "QualityOfService level paired to a specific Topic Filter used in a SUBSCRIBE or SUBACK packet payload."@en ;
+                   rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
+                   rdfs:label "QualityOfService"@en ;
+                   schema:alternateName "QoS"@en .
 
 #################################################################
 #    Individuals
@@ -144,4 +175,31 @@ _:genid4 rdf:type schema:Organization ;
                                   schema:affiliation _:genid4 ;
                                   schema:name "Victor Charpenay" .
 
+
+###  https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0
+<https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0> rdf:type owl:NamedIndividual ,
+            :QualityOfService ;
+            rdfs:comment "The Server delivers the Application Message to the Client once and only once."@en ;
+            rdfs:label "atMostOnce"@en ;
+            rdfs:subClassOf :QualityOfService ;
+            schema:alternateName "QoS0"@en ;
+            rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> .
+
+###  https://www.w3.org/2019/wot/mqtt/qualitfyOfService#atLeastOnce
+<https://www.w3.org/2019/wot/mqtt/qualitfyOfService#1> rdf:type owl:NamedIndividual ,
+              :QualityOfService ;
+              rdfs:comment "The message is delivered at least once."@en ;
+              rdfs:label "atLeastOnce"@en ;
+              schema:alternateName "QoS1"@en ;
+              rdfs:subClassOf :QualityOfService ;
+              rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> .
+
+###  https://www.w3.org/2019/wot/mqtt/qualitfyOfService#exactlyOnce
+<https://www.w3.org/2019/wot/mqtt/qualitfyOfService#2> rdf:type owl:NamedIndividual ,
+             :QualityOfService ;
+             rdfs:comment "The message is delivered exactly once."@en ;
+             rdfs:label "exactlyOnce"@en ;
+             schema:alternateName "QoS2"@en ;
+             rdfs:subClassOf :QualityOfService ;
+             rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> .
 ###  Generated by the OWL API (version 4.5.7.2018-12-02T02:23:35Z) https://github.com/owlcs/owlapi

@@ -1,1 +1,29 @@
-{}
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "mqv": "https://www.w3.org/2019/wot/mqtt#",
+        "controlPacket": {
+            "@id": "mqv:sendsControlPacket",
+            "@type": "@vocab"
+        },
+        "qos": {
+            "@id": "mqv:hasQoSFlag",
+            "@type": "@vocab"
+        },
+        "topic" : {
+            "@id": "mqv:hasTopicName",
+            "@type": "xsd:string"
+        },
+        "filter": {
+            "@id": "mqv:hasTopicFilters",
+            "@type": "xsd:string"
+        },
+        "retain": {
+            "@id": "mqv:hasRetainFlag",
+            "@type": "xsd:boolean"
+        },
+        "publish": "mqv:PUBLISH",
+        "subscribe": "mqv:SUBSCRIBE",
+        "unsubscribe": "mqv:UNSUBSCRIBE"
+    }
+}

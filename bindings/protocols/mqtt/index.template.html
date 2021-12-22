@@ -46,6 +46,18 @@
     <section id="url">
       <h2>URL format</h2>
       <p class="ednote">There is no clear consensus on the correct URL format for MQTT protocol binding</p>
+       <pre>
+            {scheme}://{address}:{port}
+        </pre>
+
+        <p>
+            Where:
+            <ul>
+                <li><code>{scheme}</code> is the protocol scheme, either <code>mqtt</code> or <code>mqtts</code></li>
+                <li><code>{address}</code> is the IP address of the MQTT broker</li>
+                <li><code>{port}</code> is the port of the MQTT broker</li>
+            </ul>
+        </p>
     </section>
     <section>
       <h3>MQTT Vocabulary</h3>
@@ -61,42 +73,65 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><code>mqv:controlPacketValue</code></td>
-            <td>MQTT Control Packet type (Literal).</td>
-            <td>optional</td>
-            <td>
-              <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-              <p>(one of <code>"PUBLISH"</code> (3), <code>"SUBSCRIBE"</code> (8), <code>"UNSUBSCRIBE"</code> (10))</p>
-            </td>
-          </tr>
-          <tr>
-            <td><code>mqv:options</code></td>
-            <td>MQTT options sent with the message, e.g., <code>[ { "mqv:optionName": "qos", "mqv:optionValue": 1 }]</code>.</td>
-            <td>optional</td>
-            <td>
-              array of <code>mqv:MessageOption</code>
-            </td>
-          </tr>
-          <tr>
-            <td><code>mqv:optionName</code></td>
-            <td>Option name (Literal).</td>
-            <td>mandatory within <code>mqv:MessageOption</code>)</td>
-            <td>
-              <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-              <p>(one of <code>"qos"</code>, <code>"retain"</code>, <code>"dup"</code>)</p>
-            </td>
-          </tr>
-          <tr>
-            <td><code>mqv:optionValue</code></td>
-            <td>Header value (Literal).</td>
-            <td>mandatory within <code>mqv:MessageOption</code>)</td>
-            <td>
-             One of <code>0</code>, <code>1</code> or <code>2</code> (only for <code>qos</code>)
-            </td>
-          </tr>
+          <!-- Generate forms terms from the ontology-->
+          %s
         </tbody>
       </table>
+    </section>
+    <section id="controlpacket">
+      <h4>Control Packet</h4>
+      <p>
+        In MQTT protocol messages are called Control Packets. An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header,
+        payload. The fixed header consists of a packet type and flags. The main packet types that can be uses in a Form are listed below. 
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Generate packet values from the ontology-->
+          %s
+        </tbody>
+      </table>
+    </section>
+    <section id="qualityofservice">
+      <h4>QualityOfService</h4>
+      <p>
+        <!-- Generate qos description from the ontology-->
+        %s
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Value</th>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Generate qos values from the ontology-->
+          %s
+        </tbody>
+      </table>
+    </section>
+    <section id="topicname">
+      <h4>TopicName</h4>
+      <p>
+        <!-- Generate description form the ontology-->
+        %s
+      </p>
+    
+    </section>
+    <section id="topicfilter">
+      <h4>TopicFilter</h4>
+      <p>
+        <!-- Generate description form the ontology-->
+        %s
+      </p>
+    
     </section>
     </section>
     <section>
@@ -114,50 +149,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><code>readproperty</code></td>
-            <td><code>"mqv:controlPacketValue": "SUBSCRIBE"</code></td>
-          </tr>
-          <tr>
-            <td><code>writeproperty</code></td>
-            <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
-          <tr>
-            <td><code>observeproperty</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
-            <td><code>unobserveproperty</code></td>
-            <td> <code>"mqv:controlPacketValue": "UNSUBSCRIBE"</code></td>
-          </tr>
-          <tr>
-            <td><code>invokeaction</code></td>
-            <td><code> "mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
-          <tr>
-            <td><code>subscribeevent</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
-            <td><code>unsubscribeevent</code></td>
-            <td> <code>"mqv:controlPacketValue": "UNSUBSCRIBE"</code></td>
-          </tr>
-          <tr>
-            <td><code>readallproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
-            <td><code>writeallproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
-          <tr>
-            <td><code>readmultipleproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
-            <td><code>writemultipleproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
+          <!-- Generate forms terms from the ontology-->
+          %s
         </tbody>
       </table>
       </section>

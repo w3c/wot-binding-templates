@@ -1,0 +1,191 @@
+@prefix : <https://www.w3.org/ns/wot/binding/mqtt-validation#> .
+@prefix td: <https://www.w3.org/ns/wot/td#> .
+@prefix wotsec: <https://www.w3.org/2019/wot/security#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix mqtt: <https://www.w3.org/2019/wot/mqtt#> .
+@prefix binding: <https://www.w3.org/2019/wot/binding#> .
+@base <https://www.w3.org/ns/wot/binding/mqtt-validation#> .
+
+<> rdf:type owl:Ontology ;
+    owl:imports <https://www.w3.org/2019/wot/mqtt> ;
+    vann:preferredNamespacePrefix "mqv" ;
+    vann:preferredNamespaceUri : ;
+    rdfs:comment "Vocabulary to map and validate MQTT concepts to the standard Thing Interaction model."@en ;
+    rdfs:label "MQTT protocol binding template"@en .
+
+:MQTTFormShape a sh:NodeShape ;
+    sh:targetClass hctl:Form ;
+	sh:order 1 ; # Used to select the shape
+    sh:closed false ;
+    sh:property [
+        sh:path mqtt:sendsControlPacket ;
+		sh:class mqtt:ControlPacket ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path mqtt:hasQoSFlag ;
+        sh:class mqtt:QualityOfService ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path mqtt:hasTopicName ;
+        sh:class mqtt:TopicName ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path mqtt:hasTopicFilters ;
+        sh:class mqtt:TopicFilter ;
+    ] ;
+    sh:property [
+        sh:path mqtt:hasRetainFlag;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] .
+
+# Default mappings
+
+:ReadMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 2 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:readProperty
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:SUBSCRIBE
+    ] .
+
+:WriteMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 3 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:writeProperty
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:PUBLISH
+    ] .
+
+:ObserveMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 4 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:observeProperty
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:SUBSCRIBE
+    ] .
+
+:UnobserveMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 5 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:unobserveProperty
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:UNSUBSCRIBE
+    ] .
+
+:ReadAllMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 6 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:readallproperties
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:SUBSCRIBE
+    ] .
+
+:ReadMultipleMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 7 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:readmultipleproperties
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:SUBSCRIBE
+    ] .
+
+:WriteAllMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 8 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:writeallproperties
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:PUBLISH
+    ] .
+
+:WriteMultipleMQTTPropertyForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 9 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:writemultipleproperties
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:PUBLISH
+    ] .
+
+
+:invokeMQTTActionForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 10 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:invokeaction
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:PUBLISH
+    ] .
+
+:subscribeMQTTEventForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 11 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:subscribeevent
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:SUBSCRIBE
+    ] .
+
+:unsubscribeMQTTEventForm a sh:NodeShape ;
+    sh:targetClass hctl:Form;
+    sh:order 12 ;
+	sh:closed false ;
+    sh:property [
+        sh:path hctl:hasOperationType ;
+        sh:hasValue td:unsubscribeevent
+    ], [
+        sh:path mqtt:sendsControlPacket ;
+        sh:defaultValue mqtt:UNSUBSCRIBE
+    ] .

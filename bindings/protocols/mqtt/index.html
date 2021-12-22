@@ -46,6 +46,18 @@
     <section id="url">
       <h2>URL format</h2>
       <p class="ednote">There is no clear consensus on the correct URL format for MQTT protocol binding</p>
+       <pre>
+            {scheme}://{address}:{port}
+        </pre>
+
+        <p>
+            Where:
+            <ul>
+                <li><code>{scheme}</code> is the protocol scheme, either <code>mqtt</code> or <code>mqtts</code></li>
+                <li><code>{address}</code> is the IP address of the MQTT broker</li>
+                <li><code>{port}</code> is the port of the MQTT broker</li>
+            </ul>
+        </p>
     </section>
     <section>
       <h3>MQTT Vocabulary</h3>
@@ -61,42 +73,152 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><code>mqv:controlPacketValue</code></td>
-            <td>MQTT Control Packet type (Literal).</td>
+          <!-- Generate forms terms from the ontology-->
+          
+        <tr>
+            <td><code>mqv:retain</code></td>
+            <td>If the RETAIN flag is set to 1 in a PUBLISH packet sent by a Client to a Server, the Server must replace any existing retained message for this topic and store the Application Message, so that it can be delivered to future subscribers whose subscriptions match its Topic Name.</td>
             <td>optional</td>
-            <td>
-              <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-              <p>(one of <code>"PUBLISH"</code> (3), <code>"SUBSCRIBE"</code> (8), <code>"UNSUBSCRIBE"</code> (10))</p>
-            </td>
-          </tr>
-          <tr>
-            <td><code>mqv:options</code></td>
-            <td>MQTT options sent with the message, e.g., <code>[ { "mqv:optionName": "qos", "mqv:optionValue": 1 }]</code>.</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:controlPacket</code></td>
+            <td>Describes the action of sending a <a>ControlPacket</a> in a NetworkConnection</td>
             <td>optional</td>
-            <td>
-              array of <code>mqv:MessageOption</code>
-            </td>
-          </tr>
-          <tr>
-            <td><code>mqv:optionName</code></td>
-            <td>Option name (Literal).</td>
-            <td>mandatory within <code>mqv:MessageOption</code>)</td>
-            <td>
-              <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-              <p>(one of <code>"qos"</code>, <code>"retain"</code>, <code>"dup"</code>)</p>
-            </td>
-          </tr>
-          <tr>
-            <td><code>mqv:optionValue</code></td>
-            <td>Header value (Literal).</td>
-            <td>mandatory within <code>mqv:MessageOption</code>)</td>
-            <td>
-             One of <code>0</code>, <code>1</code> or <code>2</code> (only for <code>qos</code>)
-            </td>
-          </tr>
+            <td><a href="#controlpacket">ControlPacket</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:qos</code></td>
+            <td>This field indicates the level of assurance for delivery of an Application Message.</td>
+            <td>optional</td>
+            <td><a href="#qualityofservice">QualityOfService</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:topic</code></td>
+            <td>This field reports the <a href='#topic-name'>TopicName</a> of a packet</td>
+            <td>optional</td>
+            <td><a href="#topicname">TopicName</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:filter</code></td>
+            <td>This field reports the list of <a href='#topic-filter'>TopicFilter</a>s of a packet</td>
+            <td>optional</td>
+            <td><a href="#topicfilter">TopicFilter</a> Array of <a href="#topicfilter">TopicFilter</a></td>
+
+        <tr>
+        
         </tbody>
       </table>
+    </section>
+    <section id="controlpacket">
+      <h4>Control Packet</h4>
+      <p>
+        In MQTT protocol messages are called Control Packets. An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header,
+        payload. The fixed header consists of a packet type and flags. The main packet types that can be uses in a Form are listed below. 
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Generate packet values from the ontology-->
+          
+        <tr>
+            <td><code>mqv:publish</code></td>
+            <td>A PUBLISH packet is sent from a Client to a Server or from a Server to a Client to transport an Application Message.</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:subscribe</code></td>
+            <td>The SUBSCRIBE packet is sent from the Client to the Server to create one or more Subscriptions. Each Subscription registers a Client’s interest in one or more Topics.</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:unsubscribe</code></td>
+            <td>An UNSUBSCRIBE packet is sent by the Client to the Server, to unsubscribe from topics.</td>
+        <tr>
+        
+        </tbody>
+      </table>
+    </section>
+    <section id="qualityofservice">
+      <h4>QualityOfService</h4>
+      <p>
+        <!-- Generate qos description from the ontology-->
+        
+        QualityOfService level paired to a specific Topic Filter used in a SUBSCRIBE or SUBACK packet payload.
+        
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Value</th>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Generate qos values from the ontology-->
+          
+        <tr>
+            <td><code>mqv:0</code></td>
+            <td>atMostOnce</td>
+            <td>The Server delivers the Application Message to the Client once and only once.</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:1</code></td>
+            <td>atLeastOnce</td>
+            <td>The message is delivered at least once.</td>
+        <tr>
+        
+
+        <tr>
+            <td><code>mqv:2</code></td>
+            <td>exactlyOnce</td>
+            <td>The message is delivered exactly once.</td>
+        <tr>
+        
+        </tbody>
+      </table>
+    </section>
+    <section id="topicname">
+      <h4>TopicName</h4>
+      <p>
+        <!-- Generate description form the ontology-->
+        
+        The label attached to an Application Message which is matched against the Subscriptions known to the Server. The Server sends a copy of the Application Message to each Client that has a matching Subscription.
+        
+      </p>
+    
+    </section>
+    <section id="topicfilter">
+      <h4>TopicFilter</h4>
+      <p>
+        <!-- Generate description form the ontology-->
+        
+        An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters.
+        
+      </p>
+    
     </section>
     </section>
     <section>
@@ -114,50 +236,73 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <!-- Generate forms terms from the ontology-->
+          
+        <tr>
             <td><code>readproperty</code></td>
-            <td><code>"mqv:controlPacketValue": "SUBSCRIBE"</code></td>
-          </tr>
-          <tr>
+            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>writeproperty</code></td>
-            <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
-          <tr>
+            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>observeproperty</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
+            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>unobserveproperty</code></td>
-            <td> <code>"mqv:controlPacketValue": "UNSUBSCRIBE"</code></td>
-          </tr>
-          <tr>
-            <td><code>invokeaction</code></td>
-            <td><code> "mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
-          <tr>
-            <td><code>subscribeevent</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
-            <td><code>unsubscribeevent</code></td>
-            <td> <code>"mqv:controlPacketValue": "UNSUBSCRIBE"</code></td>
-          </tr>
-          <tr>
+            <td><code>"mqv:controlPacket": "mqv:unsubscribe"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>readallproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
-            <td><code>writeallproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
-          <tr>
+            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>readmultipleproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "SUBSCRIBE"</code> </td>
-          </tr>
-          <tr>
+            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeallproperties</code></td>
+            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>writemultipleproperties</code></td>
-            <td> <code>"mqv:controlPacketValue": "PUBLISH"</code></td>
-          </tr>
+            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>invokeaction</code></td>
+            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>subscribeevent</code></td>
+            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>unsubscribeevent</code></td>
+            <td><code>"mqv:controlPacket": "mqv:unsubscribe"</code></td>
+        <tr>
+        
         </tbody>
       </table>
       </section>

@@ -40,6 +40,12 @@ _:genid4 rdf:type schema:Organization ;
 #################################################################
 
 ###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
+:sendsControlPacket rdf:type owl:ObjectProperty ;
+    rdfs:label "useControlPacket"@en ;
+    rdfs:comment "Describes the action of sending a <a>ControlPacket</a> in a NetworkConnection"@en ;
+    rdfs:range :ControlPacket .
+
+###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
 :hasQoSFlag rdf:type owl:ObjectProperty ;
                rdfs:domain :SUBSCRIBE ;
                rdfs:range :QualityOfService ;

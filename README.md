@@ -27,22 +27,22 @@ For convenience purposes, the currently available Editor's Draft of subspecifica
         <tr>
             <td>HTTP</td>
             <td>Hypertext Transfer Protocol</td>
-            <td><a href="./bindings/protocols/http/index.html">Link</a></td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html">Link</a></td>
         </tr>
         <tr>
             <td>CoAP</td>
             <td>Constrained Application Protocol</td>
-            <td><a href="./bindings/protocols/coap/index.html">Link</a></td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/index.html">Link</a></td>
         </tr>
         <tr>
             <td>MQTT</td>
             <td>Message Queuing Telemetry Transport</td>
-            <td><a href="./bindings/protocols/mqtt/index.html">Link</a></td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/index.html">Link</a></td>
         </tr>
         <tr>
             <td>Modbus</td>
             <td>Modbus</td>
-            <td><a href="./bindings/protocols/modbus/index.html">Link</a></td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/index.html">Link</a></td>
         </tr>
     </tbody>
 </table>
@@ -65,7 +65,7 @@ Please also look at <https://w3c.github.io/wot-binding-templates/#protocol-intro
             <td>XML</td>
             <td>eXtensible Markup Language</td>
             <td><code>application/xml</code></td>
-            <td><a href="./bindings/payloads/xml/index.html">Link</a></td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html">Link</a></td>
         </tr>
     </tbody>
 </table>

@@ -120,3 +120,6 @@ dist
 
 # ignore protegè catalogs
 catalog-*.xml
+
+# VSCode configurations
+.vscode

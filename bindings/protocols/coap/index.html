@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
@@ -7,32 +8,54 @@
         var respecConfig = {
             specStatus: "ED",
             editors: [{
-                name: "Michael Koster",
-                w3cid: "110658",
-                company: "SmartThings",
-                companyURL: "https://www.smartthings.com/"
-                },
-                {
-                name: "Ege Korkan",
-                w3cid: "110131",
+                name: "Klaus Hartke",
+                w3cid: "107859",
                 company: "Siemens AG",
                 companyURL: "https://www.siemens.com/"
-                }
-            ],
+            }],
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
             shortName: "wot-coap-binding",
             github: "https://github.com/w3c/wot-binding-templates/tree/main/bindings/protocols/coap",
+            localBiblio: {
+                "I-D.ietf-core-new-block": {
+                    title: "Constrained Application Protocol (CoAP) Block-Wise Transfer Options Supporting Robust Transmission",
+                    href: "https://datatracker.ietf.org/doc/draft-ietf-core-new-block/14/",
+                    "status": "Internet Draft (work in progress)",
+                    "publisher": "IETF",
+                    "date": "14 February 2022",
+                    "authors": [
+                        "M. Boucadair",
+                        "J. Shallow"
+                    ],
+                },
+            },
         };
     </script>
-    <title>CoAP Binding Template</title>
+    <title>CoAP binding template</title>
 </head>
 
 <body>
+    <section id='abstract'>
+        <p class="ednote">TODO: Provide a short overview of the document and the protocol binding features.</p>
+    </section>
     <section id='introduction'>
         <h2>Introduction</h2>
-        <p class="ednote">the following is a draft introduction</p>
         <p>
-            This document describes how to map the CoAP protocol to the W3C Web of Things.
+            The Constrained Application Protocol (CoAP) [[RFC7252]] is a
+            specialized web transfer protocol for use with constrained nodes and
+            constrained (e.g., low-power, lossy) networks. The nodes often have
+            8-bit microcontrollers with small amounts of ROM and RAM, while
+            constrained networks such as IPv6 over Low-Power Wireless Personal
+            Area Networks (6LoWPANs) often have high packet error rates and a
+            typical throughput of 10s of kbit/s. The protocol is designed for
+            machine-to-machine (M2M) applications such as smart energy and
+            building automation.
+        </p>
+        <p>
+            This document describes how the Web of Things specification can be
+            use to present devices that use the CoAP in a Thing Description. In
+            particular, the document explain how to create valid Forms for the
+            different operations that CoAP can perform.
         </p>
     </section>
     <section id='sotd'>
@@ -40,142 +63,402 @@
             <em>This document is a work in progress</em>
         </p>
     </section>
-        
-    <section>
-      <h3>CoAP Vocabulary</h3>
-
-      <section>
-      <h4>CoAP Vocabulary Terms</h4>
-      <table class="def">
-        <thead>
-          <tr>
-            <th>Vocabulary term</th>
-            <th>Description</th>
-            <th>Assignment</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>cov:methodName</code></td>
-            <td>CoAP method name (Literal).</td>
-            <td>optional</td>
-            <td>
-              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-              <p>(one of <code>"GET"</code> (1), <code>"POST"</code> (2), <code>"PUT"</code> (3), <code>"DELETE"</code> (4),
-                <code>"FETCH"</code> (5), <code>"PATCH"</code> (6), <code>"iPATCH"</code> (7))</p>
-            </td>
-          </tr>
-          <tr>
-            <td><code>cov:options</code></td>
-            <td>CoAP options sent with the message, e.g., <code>[ { "cov:optionName": "Accept", "cov:optionValue": 110 }]</code> to observe.</td>
-            <td>optional</td>
-            <td>
-              array of <code>cov:MessageOption</code>
-            </td>
-          </tr>
-          <tr>
-            <td><code>cov:optionName</code></td>
-            <td>Option name (Literal), see <a
-                href="https://www.iana.org/assignments/core-parameters/core-parameters.xhtml#option-names">CoRE
-                Parameters</a>.</td>
-            <td>mandatory within <code>cov:MessageOption</code></td>
-            <td>
-              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-            </td>
-          </tr>
-          <tr>
-            <td><code>cov:optionValue</code></td>
-            <td>Header value (Literal).</td>
-            <td>mandatory within <code>cov:MessageOption</code></td>
-            <td>
-              <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyType"><code>anyType</code></a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <section id="overview">
+        <h2>Protocol Overview</h2>
+        <p class="ednote">TODO: Provide an overview of the protocol and the protocol binding.</p>
+        <table class="def">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Covered by</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Request to Server</td>
+                    <td><code>"href": ..., "coap:method": ...</code></td>
+                </tr>
+                <tr>
+                    <td>Request to Forward Proxy</td>
+                    <td><code>"href": ..., "coap:method": ..., "coap:proxy": ...</code></td>
+                </tr>
+                <tr>
+                    <td>Caching: Validation</td>
+                    <td>n/a</td>
+                </tr>
+                <tr>
+                    <td>Conditional Requests</td>
+                    <td>n/a</td>
+                </tr>
+                <tr>
+                    <td>Content</td>
+                    <td><code>"coap:format": ...</code></td>
+                </tr>
+                <tr>
+                    <td>Content Negotiation</td>
+                    <td><code>"coap:accept": ...</code></td>
+                </tr>
+                <tr>
+                    <td>Observing Resources</td>
+                    <td><code>"subprotocol": "coap:observe"</code></td>
+                </tr>
+                <tr>
+                    <td>Block-Wise Transfer</td>
+                    <td><code>"coap:blockwise": { ... }</code></td>
+                </tr>
+                <tr>
+                    <td>Quick Block-Wise Transfer</td>
+                    <td><code>"coap:quickblockwise": { ... }</code></td>
+                </tr>
+                <tr>
+                    <td>Hop Limit</td>
+                    <td><code>"coap:hoplimit": ...</code></td>
+                </tr>
+                <tr>
+                    <td>OSCORE</td>
+                    <td><code>SecurityScheme</code></td>
+                </tr>
+                <tr>
+                    <td>EDHOC</td>
+                    <td><code>SecurityScheme</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section id="url">
+        <h2>URI Schemes</h2>
+        <p>
+            CoAP uses the following URI schemes for identifying CoAP resources
+            and providing a means of locating the resource:
+        </p>
+        <table class="def">
+            <thead>
+                <tr>
+                    <th>URI Scheme</th>
+                    <th>Reference</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>coap</td>
+                    <td>[[RFC7252]]</td>
+                </tr>
+                <tr>
+                    <td>coap+tcp</td>
+                    <td>[[RFC8323]]</td>
+                </tr>
+                <tr>
+                    <td>coap+ws</td>
+                    <td>[[RFC8323]]</td>
+                </tr>
+                <tr>
+                    <td>coaps</td>
+                    <td>[[RFC7252]]</td>
+                </tr>
+                <tr>
+                    <td>coaps+tcp</td>
+                    <td>[[RFC8323]]</td>
+                </tr>
+                <tr>
+                    <td>coaps+ws</td>
+                    <td>[[RFC8323]]</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            See <a href="https://www.iana.org/assignments/uri-schemes/">Uniform Resource Identifier (URI) Schemes</a>
+            for a complete list of CoAP URI schemes.
+        </p>
+    </section>
+    <section id="vocabulary">
+        <h2>CoAP Vocabulary</h2>
+        <p>
+            This section describes the vocabulary used in CoAP. A protocol
+            binding implementation should use the vocabulary defined in this
+            section to describe the different configuration that can be used to
+            exchanged data between Web of Things.
+        </p>
+        <section>
+            <h3>Form terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>coap:method</code></td>
+                        <td>Indicates the CoAP method to be used in the request</td>
+                        <td>optional</td>
+                        <td><a href="#Method">Method</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:format</code></td>
+                        <td>Indicates that a payload and a CoAP Content-Format option [[RFC7252]] be included in the request</td>
+                        <td>optional</td>
+                        <td><a href="#ContentFormat">ContentFormat</a> or array of <a href="#ContentFormat">ContentFormat</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:accept</code></td>
+                        <td>Indicates that a CoAP Accept option [[RFC7252]] be included in the request</td>
+                        <td>optional</td>
+                        <td><a href="#ContentFormat">ContentFormat</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:blockwise</code></td>
+                        <td>Indicates that a block-wise transfer is supported [[RFC7959]]</td>
+                        <td>optional</td>
+                        <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:quickblockwise</code></td>
+                        <td>Indicates that a quick block-wise transfer is supported [[I-D.ietf-core-new-block]]</td>
+                        <td>optional</td>
+                        <td><a href="#BlockWiseTransferParameters">QuickBlockWiseTransferParameters</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:hopLimit</code></td>
+                        <td>Indicates that a CoAP Hop-Limit option [[RFC8768]] be included in the request</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="Method">
+            <h3>Method</h3>
+            <p>
+                ... including (but not limited to) the following methods:
+            </p>
+            <table class="def" title="Method">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>coap:get</code></td>
+                        <td>The GET method [[RFC7252]]</td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:post</code></td>
+                        <td>The POST method [[RFC7252]]</td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:put</code></td>
+                        <td>The PUT method [[RFC7252]]</td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:delete</code></td>
+                        <td>The DELETE method [[RFC7252]]</td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:fetch</code></td>
+                        <td>The FETCH method [[RFC8132]]</td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:patch</code></td>
+                        <td>The PATCH method [[RFC8132]]</td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:ipatch</code></td>
+                        <td>The iPATCH method [[RFC8132]]</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                See
+                <a href="https://www.iana.org/assignments/core-parameters/#method-codes">Constrained RESTful Environments (CoRE) Parameters</a>
+                for a complete list of methods.
+            </p>
+        </section>
+        <section id="ContentFormat">
+            <h3>ContentFormat</h3>
+            <p>
+                ... including (but not limited to) the following content formats:
+            </p>
+            <table class="def" title="ContentFormat">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>Content type <code>text/plain; charset=utf-8</code> with no content coding</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                See
+                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">Constrained RESTful Environments (CoRE) Parameters</a>
+                for a complete list of content formats.
+            </p>
+        </section>
+        <section id="BlockWiseTransferParameters">
+            <h3>BlockWiseTransferParameters</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>coap:block2SZX</code></td>
+                        <td></td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:block1SZX</code></td>
+                        <td></td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="QuickBlockWiseTransferParameters">
+            <h3>QuickBlockWiseTransferParameters</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>coap:qblock2SZX</code></td>
+                        <td></td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>coap:qblock1SZX</code></td>
+                        <td></td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </section>
+    <section id="mappings">
+        <h2>Mappings</h2>
+        <p>
+            This section describes the strategies and default values to use
+            protocol specific concepts within the
+            <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
+        </p>
+        <section id="default-mappings">
+            <h3>Default mappings</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default Binding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>td:readProperty</code></td>
+                        <td><code>"coap:method": "coap:get"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:writeProperty</code></td>
+                        <td><code>"coap:method": "coap:put"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:observeProperty</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:unobserveProperty</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:readMultipleProperties</code></td>
+                        <td><code>"coap:method": "coap:get"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:writeMultipleProperties</code></td>
+                        <td><code>"coap:method": "coap:put"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:readAllProperties</code></td>
+                        <td><code>"coap:method": "coap:get"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:writeAllProperties</code></td>
+                        <td><code>"coap:method": "coap:put"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:observeAllProperties</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:unobserveAllProperties</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:invokeAction</code></td>
+                        <td><code>"coap:method": "coap:post"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:queryAction</code></td>
+                        <td><code>"coap:method": "coap:get"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:cancelAction</code></td>
+                        <td><code>"coap:method": "coap:post"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:queryAllActions</code></td>
+                        <td><code>"coap:method": "coap:get"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:subscribeEvent</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:unsubscribeEvent</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:subscribeAllEvents</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>td:unsubscribeAllEvents</code></td>
+                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="possible-mappings">
+            <h3>Possible mappings</h3>
+            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is meant to be informative but it provides guidelines for implementers.</p>
+        </section>
     </section>
     <section>
-      <h4>CoAP Default Vocabulary Terms</h4>
-      <table class="def">
-        <thead>
-          <tr>
-            <th><code>op</code> value</th>
-            <th>Default Binding</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>readproperty</code></td>
-            <td><code>"cov:methodName": "GET"</code></td>
-          </tr>
-          <tr>
-            <td><code>writeproperty</code></td>
-            <td><code>"cov:methodName": "PUT"</code></td>
-          </tr>
-          <tr>
-            <td><code>observeproperty</code></td>
-            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
-          </tr>
-          <tr>
-            <td><code>unobserveproperty</code></td>
-            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
-          </tr>
-          <tr>
-            <td><code>invokeaction</code></td>
-            <td><code>"cov:methodName": "POST"</code></td>
-          </tr>
-          <tr>
-            <td><code>subscribeevent</code></td>
-            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
-          </tr>
-          <tr>
-            <td><code>unsubscribeevent</code></td>
-            <td><code>"cov:methodName": "GET"</code>,<code>"subprotocol":"cov:observe"</code></td>
-
-          </tr>
-          <tr>
-            <td><code>readallproperties</code></td>
-            <td> <code>"cov:methodName": "GET"</code></td>
-          </tr>
-          <tr>
-            <td><code>writeallproperties</code></td>
-            <td> <code>"cov:methodName": "PUT"</code></td>
-          </tr>
-          <tr>
-            <td><code>readmultipleproperties</code></td>
-            <td> <code>"cov:methodName": "GET"</code></td>
-          </tr>
-          <tr>
-            <td><code>writemultipleproperties</code></td>
-            <td> <code>"cov:methodName": "PUT"</code></td>
-          </tr>
-        </tbody>
-      </table>
-      </section>
-
-      Observing Resources in CoAP should be done as specified in [[!RFC7641]].
-      Since observing and unobserving need to be indicated with the Observe flag in the header, this mechanism can be also described in the <code> cov:options </code> with the value <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code>. 
-      However, this is not enough to describe the mechanism of getting asynchronous updates from the observed resource.
-      Thus, <code>"subprotocol":"cov:observe"</code> is used to indicate the observation mechanism.
-
-      <p class="ednote">
-        As indicated by the <a href="#coap-default-vocabulary-terms" class="sec-ref">CoAP Default Vocabulary Terms</a>, it is recommended to use the <code>subprotocol</code> to describe the observation. Thus, <code> cov:options </code> with the value <code>[ { "cov:optionName": "Observe", "cov:optionValue": 0 }]</code> MUST NOT be used together with <code>"subprotocol":"cov:observe"</code>, since it can lead to confusion.
-      </p>
-
+        <h2>Examples</h2>
+        <p class="ednote">TODO: Provide a compressive list of examples about how this binding template can be used within forms or Thing Descriptions </p>
     </section>
-
-    <script id="dstimer" language="javascript">
-        //<![CDATA[
-        if (dschk() == 1) {
-          if (typeof (dsSetTimers) != "undefined") {
-            dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
-              1000), 1);
-          }
-        }
-        //]]>
-      </script>
-
 </body>
 
 </html>

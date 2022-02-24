@@ -123,3 +123,6 @@ catalog-*.xml
 
 # VSCode configurations
 .vscode
+
+# VS configurations
+.vs

@@ -3,21 +3,26 @@
     "description": "Renders vocabulary pages",
     "version": "1.0.0",
     "main": "render.js",
-    "watch":{
-        "build" : {
-            "patterns": ["bindings/modbus","ontology"],
+    "watch": {
+        "build": {
+            "patterns": [
+                "bindings/modbus",
+                "ontology"
+            ],
             "extensions": "ttl,template.html,sparql,rq"
         }
     },
     "scripts": {
-        "build" : "node render.js",
-        "watch": "npm-watch build"
+        "build": "node render.js",
+        "watch": "npm-watch build",
+        "prepare": "husky install"
     },
     "dependencies": {
         "sttl": "github:vcharpenay/STTL.js",
         "urdf": "github:vcharpenay/uRDF.js"
     },
     "devDependencies": {
+        "husky": "^7.0.0",
         "npm-watch": "^0.10.0"
     }
 }

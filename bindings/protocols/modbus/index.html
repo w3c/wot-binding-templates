@@ -363,6 +363,51 @@
         </section>
         <section id="possible-mappings">
             <h3>Possible mappings</h3>
+            <p>
+                Additional to the default mappings, users may decide to use other [[[#function]]]s for a specific operation. The following table
+                list examples of possible mappings for some operation types.
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Possible Binding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>writeproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"writeMultipleCoils"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>writeproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"writeSingleHoldingRegister"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>readproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"readDeviceIdentification"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>readproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"readDiscreteInput"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>observeproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"readCoil"</code>;
+                            <code>"modbus:pollingTime": 1000</code>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </section>
     <section>

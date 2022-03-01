@@ -91,9 +91,6 @@
         },
         "events": {
             "$ref": "#/definitions/affordance"
-        },
-        "lama": {
-            "$ref": "#/definitions/affordance"
         }
     }
 }

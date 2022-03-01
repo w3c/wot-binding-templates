@@ -50,10 +50,7 @@
                 "modbus:quantity" : { "type": "integer", "minimum": 1},
                 "modbus:zeroBasedAddressing" : { "type" : "boolean"},
                 "modbus:timeout" : { "type": "number", "minimum": 0}
-            },
-            "required": [
-                "modbus:offset"
-            ]
+            }
         },
         "affordance": {
             "type": "object",

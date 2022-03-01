@@ -365,6 +365,54 @@
         
                 </tbody>
             </table>
+            The next tables defines default values for other term, regardless of their use in combination with one of the operations listed in the table above.
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>modbus:address</code></td>
+                        <td><code>undefined</code></td>
+                        <td>
+                            Depends on the [[[#function]]] used. For example, for the <code>readcoil</code> operation, the default value is <code>1</code>, whereas
+                            for the <code>readDiscreteInput</code> operation, the default value is <code>10001</code>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>modbus:quantity</code></td>
+                        <td>
+                            <code>1</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modbus:zeroBaseAddressing</code></td>
+                        <td>
+                            <code>false</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modbus:timeout</code></td>
+                        <td>
+                            <code>infinite</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modbus:unitID</code></td>
+                        <td>
+                            <code>0</code> 
+                        </td>
+                        <td>Note this is the broadcast address for a MODBUS sub-network.</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
         <section id="possible-mappings">
             <h3>Possible mappings</h3>

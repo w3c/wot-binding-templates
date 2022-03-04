@@ -41,8 +41,8 @@ _:genid4 rdf:type schema:Organization ;
 
 ###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
 :sendsControlPacket rdf:type owl:ObjectProperty ;
-    rdfs:label "useControlPacket"@en ;
-    rdfs:comment "Describes the action of sending a <a>ControlPacket</a> in a NetworkConnection"@en ;
+    rdfs:label "sendsControlPacket"@en ;
+    rdfs:comment "Describes the action of sending a <a href='#controlpacket'>ControlPacket</a> in a NetworkConnection"@en ;
     rdfs:range :ControlPacket .
 
 ###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
@@ -66,7 +66,7 @@ _:genid4 rdf:type schema:Organization ;
 :hasTopicName rdf:type owl:ObjectProperty ;
                 rdfs:domain :PUBLISH ;
                 schema:domainIncludes :PUBLISH ;
-                rdfs:comment "This field reports the <a href='#topic-name'>TopicName</a> of a packet"@en ;
+                rdfs:comment "This field reports the <a href='#topicname'>TopicName</a> of a packet"@en ;
                 rdfs:label "hasTopicName"@en ;
                 schema:rangeIncludes :TopicName ;
                 rdfs:range :TopicName .
@@ -75,7 +75,7 @@ _:genid4 rdf:type schema:Organization ;
 :hasTopicFilters rdf:type owl:ObjectProperty ;
                 rdfs:domain :SUBSCRIBE, :UNSUBSCRIBE ;
                 schema:domainIncludes :SUBSCRIBE, :UNSUBSCRIBE ;
-                rdfs:comment "This field reports the list of <a href='#topic-filter'>TopicFilter</a>s of a packet"@en ;
+                rdfs:comment "This field reports the list of <a href='#topicfilter'>TopicFilter</a>s of a packet"@en ;
                 rdfs:label "hasTopicFilters"@en ;
                 schema:rangeIncludes :TopicFilter ;
                 rdfs:range :TopicFilter .

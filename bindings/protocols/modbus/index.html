@@ -28,12 +28,12 @@
         <p>
             In the context of the <a href="https://www.w3.org/TR/wot-architecture/">Web of Things (WoT)</a>, a Binding Template is a blueprint that gives 
             guidance on how to implement a specific IoT protocol, data format or IoT platform. This document gives implementation guidelines regarding
-            the <a href='https://www.modbus.org/'>ModBus protocol</a>. Modbus protocol is a well-known const-effective IoT protocol for communication between
+            the <a href='https://www.modbus.org/'>Modbus protocol</a>. Modbus protocol is a well-known cost-effective IoT protocol for communication between
             industrial control and automation devices. 
         </p>
         <p>
             The following defines a set of standard terms and rules with relevant examples that can be used inside
-            a <a href="https://www.w3.org/TR/wot-thing-description/">Thing Description document</a> to describe a Modbus operation
+            a <a href="https://www.w3.org/TR/wot-thing-description/">Thing Description document</a> to describe a WoT operation using the Modbus protocol
             over the network.
         </p>
     </section>
@@ -120,7 +120,7 @@
 
         <tr>
             <td><code>modbus:quantity</code></td>
-            <td>Specifies the amount of either registers or coils to be read/written</td>
+            <td>Specifies the amount of either registers or coils to be read or written to</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -315,8 +315,8 @@
         <section id="default-mappings">
             <h3>Default mappings</h3>
             <p>
-                The following table list the default mappings between the protocol specific concepts and the WoT concepts. Notice operations that are not
-                listed in the table are not supported by this binding template. For example, since the ModBus protocol is a request-response protocol, the
+                The following table lists the default mappings between the protocol specific concepts and the WoT concepts. Please note that operations that are not
+                listed in the table are not supported by this binding template. For example, since the ModBus protocol is a request-response based protocol, the
                 <code>subscribeevent</code> operation is not supported.
             <table class="def">
                 <thead>
@@ -365,7 +365,7 @@
         
                 </tbody>
             </table>
-            The next tables defines default values for other term, regardless of their use in combination with one of the operations listed in the table above.
+            The next table defines default values for other terms, regardless of their use in combination with one of the operations listed in the table above.
             <table class="def">
                 <thead>
                     <tr>
@@ -418,7 +418,7 @@
             <h3>Possible mappings</h3>
             <p>
                 Additional to the default mappings, users may decide to use other [[[#function]]]s for a specific operation. The following table
-                list examples of possible mappings for some operation types.
+                lists examples of possible mappings for some operation types.
             </p>
             <table class="def">
                 <thead>

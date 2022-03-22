@@ -159,7 +159,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasQuantity rdf:type owl:DatatypeProperty ;
              rdfs:domain :Request ;
              rdfs:range xsd:integer ;
-             rdfs:comment "Specifies the amount of either registers or coils to be read/written"@en ;
+             rdfs:comment "Specifies the amount of either registers or coils to be read or written to"@en ;
              rdfs:label "hasQuantity"@en .
 
 

@@ -16,22 +16,9 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
             shortName: "wot-coap-binding",
             github: "https://github.com/w3c/wot-binding-templates/tree/main/bindings/protocols/coap",
-            localBiblio: {
-                "I-D.ietf-core-new-block": {
-                    title: "Constrained Application Protocol (CoAP) Block-Wise Transfer Options Supporting Robust Transmission",
-                    href: "https://datatracker.ietf.org/doc/draft-ietf-core-new-block/14/",
-                    "status": "Internet Draft (work in progress)",
-                    "publisher": "IETF",
-                    "date": "14 February 2022",
-                    "authors": [
-                        "M. Boucadair",
-                        "J. Shallow"
-                    ],
-                },
-            },
         };
     </script>
-    <title>CoAP binding template</title>
+    <title>CoAP Binding Template</title>
 </head>
 
 <body>
@@ -114,6 +101,7 @@
                     <td>Hop Limit</td>
                     <td><code>"coap:hoplimit": ...</code></td>
                 </tr>
+                <!--
                 <tr>
                     <td>OSCORE</td>
                     <td><code>SecurityScheme</code></td>
@@ -122,6 +110,7 @@
                     <td>EDHOC</td>
                     <td><code>SecurityScheme</code></td>
                 </tr>
+                -->
             </tbody>
         </table>
     </section>
@@ -167,7 +156,7 @@
         </table>
         <p>
             See <a href="https://www.iana.org/assignments/uri-schemes/">Uniform Resource Identifier (URI) Schemes</a>
-            for a complete list of CoAP URI schemes.
+            for the complete list of CoAP URI schemes.
         </p>
     </section>
     <section id="vocabulary">
@@ -194,29 +183,54 @@
                         <td><code>coap:method</code></td>
                         <td>Indicates the CoAP method to be used in the request</td>
                         <td>optional</td>
-                        <td><a href="#Method">Method</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            <p>
+                                (see the
+                                <a href="https://www.iana.org/assignments/core-parameters/#method-codes">CoAP Method Codes</a>
+                                registry for the set of possible values)
+                            </p>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>coap:format</code></td>
-                        <td>Indicates that a payload and a CoAP Content-Format option [[RFC7252]] be included in the request</td>
+                        <td>Indicates that a payload in one of the specified formats with a matching CoAP Content-Format option [[RFC7252]] be included in the request</td>
                         <td>optional</td>
-                        <td><a href="#ContentFormat">ContentFormat</a> or array of <a href="#ContentFormat">ContentFormat</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            or array of
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            <p>
+                                (see the
+                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
+                                registry for the set of possible values)
+                            </p>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>coap:accept</code></td>
-                        <td>Indicates that a CoAP Accept option [[RFC7252]] be included in the request</td>
+                        <td>Indicates that a CoAP Accept option [[RFC7252]] with one of the specified formats be included in the request</td>
                         <td>optional</td>
-                        <td><a href="#ContentFormat">ContentFormat</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            or array of
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            <p>
+                                (see the
+                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
+                                registry for the set of possible values)
+                            </p>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>coap:blockwise</code></td>
-                        <td>Indicates that a block-wise transfer is supported [[RFC7959]]</td>
+                        <td>Indicates that a block-wise transfer [[RFC7959]] is supported</td>
                         <td>optional</td>
                         <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
                         <td><code>coap:quickblockwise</code></td>
-                        <td>Indicates that a quick block-wise transfer is supported [[I-D.ietf-core-new-block]]</td>
+                        <td>Indicates that a quick block-wise transfer [[RFC9177]] is supported</td>
                         <td>optional</td>
                         <td><a href="#BlockWiseTransferParameters">QuickBlockWiseTransferParameters</a></td>
                     </tr>
@@ -224,84 +238,12 @@
                         <td><code>coap:hopLimit</code></td>
                         <td>Indicates that a CoAP Hop-Limit option [[RFC8768]] be included in the request</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-        </section>
-        <section id="Method">
-            <h3>Method</h3>
-            <p>
-                ... including (but not limited to) the following methods:
-            </p>
-            <table class="def" title="Method">
-                <thead>
-                    <tr>
-                        <th>Value</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>coap:get</code></td>
-                        <td>The GET method [[RFC7252]]</td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:post</code></td>
-                        <td>The POST method [[RFC7252]]</td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:put</code></td>
-                        <td>The PUT method [[RFC7252]]</td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:delete</code></td>
-                        <td>The DELETE method [[RFC7252]]</td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:fetch</code></td>
-                        <td>The FETCH method [[RFC8132]]</td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:patch</code></td>
-                        <td>The PATCH method [[RFC8132]]</td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:ipatch</code></td>
-                        <td>The iPATCH method [[RFC8132]]</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                See
-                <a href="https://www.iana.org/assignments/core-parameters/#method-codes">Constrained RESTful Environments (CoRE) Parameters</a>
-                for a complete list of methods.
-            </p>
-        </section>
-        <section id="ContentFormat">
-            <h3>ContentFormat</h3>
-            <p>
-                ... including (but not limited to) the following content formats:
-            </p>
-            <table class="def" title="ContentFormat">
-                <thead>
-                    <tr>
-                        <th>Value</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>0</td>
-                        <td>Content type <code>text/plain; charset=utf-8</code> with no content coding</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                See
-                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">Constrained RESTful Environments (CoRE) Parameters</a>
-                for a complete list of content formats.
-            </p>
         </section>
         <section id="BlockWiseTransferParameters">
             <h3>BlockWiseTransferParameters</h3>
@@ -317,15 +259,21 @@
                 <tbody>
                     <tr>
                         <td><code>coap:block2SZX</code></td>
-                        <td></td>
+                        <td>Indicates the largest block size that may be used in a Block2 Option</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+                            <p>(one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>)</p>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>coap:block1SZX</code></td>
-                        <td></td>
+                        <td>Indicates the largest block size that may be used in a Block1 Option</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+                            <p>(one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>)</p>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -344,15 +292,21 @@
                 <tbody>
                     <tr>
                         <td><code>coap:qblock2SZX</code></td>
-                        <td></td>
+                        <td>Indicates the largest block size that may be used in a Q-Block2 Option</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+                            <p>(one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>)</p>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>coap:qblock1SZX</code></td>
-                        <td></td>
+                        <td>Indicates the largest block size that may be used in a Q-Block1 Option</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+                            <p>(one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>)</p>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -376,76 +330,76 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>td:readProperty</code></td>
-                        <td><code>"coap:method": "coap:get"</code></td>
+                        <td><code>readproperty</code></td>
+                        <td><code>"coap:method": "GET"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:writeProperty</code></td>
-                        <td><code>"coap:method": "coap:put"</code></td>
+                        <td><code>writeproperty</code></td>
+                        <td><code>"coap:method": "PUT"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:observeProperty</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>observeproperty</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:unobserveProperty</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>unobserveproperty</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:readMultipleProperties</code></td>
-                        <td><code>"coap:method": "coap:get"</code></td>
+                        <td><code>readmultipleproperties</code></td>
+                        <td><code>"coap:method": "GET"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:writeMultipleProperties</code></td>
-                        <td><code>"coap:method": "coap:put"</code></td>
+                        <td><code>writemultipleproperties</code></td>
+                        <td><code>"coap:method": "PUT"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:readAllProperties</code></td>
-                        <td><code>"coap:method": "coap:get"</code></td>
+                        <td><code>readallproperties</code></td>
+                        <td><code>"coap:method": "GET"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:writeAllProperties</code></td>
-                        <td><code>"coap:method": "coap:put"</code></td>
+                        <td><code>writeallproperties</code></td>
+                        <td><code>"coap:method": "PUT"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:observeAllProperties</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>observeallproperties</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:unobserveAllProperties</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>unobserveallproperties</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:invokeAction</code></td>
-                        <td><code>"coap:method": "coap:post"</code></td>
+                        <td><code>invokeaction</code></td>
+                        <td><code>"coap:method": "POST"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:queryAction</code></td>
-                        <td><code>"coap:method": "coap:get"</code></td>
+                        <td><code>queryaction</code></td>
+                        <td><code>"coap:method": "GET"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:cancelAction</code></td>
-                        <td><code>"coap:method": "coap:post"</code></td>
+                        <td><code>cancelaction</code></td>
+                        <td><code>"coap:method": "POST"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:queryAllActions</code></td>
-                        <td><code>"coap:method": "coap:get"</code></td>
+                        <td><code>queryallactions</code></td>
+                        <td><code>"coap:method": "GET"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:subscribeEvent</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>subscribeevent</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:unsubscribeEvent</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>unsubscribeevent</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:subscribeAllEvents</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>subscribeallevents</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                     <tr>
-                        <td><code>td:unsubscribeAllEvents</code></td>
-                        <td><code>"coap:method": "coap:get", "subprotocol": "coap:observe"</code></td>
+                        <td><code>unsubscribeallevents</code></td>
+                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
                     </tr>
                 </tbody>
             </table>

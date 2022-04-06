@@ -86,8 +86,9 @@
     <section id="controlpacket">
       <h4>Control Packet</h4>
       <p>
-        In MQTT protocol messages are called Control Packets. An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header,
-        payload. The fixed header consists of a packet type and flags. The main packet types that can be uses in a Form are listed below. 
+        In MQTT protocol messages are called Control Packets. An MQTT Control Packet consists of up to three parts: fixed header (present in all Control Packets), variable header,
+        payload. The fixed header consists of a packet type and flags. The main packet types that can be uses in a Form are listed below. Although, it is possible to use different
+        values of [[[#controlpacket]]] in forms, it is strongly recommended to use the mapping defined in [[[#default-mappings]]].
       </p>
       <table class="def">
         <thead>
@@ -171,8 +172,195 @@
   </section>
     <section>
       <h2>Examples</h2>
-      <p>The following examples show how to use the MQTT protocol in a Thing Description.</p>
-      <p class="ednote">TODO:</p>
+      <p>
+        The following examples show how to use the MQTT protocol in a Thing Description. The [[[#example-simple-event]]] 
+        shows a simple form that indicates to compliant clients to subscribe or unsubscribe to the topic <code>thing1/events/overheating</code>. 
+      </p>
+      <pre id="example-simple-event" class="example" title="Read a single coil">
+        {
+            "href": "mqtt://broker.com:1883",
+            "op": [
+                "subscribeevent",
+                "unsubscribeevent"
+            ],
+            "mqv:filter": "thing1/events/overheating" 
+        }
+      </pre>
+      <p>
+        [[[#example-simple-publish]]] shows how to use the <code>mqv:publish</code> packet when invoking a 
+        command. Remember that the <code>invokeaction</code> operation is mapped to <code>mqv:publish</code>
+        control packet in [[[#default-mappings]]]. 
+      </p>
+      <pre id="example-simple-publish" class="example" title="Read a single coil">
+        {
+            "href": "mqtt://broker.com:1883",
+            "op": [
+                "invokeaction",
+            ], 
+            "mqv:topic": "application/devices/thing1/program/commands/reset",
+        }
+      </pre>
+      <p>
+        Continuing with increasingly more complex examples, [[[#example-property]]] shows how to use the MQTT protocol when handling properties.
+        <code>mqv:retain</code> is used to indicate the ability to read the property rather than just observe it. 
+      </p>
+      <pre id="example-property" class="example" title="Read a single coil">
+        {
+            "href": "mqtt://broker.com:1883",
+            "op": [
+                "readproperty",
+                "writeproperty",
+                "observeproperty"
+            ], 
+            "mqv:retain" : true,
+            "mqv:topic": "application/devices/thing1/properties/test",
+            "mqv:filter": "application/devices/thing1/properties/test",
+        }
+      </pre>
+      <p>
+        If the implementer want to give the ability to WoT clients to conveniently observe all properties in a single call, it is possible
+        to use observerallproperties form in the root of a Thing Description. 
+      </p>
+      <pre id="example-property" class="example" title="Read a single coil">
+              {
+                  "href": "mqtt://broker.com:1883",
+                  "op": [
+                      "observerallproperties"
+                  ], 
+                  "mqv:filter": "application/devices/thing1/properties/#",
+              }
+      </pre>
+      <p>
+        Finally, [[[#example-full]]] reports a full Thing Description for a commercial device. The broker address is only for
+        demonstration purposes. 
+      </p>
+      <pre id="example-full" class="example" title="Read a single coil">
+    {
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "Gas sensor",
+    "id": "urn:dev:test",
+    "description": "Gas sensor is a sensor that can measure combustible gas concentration and issue an alarm in the event of
+        a gas leak.",
+        "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "status": {
+            "title": "Sensor status",
+            "observable": true,
+            "enum": [
+                "unknown",
+                "warmup",
+                "normal",
+                "fault"
+            ],
+            "type": "string",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com/",
+                    "mqtt:filter": "application/<deviceid>/sensor/operation",
+                    "op": "observeproperty"
+                }
+            ]
+        },
+        "concentration": {
+            "title": "Gas concentration",
+            "observable": true,
+            "readOnly": false,
+            "minimum": -1,
+            "maximum": 65535,
+            "type": "integer",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com",
+                    "mqtt:filter": "application/<deviceid>/sensor/concentration",
+                    "op": "observeproperty"
+                }
+            ]
+        },
+        "gasAlarm": {
+            "title": "Gas Alarm",
+            "observable": true,
+            "enum": [
+                "unknown",
+                "none",
+                "mild",
+                "heavy",
+                "test"
+            ],
+            "type": "string",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com",
+                    "mqtt:filter": "application/<deviceid>/sensor/gas",
+                    "op": "observeproperty"
+                }
+            ]
+        },
+        "valve": {
+            "title": "Valve",
+            "observable": true,
+            "enum": [
+                "unknown",
+                "closed",
+                "opened",
+                "not_connected",
+                "failure",
+                "closing",
+                "opening",
+                "checking"
+            ],
+            "type": "string",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com/",
+                    "mqtt:filter": "application/<deviceid>/valve/0/state",
+                    "op": "observeproperty"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "mute": {
+            "title": "Mute",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com/",
+                    "mqtt:topic": "application/<deviceid>/sensor/mute",
+                }
+            ]
+        },
+        "unmute": {
+            "title": "Unmute",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com/",
+                    "mqtt:topic": "application/<deviceid>/sensor/unmute",
+                }
+            ]
+        },
+        "changeValveStatus": {
+            "title": "Change Valve Status",
+            "input": {
+                "type": "string",
+                "enum": [
+                    "open",
+                    "close"
+                ]
+            },
+            "forms": [
+                {
+                    "href": "mqtt://broker.com/",
+                    "mqtt:topic": "application/<deviceid>/valve/0/command",
+                }
+            ]
+        }
+    },
+}
+    </pre>
     </section>
 </body>
 

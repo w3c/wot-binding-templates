@@ -95,7 +95,7 @@
                 </tr>
                 <tr>
                     <td>Quick Block-Wise Transfer</td>
-                    <td><code>"coap:quickblockwise": { ... }</code></td>
+                    <td><code>"coap:qblockwise": { ... }</code></td>
                 </tr>
                 <tr>
                     <td>Hop Limit</td>
@@ -117,10 +117,10 @@
     <section id="url">
         <h2>URI Schemes</h2>
         <p>
-            CoAP uses the following URI schemes for identifying CoAP resources
+            CoAP uses the following Uniform Resource Identifier (URI) schemes for identifying CoAP resources
             and providing a means of locating the resource:
         </p>
-        <table class="def">
+        <table class="data">
             <thead>
                 <tr>
                     <th>URI Scheme</th>
@@ -155,8 +155,8 @@
             </tbody>
         </table>
         <p>
-            See <a href="https://www.iana.org/assignments/uri-schemes/">Uniform Resource Identifier (URI) Schemes</a>
-            for the complete list of CoAP URI schemes.
+            See the <a href="https://www.iana.org/assignments/uri-schemes/">Uniform Resource Identifier (URI) Schemes</a>
+            registry for the complete list of CoAP URI schemes.
         </p>
     </section>
     <section id="vocabulary">
@@ -229,10 +229,10 @@
                         <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
-                        <td><code>coap:quickblockwise</code></td>
+                        <td><code>coap:qblockwise</code></td>
                         <td>Indicates that a quick block-wise transfer [[RFC9177]] is supported</td>
                         <td>optional</td>
-                        <td><a href="#BlockWiseTransferParameters">QuickBlockWiseTransferParameters</a></td>
+                        <td><a href="#BlockWiseTransferParameters">QBlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
                         <td><code>coap:hopLimit</code></td>
@@ -278,8 +278,8 @@
                 </tbody>
             </table>
         </section>
-        <section id="QuickBlockWiseTransferParameters">
-            <h3>QuickBlockWiseTransferParameters</h3>
+        <section id="QBlockWiseTransferParameters">
+            <h3>QBlockWiseTransferParameters</h3>
             <table class="def">
                 <thead>
                     <tr>

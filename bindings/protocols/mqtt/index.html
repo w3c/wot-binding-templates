@@ -422,7 +422,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:filter": "application/<deviceid>/sensor/operation",
+                    "mqtt:filter": "application/{{deviceid}}/sensor/operation",
                     "op": "observeproperty"
                 }
             ]
@@ -437,7 +437,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com",
-                    "mqtt:filter": "application/<deviceid>/sensor/concentration",
+                    "mqtt:filter": "application/{{deviceid}}/sensor/concentration",
                     "op": "observeproperty"
                 }
             ]
@@ -456,7 +456,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com",
-                    "mqtt:filter": "application/<deviceid>/sensor/gas",
+                    "mqtt:filter": "application/{{deviceid}}/sensor/gas",
                     "op": "observeproperty"
                 }
             ]
@@ -478,7 +478,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:filter": "application/<deviceid>/valve/0/state",
+                    "mqtt:filter": "application/{{deviceid}}/valve/0/state",
                     "op": "observeproperty"
                 }
             ]
@@ -490,7 +490,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:topic": "application/<deviceid>/sensor/mute",
+                    "mqtt:topic": "application/{{deviceid}}/sensor/mute",
                 }
             ]
         },
@@ -499,7 +499,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:topic": "application/<deviceid>/sensor/unmute",
+                    "mqtt:topic": "application/{{deviceid}}/sensor/unmute",
                 }
             ]
         },
@@ -515,7 +515,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:topic": "application/<deviceid>/valve/0/command",
+                    "mqtt:topic": "application/{{deviceid}}/valve/0/command",
                 }
             ]
         }

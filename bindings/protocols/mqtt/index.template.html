@@ -118,6 +118,13 @@
         <!-- Generate qos description from the ontology-->
         %s
       </p>
+      <p>
+        The Quality of Service (QoS) is a mechanism to ensure that messages are delivered to the subscriber in the order in which they were published.
+        In the Web of Things the QoS reported in the TD when paired with <code>writeproperty</code> or <code>invokeaction</code> operation is used to determine the
+        minimum QoS that the consumer should use to publish the message. On the other hand, when paired with <code>subscribeevent</code>, <code>observeproperty</code>,
+        or <code>readproperty</code>, it indicates to the subscriber that the notifications will be sent with that minium QoS.
+        The QoS values are defined in the MQTT specification. The QoS values are:
+      </p>
       <table class="def">
         <thead>
           <tr>
@@ -239,6 +246,25 @@
                   "mqv:filter": "application/devices/thing1/properties/#",
               }
       </pre>
+      <p>
+        When the remote Web Thing wants to force a minimum level of [[[#qualityofservice]]] for a property, it can use the
+        <code>mqv:qos</code> property in the Form element as shown in [[[#example-qos]]]. This will guarantee that consumers
+        and exposers will get the message at the specified quality of service.
+      </p>
+      <pre id="example-qos" class="example" title="Read a single coil">
+              {
+                  "href": "mqtt://broker.com:1883",
+                  "op": [
+                      "readproperty",
+                      "writeproperty",
+                      "observeproperty"
+                  ], 
+                  "mqv:qos": "qos:1", 
+                  "mqv:retain" : true,
+                  "mqv:topic": "application/devices/thing1/properties/test",
+                  "mqv:filter": "application/devices/thing1/properties/test",
+              }
+     </pre>
       <p>
         Finally, [[[#example-full]]] reports a full Thing Description for a commercial device. The broker address is only for
         demonstration purposes. 

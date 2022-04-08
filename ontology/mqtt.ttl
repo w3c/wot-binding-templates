@@ -167,7 +167,7 @@ _:genid4 rdf:type schema:Organization ;
                                          owl:oneOf ( <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0>
                                                      <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#1>
                                                      <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#2> ) ] ; 
-                   rdfs:comment "QualityOfService level paired to a specific Topic Filter used in a SUBSCRIBE or SUBACK packet payload."@en ;
+                   rdfs:comment "MQTT delivers Application Messages according to the Quality of Service (QoS) levels defined in this ontology."@en ;
                    rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
                    rdfs:label "QualityOfService"@en ;
                    schema:alternateName "QoS"@en .

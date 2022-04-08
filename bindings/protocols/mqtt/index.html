@@ -38,9 +38,18 @@
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>
-        <p class="ednote">the following is a draft introduction</p>
         <p>
-            This document describes how to map the MQTT protocol to the W3C Web of Things.
+            The Message Queue Telemetry Transport (MQTT) protocol was born in 1999 to handle
+            efficient machine to machine communication in the Internet of Things. The protocol
+            is based on the publish subscribe model, where applications publish messages to 
+            specific topics and subscribers receive notifications for filters that match one
+            or more topics. The protocol is well-known for its simplicity and scalability and
+            is used in many IoT platforms and applications.
+            
+            In the context of the Web of Things, may vendors expose MQTT based APIs mixed with 
+            Web protocols like HTTP. This document describes how to describe MQTT APIs with 
+            Thing Descriptions (TDs) and provide development guidance for implementers whom 
+            wants to such TDs in their applications. 
         </p>
     </section>
     <section id='sotd'>

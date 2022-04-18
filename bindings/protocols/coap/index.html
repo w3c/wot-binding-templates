@@ -53,7 +53,27 @@
     </section>
     <section id="overview">
         <h2>Protocol Overview</h2>
-        <p class="ednote">TODO: Provide an overview of the protocol and the protocol binding.</p>
+        <p>
+            In contrast to HTTP, where header fields all follow the same key-value based structure,
+            CoAP defines specific formats for its options, which all have to be registered with IANA,
+            being the primary way for adding new features to the protocol.
+        </p>
+        <p>
+            Due to the highly standardized nature of CoAP options, mapping them to a vocabulary
+            of <em>features</em> makes more sense than offering a generic format for defining them
+            within a TD form, also considering that there options with binary, numeric or
+            string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
+        </p>
+        <p>
+            The table below gives an overview of how the features offered by the existing CoAP RFCs
+            are translated into vocabulary terms which can be used in a [[[WOT-THING-DESCRIPTION]]].
+            Observing resources as defined in [[RFC7641]], for example, can be enabled by including a
+            <code>subprotocol</code> value of <code>coap:observe</code> in a form.
+            Parameters for blockwise transfer (as defined in [[RFC7959]]) can be set in a
+            <code>coap:blockwise</code> member.
+            The vocabulary terms are defined in full detail in section [[[#vocabulary]]].
+        </p>
+        <!-- Maybe RFC numbers could be included in the table? -->
         <table class="def">
             <thead>
                 <tr>

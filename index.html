@@ -103,7 +103,14 @@
                     publisher: "Modbus Organization",
                     status: "",
                     date: "26 April 2012"
-                }
+                },
+                "JSON" : {
+                    href: "https://datatracker.ietf.org/doc/html/rfc8259",
+                    title: "JSON",
+                    publisher: "IETF",
+                    status: "",
+                    date: "December 2017"
+                },
             }
         };
     </script>
@@ -315,30 +322,29 @@
         
         <section id="payloads-intro">
             <h3>Payload Representation</h3>
-        
-            Various payloads sent in the messages of protocols can be described in TDs using two mechanisms:
-            <ul>
-                <li>
-                    <b>Media Types:</b> Media Types [[IANA-MEDIA-TYPES]] describe the encoding used for sending and
-                    receiving the data with a protocol.
-                    They are represented with the <code>contentType</code> in the Forms of a TD, which is mandatory for
-                    each Interaction Affordance.
-                    In some cases such as images, videos or any unstructured data, they are enough to describe the
-                    payload.
-                    Correct indication of Media Types enables proper processing of the serialized documents.
-                    This way, the documents can be exchanged in any format and allow the upper layers of an application
-                    to adapt to different formats.
-                </li>
-                <li>
-                    <b>Data Schema:</b> The TD specification defines the Data Schema concept to describe the structure
-                    of the data payloads.
-                    Even though it is largely inspired by JSON Schema [[json-schema]], it can be used for describing
-                    other payload types such as [[XML]], string-encoded images, bit representations of integers, etc.
-                    Data Schema SHOULD be used in addition to the media types.
-                </li>
-            </ul>
-        
-            The table below summarizes the currently specified payload formats.
+            <p>
+                IoT protocols use various payload formats to transport application data between different nodes. Sometimes, 
+                payload formats are re used between different platforms or even different protocols. One example is the extraordinary
+                popularity of [JSON] or [XML]. The scope of this section is to collect a set of common payload formats that can be
+                used in an interaction between two different Web Things. In a Thing Description payloads format are identified using
+                a <b>Media Types</b> [[IANA-MEDIA-TYPES]] specified in the <code>contentType</code> attribute of a Form 
+                which is mandatory for each Interaction Affordance. 
+            </p>
+            <p>
+                However, <b>Media Types</b> does not always define the exact structure of the exchanged information.  
+                For example, a [JSON] document may contain an Array or an Object. Application wise the lacking of a proper
+                defined structure may cause interoperability and validation challenges. Therefore, in such cases a 
+                <b>Media Types</b> can be further described using a Data Schema. In a nutshell, a Data Schema will describe 
+                a payload using the Thing Description data model and can be used to validate the payload. 
+            </p>
+            <p>
+                Not every <b>Media Types</b> can be mapped onto the Thing Description data model because of its 
+                specific nature. For example, simple images does not usually contain structured information but just raw
+                image binary data. Therefore, the following table describes the supported <b>Media Types</b> and their
+                respective specifications for mapping to the Thing Description data model. If a <b>Media Type</b> is not
+                listed here, it MAY be still supported by the Web of Things but applications SHOULD treat it as an unstructured
+                payload. Unstructured payloads cannot have an associated Data Schema.
+            </p>
         
             <table class="def">
                 <thead>
@@ -354,6 +360,18 @@
                         <td>JSON</td>
                         <td>JavaScript Object Notation</td>
                         <td><code>application/json</code></td>
+                        <td>Default mapping</td>
+                    </tr>
+                    <tr>
+                        <td>JSON-LD</td>
+                        <td>JSON for Linking Data</td>
+                        <td><code>application/ld+json</code></td>
+                        <td>TODO</td>
+                    </tr>
+                    <tr>
+                        <td>CBOR</td>
+                        <td>Concise Binary Object Representation</td>
+                        <td><code>text/plain</code></td>
                         <td>TODO</td>
                     </tr>
                     <tr>
@@ -363,15 +381,21 @@
                         <td><a href="./bindings/payloads/xml/index.html">Link</a></td>
                     </tr>
                     <tr>
+                        <td>EXI</td>
+                        <td>Efficient XML Interchange</td>
+                        <td><code>application/exi</code></td>
+                        <td>TODO</td>
+                    </tr>
+                    <tr>
                         <td>text</td>
                         <td>text</td>
                         <td><code>text/plain</code></td>
                         <td><a href="./bindings/payloads/text/index.html">Link</a></td>
                     </tr>
                     <tr>
-                        <td>Unstructured Data</td>
-                        <td>Unstructured Data</td>
-                        <td>various</td>
+                        <td>bytes</td>
+                        <td>octet-stream</td>
+                        <td><code>application/octet-stream</code></td>
                         <td>TODO</td>
                     </tr>
                 </tbody>

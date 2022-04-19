@@ -103,7 +103,7 @@
         <tr>
             <td><code>modbus:address</code></td>
             <td>Specifies the starting address of the modbus operations</td>
-            <td>optional</td>
+            <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
         <tr>
@@ -112,7 +112,7 @@
         <tr>
             <td><code>modbus:unitID</code></td>
             <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
-            <td>optional</td>
+            <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
         <tr>
@@ -376,14 +376,6 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>modbus:address</code></td>
-                        <td><code>undefined</code></td>
-                        <td>
-                            Depends on the [[[#function]]] used. For example, for the <code>readcoil</code> operation, the default value is <code>1</code>, whereas
-                            for the <code>readDiscreteInput</code> operation, the default value is <code>10001</code>.
-                        </td>
-                    </tr>
-                    <tr>
                         <td><code>modbus:quantity</code></td>
                         <td>
                             <code>1</code>
@@ -403,13 +395,6 @@
                             <code>infinite</code>
                         </td>
                         <td></td>
-                    </tr>
-                    <tr>
-                        <td><code>modbus:unitID</code></td>
-                        <td>
-                            <code>0</code> 
-                        </td>
-                        <td>Note this is the broadcast address for a Modbus sub-network.</td>
                     </tr>
                 </tbody>
             </table>

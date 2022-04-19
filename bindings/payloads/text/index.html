@@ -54,6 +54,26 @@
             with <code>text/plain</code> as MIME type.
     </section>
     <section>
+        <h2>Mapping <code>text/plain</code> to DataSchema values</h2>
+        <p>
+            This section describes how a <code>text/plain</code> payloads can be de/serialized in one of the supported
+            DataSchema types.
+        <ul>
+            <li>
+                <code>string</code>: The payload is interpreted as a string of characters. 
+            </li>
+            <li>
+                <code>number</code>: The payload contains a number serialized as characters. Implementations should
+                convert the characters to a <code>number</code> and viceversa when reading/writing the payload.
+            </li>
+            <li>
+                <code>integer</code>: The payload contains an integer serialized as characters. Implementations should
+                convert the characters to an <code>integer</code> and viceversa when reading/writing the payload.
+            </li>
+        </ul>
+        </p>
+    </section>
+    <section>
         <h2>Supported Data Schema terms</h2>
         <p>
             This section describes which terms can be used when describing data with <code>text/plain</code> content type. 
@@ -69,27 +89,6 @@
             <p class="ednote">
                 Implementations may use custom serialization/deserialization functions to support these terms.
             </p>
-        </p>
-    </section>
-    <section>
-        <h2>Mapping <code>text/plain</code> to DataSchema values</h2>
-        <p>
-            This section describes how a <code>text/plain</code> document can be de/serialized in one of the supported DataSchema types. 
-
-            <p class="ednote">
-                Proposal. We can define a simple mapping here: 
-            </p>
-            <ul>
-                <li>
-                    <code>string</code>: Simply storing the text in a string value.
-                </li>
-                <li>
-                    <code>number</code>: Read ascii characters and convert to number.
-                </li>
-                <li>
-                    <code>integer</code>: Read ascii characters and convert to integer.
-                </li>
-            </ul>
         </p>
     </section>
 

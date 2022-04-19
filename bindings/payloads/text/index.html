@@ -33,13 +33,20 @@
 
 <body>
     <section id="abstract">
-        <p class="ednote">TODO</p>
+        <p>
+            The Thing Description specification defines a data model for describing payloads. This 
+            document describes how to map <a href="https://www.rfc-editor.org/rfc/rfc2046.html#section-4.1.3">Text Plain</a>
+            payloads to the WoT Data model. 
+        </p>
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>
-        <p class="ednote">The following is a draft introduction</p>
         <p>
-            This document describes how type definitions described using the Data Schema can be mapped to text documents.
+        The Internet of things is well-known for its wide range of protocols and payload formats. The Web of Things Binding
+        Templates specification addresses the interoperability challenges between the different IoT technologies using a
+        declarative approach. In particular, for various payload formats, it defines a set of mappings between content types and
+        the data model defined in the Thing Description specification. This document focuses on the <a href="https://www.rfc-editor.org/rfc/rfc2046.html#section-4.1.3">Text Plain</a>
+        content type and provides examples of payloads that can be used in a WoT application.
         </p>
     </section>
     <section id='sotd'>
@@ -50,7 +57,7 @@
     <section>
         <h2>Media type</h2>
         <p>
-            The text binding template refers to <a href="https://www.iana.org/assignments/media-types/media-types.xhtml#text">Text Media Type</a> 
+            The text binding template refers to <a href="https://www.rfc-editor.org/rfc/rfc2046.html#section-4.1.3">Text Plain</a> 
             with <code>text/plain</code> as MIME type.
     </section>
     <section>

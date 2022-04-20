@@ -20,32 +20,41 @@
             github: "https://github.com/w3c/wot-binding-templates/tree/main/bindings/protocols/modbus",
         };
     </script>
-    <title>MODBUS binding template</title>
+    <title>Modbus binding template</title>
 </head>
 
 <body>
     <section id='abstract'>
-        <p class="ednote">TODO: Provide a short overview of the document and the protocol binding features.</p>
+        <p>
+            In the context of the <a href="https://www.w3.org/TR/wot-architecture/">Web of Things (WoT)</a>, a Binding Template is a blueprint that gives 
+            guidance on how to implement a specific IoT protocol, data format or IoT platform. This document gives implementation guidelines regarding
+            the <a href='https://www.modbus.org/'>Modbus protocol</a>. Modbus protocol is a well-known cost-effective IoT protocol for communication between
+            industrial control and automation devices. 
+        </p>
+        <p>
+            The following defines a set of standard terms and rules with relevant examples that can be used inside
+            a <a href="https://www.w3.org/TR/wot-thing-description/">Thing Description document</a> to describe a WoT operation using the Modbus protocol
+            over the network.
+        </p>
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>
-        <p class="ednote">the following is a draft introduction</p>
         <p>
-            The ModBus is a data communication protocol originally developed by Modicon which is now a part of Schneider Electric.
+            The Modbus is a data communication protocol originally developed by Modicon which is now a part of Schneider Electric.
             The protocol was specifically designed for the remote management of the hardware devices in the industrial environment.
             For this reason, it has low level of abstraction and it has built in bit handling capabilities oriented to the direct
             control of the relays and generic contact statuses.
             The physical layer it is mainly an RS485 differential bus which has less susceptibility to the EMC interference. This Limit
             the usability of the protocol in short distance networks, typically within a kilometer. 
             Due to its age the protocol does not implement any safety system, so usually when wide internet access is needed it is
-            encapsulated in a TCP/IP protocol and with Ethernet as a physical layer. Thanks to this encapsulation strategy, the ModBus protocol
+            encapsulated in a TCP/IP protocol and with Ethernet as a physical layer. Thanks to this encapsulation strategy, the Modbus protocol
             can reach remote nodes deployed in distant facilities over the internet. Moreover, in the years due to its simplicity and cost-effectiveness 
-            the ModBus protocol becomes a standard all over the world. This fame together with the advancement of the microcontroller/microprocessor led to 
+            the Modbus protocol becomes a standard all over the world. This fame together with the advancement of the microcontroller/microprocessor led to 
             a shift on how applications pack the information. Today it is usual to store and read any type of data in the Holdings Registers like bit,bytes,words, float etc.
         </p>
         <p>
-            This document describes how the Web of Things specification can be use to present devices that use the ModBus protocol in a <a href="https://w3c.github.io/wot-architecture/#sec-thing-description">Thing Description</a>. In 
-            particular, the document explain how to create valid URLs and Forms for the different operations that the ModBus protocol can perform. Developers are 
+            This document describes how the Web of Things specification can be use to present devices that use the Modbus protocol in a <a href="https://w3c.github.io/wot-architecture/#sec-thing-description">Thing Description</a>. In 
+            particular, the document explain how to create valid URLs and Forms for the different operations that the Modbus protocol can perform. Developers are 
             encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations. The following sections
             will cover the URL format, the Vocabulary and a list of Form examples. 
         </p>
@@ -57,9 +66,9 @@
     </section>
     <section id="url">
         <h2>URL format</h2>
-        Historically different URL scheme has been used inside the ModBus community: <code>modbus+tpc://</code>, <code>modbus+ascii://</code> and <code>modbus+rtu://</code>.
+        Historically different URL scheme has been used inside the Modbus community: <code>modbus+tpc://</code>, <code>modbus+ascii://</code> and <code>modbus+rtu://</code>.
         Considering that in Web of Things context all protocol bindings are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
-        was selected as the only valid URL scheme. The following shows the typical structure of an URL of the ModBus protocol:
+        was selected as the only valid URL scheme. The following shows the typical structure of an URL of the Modbus protocol:
         <pre>
             modbus+tcp://{address}:{port}/{?unitID}
         </pre>
@@ -67,15 +76,15 @@
         <p>
             Where:
             <ul>
-                <li><code>{address}</code> is the IP address of the ModBus device</li>
-                <li><code>{port}</code> is the port of the ModBus device</li>
-                <li><code>{unitID}</code> is the unit ID of the ModBus device. See <a href="#vocabulary">vocabulary</a></li>
+                <li><code>{address}</code> is the IP address of the Modbus device</li>
+                <li><code>{port}</code> is the port of the Modbus device</li>
+                <li><code>{unitID}</code> is the unit ID of the Modbus device. See <a href="#vocabulary">vocabulary</a></li>
             </ul>
         </p>
     </section>
     <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
-        This section describes the vocabulary used in the ModBus protocol. A protocol binding implementation should use the vocabulary defined in this section to
+        This section describes the vocabulary used in the Modbus protocol. A protocol binding implementation should use the vocabulary defined in this section to
         describe the different configuration that can be used to exchanged data between Web of Things.
         <section>
             <h3>Form terms</h3>
@@ -92,18 +101,9 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
-            <td><code>modbus:quantity</code></td>
-            <td>Specifies the amount of either registers or coils to be read/written</td>
-            <td>required</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
-        <tr>
             <td><code>modbus:address</code></td>
-            <td>Specifies the starting address of the modbus operations</td>
-            <td>optional</td>
+            <td>Specifies the starting address of the Modbus operations</td>
+            <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
         <tr>
@@ -112,6 +112,15 @@
         <tr>
             <td><code>modbus:unitID</code></td>
             <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
+            <td>required</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modbus:quantity</code></td>
+            <td>Specifies the amount of either registers or coils to be read or written to</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -167,8 +176,6 @@
         </section>
         <section id="entity">
             <h3>Entity</h3>
-            <p class="ednote"> the following is just a draft description of the Entity class
-            </p>
             A more user-friendly property to specify [[[#function]]]. The client will then determine the right function code to be applied in
             the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modbus:function</code> cannot (See the
             [[[#example-read-coil-entity]]])
@@ -212,8 +219,6 @@
         </section>
         <section id="function">
             <h3>Function</h3>
-            <p class="ednote"> the following is just a draft description of the Function Code class
-            </p>
             Function Code class represent the value of the function field in a Modbus frame. The 
             following table list the supported codes and their description:
             <table class="def" title="Function values">
@@ -309,6 +314,10 @@
         model</a>. </p>
         <section id="default-mappings">
             <h3>Default mappings</h3>
+            <p>
+                The following table lists the default mappings between the protocol specific concepts and the WoT concepts. Please note that operations that are not
+                listed in the table are not supported by this binding template. For example, since the Modbus protocol is a request-response based protocol, the
+                <code>subscribeevent</code> operation is not supported.
             <table class="def">
                 <thead>
                     <tr>
@@ -356,17 +365,94 @@
         
                 </tbody>
             </table>
+            The next table defines default values for other terms, regardless of their use in combination with one of the operations listed in the table above.
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>modbus:quantity</code></td>
+                        <td>
+                            <code>1</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modbus:zeroBaseAddressing</code></td>
+                        <td>
+                            <code>false</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modbus:timeout</code></td>
+                        <td>
+                            <code>infinite</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
         <section id="possible-mappings">
             <h3>Possible mappings</h3>
-            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is meant to be informative but it provides guidelines for implementers.</p>
+            <p>
+                Additional to the default mappings, users may decide to use other [[[#function]]]s for a specific operation. The following table
+                lists examples of possible mappings for some operation types.
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Possible Binding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>writeproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"writeMultipleCoils"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>writeproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"writeSingleHoldingRegister"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>readproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"readDeviceIdentification"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>readproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"readDiscreteInput"</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>observeproperty</code></td>
+                        <td>
+                            <code>"modbus:function":"readCoil"</code>;
+                            <code>"modbus:pollingTime": 1000</code>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </section>
     <section>
         <h2>Examples</h2>
         This section will present a set of examples about how the terms defined in this document can be used
         to describe and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimal set of terms 
-        to configure a single coil reading using modbus. Notice that the unitID is contained in the href as the 
+        to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the 
         first element of the path. 
         <pre id="example-read-coil" class="example" title="Read a single coil">
             {
@@ -412,7 +498,7 @@
         </pre>
         Reducing effectively the verbosity of a TD. 
 
-        Thanks to the expressiveness of the modbus ontology users can describe also the total 
+        Thanks to the expressiveness of the Modbus ontology users can describe also the total 
         number of registries read or wrote in a WoT operation. [[[#example-read-holding]]] shows how to read or write 
         8 HoldingRegisters. 
         <pre id="example-read-holding" class="example" title="Read 8 holding registers">
@@ -427,8 +513,8 @@
                                 "modbus:quantity": 8
                             }
                 </pre>
-        When possible WoT consumers will use modbus features to read the desired amount of data with a single
-        protocol request. However, it may be possible to still specify a total length for modbus operations
+        When possible WoT consumers will use Modbus features to read the desired amount of data with a single
+        protocol request. However, it may be possible to still specify a total length for Modbus operations
         that do not support reading or writing on a range of registers (see [[[#example-read-coil-range]]]). 
         In these circumstances consumers will perform different requests to satisfy the configuration requirements. 
         <pre id="example-read-coil-range" class="example" title="Read and write 8 single coils with one form">
@@ -443,7 +529,7 @@
                                 "modbus:quantity": 8
                             }
                 </pre>
-        Another notable configuration of a form using the modbus vocabulary is the polling mechanism. Thanks
+        Another notable configuration of a form using the Modbus vocabulary is the polling mechanism. Thanks
         to the keyword <code>pollingTime</code> the user can indicate the intervals for observing a particular
         set of registers. Supposing that the device knows that the value of coil register 1 does change every 
         1000 ms, in [[[#example-polling]]], it suggest that the polling time should not be faster than 10 ms. WoT 
@@ -460,7 +546,7 @@
                 "modbus:address": 1
             }
         </pre>
-        Finally, [[[#full-td]]] shows a complete device described using modbus ontology.
+        Finally, [[[#full-td]]] shows a complete device described using Modbus ontology.
         <pre id="full-td" class="example" title="A complete TD example">
                 {
                   "@context": [
@@ -491,7 +577,7 @@
                                   "href": "modbus+tcp://192.168.178.32:502",
                                   "modbus:function": "readDiscreteInput",
                                   "modbus:quantity": 1,
-                                  "modbus:address": "10003",
+                                  "modbus:address": 10003,
                                   "modbus:unitID": 1,
                                   "contentType": "application/octet-stream"
                               }
@@ -507,7 +593,7 @@
                                   "href": "modbus+tcp://192.168.178.32:502",
                                   "modbus:function": "readDiscreteInput",
                                   "modbus:quantity": 1,
-                                  "modbus:address": "10002",
+                                  "modbus:address": 10002,
                                   "modbus:unitID": 1,
                                   "contentType": "application/octet-stream"
                               }
@@ -527,7 +613,7 @@
                                   "href": "modbus+tcp://192.168.178.32:502",
                                   "modbus:entity": "Coil",
                                   "modbus:quantity": 1,
-                                  "modbus:address": "00006",
+                                  "modbus:address": 6,
                                   "modbus:unitID": 1,
                                   "modbus:pollingTime": 100,
                                   "contentType": "application/octet-stream"
@@ -548,7 +634,7 @@
                                   "href": "modbus+tcp://192.168.178.32:502",
                                   "modbus:entity": "Coil",
                                   "modbus:quantity": 1,
-                                  "modbus:address": "00003",
+                                  "modbus:address": 3,
                                   "modbus:unitID": 1,
                                   "modbus:pollingRate": 100,
                                   "contentType": "application/octet-stream"

@@ -132,7 +132,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasAddress rdf:type owl:DatatypeProperty ;
             rdfs:domain :Request ;
             rdfs:range xsd:integer ;
-            rdfs:comment "Specifies the starting address of the modbus operations"@en ;
+            rdfs:comment "Specifies the starting address of the Modbus operations"@en ;
             rdfs:label "hasAddress"@en ;
             binding:assignment binding:required .
 

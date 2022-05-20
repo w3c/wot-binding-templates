@@ -54,21 +54,38 @@
     <section id="overview">
         <h2>Protocol Overview</h2>
         <p>
-            In contrast to HTTP, where header fields all follow the same key-value based structure,
-            CoAP defines specific formats for its options, which all have to be registered with IANA,
-            being the primary way for adding new features to the protocol.
+            The interaction model of CoAP is similar to the client/server model
+            of HTTP. A CoAP request is equivalent to that of HTTP and is sent by
+            a client to request an action (using a Method Code) on a resource
+            (identified by a URI) on a server.  The server then sends a response
+            with a Response Code; this response may include a resource representation.
         </p>
         <p>
-            Due to the highly standardized nature of CoAP options, mapping them to a vocabulary
-            of <em>features</em> makes more sense than offering a generic format for defining them
-            within a TD form, also considering that there are options with binary, numeric or
-            string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
+            Both requests and responses may include a list of one or more
+            options. For example, the URI in a request is transported in several
+            options, and metadata that would be carried in an HTTP header in HTTP
+            is supplied as options as well. In general, options are set as part of
+            using CoAP features, such as the <code>Observe</code> option being
+            set when [[RFC7641|Observing Resources]].
         </p>
         <p>
             The section below gives an overview of the features offered by CoAP at the time of writing
             and provides examples of a how they can be used in a [[[WOT-THING-DESCRIPTION]]].
             The vocabulary terms used in these examples are defined in section [[[#vocabulary]]] below.
         </p>
+        <aside class="ednote">
+            <p>
+                In contrast to HTTP, where header fields all follow the same key-value based structure,
+                CoAP defines specific formats for its options, which all have to be registered with IANA,
+                being the primary way for adding new features to the protocol.
+            </p>
+            <p>
+                Due to the highly standardized nature of CoAP options, mapping them to a vocabulary
+                of <em>features</em> makes more sense than offering a generic format for defining them
+                within a TD form, also considering that there are options with binary, numeric or
+                string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
+            </p>
+        </aside>
         <!-- Maybe RFC numbers could be included in the table? -->
         <section>
             <h3>Requests</h3>

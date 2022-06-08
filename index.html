@@ -745,6 +745,35 @@
                             <li><code>application/octet-stream</code>: Generic binary stream</li>
                         </ul>
                     </ul>
+
+                    <section>
+                        <h4>Wellknown Media Types parameters</h4>
+                        <p>
+                            Other than a type and subtype, Media Types might contain parameters [[IANA-MEDIA-TYPES]]. These parameters are
+                            specified in the form of a key value pair separated by an equal sign (e.g.
+                            <code>text/html;charset=utf-8</code>).
+                            This section describes a set of wellknown parameters in the context of the Web of Things.
+                        </p>
+                        <ul>
+                            <li>
+                                <b>byteSeq</b>: The byte sequence parameter indicates the endianness of the raw payload with media type
+                                <code>application/octet-stream</code>. The accepted values are <code>BIG_ENDIAN</code> (default value),
+                                <code>LITTLE_ENDIAN</code>, <code>BIG_ENDIAN_BYTE_SWAP</code>, and <code>LITTLE_ENDIAN_BYTE_SWAP</code>.
+                                The <b>byteSeq</b> parameter is useful in protocols that does not have a native endianness definition
+                                and different nodes adopt one or another depending on the host platform.
+                            </li>
+                        </ul>
+                        <pre class="example" title="byteSeq parameter in forms" id="example-byteseq-parameter">
+                            {
+                                "forms":[{
+                                    "href": "modbus+tcp://127.0.0.1:60000/1",
+                                    "modbus:function": "readCoil",
+                                    "op": "readproperty",
+                                    "contentType": "application/octet-stream;byteSeq=LITTLE_ENDIAN"
+                                }]
+                            }
+                        </pre>
+                    </section>
                 </section>
                 <section id="payload-bindings-dataschema">
                     <h5>Data Schemas</h5>

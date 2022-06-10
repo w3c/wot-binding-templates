@@ -106,28 +106,28 @@
 }
 </pre>
             <p>
-                ... <code>cov:format</code>.
+                ... <code>contentType</code> and <code>contentCoding</code>.
             </p>
-            <pre id="example-feature-format" class="example" title="Payload Format">
+            <pre id="example-feature-format" class="example" title="Content Format">
 {
     "op": [ "writeproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
     "cov:method": "PUT",
-    "cov:format": 112  // application/senml+cbor
+    "contentType": "application/senml+cbor"
 }
 </pre>
         </section>
         <section>
             <h3>Content Negotiation</h3>
             <p>
-                ... <code>cov:accept</code>.
+                ... <code>contentType</code> and <code>contentCoding</code>.
             </p>
             <pre id="example-feature-accept" class="example" title="Content Negotiation">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
     "cov:method": "GET",
-    "cov:accept": 112  // application/senml+cbor
+    "contentType": "application/senml+cbor"
 }
 </pre>
         </section>
@@ -283,36 +283,6 @@
                             <p>
                                 (see the
                                 <a href="https://www.iana.org/assignments/core-parameters/#method-codes">CoAP Method Codes</a>
-                                registry for the set of possible values)
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:format</code></td>
-                        <td>Indicates that a payload in one of the specified formats with a matching CoAP Content-Format option [[RFC7252]] be included in the request</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            or array of
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            <p>
-                                (see the
-                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
-                                registry for the set of possible values)
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:accept</code></td>
-                        <td>Indicates that a CoAP Accept option [[RFC7252]] with one of the specified formats be included in the request</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            or array of
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            <p>
-                                (see the
-                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
                                 registry for the set of possible values)
                             </p>
                         </td>

@@ -94,41 +94,40 @@
                 URI scheme (c.f. section [[[#url]]]) in the <code>href</code>
                 member. While each <code>op</code> type corresponds to a CoAP
                 method code, implying a default value (c.f. section
-                [[[#mappings]]]), a <code>coap:method</code> member can also be
+                [[[#mappings]]]), a <code>cov:method</code> member can also be
                 set explicitly to one of the standardized CoAP methods, such as
                 <code>GET</code>, <code>PUT</code>, or <code>POST</code>.
             </p>
-
             <pre id="example-feature-request" class="example" title="Requests">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "GET"
+    "cov:method": "GET"
 }
 </pre>
             <p>
-                ... <code>coap:format</code>.
+                ... <code>cov:format</code>.
             </p>
             <pre id="example-feature-format" class="example" title="Payload Format">
 {
     "op": [ "writeproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "PUT",
-    "coap:format": 112  // application/senml+cbor
+    "cov:method": "PUT",
+    "cov:format": 112  // application/senml+cbor
 }
 </pre>
         </section>
         <section>
             <h3>Content Negotiation</h3>
             <p>
-                ... <code>coap:accept</code>.
+                ... <code>cov:accept</code>.
             </p>
             <pre id="example-feature-accept" class="example" title="Content Negotiation">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "GET",
-    "coap:accept": 112  // application/senml+cbor
+    "cov:method": "GET",
+    "cov:accept": 112  // application/senml+cbor
 }
 </pre>
         </section>
@@ -142,14 +141,14 @@
             <h3>Observing Resources</h3>
             <p>
                 Observing resources as defined in [[RFC7641]] can be enabled by including a
-                <code>subprotocol</code> value of <code>coap:observe</code> in a form.
+                <code>subprotocol</code> value of <code>cov:observe</code> in a form.
             </p>
             <pre id="example-feature-observe" class="example" title="Observing Resources">
 {
     "op": [ "observeproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "GET",
-    "subprotocol": "coap:observe"
+    "cov:method": "GET",
+    "subprotocol": "cov:observe"
 }
 </pre>
         </section>
@@ -157,26 +156,26 @@
             <h3>Block-Wise Transfers</h3>
             <p>
                 Parameters for blockwise transfer (as defined in [[RFC7959]]) can be set in a
-                <code>coap:blockwise</code> member.
+                <code>cov:blockwise</code> member.
             </p>
             <p>
-                ... <code>coap:blockwise</code> and <code>coap:quickblockwise</code>.
+                ... <code>cov:blockwise</code> and <code>cov:quickblockwise</code>.
             </p>
             <pre id="example-feature-blockwise" class="example" title="Block-Wise Transfer">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "GET",
-    "coap:blockwise": { }
+    "cov:method": "GET",
+    "cov:blockwise": { }
 }
 </pre>
             <pre id="example-feature-blockwise-parameters" class="example" title="Block Size">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "GET",
-    "coap:blockwise": {
-        "coap:block2SZX": 64
+    "cov:method": "GET",
+    "cov:blockwise": {
+        "cov:block2SZX": 64
     }
 }
 </pre>
@@ -190,14 +189,14 @@
         <section>
             <h3>Hop Limit</h3>
             <p>
-                ... <code>coap:hopLimit</code>.
+                ... <code>cov:hopLimit</code>.
             </p>
             <pre id="example-feature-hoplimit" class="example" title="Hop Limit">
 {
     "op": [ "invokeaction" ],
     "href": "coap://[2001:DB8::1]/.../...",
-    "coap:method": "POST",
-    "coap:hopLimit": 5
+    "cov:method": "POST",
+    "cov:hopLimit": 5
 }
 </pre>
         </section>
@@ -276,7 +275,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>coap:method</code></td>
+                        <td><code>cov:method</code></td>
                         <td>Indicates the CoAP method to be used in the request</td>
                         <td>optional</td>
                         <td>
@@ -289,7 +288,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><code>coap:format</code></td>
+                        <td><code>cov:format</code></td>
                         <td>Indicates that a payload in one of the specified formats with a matching CoAP Content-Format option [[RFC7252]] be included in the request</td>
                         <td>optional</td>
                         <td>
@@ -304,7 +303,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><code>coap:accept</code></td>
+                        <td><code>cov:accept</code></td>
                         <td>Indicates that a CoAP Accept option [[RFC7252]] with one of the specified formats be included in the request</td>
                         <td>optional</td>
                         <td>
@@ -319,19 +318,19 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><code>coap:blockwise</code></td>
+                        <td><code>cov:blockwise</code></td>
                         <td>Indicates that a block-wise transfer [[RFC7959]] is supported</td>
                         <td>optional</td>
                         <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
-                        <td><code>coap:qblockwise</code></td>
+                        <td><code>cov:qblockwise</code></td>
                         <td>Indicates that a quick block-wise transfer [[RFC9177]] is supported</td>
                         <td>optional</td>
                         <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
-                        <td><code>coap:hopLimit</code></td>
+                        <td><code>cov:hopLimit</code></td>
                         <td>Indicates that a CoAP Hop-Limit option [[RFC8768]] be included in the request</td>
                         <td>optional</td>
                         <td>
@@ -354,7 +353,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>coap:block2SZX</code></td>
+                        <td><code>cov:block2SZX</code></td>
                         <td>Indicates the largest block size that may be used in a Block2 or Q-Block2 Option</td>
                         <td>optional</td>
                         <td>
@@ -363,7 +362,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><code>coap:block1SZX</code></td>
+                        <td><code>cov:block1SZX</code></td>
                         <td>Indicates the largest block size that may be used in a Block1 or Q-Block1 Option</td>
                         <td>optional</td>
                         <td>
@@ -394,75 +393,75 @@
                 <tbody>
                     <tr>
                         <td><code>readproperty</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>writeproperty</code></td>
-                        <td><code>"coap:method": "PUT"</code></td>
+                        <td><code>"cov:method": "PUT"</code></td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>readmultipleproperties</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>writemultipleproperties</code></td>
-                        <td><code>"coap:method": "PUT"</code></td>
+                        <td><code>"cov:method": "PUT"</code></td>
                     </tr>
                     <tr>
                         <td><code>readallproperties</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>writeallproperties</code></td>
-                        <td><code>"coap:method": "PUT"</code></td>
+                        <td><code>"cov:method": "PUT"</code></td>
                     </tr>
                     <tr>
                         <td><code>observeallproperties</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveallproperties</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>invokeaction</code></td>
-                        <td><code>"coap:method": "POST"</code></td>
+                        <td><code>"cov:method": "POST"</code></td>
                     </tr>
                     <tr>
                         <td><code>queryaction</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>cancelaction</code></td>
-                        <td><code>"coap:method": "POST"</code></td>
+                        <td><code>"cov:method": "POST"</code></td>
                     </tr>
                     <tr>
                         <td><code>queryallactions</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>subscribeevent</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeevent</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>subscribeallevents</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeallevents</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                 </tbody>
             </table>

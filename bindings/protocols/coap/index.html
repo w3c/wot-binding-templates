@@ -54,24 +54,20 @@
     <section id="overview">
         <h2>Protocol Overview</h2>
         <p>
-            The interaction model of CoAP is similar to the client/server model
-            of HTTP. A CoAP request is equivalent to that of HTTP and is sent by
-            a client to request an action (using a Method Code) on a resource
-            (identified by a URI) on a server.  The server then sends a response
-            with a Response Code; this response may include a resource representation.
+            The interaction model of CoAP is similar to the client/server model of HTTP:
+            A CoAP client sends requests to a CoAP server and receives responses.
+            Requests indicate the action to be performed (e.g., GET, POST, PUT, DELETE) by means of a CoAP method code.
+            Responses carry a CoAP status code that indicates success or failure.
+            Requests and response may carry a representation in a CoAP content format (i.e., content type with optional content coding).
         </p>
         <p>
-            Both requests and responses may include a list of one or more
-            options. For example, the URI in a request is transported in several
-            options, and metadata that would be carried in an HTTP header in HTTP
-            is supplied as options as well. In general, options are set as part of
-            using CoAP features, such as the <code>Observe</code> option being
-            set when [[RFC7641|Observing Resources]].
+            The parameters and metadata of requests and responses are carried in CoAP options.
+            CoAP defines a set of common options (e.g., URI path and query components, Accept and Content-Format) and allows new options to be defined.
+            Options are generally set when using certain CoAP features, such as the <code>Observe</code> option being set when [[RFC7641|Observing Resources in CoAP]].
         </p>
         <p>
-            The section below gives an overview of the features offered by CoAP at the time of writing
-            and provides examples of a how they can be used in a [[[WOT-THING-DESCRIPTION]]].
-            The vocabulary terms used in these examples are defined in section [[[#vocabulary]]] below.
+            The following sections provide an overview of the CoAP features defined at the time of writing and give examples of a how these can be used in a [[[WOT-THING-DESCRIPTION]]].
+            The vocabulary terms used in these examples are defined in section [[[#vocabulary]]].
         </p>
         <aside class="ednote">
             <p>
@@ -86,48 +82,82 @@
                 string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
             </p>
         </aside>
-        <!-- Maybe RFC numbers could be included in the table? -->
         <section>
-            <h3>Requests</h3>
+            <h3>Requests/Responses</h3>
             <p>
-                CoAP protocol bindings are added to a form by using a CoAP
-                URI scheme (c.f. section [[[#url]]]) in the <code>href</code>
-                member. While each <code>op</code> type corresponds to a CoAP
-                method code, implying a default value (c.f. section
-                [[[#mappings]]]), a <code>cov:method</code> member can also be
-                set explicitly to one of the standardized CoAP methods, such as
-                <code>GET</code>, <code>PUT</code>, or <code>POST</code>.
+                Things accessible via CoAP provide interaction affordances that direct Consumers to send CoAP requests to a CoAP endpoint. The Thing processes these requests and sends appropriate CoAP responses.
             </p>
-            <pre id="example-feature-request" class="example" title="Requests">
+            <p>
+                The <strong>target resource</strong> is specified in the Thing Description by the <code>href</code> member of a form, using one of the CoAP URI schemes (see section [[[#url]]]).
+                The <strong>request method</strong> (e.g., <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, or <code>"DELETE"</code>) is specified using the <code>cov:method</code> member of a form.
+            </p>
+            <pre id="example-feature-request" class="example" title="A simple Thing Description using CoAP">
 {
-    "op": [ "readproperty" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "GET"
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "cov:method": "GET",
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "op": ["readproperty"]
+            }]
+        }
+    }
 }
 </pre>
             <p>
-                ... <code>contentType</code> and <code>contentCoding</code>.
+                The <code>cov:method</code> member may be omitted if the request method is the default for the operation (see section [[[#default-mappings]]]).
             </p>
-            <pre id="example-feature-format" class="example" title="Content Format">
+            <pre id="example-feature-request-defaults" class="example" title="A simple Thing Description using CoAP with defaults omitted">
 {
-    "op": [ "writeproperty" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "PUT",
-    "contentType": "application/senml+cbor"
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8"
+            }]
+        }
+    }
 }
 </pre>
+            <p>
+                The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format of the request and/or response.
+                Consumers are expected to be able to map the combinations of content type and content coding they understand to the corresponding CoAP content format IDs listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
+            </p>
         </section>
         <section>
             <h3>Content Negotiation</h3>
             <p>
-                ... <code>contentType</code> and <code>contentCoding</code>.
+                Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different representations available.
             </p>
-            <pre id="example-feature-accept" class="example" title="Content Negotiation">
+            <p>
+                Content negotiation is accomplished through the use of CoAP <code>Accept</code> and <code>Content-Format</code> options.
+                The CoAP Accept option is used by clients to request a particular content format, while the <code>Content-Format</code> option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively.
+            </p>
+            <p>
+                The ... can be used to provide a list of one or more content formats that the Thing is able to provide in a CoAP response for the operation.
+                The Consumer selects the most suitable one and sets the <code>Accept</code> option in the request accordingly.
+            </p>
+            <pre id="example-feature-request-accept" class="example" title="...">
 {
-    "op": [ "readproperty" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "GET",
-    "contentType": "application/senml+cbor"
+    ...
+}
+</pre>
+            <p>
+                The ... can be used to provide a list of one or more content formats that the Thing is willing to accept in a CoAP request for the operation.
+                The Consumer selects the most suitable one and sets the <code>Content-Format</code> option in the request accordingly.
+            </p>
+            <pre id="example-feature-request-format" class="example" title="...">
+{
+    ...
 }
 </pre>
         </section>

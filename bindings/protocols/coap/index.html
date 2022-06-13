@@ -54,7 +54,7 @@
     <section id="overview">
         <h2>Protocol Overview</h2>
         <p>
-            The interaction model of CoAP is similar to the client/server model of HTTP:
+            The interaction model of CoAP [[RFC7252]] is similar to the client/server model of HTTP [[RFC7230]]:
             A CoAP client sends requests to a CoAP server and receives responses.
             Requests indicate the action to be performed (e.g., GET, POST, PUT, DELETE) by means of a CoAP method code.
             Responses carry a CoAP status code that indicates success or failure.
@@ -63,7 +63,7 @@
         <p>
             The parameters and metadata of requests and responses are carried in CoAP options.
             CoAP defines a set of common options (e.g., URI path and query components, Accept and Content-Format) and allows new options to be defined.
-            Options are generally set when using certain CoAP features, such as the <code>Observe</code> option being set when [[RFC7641|Observing Resources in CoAP]].
+            Options are generally set when using certain CoAP features, such as the <code>Observe</code> option being set when Observing Resources in CoAP [[RFC7641]].
         </p>
         <p>
             The following sections provide an overview of the CoAP features defined at the time of writing and give examples of a how these can be used in a [[[WOT-THING-DESCRIPTION]]].

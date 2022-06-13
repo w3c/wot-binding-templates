@@ -209,29 +209,52 @@
 </pre>
         </section>
         <section>
-            <h3>Block-Wise Transfers</h3>
+            <h3>Block-wise Transfers</h3>
             <p>
-                Parameters for blockwise transfer (as defined in [[RFC7959]]) can be set in a
-                <code>cov:blockwise</code> member.
+                CoAP supports block-wise transfers to allow large resource representations to be transferred between clients and servers.
+                This feature enables clients and servers to request or provide resource representations in smaller blocks, which can be useful when constrained network conditions make it undesirable to transfer large amounts of data at once.
             </p>
             <p>
-                ... <code>cov:blockwise</code> and <code>cov:quickblockwise</code>.
+                At the time of writing, CoAP supports two mechanisms for block-wise transfers:
+                Block-Wise Transfers [[RFC7959]] and Block-Wise Transfer Options Supporting Robust Transmission [[RFC9177]].
+                In a form, support for these can be indicated by a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member, respectively.
             </p>
             <pre id="example-blockwise" class="example" title="Block-wise Transfer">
 {
-    "op": [ "readproperty" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "GET",
-    "cov:blockwise": { }
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "cov:blockwise": { }
+            }]
+        }
+    }
 }
 </pre>
+            <p>
+                Additionally, a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member may indicate relevant parameters, such as the largest block size that may be used in a <code>Block2</code> Option.
+            </p>
             <pre id="example-blockwise-parameters" class="example" title="Block-wise Transfer with Parameters">
 {
-    "op": [ "readproperty" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "GET",
-    "cov:blockwise": {
-        "cov:block2SZX": 64
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "cov:blockwise": {
+                    "cov:block2SZX": 64
+                }
+            }]
+        }
     }
 }
 </pre>

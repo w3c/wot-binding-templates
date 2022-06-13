@@ -164,21 +164,47 @@
         <section>
             <h3>Caching</h3>
             <p>
-                ...
+                CoAP features two mechanisms to make efficient use of network resources and minimize the number of required transmissions.
+                First, a CoAP client may store responses to requests in order to satisfy future requests without sending a new request.
+                A stored response may be used if it is still valid, i.e., if the response's Max-Age value has not been exceeded.
+                Second, a CoAP client may validate a stored response by sending a new request with the ETag from the stored response.
+                This allows the server to quickly respond with a 4.03 (Valid) response if the stored response is still valid.
+            </p>
+            <p>
+                Consumers are generally is expected to make use of both mechanisms to minimize the number of required CoAP transmissions.
             </p>
         </section>
         <section>
             <h3>Observing Resources</h3>
             <p>
-                Observing resources as defined in [[RFC7641]] can be enabled by including a
-                <code>subprotocol</code> value of <code>cov:observe</code> in a form.
+                CoAP provides a mechanism for clients to "observe" resources [[RFC7641]], i.e., to request notifications from the server whenever the resource changes.
+                This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.
+            </p>
+            <p>
+                A resource can be observed by sending a GET request with the Observe option set.
+                The server will then respond with the current representation of the resource, as well as send notifications to the client.
+                A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
+            </p>
+            <p>
+                Observing resources can be enabled by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
             </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
-    "op": [ "observeproperty" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "GET",
-    "subprotocol": "cov:observe"
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "cov:method": "GET",
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "subprotocol": "cov:observe",
+                "op": ["observeproperty"]
+            }]
+        }
+    }
 }
 </pre>
         </section>

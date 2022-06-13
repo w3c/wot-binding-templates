@@ -262,20 +262,48 @@
         <section>
             <h3>Conditional Requests</h3>
             <p>
-                ...
+                With conditional requests, a CoAP client can include conditions in a request that specify how the server should process the request.
+                If the server cannot satisfy the conditions, it returns a 4.12 (Precondition Failed) response.
+            </p>
+            <p>
+                At the time of writing, CoAP supports three types of conditional requests:
+            </p>
+            <ul>
+                <li><code>If-Match</code> option with an ETag: "only process the request if the target resource exists and has this representation"</li>
+                <li><code>If-Match</code> option without an ETag: "only process the request if the target resource exists"</li>
+                <li><code>If-None-Match</code> option without an ETag: "only process the request if the target resource does not exist"</li>
+            </ul>
+            <p>
+                Conditional requests are typically used in the context of larger, multi-step workflows.
+                For example, a CoAP client might want to make sure that a resource has not been modified before it performs some action on it.
+            </p>
+            <p>
+                Consumers are expected to be familiar with the specifics of the workflows in which they are participating and to use conditional requests accordingly.
             </p>
         </section>
         <section>
             <h3>Hop Limit</h3>
             <p>
-                ... <code>cov:hopLimit</code>.
+                The CoAP <code>Hop-Limit</code> option [[RFC8768]] limits the number of hops a CoAP message can take before it is considered undeliverable. This prevents infinite message loops in CoAP networks.
+            </p>
+            <p>
+                In a form, the <code>cov:hopLimit</code> member can be used to set the desired hop limit for a particular CoAP request.
             </p>
             <pre id="example-hoplimit" class="example" title="Hop Limit">
 {
-    "op": [ "invokeaction" ],
-    "href": "coap://[2001:DB8::1]/.../...",
-    "cov:method": "POST",
-    "cov:hopLimit": 5
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "cov:hopLimit": 5
+            }]
+        }
+    }
 }
 </pre>
         </section>

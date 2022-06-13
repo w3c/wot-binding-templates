@@ -91,7 +91,7 @@
                 The <strong>target resource</strong> is specified in the Thing Description by the <code>href</code> member of a form, using one of the CoAP URI schemes (see section [[[#url]]]).
                 The <strong>request method</strong> (e.g., <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, or <code>"DELETE"</code>) is specified using the <code>cov:method</code> member of a form.
             </p>
-            <pre id="example-feature-request" class="example" title="A simple Thing Description using CoAP">
+            <pre id="example-request" class="example" title="A simple Thing Description using CoAP">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -112,7 +112,7 @@
             <p>
                 The <code>cov:method</code> member may be omitted if the request method is the default for the operation (see section [[[#default-mappings]]]).
             </p>
-            <pre id="example-feature-request-defaults" class="example" title="A simple Thing Description using CoAP with defaults omitted">
+            <pre id="example-request-defaults" class="example" title="A simple Thing Description using CoAP with defaults omitted">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -146,7 +146,7 @@
                 The ... can be used to provide a list of one or more content formats that the Thing is able to provide in a CoAP response for the operation.
                 The Consumer selects the most suitable one and sets the <code>Accept</code> option in the request accordingly.
             </p>
-            <pre id="example-feature-request-accept" class="example" title="...">
+            <pre id="example-request-accept" class="example" title="...">
 {
     ...
 }
@@ -155,7 +155,7 @@
                 The ... can be used to provide a list of one or more content formats that the Thing is willing to accept in a CoAP request for the operation.
                 The Consumer selects the most suitable one and sets the <code>Content-Format</code> option in the request accordingly.
             </p>
-            <pre id="example-feature-request-format" class="example" title="...">
+            <pre id="example-request-format" class="example" title="...">
 {
     ...
 }
@@ -173,7 +173,7 @@
                 Observing resources as defined in [[RFC7641]] can be enabled by including a
                 <code>subprotocol</code> value of <code>cov:observe</code> in a form.
             </p>
-            <pre id="example-feature-observe" class="example" title="Observing Resources">
+            <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
     "op": [ "observeproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
@@ -191,7 +191,7 @@
             <p>
                 ... <code>cov:blockwise</code> and <code>cov:quickblockwise</code>.
             </p>
-            <pre id="example-feature-blockwise" class="example" title="Block-Wise Transfer">
+            <pre id="example-blockwise" class="example" title="Block-wise Transfer">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
@@ -199,7 +199,7 @@
     "cov:blockwise": { }
 }
 </pre>
-            <pre id="example-feature-blockwise-parameters" class="example" title="Block Size">
+            <pre id="example-blockwise-parameters" class="example" title="Block-wise Transfer with Parameters">
 {
     "op": [ "readproperty" ],
     "href": "coap://[2001:DB8::1]/.../...",
@@ -221,7 +221,7 @@
             <p>
                 ... <code>cov:hopLimit</code>.
             </p>
-            <pre id="example-feature-hoplimit" class="example" title="Hop Limit">
+            <pre id="example-hoplimit" class="example" title="Hop Limit">
 {
     "op": [ "invokeaction" ],
     "href": "coap://[2001:DB8::1]/.../...",

@@ -168,7 +168,7 @@
                 First, a CoAP client may store responses to requests in order to satisfy future requests without sending a new request.
                 A stored response may be used if it is still valid, i.e., if the response's Max-Age value has not been exceeded.
                 Second, a CoAP client may validate a stored response by sending a new request with the ETag from the stored response.
-                This allows the server to quickly respond with a 4.03 (Valid) response if the stored response is still valid.
+                This allows the server to quickly respond with a 2.03 (Valid) response if the stored response is still valid.
             </p>
             <p>
                 Consumers are generally is expected to make use of both mechanisms to minimize the number of required CoAP transmissions.

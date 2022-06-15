@@ -137,7 +137,7 @@ template :qos(?ns ?prefix){
             <td>%s</td>
         <tr>
         """
-        st:call-template(:term, ?qosNs, ?prefix, ?qos)
+        st:call-template(:termMqtt, ?qosNs, ?prefix, ?qos)
         ?label
         ?description
     }
@@ -188,13 +188,12 @@ template :topicFilter(?ns ?prefix){
     bind(IRI(CONCAT(STR( ?ns),"#TopicFilter")) as ?topicFilter)
 }
 
-template :term(?ns ?prefix ?term){
+template :termMqtt(?ns ?prefix ?term){
     format {
-        """%s %s"""
-        ?term
+        """%s"""
     if(?isJSONLD,
         concat(?prefix,":",?printTerm),
-        replace(?printTerm,concat(?ns,"#"),concat(?prefix,":"),"g")
+        replace(?printTerm,concat(?ns,"#"),concat(?printPrefix,":"),"g")
     )
     }
 } where {
@@ -203,6 +202,19 @@ template :term(?ns ?prefix ?term){
             jsonld:iri ?term ;
             jsonld:term ?mappedTerm;
     }
+    optional {
+        ?mapping a jsonld:Mapping ;
+            jsonld:iri ?stdNamespace ;
+            jsonld:term ?mappedNamespace;
+    }
+    
     BIND ( BOUND (?mappedTerm) as ?isJSONLD )
+    BIND ( BOUND (?mappedNamespace) as ?isNamespaceMapped )
+    BIND ( concat(?ns, "#") as ?stdNamespace )
+
+    # TODO: check also / namespaces
+    # BIND ( concat(?ns, "/") as ?slashNamespace )
+    
     BIND ( IF (BOUND (?mappedTerm), ?mappedTerm, ?term )  as ?printTerm  )
+    BIND ( IF (BOUND (?mappedNamespace), ?mappedNamespace, ?prefix )  as ?printPrefix  )
 }

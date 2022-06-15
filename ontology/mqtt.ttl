@@ -212,7 +212,7 @@ _:genid4 rdf:type schema:Organization ;
 ###  https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0
 <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0> rdf:type owl:NamedIndividual ,
             :QualityOfService ;
-            rdfs:comment "The Server delivers the Application Message to the Client once and only once."@en ;
+            rdfs:comment "The Server delivers the Application Message to the Client at most once"@en ;
             rdfs:label "atMostOnce"@en ;
             rdfs:subClassOf :QualityOfService ;
             schema:alternateName "QoS0"@en ;

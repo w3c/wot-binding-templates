@@ -39,11 +39,13 @@ _:genid4 rdf:type schema:Organization ;
 #    Object Properties
 #################################################################
 
-###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
+###  https://www.w3.org/2019/wot/mqtt#sendsControlPacket
 :sendsControlPacket rdf:type owl:ObjectProperty ;
     rdfs:label "sendsControlPacket"@en ;
-    rdfs:comment "Describes the action of sending a <a href='#controlpacket'>ControlPacket</a> in a NetworkConnection"@en ;
-    rdfs:range :ControlPacket .
+    rdfs:comment """In MQTT protocol clients sends <a href='#control-packet'>control packet</a>s between each other using and intermediary called Server (or broker). 
+    This property describes the action of sending a <a href='#control-packet'>ControlPacket</a> in a <a href='#network-connection'>NetworkConnection</a>"""@en ;
+    rdfs:range :ControlPacket ;
+    rdfs:domain :Client .
 
 ###  https://www.w3.org/2019/wot/mqtt#hasQoSFlag
 :hasQoSFlag rdf:type owl:ObjectProperty ;
@@ -66,7 +68,7 @@ _:genid4 rdf:type schema:Organization ;
 :hasTopicName rdf:type owl:ObjectProperty ;
                 rdfs:domain :PUBLISH ;
                 schema:domainIncludes :PUBLISH ;
-                rdfs:comment "This field reports the <a href='#topicname'>TopicName</a> of a packet"@en ;
+                rdfs:comment "This field reports the <a href='#topic-name'>TopicName</a> of a packet"@en ;
                 rdfs:label "hasTopicName"@en ;
                 schema:rangeIncludes :TopicName ;
                 rdfs:range :TopicName .
@@ -75,7 +77,7 @@ _:genid4 rdf:type schema:Organization ;
 :hasTopicFilters rdf:type owl:ObjectProperty ;
                 rdfs:domain :SUBSCRIBE, :UNSUBSCRIBE ;
                 schema:domainIncludes :SUBSCRIBE, :UNSUBSCRIBE ;
-                rdfs:comment "This field reports the list of <a href='#topicfilter'>TopicFilter</a>s of a packet"@en ;
+                rdfs:comment "This field reports the list of <a href='#topic-filter'>TopicFilter</a>s of a packet"@en ;
                 rdfs:label "hasTopicFilters"@en ;
                 schema:rangeIncludes :TopicFilter ;
                 rdfs:range :TopicFilter .
@@ -92,7 +94,7 @@ _:genid4 rdf:type schema:Organization ;
                  rdfs:label "fixedHeaderFlag"@en .
 
 
-###  https://www.w3.org/2019/wot/mqtt#hasDUPFlag
+###  https://www.w3.org/2019/wot/mqtt#hasDUPFlaghasRetainFlag
 :hasDUPFlag rdf:type owl:DatatypeProperty ;
             rdfs:subPropertyOf :fixedHeaderFlag ;
             schema:domainIncludes :SUBSCRIBE ;
@@ -134,7 +136,7 @@ _:genid4 rdf:type schema:Organization ;
                                      ) ] ;
                rdfs:comment "An MQTT Control Packet consists of up to three parts: fixed header (prsesent in all Control Packets), variable header, payload"@en ;
                rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
-               rdfs:label "ControlPacket"@en .
+               rdfs:label "Control Packet"@en .
 
 
 ###  https://www.w3.org/2019/wot/mqtt#PUBLISH
@@ -182,6 +184,20 @@ _:genid4 rdf:type schema:Organization ;
        rdfs:comment "An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters."@en ;
        rdfs:label "Topic Filter"@en .
 
+###  https://www.w3.org/2019/wot/mqtt#NetworkConnection
+:NetworkConnection rdf:type owl:Class ;
+       rdfs:comment "The MQTT protocol requires an underlying transport that provides an ordered, lossless, stream of bytes from the Client to Server and Server to Client. See <a href='https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html#_Toc398718098'>NetworkConnection</a>"@en ;
+       rdfs:label "Network Connection"@en .
+
+###  https://www.w3.org/2019/wot/mqtt#Client
+:Client rdf:type owl:Class ;
+       rdfs:comment "A program or device that uses MQTT. A Client always establishes the <a href='#network-connection'>Network Connection</a> to a <a href='#server'>Server</a>"@en ;
+       rdfs:label "Client"@en .
+
+###  https://www.w3.org/2019/wot/mqtt#Server
+:Server rdf:type owl:Class ;
+       rdfs:comment "A program or device that acts as an intermediary between <a href='#client'>client</a>s. Sometimes servers are referred as Brokers"@en ;
+       rdfs:label "Server"@en .
 #################################################################
 #    Individuals
 #################################################################

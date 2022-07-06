@@ -22,24 +22,24 @@
                                   schema:affiliation _:siemens .
 
 _:ege a schema:Person ;
-      schema:name "Ege Korkan" ;
-      schema:affiliation _:siemens .
+    schema:name "Ege Korkan" ;
+    schema:affiliation _:siemens .
 
 _:michael a schema:Person ;
-          schema:name "Michael Koster" ;
-          schema:affiliation _:smartthings .
+    schema:name "Michael Koster" ;
+    schema:affiliation _:ie .
 
 _:seb a schema:Person ;
-      schema:name "Sebastian Käbisch" ;
-      schema:affiliation _:siemens .
+    schema:name "Sebastian Käbisch" ;
+    schema:affiliation _:siemens .
 
 _:siemens a schema:Organization ;
-          schema:name "Siemens AG" ;
-          schema:url "https://www.siemens.com/" .
+    schema:name "Siemens AG" ;
+    schema:url "https://www.siemens.com/" .
 
-_:smartthings a schema:Organization ;
-              schema:name "SmartThings" ;
-              schema:url "https://www.smartthings.com/" .
+_:ie a schema:Organization ;
+    schema:name "Invited Expert" ;
+    schema:url "https://github.com/mjkoster/" .
 
 :payload rdf:type owl:ObjectProperty ;
          rdfs:isDefinedBy <> ;

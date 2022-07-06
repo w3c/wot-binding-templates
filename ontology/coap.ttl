@@ -35,7 +35,7 @@ _:seb a schema:Person ;
 
 _:michael a schema:Person ;
           schema:name "Michael Koster" ;
-          schema:affiliation _:smartthings .
+          schema:affiliation _:ie .
 
 _:siemens a schema:Organization ;
           schema:name "Siemens AG" ;
@@ -45,9 +45,9 @@ _:ericsson a schema:Organization ;
            schema:name "Ericsson" ;
            schema:url "https://www.ericsson.com/" .
 
-_:smartthings a schema:Organization ;
-              schema:name "SmartThings" ;
-              schema:url "https://www.smartthings.com/" .
+_:ie a schema:Organization ;
+           schema:name "Invited Expert" ;
+           schema:url "https://github.com/mjkoster/" .
 
 :mthd rdf:type owl:ObjectProperty ;
       rdfs:isDefinedBy <> ;

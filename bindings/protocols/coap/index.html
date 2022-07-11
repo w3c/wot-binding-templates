@@ -268,16 +268,15 @@
                 At the time of writing, CoAP supports three types of conditional requests:
             </p>
             <ul>
-                <li><code>If-Match</code> option with an ETag: "only process the request if the target resource exists and has this representation"</li>
+                <li><code>If-Match</code> option with an ETag: "only process the request if the target resource exists and has a representation with this ETag"</li>
                 <li><code>If-Match</code> option without an ETag: "only process the request if the target resource exists"</li>
                 <li><code>If-None-Match</code> option without an ETag: "only process the request if the target resource does not exist"</li>
             </ul>
             <p>
                 Conditional requests are typically used in the context of larger, multi-step workflows.
                 For example, a CoAP client might want to make sure that a resource has not been modified before it performs some action on it.
-            </p>
-            <p>
-                Consumers are expected to be familiar with the specifics of the workflows in which they are participating and to use conditional requests accordingly.
+                Therefore, no vocabulary is provided for driving conditional requests from the Thing Description.
+                Instead, consumers are expected to be familiar with the specifics of the workflows in which they are participating and to use conditional requests accordingly.
             </p>
         </section>
         <section>

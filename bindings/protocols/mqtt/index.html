@@ -111,7 +111,16 @@
                 <li><code>{address}</code> is the IP address of the MQTT broker</li>
                 <li><code>{port}</code> is the port of the MQTT broker</li>
             </ul>
+            Notice that the URL does not contain any information regarding [[[#topicname]]] or [[[#topicfilter]]]. These two
+            parameters
+            must to be specified using their own parameter as described in [[[#form-terms]]]. This to avoid ambiguities
+            regarding the starting <code>/</code> character and the usage of <code>#</code> that can be confused with URL
+            fragment character.
         </p>
+        <pre id="example-simple-url" class="example" title="MQTT URL">
+          mqtt://iot.platform.com:8088
+        </pre>                
+
     </section>
     <section>
       <h3>MQTT Vocabulary</h3>

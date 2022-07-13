@@ -1,13 +1,220 @@
+prefix st: <http://ns.inria.fr/sparql-template/>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix jsonld: <http://www.w3.org/ns/json-ld#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix binding: <https://www.w3.org/2019/wot/binding#> 
+prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> 
 prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
 
 
 template :mqtt {
     format {
          <file://./bindings/protocols/mqtt/index.template.html>
-         ?mappings
+         st:call-template(:formTermsM, ?mqttBase, ?prefix)
+         st:call-template(:controlpackets, ?mqttBase, ?prefix)
+         st:call-template(:qosDescription, ?mqttBase, ?prefix)
+         st:call-template(:qos, ?mqttBase, ?prefix)
+         st:call-template(:topicName, ?mqttBase, ?prefix)
+         st:call-template(:topicFilter, ?mqttBase, ?prefix)
+         st:call-template(:defaultMappings, ?mqttBase, ?prefix)
     }
     
 }  where {
-    ?mappings a owl:Ontology ;
+     ?mappings a owl:Ontology ;
+        owl:imports ?mqttBase .
+    ?mqtt a owl:Ontology;
+       vann:preferredNamespacePrefix ?prefix
+}
+
+template :formTermsM(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+            <td>%s</td>
+            <td><a href=\"%s\">%s</a>%s</td>
+
+        <tr>
+        """
+        st:call-template(:term, ?ns, ?prefix, ?term)
+        ?desc
+        if(?count > 0, "required","optional")
+        if(strstarts(?type,str(?ns)), lcase(replace(?type, ?ns,"","g")),?type )
+        strafter(?type,"#")
+        if(!?max, concat(
+            " Array of <a href=\"",
+            if(strstarts(?type,str(?ns)), lcase(replace(?type, ?ns,"","g")),?type ),
+            "\">",
+            strafter(?type,"#"),
+            "</a>"), "")
+
+    }
+} where {
+    ?shape a sh:NodeShape ;
+        sh:targetClass hctl:Form ;
+        sh:order 1 ;
+        sh:property ?property.
+    
+    ?property sh:path ?term .
+    ?term rdfs:comment ?desc .
+    optional {
+        ?property sh:minCount ?count 
+    }
+    optional {
+        ?property sh:maxCount ?max 
+    }
+    optional {
+        ?property sh:class ?type
+    }
+    optional {
+        ?property sh:datatype ?type
+    }
+    
+    BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
+    BIND ( IF (BOUND (?max), ?max, 0 )  as ?max  )
+   
+} 
+
+template :defaultMappings(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td><code>\"%s\": \"%s\"</code></td>
+        <tr>
+        """
+        lcase(strafter(?operation,"#"))
+        st:call-template(:term, ?ns, ?prefix, ?function)
+         st:call-template(:term, ?ns, ?prefix, ?default)
+    }
+} where {
+    ?shape a sh:NodeShape ;
+        sh:targetClass hctl:Form ;
+        sh:order ?index ;
+        sh:property ?operationProperty;
+        sh:property ?defaultValueProperty.
+   
+   ?operationProperty sh:path hctl:hasOperationType;
+        sh:hasValue ?operation.
+					  
+   ?defaultValueProperty  sh:path ?function;
+        sh:defaultValue ?default.
+   
+    filter( ?index > 1 )
+    
+}order by ?index
+
+template :controlpackets(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+        <tr>
+        """
+        st:call-template(:term, ?ns, ?prefix, ?packet)
+        ?description
+    }
+} where {
+    ?packet rdfs:subClassOf ?controlPacket;
+        rdfs:comment ?description.
+    
+    bind(IRI(CONCAT(STR( ?ns),"#ControlPacket")) as ?controlPacket)
+}
+
+template :qos(?ns ?prefix){
+    format {
+        """
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+            <td>%s</td>
+        <tr>
+        """
+        st:call-template(:termMqtt, ?qosNs, ?prefix, ?qos)
+        ?label
+        ?description
+    }
+} where {
+    ?qos rdfs:subClassOf ?QualityOfService;
+        rdfs:label ?label;
+        rdfs:comment ?description.
+    
+    bind(IRI(CONCAT(STR( ?ns),"#QualityOfService")) as ?QualityOfService)
+    bind(IRI(CONCAT(STR( ?ns),"/qualitfyOfService")) as ?qosNs)
+}
+
+template :qosDescription(?ns ?prefix){
+    format {
+        """
+        %s
+        """
+        ?description
+    }
+} where {
+    ?QualityOfService rdfs:comment ?description.
+    
+    bind(IRI(CONCAT(STR( ?ns),"#QualityOfService")) as ?QualityOfService)
+}
+
+template :topicName(?ns ?prefix){
+    format {
+        """
+        %s
+        """
+        ?description
+    }
+} where {
+    ?topicName rdfs:comment ?description.
+    
+    bind(IRI(CONCAT(STR( ?ns),"#TopicName")) as ?topicName)
+}
+template :topicFilter(?ns ?prefix){
+    format {
+        """
+        %s
+        """
+        ?description
+    }
+} where {
+    ?topicFilter rdfs:comment ?description.
+    
+    bind(IRI(CONCAT(STR( ?ns),"#TopicFilter")) as ?topicFilter)
+}
+
+template :termMqtt(?ns ?prefix ?term){
+    format {
+        """%s"""
+    if(?isJSONLD,
+        concat(?prefix,":",?printTerm),
+        replace(?printTerm,concat(?ns,"#"),concat(?printPrefix,":"),"g")
+    )
+    }
+} where {
+    optional {
+        ?mapping a jsonld:Mapping ;
+            jsonld:iri ?term ;
+            jsonld:term ?mappedTerm;
+    }
+    optional {
+        ?mapping a jsonld:Mapping ;
+            jsonld:iri ?stdNamespace ;
+            jsonld:term ?mappedNamespace;
+    }
+    
+    BIND ( BOUND (?mappedTerm) as ?isJSONLD )
+    BIND ( BOUND (?mappedNamespace) as ?isNamespaceMapped )
+    BIND ( concat(?ns, "#") as ?stdNamespace )
+
+    # TODO: check also / namespaces
+    # BIND ( concat(?ns, "/") as ?slashNamespace )
+    
+    BIND ( IF (BOUND (?mappedTerm), ?mappedTerm, ?term )  as ?printTerm  )
+    BIND ( IF (BOUND (?mappedNamespace), ?mappedNamespace, ?prefix )  as ?printPrefix  )
 }

@@ -6,7 +6,7 @@
     "watch": {
         "build": {
             "patterns": [
-                "bindings/modbus",
+                "bindings/protocols",
                 "ontology"
             ],
             "extensions": "ttl,template.html,sparql,rq"

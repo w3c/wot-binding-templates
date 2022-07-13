@@ -295,14 +295,14 @@
       </pre>
       <p>
         If the implementer wants to give the ability to WoT clients to conveniently observe all properties in a single call, it is possible
-        to use observerallproperties form in the root of a Thing Description. For example, in [[[#example-property-observeall]]] all the messages to topics 
+        to use observeallproperties form in the root of a Thing Description. For example, in [[[#example-property-observeall]]] all the messages to topics 
         under <code>application/devices/thing1/properties/</code> will be delivered.
       </p>
       <pre id="example-property-observeall" class="example" title="Root observe all form">
               {
                   "href": "mqtt://broker.com:1883",
                   "op": [
-                      "observerallproperties"
+                      "observeallproperties"
                   ], 
                   "mqv:filter": "application/devices/thing1/properties/#",
               }
@@ -342,8 +342,7 @@
     "@context": "https://www.w3.org/2019/wot/td/v1",
     "title": "Gas sensor",
     "id": "urn:dev:test",
-    "description": "Gas sensor is a sensor that can measure combustible gas concentration and issue an alarm in the event of
-        a gas leak.",
+    "description": "Gas sensor is a sensor that can measure combustible gas concentration and issue an alarm in the event of a gas leak.",
         "securityDefinitions": {
         "nosec_sc": {
             "scheme": "nosec"

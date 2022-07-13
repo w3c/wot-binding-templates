@@ -60,16 +60,16 @@
 
 <body>
     <section id="abstract">
-      In the context of the Web of Things (WoT)[[WOT-ARCHITECTURE]], a Binding Template is 
+      In the context of the Web of Things, a Binding Template is 
       a blueprint that gives guidance on how to implement a specific IoT protocol, data format or IoT platform. This document 
-      gives implementation guidelines regarding the MQTT protocol [[MQTT]]. The MQTT protocol is
+      gives implementation guidelines regarding the MQTT protocol. The MQTT protocol is
       a lightweight, asynchronous, transport-independent, open protocol for publishing and subscribing to messages. It has 
       been employed in many IoT platforms and IoT applications for its simplicity and scalability.
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>
         <p>
-            The Message Queue Telemetry Transport (MQTT) protocol was born in 1999 to handle
+            The Message Queue Telemetry Transport (MQTT) protocol [[MQTT]] was born in 1999 to handle
             efficient machine to machine communication in the Internet of Things. The protocol
             is based on the publish subscribe model, where publishers publish messages to 
             specific topics and subscribers receive notifications for filters that match one
@@ -77,9 +77,8 @@
             is used in many IoT platforms and applications.
             
             In the context of the Internet of Things, many vendors expose MQTT publishers mixed with 
-            Web protocols like HTTP. This document describes how to describe MQTT endpoints and payloads with 
-            Thing Descriptions (TDs) and provide development guidance for implementers whom 
-            wants to such TDs in their applications. 
+            Web protocols like HTTP. This document explain how to describe MQTT endpoints and payloads with 
+            Thing Descriptions (TDs) the core building block of the Web of Things (WoT) [[WOT-ARCHITECTURE]].
         </p>
     </section>
     <section id="conformance">

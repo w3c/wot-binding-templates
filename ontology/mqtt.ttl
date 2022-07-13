@@ -9,11 +9,12 @@
 @prefix schema: <http://schema.org/> .
 @base <https://www.w3.org/2019/wot/mqtt> .
 
+
 <https://www.w3.org/2019/wot/mqtt> rdf:type owl:Ontology ;
                                     dct:author [ rdf:type schema:Person ;
                                                  schema:affiliation [ rdf:type schema:Organization ;
-                                                                      schema:name "SmartThings" ;
-                                                                      schema:url "https://www.smartthings.com/"
+                                                                      schema:name "Invited Expert" ;
+                                                                      schema:url "https://github.com/mjkoster/"
                                                                     ] ;
                                                  schema:name "Michael Koster"
                                                ] ;

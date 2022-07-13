@@ -10,8 +10,8 @@
             editors: [{
                 name: "Michael Koster",
                 w3cid: "110658",
-                company: "SmartThings",
-                companyURL: "https://www.smartthings.com/"
+                company: "Invited Expert",
+                companyURL: "https://github.com/mjkoster/"
                 },
                 {
                 name: "Ege Korkan",
@@ -81,6 +81,17 @@
             Thing Descriptions (TDs) and provide development guidance for implementers whom 
             wants to such TDs in their applications. 
         </p>
+    </section>
+    <section id="conformance">
+        <p>
+        Forms of a Thing Description instance with MQTT Binding complies with this specification if it follows 
+        the normative statements in <a href="#possible-mappings"></a> and <a href="#default-mappings"></a>.
+        </p>
+        <p>
+        A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
+        containing MQTT Binding is provided in the <a href="mqtt.schema.json">GitHub repository</a>.
+        </p>
+        
     </section>
     <section id='sotd'>
         <p>
@@ -274,7 +285,7 @@
     
     </section>
     </section>
-    <section>
+    <section id="default-mappings">
       <h3>Mappings</h3>
       <p>This section describes strategies and default values to employ protocol specific concepts within the <a
           href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction
@@ -363,10 +374,14 @@
         <h3>Possible mappings</h3>
       For the MQTT protocol, if an MQTT client publishes a message to a topic with the retain flag set to true, the future subscribers of the topic will also get this message.
       Outside of this case, it is not possible to read a property but only possible to observe it. 
-      <span class="rfc2119-assertion" id="iana-security-alter">Additionally, in a Form element with MQTT protocol, if the <code>op</code> contains <code>readproperty</code> (meaning that retain flag is set to true), it <em class="rfc2119" title="SHOULD">SHOULD</em> also contain <code>observeproperty</code>.</span>
+      <span class="rfc2119-assertion" id="iana-security-alter">Additionally, in a Form element with MQTT protocol, 
+          if the <code>op</code> contains <code>readproperty</code> (meaning that retain flag is set to true), 
+          it <em class="rfc2119" title="SHOULD">SHOULD</em> also contain <code>observeproperty</code>.
+      </span>
       <span class="rfc2119-assertion" id="iana-security-alter">On the other hand, if the MQTT publisher does not set
         the retain flag to true, the property will be only observable. In this case, the property in the exposed Thing
-        Description <em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em> have Form elements with MQTT protocol containing <code>readproperty</code> operation.</span>
+        Description <em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em> have Form elements with MQTT protocol 
+        containing <code>readproperty</code> operation.</span>
       </section>
   </section>
     <section>

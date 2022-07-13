@@ -49,11 +49,10 @@
                 "modbus:address" : { "type" : "integer", "minimum": 0},
                 "modbus:quantity" : { "type": "integer", "minimum": 1},
                 "modbus:zeroBasedAddressing" : { "type" : "boolean"},
-                "modbus:timeout" : { "type": "number", "minimum": 0}
-            },
-            "required": [
-                "modbus:offset"
-            ]
+                "modbus:timeout" : { "type": "number", "minimum": 0},
+                "modbus:unitID": { "type": "integer", "minimum": 0},
+                "required": ["modbus:address", "modbus:unitID"]
+            }
         },
         "affordance": {
             "type": "object",
@@ -93,9 +92,6 @@
             "$ref": "#/definitions/affordance"
         },
         "events": {
-            "$ref": "#/definitions/affordance"
-        },
-        "lama": {
             "$ref": "#/definitions/affordance"
         }
     }

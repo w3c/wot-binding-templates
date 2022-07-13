@@ -40,10 +40,8 @@
             building automation.
         </p>
         <p>
-            This document describes how the Web of Things specification can be
-            use to present devices that use the CoAP in a Thing Description. In
-            particular, the document explain how to create valid Forms for the
-            different operations that CoAP can perform.
+            This document describes how to present devices that use CoAP in a Thing Description.
+            In particular, the document explain how to create valid Forms for the different operations that CoAP can perform.
         </p>
     </section>
     <section id='sotd'>
@@ -54,86 +52,280 @@
     <section id="overview">
         <h2>Protocol Overview</h2>
         <p>
-            In contrast to HTTP, where header fields all follow the same key-value based structure,
-            CoAP defines specific formats for its options, which all have to be registered with IANA,
-            being the primary way for adding new features to the protocol.
+            The interaction model of CoAP [[RFC7252]] is similar to the client/server model of HTTP [[RFC7230]]:
+            A CoAP client sends requests to a CoAP server and receives responses.
+            Requests indicate the action to be performed (e.g., GET, POST, PUT, DELETE) by means of a CoAP method code.
+            Responses carry a CoAP status code that indicates success or failure.
+            Requests and response may carry a representation in a CoAP content format (i.e., content type with optional content coding).
         </p>
         <p>
-            Due to the highly standardized nature of CoAP options, mapping them to a vocabulary
-            of <em>features</em> makes more sense than offering a generic format for defining them
-            within a TD form, also considering that there options with binary, numeric or
-            string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
+            The parameters and metadata of requests and responses are carried in CoAP options.
+            CoAP defines a set of common options (e.g., URI path and query components, Accept and Content-Format) and allows new options to be defined.
+            Options are generally set when using certain CoAP features, such as the <code>Observe</code> option being set when Observing Resources in CoAP [[RFC7641]].
         </p>
         <p>
-            The table below gives an overview of how the features offered by the existing CoAP RFCs
-            are translated into vocabulary terms which can be used in a [[[WOT-THING-DESCRIPTION]]].
-            Observing resources as defined in [[RFC7641]], for example, can be enabled by including a
-            <code>subprotocol</code> value of <code>coap:observe</code> in a form.
-            Parameters for blockwise transfer (as defined in [[RFC7959]]) can be set in a
-            <code>coap:blockwise</code> member.
-            The vocabulary terms are defined in full detail in section [[[#vocabulary]]].
+            The following sections provide an overview of the CoAP features defined at the time of writing and give examples of a how these can be used in a [[[WOT-THING-DESCRIPTION]]].
+            The vocabulary terms used in these examples are defined in section [[[#vocabulary]]].
         </p>
-        <!-- Maybe RFC numbers could be included in the table? -->
-        <table class="def">
-            <thead>
-                <tr>
-                    <th>Feature</th>
-                    <th>Covered by</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Request to Server</td>
-                    <td><code>"href": ..., "coap:method": ...</code></td>
-                </tr>
-                <tr>
-                    <td>Request to Forward Proxy</td>
-                    <td><code>"href": ..., "coap:method": ..., "coap:proxy": ...</code></td>
-                </tr>
-                <tr>
-                    <td>Caching: Validation</td>
-                    <td>n/a</td>
-                </tr>
-                <tr>
-                    <td>Conditional Requests</td>
-                    <td>n/a</td>
-                </tr>
-                <tr>
-                    <td>Content</td>
-                    <td><code>"coap:format": ...</code></td>
-                </tr>
-                <tr>
-                    <td>Content Negotiation</td>
-                    <td><code>"coap:accept": ...</code></td>
-                </tr>
-                <tr>
-                    <td>Observing Resources</td>
-                    <td><code>"subprotocol": "coap:observe"</code></td>
-                </tr>
-                <tr>
-                    <td>Block-Wise Transfer</td>
-                    <td><code>"coap:blockwise": { ... }</code></td>
-                </tr>
-                <tr>
-                    <td>Quick Block-Wise Transfer</td>
-                    <td><code>"coap:qblockwise": { ... }</code></td>
-                </tr>
-                <tr>
-                    <td>Hop Limit</td>
-                    <td><code>"coap:hoplimit": ...</code></td>
-                </tr>
-                <!--
-                <tr>
-                    <td>OSCORE</td>
-                    <td><code>SecurityScheme</code></td>
-                </tr>
-                <tr>
-                    <td>EDHOC</td>
-                    <td><code>SecurityScheme</code></td>
-                </tr>
-                -->
-            </tbody>
-        </table>
+        <aside class="ednote">
+            <p>
+                In contrast to HTTP, where header fields all follow the same key-value based structure,
+                CoAP defines specific formats for its options, which all have to be registered with IANA,
+                being the primary way for adding new features to the protocol.
+            </p>
+            <p>
+                Due to the highly standardized nature of CoAP options, mapping them to a vocabulary
+                of <em>features</em> makes more sense than offering a generic format for defining them
+                within a TD form, also considering that there are options with binary, numeric or
+                string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
+            </p>
+        </aside>
+        <section>
+            <h3>Requests/Responses</h3>
+            <p>
+                Things accessible via CoAP provide interaction affordances that direct Consumers to send CoAP requests to a CoAP endpoint. The Thing processes these requests and sends appropriate CoAP responses.
+            </p>
+            <p>
+                The <strong>target resource</strong> is specified in the Thing Description by the <code>href</code> member of a form, using one of the CoAP URI schemes (see section [[[#url]]]).
+                The <strong>request method</strong> (e.g., <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, or <code>"DELETE"</code>) is specified using the <code>cov:method</code> member of a form.
+            </p>
+            <pre id="example-request" class="example" title="A simple Thing Description using CoAP">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "cov:method": "GET",
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "op": ["readproperty"]
+            }]
+        }
+    }
+}
+</pre>
+            <p>
+                The <code>cov:method</code> member may be omitted if the request method is the default for the operation (see section [[[#default-mappings]]]).
+            </p>
+            <pre id="example-request-defaults" class="example" title="A simple Thing Description using CoAP with defaults omitted">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8"
+            }]
+        }
+    }
+}
+</pre>
+            <p>
+                The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format of the request and/or response.
+                Consumers are expected to be able to map the combinations of content type and content coding they understand to the corresponding CoAP content format IDs listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
+                Producers are advised to only use combinations of content types and content codings in CoAP forms that have such a content format ID available.
+            </p>
+        </section>
+        <section>
+            <h3>Content Negotiation</h3>
+            <p>
+                Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different representations available.
+            </p>
+            <p>
+                Content negotiation is accomplished through the use of CoAP <code>Accept</code> and <code>Content-Format</code> options.
+                The CoAP Accept option is used by clients to request a particular content format, while the <code>Content-Format</code> option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively.
+            </p>
+            <p>
+                The ... can be used to provide a list of one or more content formats that the Thing is able to provide in a CoAP response for the operation.
+                The Consumer selects the most suitable one and sets the <code>Accept</code> option in the request accordingly.
+            </p>
+            <pre id="example-request-accept" class="example" title="...">
+{
+    ...
+}
+</pre>
+            <p>
+                The ... can be used to provide a list of one or more content formats that the Thing is willing to accept in a CoAP request for the operation.
+                The Consumer selects the most suitable one and sets the <code>Content-Format</code> option in the request accordingly.
+            </p>
+            <pre id="example-request-format" class="example" title="...">
+{
+    ...
+}
+</pre>
+        </section>
+        <section>
+            <h3>Caching</h3>
+            <p>
+                CoAP features two mechanisms to make efficient use of network resources and minimize the number of required transmissions.
+                First, a CoAP client may store responses to requests in order to satisfy future requests without sending a new request.
+                A stored response may be used if it is still valid, i.e., if the response's Max-Age value has not been exceeded.
+                Second, a CoAP client may validate a stored response by sending a new request with the ETag from the stored response.
+                This allows the server to quickly respond with a 2.03 (Valid) response if the stored response is still valid.
+            </p>
+            <p>
+                Consumers are generally is expected to make use of both mechanisms to minimize the number of required CoAP transmissions.
+            </p>
+        </section>
+        <section>
+            <h3>Observing Resources</h3>
+            <p>
+                CoAP provides a mechanism for clients to "observe" resources [[RFC7641]], i.e., to request notifications from the server whenever the resource changes.
+                This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.
+            </p>
+            <p>
+                A resource can be observed by sending a GET request with the Observe option set.
+                The server will then respond with the current representation of the resource, as well as send notifications to the client.
+                A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
+            </p>
+            <p>
+                Support for observing resources can be indicating by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
+                However, a consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not possible.
+            </p>
+            <pre id="example-observing-resources" class="example" title="Observing Resources">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "cov:method": "GET",
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "subprotocol": "cov:observe",
+                "op": ["observeproperty"]
+            }]
+        }
+    }
+}
+</pre>
+        </section>
+        <section>
+            <h3>Block-wise Transfers</h3>
+            <p>
+                CoAP supports block-wise transfers to allow large resource representations to be transferred between clients and servers.
+                This feature enables clients and servers to request or provide resource representations in smaller blocks, which can be useful when constrained network conditions make it undesirable to transfer large amounts of data at once.
+            </p>
+            <p>
+                At the time of writing, CoAP supports two mechanisms for block-wise transfers:
+                Block-Wise Transfers [[RFC7959]] and Block-Wise Transfer Options Supporting Robust Transmission [[RFC9177]].
+                In a form, support for these can be indicated by a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member, respectively.
+            </p>
+            <pre id="example-blockwise" class="example" title="Block-wise Transfer">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "cov:blockwise": { }
+            }]
+        }
+    }
+}
+</pre>
+            <p>
+                Additionally, a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member may indicate relevant parameters, such as the largest block size that may be used in a <code>Block2</code> Option.
+            </p>
+            <pre id="example-blockwise-parameters" class="example" title="Block-wise Transfer with Parameters">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "cov:blockwise": {
+                    "cov:block2SZX": 64
+                }
+            }]
+        }
+    }
+}
+</pre>
+        </section>
+        <section>
+            <h3>Conditional Requests</h3>
+            <p>
+                With conditional requests, a CoAP client can include conditions in a request that specify how the server should process the request.
+                If the server cannot satisfy the conditions, it returns a 4.12 (Precondition Failed) response.
+            </p>
+            <p>
+                At the time of writing, CoAP supports three types of conditional requests:
+            </p>
+            <ul>
+                <li><code>If-Match</code> option with an ETag: "only process the request if the target resource exists and has a representation with this ETag"</li>
+                <li><code>If-Match</code> option without an ETag: "only process the request if the target resource exists"</li>
+                <li><code>If-None-Match</code> option without an ETag: "only process the request if the target resource does not exist"</li>
+            </ul>
+            <p>
+                Conditional requests are typically used in the context of larger, multi-step workflows.
+                For example, a CoAP client might want to make sure that a resource has not been modified before it performs some action on it.
+                Therefore, no vocabulary is provided for driving conditional requests from the Thing Description.
+                Instead, consumers are expected to be familiar with the specifics of the workflows in which they are participating and to use conditional requests accordingly.
+            </p>
+        </section>
+        <section>
+            <h3>Hop Limit</h3>
+            <p>
+                The CoAP <code>Hop-Limit</code> option [[RFC8768]] limits the number of hops a CoAP message can take before it is considered undeliverable. This prevents infinite message loops in CoAP networks.
+            </p>
+            <p>
+                In a form, the <code>cov:hopLimit</code> member can be used to set the desired hop limit for a particular CoAP request.
+            </p>
+            <pre id="example-hoplimit" class="example" title="Hop Limit">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "cov:hopLimit": 5
+            }]
+        }
+    }
+}
+</pre>
+        </section>
+        <!--
+        <section>
+            <h3>Request Freshness</h3>
+            <p>
+                ... <code>Echo</code> option [[RFC9175]].
+            </p>
+        </section>
+        <section>
+            <h3>Request Tags</h3>
+            <p>
+                ... <code>Request-Tag</code> option [[RFC9175]].
+            </p>
+        </section>
+        <section>
+            <h3>OSCORE</h3>
+        </section>
+        <section>
+            <h3>EDHOC</h3>
+        </section>
+        -->
     </section>
     <section id="url">
         <h2>URI Schemes</h2>
@@ -201,7 +393,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>coap:method</code></td>
+                        <td><code>cov:method</code></td>
                         <td>Indicates the CoAP method to be used in the request</td>
                         <td>optional</td>
                         <td>
@@ -214,49 +406,19 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><code>coap:format</code></td>
-                        <td>Indicates that a payload in one of the specified formats with a matching CoAP Content-Format option [[RFC7252]] be included in the request</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            or array of
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            <p>
-                                (see the
-                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
-                                registry for the set of possible values)
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:accept</code></td>
-                        <td>Indicates that a CoAP Accept option [[RFC7252]] with one of the specified formats be included in the request</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            or array of
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            <p>
-                                (see the
-                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
-                                registry for the set of possible values)
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:blockwise</code></td>
+                        <td><code>cov:blockwise</code></td>
                         <td>Indicates that a block-wise transfer [[RFC7959]] is supported</td>
                         <td>optional</td>
                         <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
-                        <td><code>coap:qblockwise</code></td>
+                        <td><code>cov:qblockwise</code></td>
                         <td>Indicates that a quick block-wise transfer [[RFC9177]] is supported</td>
                         <td>optional</td>
-                        <td><a href="#BlockWiseTransferParameters">QBlockWiseTransferParameters</a></td>
+                        <td><a href="#BlockWiseTransferParameters">BlockWiseTransferParameters</a></td>
                     </tr>
                     <tr>
-                        <td><code>coap:hopLimit</code></td>
+                        <td><code>cov:hopLimit</code></td>
                         <td>Indicates that a CoAP Hop-Limit option [[RFC8768]] be included in the request</td>
                         <td>optional</td>
                         <td>
@@ -279,8 +441,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>coap:block2SZX</code></td>
-                        <td>Indicates the largest block size that may be used in a Block2 Option</td>
+                        <td><code>cov:block2SZX</code></td>
+                        <td>Indicates the largest block size that may be used in a Block2 or Q-Block2 Option</td>
                         <td>optional</td>
                         <td>
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
@@ -288,41 +450,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><code>coap:block1SZX</code></td>
-                        <td>Indicates the largest block size that may be used in a Block1 Option</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            <p>(one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>)</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        <section id="QBlockWiseTransferParameters">
-            <h3>QBlockWiseTransferParameters</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>coap:qblock2SZX</code></td>
-                        <td>Indicates the largest block size that may be used in a Q-Block2 Option</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
-                            <p>(one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>)</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>coap:qblock1SZX</code></td>
-                        <td>Indicates the largest block size that may be used in a Q-Block1 Option</td>
+                        <td><code>cov:block1SZX</code></td>
+                        <td>Indicates the largest block size that may be used in a Block1 or Q-Block1 Option</td>
                         <td>optional</td>
                         <td>
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
@@ -352,75 +481,75 @@
                 <tbody>
                     <tr>
                         <td><code>readproperty</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>writeproperty</code></td>
-                        <td><code>"coap:method": "PUT"</code></td>
+                        <td><code>"cov:method": "PUT"</code></td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>readmultipleproperties</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>writemultipleproperties</code></td>
-                        <td><code>"coap:method": "PUT"</code></td>
+                        <td><code>"cov:method": "PUT"</code></td>
                     </tr>
                     <tr>
                         <td><code>readallproperties</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>writeallproperties</code></td>
-                        <td><code>"coap:method": "PUT"</code></td>
+                        <td><code>"cov:method": "PUT"</code></td>
                     </tr>
                     <tr>
                         <td><code>observeallproperties</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveallproperties</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>invokeaction</code></td>
-                        <td><code>"coap:method": "POST"</code></td>
+                        <td><code>"cov:method": "POST"</code></td>
                     </tr>
                     <tr>
                         <td><code>queryaction</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>cancelaction</code></td>
-                        <td><code>"coap:method": "POST"</code></td>
+                        <td><code>"cov:method": "POST"</code></td>
                     </tr>
                     <tr>
                         <td><code>queryallactions</code></td>
-                        <td><code>"coap:method": "GET"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>subscribeevent</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeevent</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>subscribeallevents</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeallevents</code></td>
-                        <td><code>"coap:method": "GET"</code>, <code>"subprotocol": "coap:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
                     </tr>
                 </tbody>
             </table>
@@ -429,10 +558,6 @@
             <h3>Possible mappings</h3>
             <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is meant to be informative but it provides guidelines for implementers.</p>
         </section>
-    </section>
-    <section>
-        <h2>Examples</h2>
-        <p class="ednote">TODO: Provide a compressive list of examples about how this binding template can be used within forms or Thing Descriptions </p>
     </section>
 </body>
 

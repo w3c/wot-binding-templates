@@ -185,7 +185,8 @@
                 A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
             </p>
             <p>
-                Observing resources can be enabled by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
+                Support for observing resources can be indicating by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
+                However, a consumer can always fall back to polling a resource if osberving a resource is permanently or temporarily not possible.
             </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {

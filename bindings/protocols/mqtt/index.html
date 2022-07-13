@@ -418,17 +418,24 @@
         <code>mqv:retain</code> is used to indicate the ability to read the property rather than just observe it. 
       </p>
       <pre id="example-property" class="example" title="How to describe a complex property">
-        {
+        [{
             "href": "mqtt://broker.com:1883",
             "op": [
-                "readproperty",
                 "writeproperty",
-                "observeproperty"
             ], 
             "mqv:retain" : true,
             "mqv:topic": "application/devices/thing1/properties/test",
-            "mqv:filter": "application/devices/thing1/properties/test",
+        },
+        {
+          "href": "mqtt://broker.com:1883",
+          "op": [
+          "readproperty",
+          "observeproperty"
+          ],
+          "mqv:retain" : true,
+          "mqv:filter": "application/devices/thing1/properties/test",
         }
+        ]
       </pre>
       <p>
         If the implementer wants to give the ability to WoT clients to conveniently observe all properties in a single call, it is possible
@@ -450,18 +457,25 @@
         and exposers will get the message at the specified quality of service.
       </p>
       <pre id="example-qos" class="example" title="Use qos parameter">
-              {
+              [{
                   "href": "mqtt://broker.com:1883",
                   "op": [
-                      "readproperty",
                       "writeproperty",
-                      "observeproperty"
                   ], 
                   "mqv:qos": "quality:1", 
                   "mqv:retain" : true,
                   "mqv:topic": "application/devices/thing1/properties/test",
+              },
+              {
+                  "href": "mqtt://broker.com:1883",
+                  "op": [
+                      "readproperty",
+                      "observeproperty"
+                  ], 
+                  "mqv:qos": "quality:1", 
+                  "mqv:retain" : true,
                   "mqv:filter": "application/devices/thing1/properties/test",
-              }
+              }]
      </pre>
       <p>
         Finally, [[[#example-full]]] reports a full Thing Description for a fictional commercial device. The broker address is only for

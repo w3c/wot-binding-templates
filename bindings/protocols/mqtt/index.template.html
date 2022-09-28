@@ -61,10 +61,10 @@
 <body>
     <section id="abstract">
       In the context of the Web of Things, a Binding Template is 
-      a blueprint that gives guidance on how to implement a specific IoT protocol, data format or IoT platform. This document 
-      gives implementation guidelines regarding the MQTT protocol. The MQTT protocol is
-      a lightweight, asynchronous, transport-independent, open protocol for publishing and subscribing to messages. It has 
-      been employed in many IoT platforms and IoT applications for its simplicity and scalability.
+      a blueprint that gives guidance on how to implement a specific IoT protocol, data format or IoT platform. 
+      This document gives implementation guidelines regarding the MQTT protocol. 
+      The MQTT protocol is a lightweight, asynchronous, transport-independent, open protocol for publishing and subscribing to messages. 
+      It has been employed in many IoT platforms and IoT applications for its simplicity and scalability.
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>
@@ -75,20 +75,27 @@
             specific topics and subscribers receive notifications for filters that match one
             or more topics. The protocol is well-known for its simplicity and scalability and
             is used in many IoT platforms and applications.
-            
+        </p>
+        <p>
             In the context of the Internet of Things, many vendors expose MQTT publishers mixed with 
             Web protocols like HTTP. This document explain how to describe MQTT endpoints and payloads with 
             Thing Descriptions (TDs) the core building block of the Web of Things (WoT) [[WOT-ARCHITECTURE]].
         </p>
+        <p>
+            This version of the document is designed around each affordance having its own MQTT topic.
+            Usage of MQTT with an additional protocol on top that uses topics with specific payloads is possible, but it
+            implies defining a payload structure in each affordance.
+            Thus, this way of using MQTT is not supported out-of-the-box in this document.
+        </p>
     </section>
     <section id="conformance">
         <p>
-        Forms of a Thing Description instance with MQTT Binding complies with this specification if it follows 
-        the normative statements in <a href="#possible-mappings"></a> and <a href="#default-mappings"></a>.
+            Forms of a Thing Description instance with MQTT Binding complies with this specification if it follows 
+            the normative statements in <a href="#possible-mappings"></a> and <a href="#default-mappings"></a>.
         </p>
         <p>
-        A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
-        containing MQTT Binding is provided in the <a href="mqtt.schema.json">GitHub repository</a>.
+            A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
+            containing MQTT Binding is provided in the <a href="mqtt.schema.json">GitHub repository</a>.
         </p>
         
     </section>
@@ -111,10 +118,9 @@
                 <li><code>{address}</code> is the IP address of the MQTT broker</li>
                 <li><code>{port}</code> is the port of the MQTT broker</li>
             </ul>
-            Notice that the URL does not contain any information regarding [[[#topicname]]] or [[[#topicfilter]]]. These two
-            parameters
-            must to be specified using their own parameter as described in [[[#form-terms]]]. This to avoid ambiguities
-            regarding the starting <code>/</code> character and the usage of <code>#</code> that can be confused with URL
+            Notice that the URL does not contain any information regarding [[[#topicname]]] or [[[#topicfilter]]]. 
+            These two parameters must be specified using their own parameter as described in [[[#form-terms]]]. 
+            This is necessary to avoid ambiguities regarding the starting <code>/</code> character and the usage of <code>#</code> which can be confused with the URL
             fragment character.
         </p>
         <pre id="example-simple-url" class="example" title="MQTT URL">
@@ -145,8 +151,8 @@
       <h4>Control Packet</h4>
       <p>
         In MQTT protocol messages are called Control Packets. An MQTT Control Packet consists of up to three parts: fixed header (present in all Control Packets), variable header, payload. 
-          The fixed header consists of a packet type and flags. The main packet types that can be uses in a Form are listed below. Although, it is possible to use different
-        values of [[[#controlpacket]]] in forms, it is recommended to use the mapping defined in [[[#default-mappings]]].
+          The fixed header consists of a packet type and flags. The main packet types that can be uses in a Form are listed below. 
+          Although it is possible to use different values of [[[#controlpacket]]] in forms, it is recommended to use the mapping defined in [[[#default-mappings]]].
       </p>
       <table class="def">
         <thead>
@@ -264,9 +270,9 @@
         {
             "href": "mqtt://broker.com:1883",
             "op": [
-                "invokeaction",
+                "invokeaction"
             ], 
-            "mqv:topic": "application/devices/thing1/program/commands/reset",
+            "mqv:topic": "application/devices/thing1/program/commands/reset"
         }
       </pre>
       <p>
@@ -277,25 +283,26 @@
         [{
             "href": "mqtt://broker.com:1883",
             "op": [
-                "writeproperty",
+                "writeproperty"
             ], 
             "mqv:retain" : true,
-            "mqv:topic": "application/devices/thing1/properties/test",
+            "mqv:topic": "application/devices/thing1/properties/test"
         },
         {
-          "href": "mqtt://broker.com:1883",
-          "op": [
-          "readproperty",
-          "observeproperty"
-          ],
-          "mqv:retain" : true,
-          "mqv:filter": "application/devices/thing1/properties/test",
-        }
+            "href": "mqtt://broker.com:1883",
+            "op": [
+                "readproperty",
+                "observeproperty"
+            ],
+            "mqv:retain" : true,
+            "mqv:filter": "application/devices/thing1/properties/test"
+            }
         ]
       </pre>
       <p>
         If the implementer wants to give the ability to WoT clients to conveniently observe all properties in a single call, it is possible
-        to use observeallproperties form in the root of a Thing Description. For example, in [[[#example-property-observeall]]] all the messages to topics 
+        to use <code>observeallproperties</code> form in the root of a Thing Description. 
+        For example, in [[[#example-property-observeall]]] all the messages to topics 
         under <code>application/devices/thing1/properties/</code> will be delivered.
       </p>
       <pre id="example-property-observeall" class="example" title="Root observe all form">
@@ -304,7 +311,7 @@
                   "op": [
                       "observeallproperties"
                   ], 
-                  "mqv:filter": "application/devices/thing1/properties/#",
+                  "mqv:filter": "application/devices/thing1/properties/#"
               }
       </pre>
       <p>
@@ -316,11 +323,11 @@
               [{
                   "href": "mqtt://broker.com:1883",
                   "op": [
-                      "writeproperty",
+                      "writeproperty"
                   ], 
                   "mqv:qos": "quality:1", 
                   "mqv:retain" : true,
-                  "mqv:topic": "application/devices/thing1/properties/test",
+                  "mqv:topic": "application/devices/thing1/properties/test"
               },
               {
                   "href": "mqtt://broker.com:1883",
@@ -330,7 +337,7 @@
                   ], 
                   "mqv:qos": "quality:1", 
                   "mqv:retain" : true,
-                  "mqv:filter": "application/devices/thing1/properties/test",
+                  "mqv:filter": "application/devices/thing1/properties/test"
               }]
      </pre>
       <p>
@@ -338,12 +345,12 @@
         demonstration purposes. 
       </p>
       <pre id="example-full" class="example" title="A complex thing description using MQTT binding">
-    {
+{
     "@context": "https://www.w3.org/2019/wot/td/v1",
-    "title": "Gas sensor",
+    "title": "Gas Sensor",
     "id": "urn:dev:test",
     "description": "Gas sensor is a sensor that can measure combustible gas concentration and issue an alarm in the event of a gas leak.",
-        "securityDefinitions": {
+    "securityDefinitions": {
         "nosec_sc": {
             "scheme": "nosec"
         }
@@ -351,7 +358,7 @@
     "security": "nosec_sc",
     "properties": {
         "status": {
-            "title": "Sensor status",
+            "title": "Sensor Status",
             "observable": true,
             "enum": [
                 "unknown",
@@ -363,13 +370,13 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:filter": "application/deviceid/sensor/operation",
+                    "mqv:filter": "application/deviceid/sensor/operation",
                     "op": "observeproperty"
                 }
             ]
         },
         "concentration": {
-            "title": "Gas concentration",
+            "title": "Gas Concentration",
             "observable": true,
             "readOnly": false,
             "minimum": -1,
@@ -378,7 +385,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com",
-                    "mqtt:filter": "application/deviceid/sensor/concentration",
+                    "mqv:filter": "application/deviceid/sensor/concentration",
                     "op": "observeproperty"
                 }
             ]
@@ -397,7 +404,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com",
-                    "mqtt:filter": "application/deviceid/sensor/gas",
+                    "mqv:filter": "application/deviceid/sensor/gas",
                     "op": "observeproperty"
                 }
             ]
@@ -419,7 +426,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:filter": "application/deviceid/valve/0/state",
+                    "mqv:filter": "application/deviceid/valve/0/state",
                     "op": "observeproperty"
                 }
             ]
@@ -431,7 +438,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:topic": "application/deviceid/sensor/mute",
+                    "mqv:topic": "application/deviceid/sensor/mute"
                 }
             ]
         },
@@ -440,7 +447,7 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:topic": "application/deviceid/sensor/unmute",
+                    "mqv:topic": "application/deviceid/sensor/unmute"
                 }
             ]
         },
@@ -456,11 +463,11 @@
             "forms": [
                 {
                     "href": "mqtt://broker.com/",
-                    "mqtt:topic": "application/deviceid/valve/0/command",
+                    "mqv:topic": "application/deviceid/valve/0/command"
                 }
             ]
         }
-    },
+    }
 }
     </pre>
     </section>

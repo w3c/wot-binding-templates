@@ -90,6 +90,9 @@ $ npm i # to do once to install dependencies
 $ node render.js
 ```
 
+This rendering process is mandated through the use of a [Husky](https://www.npmjs.com/package/husky) pre-commit hook.
+Make sure to run `npm install` first to install husky in the first place.
+
 ## Editing Conventions
 
 Please use [EditorConfig](https://editorconfig.org/) by installing a plugin for your favorite editor.

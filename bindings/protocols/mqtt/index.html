@@ -83,7 +83,7 @@
         </p>
         <p>
             This version of the document is designed around each affordance having its own MQTT topic.
-            Usage of MQTT with an additional protocol on top that uses topics with specific payloads is possible but it
+            Usage of MQTT with an additional protocol on top that uses topics with specific payloads is possible, but it
             implies defining a payload structure in each affordance.
             Thus, this way of using MQTT is not supported out-of-the-box in this document.
         </p>
@@ -119,8 +119,8 @@
                 <li><code>{port}</code> is the port of the MQTT broker</li>
             </ul>
             Notice that the URL does not contain any information regarding [[[#topicname]]] or [[[#topicfilter]]]. 
-            These two parameters must to be specified using their own parameter as described in [[[#form-terms]]]. 
-            This to avoid ambiguities regarding the starting <code>/</code> character and the usage of <code>#</code> that can be confused with URL
+            These two parameters must be specified using their own parameter as described in [[[#form-terms]]]. 
+            This is necessary to avoid ambiguities regarding the starting <code>/</code> character and the usage of <code>#</code> which can be confused with the URL
             fragment character.
         </p>
         <pre id="example-simple-url" class="example" title="MQTT URL">

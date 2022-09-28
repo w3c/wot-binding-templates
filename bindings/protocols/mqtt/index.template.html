@@ -28,7 +28,7 @@
             ],
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/",
             shortName: "wot-mqtt-binding",
-            github: "https://github.com/w3c/wot-binding-templates/tree/main/bindings/protocols/mqtt",
+            github: "https://github.com/w3c/wot-binding-templates",
             localBiblio: {
               "MQTT": {
                 title: "MQTT Version 3.1.1",
@@ -55,7 +55,7 @@
             }
         };
     </script>
-    <title>MQTT Binding Template</title>
+    <title>Web of Things (WoT) MQTT Binding Template</title>
 </head>
 
 <body>
@@ -75,10 +75,17 @@
             specific topics and subscribers receive notifications for filters that match one
             or more topics. The protocol is well-known for its simplicity and scalability and
             is used in many IoT platforms and applications.
-            
+        </p>
+        <p>
             In the context of the Internet of Things, many vendors expose MQTT publishers mixed with 
             Web protocols like HTTP. This document explain how to describe MQTT endpoints and payloads with 
             Thing Descriptions (TDs) the core building block of the Web of Things (WoT) [[WOT-ARCHITECTURE]].
+        </p>
+        <p>
+            This version of the document is designed around each affordance having its own MQTT topic.
+            Usage of MQTT with an additional protocol on top that uses topics with specific payloads is possible, but it
+            implies defining a payload structure in each affordance.
+            Thus, this way of using MQTT is not supported out-of-the-box in this document.
         </p>
     </section>
     <section id="conformance">
@@ -112,8 +119,8 @@
                 <li><code>{port}</code> is the port of the MQTT broker</li>
             </ul>
             Notice that the URL does not contain any information regarding [[[#topicname]]] or [[[#topicfilter]]]. 
-            These two parameters must to be specified using their own parameter as described in [[[#form-terms]]]. 
-            This to avoid ambiguities regarding the starting <code>/</code> character and the usage of <code>#</code> that can be confused with URL
+            These two parameters must be specified using their own parameter as described in [[[#form-terms]]]. 
+            This is necessary to avoid ambiguities regarding the starting <code>/</code> character and the usage of <code>#</code> which can be confused with the URL
             fragment character.
         </p>
         <pre id="example-simple-url" class="example" title="MQTT URL">

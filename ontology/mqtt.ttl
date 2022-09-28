@@ -43,8 +43,8 @@ _:genid4 rdf:type schema:Organization ;
 ###  https://www.w3.org/2019/wot/mqtt#sendsControlPacket
 :sendsControlPacket rdf:type owl:ObjectProperty ;
     rdfs:label "sendsControlPacket"@en ;
-    rdfs:comment """In MQTT protocol clients sends <a href='#control-packet'>control packet</a>s between each other using and intermediary called Server (or broker). 
-    This property describes the action of sending a <a href='#control-packet'>ControlPacket</a> in a <a href='#network-connection'>NetworkConnection</a>"""@en ;
+    rdfs:comment """In MQTT protocol clients sends <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#control-packet'>control packet</a>s between each other using and intermediary called Server (or broker). 
+    This property describes the action of sending a <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#control-packet'>ControlPacket</a> in a <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#network-connection'>NetworkConnection</a>"""@en ;
     rdfs:range :ControlPacket ;
     rdfs:domain :Client .
 
@@ -69,7 +69,7 @@ _:genid4 rdf:type schema:Organization ;
 :hasTopicName rdf:type owl:ObjectProperty ;
                 rdfs:domain :PUBLISH ;
                 schema:domainIncludes :PUBLISH ;
-                rdfs:comment "This field reports the <a href='#topic-name'>TopicName</a> of a packet"@en ;
+                rdfs:comment "This field reports the <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#topic-name'>TopicName</a> of a packet"@en ;
                 rdfs:label "hasTopicName"@en ;
                 schema:rangeIncludes :TopicName ;
                 rdfs:range :TopicName .
@@ -78,7 +78,7 @@ _:genid4 rdf:type schema:Organization ;
 :hasTopicFilters rdf:type owl:ObjectProperty ;
                 rdfs:domain :SUBSCRIBE, :UNSUBSCRIBE ;
                 schema:domainIncludes :SUBSCRIBE, :UNSUBSCRIBE ;
-                rdfs:comment "This field reports the list of <a href='#topic-filter'>TopicFilter</a>s of a packet"@en ;
+                rdfs:comment "This field reports the list of <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#topic-filter'>TopicFilter</a>s of a packet"@en ;
                 rdfs:label "hasTopicFilters"@en ;
                 schema:rangeIncludes :TopicFilter ;
                 rdfs:range :TopicFilter .

@@ -100,7 +100,7 @@
             "forms": [{
                 "cov:method": "GET",
                 "href": "coap://[2001:DB8::1]/status",
-                "contentType": "text/plain;charset=utf-8",
+                "contentType": "",
                 "op": ["readproperty"]
             }]
         }
@@ -120,16 +120,15 @@
             "readOnly": true,
             "forms": [{
                 "href": "coap://[2001:DB8::1]/status",
-                "contentType": "text/plain;charset=utf-8"
+                "contentType": ""
             }]
         }
     }
 }
 </pre>
             <p>
-                The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format of the request and/or response.
-                Consumers are expected to be able to map the combinations of content type and content coding they understand to the corresponding CoAP content format IDs listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
-                Producers are advised to only use combinations of content types and content codings in CoAP forms that have such a content format ID available.
+                The <code>contentType</code> member of a form is mandatory (with default value "application/json") but not used with CoAP.
+                Instead, CoAP uses the concept of content formats (i.e., the combination of a content type and a content coding, identified by a numeric ID) and the <code>contentType</code> member is set to the empty string.
             </p>
         </section>
         <section>
@@ -142,21 +141,51 @@
                 The CoAP Accept option is used by clients to request a particular content format, while the <code>Content-Format</code> option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively.
             </p>
             <p>
-                The ... can be used to provide a list of one or more content formats that the Thing is able to provide in a CoAP response for the operation.
+                The <code>cov:available</code> member of a form can be used to provide a list of one or more content formats that the Thing is able to provide in a CoAP response for the operation.
                 The Consumer selects the most suitable one and sets the <code>Accept</code> option in the request accordingly.
             </p>
-            <pre id="example-request-accept" class="example" title="...">
+            <pre id="example-request-accept" class="example" title="Content Negotiation: Available response payload formats">
 {
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "",
+                "cov:available": [60, 50]
+            }]
+        }
+    }
 }
 </pre>
             <p>
-                The ... can be used to provide a list of one or more content formats that the Thing is willing to accept in a CoAP request for the operation.
+                The <code>cov:acceptable</code> member of a form can be used to provide a list of one or more content formats that the Thing is willing to accept in a CoAP request for the operation.
                 The Consumer selects the most suitable one and sets the <code>Content-Format</code> option in the request accordingly.
             </p>
-            <pre id="example-request-format" class="example" title="...">
+            <pre id="example-request-format" class="example" title="Content Negotiation: Acceptable request payload formats">
 {
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
+    "properties": {
+        "logo": {
+            "type": "string",
+            "contentEncoding": "base64",
+            "contentMediaType": "image/png",
+            "forms": [{
+                "href": "coap://[2001:DB8::1]/logo",
+                "contentType": "",
+                "op": ["readproperty"]
+            }, {
+                "href": "coap://[2001:DB8::1]/logo",
+                "contentType": "",
+                "cov:acceptable": [21, 22, 23],
+                "op": ["writeproperty"]
+            }]
+        }
+    }
 }
 </pre>
         </section>
@@ -199,7 +228,7 @@
             "forms": [{
                 "cov:method": "GET",
                 "href": "coap://[2001:DB8::1]/status",
-                "contentType": "text/plain;charset=utf-8",
+                "contentType": "",
                 "subprotocol": "cov:observe",
                 "op": ["observeproperty"]
             }]
@@ -229,7 +258,7 @@
             "readOnly": true,
             "forms": [{
                 "href": "coap://[2001:DB8::1]/status",
-                "contentType": "text/plain;charset=utf-8",
+                "contentType": "",
                 "cov:blockwise": { }
             }]
         }
@@ -249,7 +278,7 @@
             "readOnly": true,
             "forms": [{
                 "href": "coap://[2001:DB8::1]/status",
-                "contentType": "text/plain;charset=utf-8",
+                "contentType": "",
                 "cov:blockwise": {
                     "cov:block2SZX": 64
                 }
@@ -298,7 +327,7 @@
             "readOnly": true,
             "forms": [{
                 "href": "coap://[2001:DB8::1]/status",
-                "contentType": "text/plain;charset=utf-8",
+                "contentType": "",
                 "cov:hopLimit": 5
             }]
         }
@@ -406,6 +435,38 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><code>cov:available</code></td>
+                        <td>Indicates that a CoAP <code>Accept</code> option selecting one of the listed formats (in decreasing order of preference) is to be included in the request</td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            <br>&ndash; or &ndash;<br>
+                            array of
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            <p>
+                                (see the
+                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
+                                registry for the set of possible values)
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>cov:acceptable</code></td>
+                        <td>Indicates that a payload in one of the listed formats  (in decreasing order of preference) is to be included in the request (and the CoAP <code>Content-Format</code> option set accordingly)</td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            <br>&ndash; or &ndash;<br>
+                            array of
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                            <p>
+                                (see the
+                                <a href="https://www.iana.org/assignments/core-parameters/#content-formats">CoAP Content-Formats</a>
+                                registry for the set of possible values)
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><code>cov:blockwise</code></td>
                         <td>Indicates that a block-wise transfer [[RFC7959]] is supported</td>
                         <td>optional</td>
@@ -424,6 +485,18 @@
                         <td>
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
                         </td>
+                    </tr>
+                    <tr>
+                        <td><code>contentType</code></td>
+                        <td>N/A</td>
+                        <td>mandatory</td>
+                        <td><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> with <code><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#rf-length">length</a> = 0</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>contentCoding</code></td>
+                        <td>N/A</td>
+                        <td>optional</td>
+                        <td><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> with <code><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#rf-length">length</a> = 0</code></td>
                     </tr>
                 </tbody>
             </table>

@@ -177,12 +177,12 @@ _:genid4 rdf:type schema:Organization ;
 
 ###  https://www.w3.org/2019/wot/mqtt#TopicName
 :TopicName rdf:type owl:Class ;
-       rdfs:comment "The label attached to an Application Message which is matched against the Subscriptions known to the Server. The Server sends a copy of the Application Message to each Client that has a matching Subscription."@en ;
+       rdfs:comment "The label attached to an Application Message which is matched against the Subscriptions known to the Server. The Server sends a copy of the Application Message to each Client that has a matching Subscription. TopicName is used ony for publication to indicate a single topic, and thus MUST not contain any wildcards."@en ;
        rdfs:label "Topic Name"@en .
 
 ###  https://www.w3.org/2019/wot/mqtt#TopicFilter
 :TopicFilter rdf:type owl:Class ;
-       rdfs:comment "An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters."@en ;
+       rdfs:comment "An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters. TopicFilter is used for subscriptions to indicate a topic or a set of topics when a wildcard character is used."@en ;
        rdfs:label "Topic Filter"@en .
 
 ###  https://www.w3.org/2019/wot/mqtt#NetworkConnection

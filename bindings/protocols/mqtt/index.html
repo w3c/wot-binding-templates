@@ -277,7 +277,7 @@
       <p>
         <!-- Generate description form the ontology-->
         
-        The label attached to an Application Message which is matched against the Subscriptions known to the Server. The Server sends a copy of the Application Message to each Client that has a matching Subscription. TopicName is used for subscriptions and publication to indicate a single topic.
+        The label attached to an Application Message which is matched against the Subscriptions known to the Server. The Server sends a copy of the Application Message to each Client that has a matching Subscription. TopicName is used ony for publication to indicate a single topic, and thus MUST not contain any wildcards.
         
       </p>
     
@@ -287,7 +287,7 @@
       <p>
         <!-- Generate description form the ontology-->
         
-        An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters. TopicFilter is used mainly for subscriptions to indicate a set of topics.
+        An expression contained in a Subscription, to indicate an interest in one or more topics. A Topic Filter can include wildcard characters. TopicFilter is used for subscriptions to indicate a topic or a set of topics when a wildcard character is used.
         
       </p>
     

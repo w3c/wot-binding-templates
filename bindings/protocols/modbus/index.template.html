@@ -67,7 +67,7 @@
     <section id="url">
         <h2>URL format</h2>
         Historically different URL scheme has been used inside the Modbus community: <code>modbus+tpc://</code>, <code>modbus+ascii://</code> and <code>modbus+rtu://</code>.
-        Considering that in Web of Things context all protocol bindings are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
+        Considering that in Web of Things context all protocol binding templates are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
         was selected as the only valid URL scheme. The following shows the typical structure of an URL of the Modbus protocol:
         <pre>
             modbus+tcp://{address}:{port}/{?unitID}
@@ -84,7 +84,8 @@
     </section>
     <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
-        This section describes the vocabulary used in the Modbus protocol. A protocol binding implementation should use the vocabulary defined in this section to
+        This section describes the vocabulary used in the Modbus protocol. 
+        A protocol binding template implementation should use the vocabulary defined in this section to
         describe the different configuration that can be used to exchanged data between Web of Things.
         <section>
             <h3>Form terms</h3>

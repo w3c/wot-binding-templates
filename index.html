@@ -135,8 +135,8 @@
         </p>
         <p>
             This document acts as the base and explains how other binding templates should be designed.
-            Concrete binding templates are then provided in their respective documents that are linked to
-            from this document.
+            Concrete binding templates are then provided in their respective documents, referred to as subspecification,
+             that are linked to from this document.
         </p>
     </section>
 
@@ -200,6 +200,28 @@
             etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
             of the WoT Architecture specification [[WOT-ARCHITECTURE]].
         </p>
+
+        <p>
+            In addition, this specification introduces the following definitions:
+        </p>
+
+        <dl>
+            <dt>
+                <dfn id="dfn-subspecification">Binding Template Subspecification</dfn>
+            </dt>
+            <dd>
+                A binding template document that is published separately from this document (called the core document) that
+                specifies a binding template for a protocol, payload format or platform.
+                All binding template subspecifications respect the rules set in the Core Specification.              
+            </dd>
+            <dt>
+                <dfn id="dfn-subspecification">Binding Template Core Specification</dfn>
+            </dt>
+            <dd>
+                This document.
+                All binding template subspecifications respect the rules set in the Core Specification.
+            </dd>
+        </dl>
 
     </section>
 

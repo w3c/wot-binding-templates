@@ -128,11 +128,16 @@
 </pre>
             <p>
                 The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format of the request and/or response.
-                Consumers are expected to be able to map the combinations of content type and content coding they understand to the corresponding CoAP content format IDs listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
-                Producers are advised to only use combinations of content types and content codings in CoAP forms that have such a content format ID available.
+                In <abbr title="Constrained Application Protocol">CoAP</abbr>, combinations of content type and content coding are encoded using standardized values listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
+                Therefore, not every combination of content type and content coding can be used with CoAP.
+                Furthermore, even parameters are included in the mapping: in [[[#example-request-defaults]]], the content type <code>text/plain;charset=utf-8</code> would be mapped to Content-Format ID 0.
+                Omitting the <code>charset</code> parameter, for instance, would break a literal mapping from content type to Content-Format in this case.
+            </p>
+            <p>
+                Section [[[#content-negotiation]]] introduces the additional vocabulary terms <code>cov:contentFormat</code> and <code>cov:accept</code> to deal with ambiguities of content types and content codings in the context of CoAP, and to give Consumers guidance for the content negotiation process.
             </p>
         </section>
-        <section>
+        <section id="content-negotiation">
             <h3>Content Negotiation</h3>
             <p>
                 Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different representations available.
@@ -142,23 +147,56 @@
                 The CoAP Accept option is used by clients to request a particular content format, while the <code>Content-Format</code> option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively.
             </p>
             <p>
-                The ... can be used to provide a list of one or more content formats that the Thing is able to provide in a CoAP response for the operation.
-                The Consumer selects the most suitable one and sets the <code>Accept</code> option in the request accordingly.
+                Mapping the string-based <code>contentType</code> and <code>contentCoding</code> fields to a numeric Content-Format can be difficult for a Consumer for a number of reasons:
+                First, a Consumer needs to be aware of all potential mappings between the string-based and the numerical representations.
+                Furthermore, since there is no well-defined algorithm for converting a combination of <code>contentType</code> and <code>contentCoding</code> to a CoAP Content-Format, the process might be prone to error.
             </p>
-            <pre id="example-request-accept" class="example" title="...">
-{
-    ...
-}
-</pre>
             <p>
-                The ... can be used to provide a list of one or more content formats that the Thing is willing to accept in a CoAP request for the operation.
-                The Consumer selects the most suitable one and sets the <code>Content-Format</code> option in the request accordingly.
+                Therefore, this document introduces the vocabulary term <code>cov:contentFormat</code> for providing a hint to simplify the conversion for a Consumer.
+                It can be used in all Thing Description classes that contain the <code>contentType</code> and <code>contentCoding</code> fields.
+                If the field <code>cov:contentFormat</code> is present, it must match the string representation expressed by <code>contentType</code> and <code>contentCoding</code>.
+                Corresponding with the default <code>contentType</code> value <code>application/json</code>, Consumers are supposed to assume a Content-Format value 50 if <code>cov:contentFormat</code> and <code>application/json</code> is not present.
             </p>
-            <pre id="example-request-format" class="example" title="...">
-{
-    ...
-}
-</pre>
+            <p>
+                Forms may contain a <code>cov:accept</code> field to explicitly require a Consumer to provide an Accept option.
+                If a <code>cov:accept</code> member is present in a Form, then the Consumer must use the contained value in an Accept option when requesting the described resource.
+            </p>
+            <p>
+                In the case of the following example, a Consumer trying to invoke the <code>start</code> Action would include a <code>Content-Format</code> option with value 50 (<code>application/json</code>) and an <code>Accept</code> option with value 60 (<code>application/cbor</code>) in its request when choosing the first Form provided.
+                Since both forms have the same <code>href</code>, use of <code>Accept</code> option allows the Consumer to choose the correct form.
+            </p>
+            <pre id="example-request-contentFormat" class="example" title="A simple Thing Description using CoAP Content-Formats in an Action Affordance.">
+                {
+                    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+                    ...
+                    "actions": {
+                        "start": {
+                            "input": { "type": "integer" },
+                            "output": { "type": "string" },
+                            "forms": [
+                                {
+                                    "href": "coap://[2001:DB8::1]/start",
+                                    "cov:accept": 60,
+                                    "response": {
+                                        "contentType": "application/cbor",
+                                        "cov:contentFormat": 60
+                                    }
+                                },
+                                {
+                                    "href": "coap://[2001:DB8::1]/start",
+                                    "contentType": "application/cbor",
+                                    "cov:contentFormat": 60,
+                                    "cov:accept": 50,
+                                    "response": {
+                                        "contentType": "application/json",
+                                        "cov:contentFormat": 50
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+                </pre>
         </section>
         <section>
             <h3>Caching</h3>
@@ -423,6 +461,59 @@
                         <td>optional</td>
                         <td>
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"><code>unsignedByte</code></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>cov:contentFormat</code></td>
+                        <td>
+                            Indicates a numeric CoAP Content-Format [[RFC7252]] as a combination of Media Type and Content Coding.
+                            Must match the given <code>contentType</code> and <code>contentCoding</code> members.
+                        </td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>cov:accept</code></td>
+                        <td>Indicates that a Consumer must include an Accept option [[RFC7252]] with the given value when requesting the resource associated with this Form.
+                        </td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="ResponseParameters">
+            <h3>Response terms</h3>
+            <p>
+                The following vocabulary terms are usable in the <code>ExpectedResponse</code> and <code>AdditionalExpectedResponse</code> classes.
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>cov:contentFormat</code></td>
+                        <td>
+                            Indicates a numeric CoAP Content-Format [[RFC7252]] as a combination of Media Type and Content Coding.
+                            Must match the given <code>contentType</code> member.
+                            <!--
+                                Note: contentCoding is not defined for ExpectedResponse/AdditionalExpectedResponse: https://github.com/w3c/wot-thing-description/issues/1741
+                                Shall we mention it regardless?
+                            -->
+                        </td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"><code>unsignedShort</code></a>
                         </td>
                     </tr>
                 </tbody>

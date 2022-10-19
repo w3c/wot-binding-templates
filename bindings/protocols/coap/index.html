@@ -17,6 +17,16 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
             shortName: "wot-coap-binding",
             github: "https://github.com/w3c/wot-binding-templates",
+            otherLinks: [{
+                key: "Core Binding Templates Specification",
+                data: [
+                    {
+                    value: "Web of Things (WoT) Binding Templates",
+                    href: "../../../index.html"
+                    }
+                ]
+                }
+            ]
         };
     </script>
     <title>Web of Things (WoT) CoAP Binding Template</title>
@@ -24,7 +34,18 @@
 
 <body>
     <section id='abstract'>
-        <p class="ednote">TODO: Provide a short overview of the document and the protocol binding features.</p>
+        <p>
+            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to 
+            implement a specific IoT protocol, data format or IoT platform.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
+            This document gives implementation guidelines regarding the Constrained Application Protocol (CoAP), which 
+            is a specialized web transfer protocol for use with constrained nodes and constrained (e.g., low-power, lossy) networks.
+        </p>
+        <p>
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document, 
+            and associated rules which allow to describe WoT operations using CoAP over the network.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
+        </p>
     </section>
     <section id='introduction'>
         <h2>Introduction</h2>

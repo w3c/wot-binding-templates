@@ -18,6 +18,16 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/",
             shortName: "wot-modbus-binding",
             github: "https://github.com/w3c/wot-binding-templates",
+            otherLinks: [{
+                key: "Core Binding Templates Specification",
+                data: [
+                    {
+                    value: "Web of Things (WoT) Binding Templates",
+                    href: "../../../index.html"
+                    }
+                ]
+                }
+            ]
         };
     </script>
     <title>Web of Things (WoT) Modbus Binding Template</title>
@@ -26,15 +36,16 @@
 <body>
     <section id='abstract'>
         <p>
-            In the context of the <a href="https://www.w3.org/TR/wot-architecture/">Web of Things (WoT)</a>, a Binding Template is a blueprint that gives 
-            guidance on how to implement a specific IoT protocol, data format or IoT platform. This document gives implementation guidelines regarding
-            the <a href='https://www.modbus.org/'>Modbus protocol</a>. Modbus protocol is a well-known cost-effective IoT protocol for communication between
-            industrial control and automation devices. 
+            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to 
+            implement a specific IoT protocol, data format or IoT platform.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
+            This document gives implementation guidelines regarding the Modbus protocol, which is a well-known 
+            cost-effective IoT protocol for communication between industrial control and automation devices. 
         </p>
         <p>
-            The following defines a set of standard terms and rules with relevant examples that can be used inside
-            a <a href="https://www.w3.org/TR/wot-thing-description/">Thing Description document</a> to describe a WoT operation using the Modbus protocol
-            over the network.
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document, 
+            and associated rules which allow to describe WoT operations using the Modbus protocol over the network.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
     </section>
     <section id='introduction'>

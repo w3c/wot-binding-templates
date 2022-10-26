@@ -377,7 +377,7 @@
                   },
                   "security": "nosec_sc",
               
-                  "base": "modbus+tcp://192.168.178.32:502/1",
+                  "base": "modbus+tcp://192.168.178.32:502/1/",
                   "properties": {
                       "limitSwitch1": {
                           "title": "downLimitSwitch",
@@ -386,7 +386,7 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "./10003",
+                                  "href": "10003",
                                   "modbus:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
@@ -399,7 +399,7 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "./10002",
+                                  "href": "10002",
                                   "modbus:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
@@ -416,7 +416,7 @@
                                       "observeproperty",
                                       "readproperty"
                                   ],
-                                  "href": "./6",
+                                  "href": "6",
                                   "modbus:entity": "Coil",
                                   "modbus:pollingTime": 100,
                                   "contentType": "application/octet-stream"
@@ -434,7 +434,7 @@
                                       "observeproperty",
                                       "readproperty"
                                   ],
-                                  "href": "./3",
+                                  "href": "3",
                                   "modbus:entity": "Coil",
                                   "modbus:pollingRate": 100,
                                   "contentType": "application/octet-stream"

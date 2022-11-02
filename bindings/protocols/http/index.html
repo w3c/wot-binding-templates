@@ -22,27 +22,46 @@
             ],
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/http/",
             shortName: "wot-http-binding",
-            github: "https://github.com/w3c/wot-binding-templates/tree/main/bindings/protocols/http",
-            otherLinks: [{
-                key: "Ontology",
+            github: "https://github.com/w3c/wot-binding-templates",
+            otherLinks: [
+              {
+                key: "Core Binding Templates Specification",
                 data: [
                     {
-                    value: "HTTP in RDF",
-                    href: "https://www.w3.org/TR/HTTP-in-RDF10/"
+                    value: "Web of Things (WoT) Binding Templates",
+                    href: "../../../index.html"
                     }
                 ]
-                }
+              },
+              {
+                  key: "Ontology",
+                  data: [
+                      {
+                      value: "HTTP in RDF",
+                      href: "https://www.w3.org/TR/HTTP-in-RDF10/"
+                      }
+                  ]
+              }
             ]
         };
     </script>
-    <title>HTTP Binding Template</title>
+    <title>Web of Things (WoT) HTTP Binding Template</title>
 </head>
 
 <body>
     <section id="abstract">
         <h2>Abstract</h2>
         <p>
-            <p class="ednote">TODO</p>
+            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to 
+            implement a specific IoT protocol, data format or IoT platform.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
+            This document gives implementation guidelines regarding the Hypertext Transfer Protocol (HTTP), which is one of the most used protocols
+            in the Internet to exchange any kind of data related to Webpages, Web APIs, IoT devices and much more. 
+        </p>
+        <p>
+            More specifically, it defines a set of vocabulary terms that can be used inside a Thing Description document, 
+            and associated rules which allow to describe WoT operations using HTTP over the network.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
     </section>
     <section id='introduction'>
@@ -102,8 +121,8 @@
           </tr>
           <tr>
             <td><code>htv:fieldValue</code></td>
-            <td>Header value (Literal).</td>
-            <td>mandatory within <code>htv:MessageHeader</code></td>
+            <td>Header value (Literal). To be used together with <code>htv:fieldName</code> inside a <code>htv:MessageHeader</code></td>
+            <td>optional</td>
             <td>
               <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
             </td>
@@ -301,7 +320,7 @@
               <p>The following sequence illustrates application and network
                  transactions to implement the 
                  <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
-                 with an HTTP protocol binding using  the Long Polling subprotocol.
+                 with an HTTP protocol binding using the Long Polling subprotocol.
               </p>
               <p>
                   <img

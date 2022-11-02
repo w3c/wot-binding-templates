@@ -17,34 +17,45 @@
             ],
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/",
             shortName: "wot-modbus-binding",
-            github: "https://github.com/w3c/wot-binding-templates/tree/main/bindings/protocols/modbus",
-            otherLinks: [{
-                key: "Ontology",
+            github: "https://github.com/w3c/wot-binding-templates",
+            otherLinks: [
+              {
+                key: "Core Binding Templates Specification",
                 data: [
                     {
-                    value: "Modbus in RDF",
-                    href: "../../../ontology/modbus.html"
+                    value: "Web of Things (WoT) Binding Templates",
+                    href: "../../../index.html"
                     }
                 ]
-                }
+              },
+              {
+                  key: "Ontology",
+                  data: [
+                      {
+                      value: "Modbus in RDF",
+                      href: "../../../ontology/modbus.html"
+                      }
+                  ]
+              }
             ]
         };
     </script>
-    <title>Modbus binding template</title>
+    <title>Web of Things (WoT) Modbus Binding Template</title>
 </head>
 
 <body>
     <section id='abstract'>
         <p>
-            In the context of the <a href="https://www.w3.org/TR/wot-architecture/">Web of Things (WoT)</a>, a Binding Template is a blueprint that gives 
-            guidance on how to implement a specific IoT protocol, data format or IoT platform. This document gives implementation guidelines regarding
-            the <a href='https://www.modbus.org/'>Modbus protocol</a>. Modbus protocol is a well-known cost-effective IoT protocol for communication between
-            industrial control and automation devices. 
+            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to 
+            implement a specific IoT protocol, data format or IoT platform.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
+            This document gives implementation guidelines regarding the Modbus protocol, which is a well-known 
+            cost-effective IoT protocol for communication between industrial control and automation devices. 
         </p>
         <p>
-            The following defines a set of standard terms and rules with relevant examples that can be used inside
-            a <a href="https://www.w3.org/TR/wot-thing-description/">Thing Description document</a> to describe a WoT operation using the Modbus protocol
-            over the network.
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document, 
+            and associated rules which allow to describe WoT operations using the Modbus protocol over the network.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
     </section>
     <section id='introduction'>
@@ -77,7 +88,7 @@
     <section id="url">
         <h2>URL format</h2>
         Historically different URL scheme has been used inside the Modbus community: <code>modbus+tpc://</code>, <code>modbus+ascii://</code> and <code>modbus+rtu://</code>.
-        Considering that in Web of Things context all protocol bindings are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
+        Considering that in Web of Things context all protocol binding templates are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
         was selected as the only valid URL scheme. The following shows the typical structure of an URL of the Modbus protocol:
         <pre>
             modbus+tcp://{address}:{port}/{?unitID}
@@ -94,7 +105,8 @@
     </section>
     <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
-        This section describes the vocabulary used in the Modbus protocol. A protocol binding implementation should use the vocabulary defined in this section to
+        This section describes the vocabulary used in the Modbus protocol. 
+        A protocol binding template implementation should use the vocabulary defined in this section to
         describe the different configuration that can be used to exchanged data between Web of Things.
         <section>
             <h3>Form terms</h3>

@@ -22,6 +22,7 @@ template :modbus(?ns) {
         var respecConfig = {
             specStatus: "ED",
             editors: [%s],
+            group: "wg/wot",
             edDraftURI: "%s",
             shortName: "wot-binding-templates"
         };

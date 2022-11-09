@@ -175,6 +175,10 @@
             This document explains what each subspecification should contain given their respective category and also
             links to the respective specification.
         </p>
+        <p>
+            The relationships between each <a>subspecification</a> are also further detailed in [[[#binding-overview]]] and 
+            [[[#fig-overview]]].
+        </p>
     </section>
 
     <section id="conformance">
@@ -230,9 +234,31 @@
         <h1>Binding Templates Overview</h1>
         <p>
             This section describes the mechanisms of binding templates for protocols, payload formats and platforms.
-            Each subsection lists the idea behind the category of the binding, the currently existing bindings 
-            and requirements for new bindings.
+            [[[#fig-overview]]] below shows a general overview of the Binding Template documents and their relationships to the other documents 
+            of the Web of Things Working Group.
         </p>
+
+        <figure id="fig-overview">
+            <img src="images/binding-templates-overview.png" alt="Binding Templates Overview and their relationship with other 
+            W3C WoT documents" />
+            <figcaption>Binding Templates Overview and their relationship with other 
+                W3C WoT documents</figcaption>
+        </figure>
+
+        <section>
+            <h2>Relationships Between Binding Template Documents</h2>
+            <p>
+                As described in [[[#introduction]]], the binding templates are composed of a core specification and 3 
+                <a>subspecification</a> categories, namely Protocols, Payloads and Platforms.
+            </p>
+            <p>
+                The sections [[[#protocol-intro]]], [[[#payloads-intro]]] and [[[#platforms-intro]]] lists the idea 
+                behind the category of the binding, the currently existing bindings and requirements for new bindings.
+            </p>
+        </section>
+
+
+
 
         <section id="protocol-intro">
             <h3>Protocol Binding Templates</h3>

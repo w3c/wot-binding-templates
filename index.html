@@ -134,8 +134,8 @@
             implementors of Things and Consumers alike.
         </p>
         <p>
-            This document acts as the base and explains how other binding templates should be designed.
-            Concrete binding templates are then provided in their respective documents, referred to as subspecification,
+            This core specification document acts as a base and explains how other binding templates should be designed.
+            Concrete binding templates are then provided in their respective documents, referred to as subspecifications,
              that are linked to from this document.
         </p>
     </section>
@@ -155,25 +155,25 @@
     <section id="introduction">
         <h1>Introduction</h1>
         <p>
-            Binding Templates consist of multiple specifications, referred to as a subspecification in this document,
-            that enable an application client (a Consumer) to interact,
-            using WoT Thing Description[[WOT-THING-DESCRIPTION] (TD), with Things that exhibit diverse protocols,
-            payload formats and their usage.
+            Binding Templates consist of multiple specifications, referred to as a <a>subspecification</a>
+             in this document, that enable an application client (a WoT Consumer) to interact, using WoT Thing 
+             Description[[WOT-THING-DESCRIPTION]] (TD), with Things that exhibit diverse protocols, payload formats and their usage.
             These subspecifications are categorized into three:
         <ul>
             <li> <a href="#protocol-intro"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
                 MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing
-                Description[[WOT-THING-DESCRIPTION]] via reusable vocabulary and extensions.</li>
+                Description[[WOT-THING-DESCRIPTION]] forms via reusable vocabulary and extensions.</li>
             <li> <a href="#payloads-intro"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
-                can be represented in a TD.</li>
+                can be represented in a TD via Data Schemas or forms.</li>
             <li> <a href="#platforms-intro"></a>: Platforms and frameworks who combine the use of protocols and payloads
-                in a certain way.</li>
+                in a certain way, which can be represented via entire Thing Models described by the [[WOT-THING-DESCRIPTION]]
+                or examples of TDs.</li>
         </ul>
         </p>
         <p>
-            Each subspecification is an independent document that has separate list of authors and publication dates.
-            This document explains what each subspecification should contain given their respective category and also
-            links to the respective specification.
+            Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and publication dates.
+            This document, called the <a>Binding Template Core Specification</a>, explains what each subspecification should 
+            contain given their respective category and also links to the respective subspecification.
         </p>
     </section>
 
@@ -208,15 +208,15 @@
 
         <dl>
             <dt>
-                <dfn id="dfn-subspecification">Binding Template Subspecification</dfn>
+                <dfn id="dfn-subspecification">Binding Template Subspecification</dfn>, <dfn>subspecification</dfn>
             </dt>
             <dd>
                 A binding template document that is published separately from this document (called the core document) that
                 specifies a binding template for a protocol, payload format or platform.
-                All binding template subspecifications respect the rules set in the Core Specification.              
+                All binding template subspecifications respect the rules set in the <a>Core Specification</a>.              
             </dd>
             <dt>
-                <dfn id="dfn-subspecification">Binding Template Core Specification</dfn>
+                <dfn id="dfn-corespecification">Binding Template Core Specification</dfn>, <dfn>Core Specification</dfn>
             </dt>
             <dd>
                 This document.
@@ -250,7 +250,7 @@
                 <code>subscribeevent</code>.
             </p>
             <p>
-                The table below summarizes the currently specified protocols in their respective subspecification.
+                The table below summarizes the currently specified protocols in their respective <a>Binding Template Subspecification</a>.
             </p>
             <table class="def">
                 <thead>
@@ -290,13 +290,13 @@
             </table>
         
             <section>
-                <h4>Creating a new Protocol Binding Template</h4>
+                <h4>Creating a new Protocol Binding Template Subspecification</h4>
         
                 <p>
-                    When creating a new protocol binding template subspecification, e.g. based on a new communication protocol,
+                    When creating a new protocol binding template <a>subspecification</a>, e.g. based on a new communication protocol,
                     the proposed document should enable implementations of this binding in an interoperable way for
                     Consumer and Producer implementations.
-                    More specifically, each binding MUST specify the following:
+                    More specifically, each <a>Binding Template Subspecification</a> MUST specify the following:
                 </p>
                 <ul>
                     <li>
@@ -406,15 +406,14 @@
             </table>
         
             <section>
-                <h4>Creating a new Payload Binding Template</h4>
+                <h4>Creating a new Payload Binding Template Subspecification</h4>
         
                 <p>
-                    Each payload binding document, SHOULD contain the respective media type.
+                    Each payload binding template <a>subspecification</a>, SHOULD contain the respective media type.
                     Ideally this media type has been registered at the IANA registry [[IANA-MEDIA-TYPES]] with a
                     corresponding mime type (e.g. <code>application/json</code>).
-                    If it is not registered, the binding document can propose a mime type. Additionally, how that media
-                    type is represented
-                    in a Data Schema SHOULD be demonstrated with examples.
+                    If it is not registered, the binding document can propose a mime type. 
+                    Additionally, how that media type is represented in a Data Schema SHOULD be demonstrated with examples.
                     In all cases, the following information SHOULD be provided:
                 <ul>
                     <li>
@@ -437,12 +436,12 @@
             to the Internet.
             These platforms generally propose a certain API specification over a protocol and media type.
             Thus, they can be seen as a combination of the <a href="#protocol-intro"></a> and <a href="#payloads-intro"></a>. 
-            Platform Binding subspecifications provide Thing Models and examples of TDs on how to integrate these
+            Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs on how to integrate these
             platforms in to the W3C Web of Things.
             </p>
 
             <p>
-            The table below summarizes the currently specified platform binding templates.
+            The table below summarizes the currently specified platform binding template <a>subspecification</a>s.
             </p>
             
             <table class="def">
@@ -469,11 +468,11 @@
             </table>
         
             <section>
-                <h4>Creating a new Platform Binding Templates</h4>
+                <h4>Creating a new Platform Binding Template Subspecification</h4>
         
                 <p>
-                    Depending on the platform and the variety of devices it proposes, each binding template specification 
-                    will be structured differently.
+                    Depending on the platform and the variety of devices it proposes, each platform binding template
+                     <a>subspecification</a> will be structured differently.
                     When the platforms offer a <i>reasonable</i> set of device types, a Thing Model for each device type
                     SHOULD be provided.
                     In other cases, possible devices SHOULD be generalized by providing a set of example Thing Models or
@@ -483,18 +482,17 @@
                 <ul>
                     <li>
                         <b>Protocol:</b> The protocol used by the platform SHOULD be specified and linked to a protocol
-                        binding template document when a corresponding one exists.
+                        binding template <a>subspecification</a> when a corresponding one exists.
                     </li>
                     <li>
                         <b>Media Type:</b> The media type used by the platform SHOULD be specified and linked to a
-                        payload binding template document when a corresponding one exists.
+                        payload binding template <a>subspecification</a> when a corresponding one exists.
                     </li>
                     <li>
                         <b>API Documentation:</b> A static link pointing to the used API Documentation or Specification
-                        of the platform SHOULD be provided. When the documentation is not
-                        publicly available and cannot be included in a static version in the respective folder, an
-                        editor's note should be provided in the introduction, explaining how to
-                        get access to the documentation.
+                        of the platform SHOULD be provided. When the documentation is not publicly available and 
+                        cannot be included in a static version in the respective folder, an editor's note should be 
+                        provided in the introduction, explaining how to get access to the documentation.
                     </li>
                 </ul>
             </section>

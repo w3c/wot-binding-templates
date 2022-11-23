@@ -234,8 +234,8 @@
         <h1>Binding Templates Overview</h1>
         <p>
             This section describes the mechanisms of binding templates for protocols, payload formats and platforms.
-            [[[#fig-overview]]] below shows a general overview of the Binding Template documents and their relationships to the other documents 
-            of the Web of Things Working Group.
+            [[[#fig-overview]]] below shows a general overview of the Binding Template documents and their relationships
+             to the other documents of the Web of Things Working Group.
         </p>
 
         <figure id="fig-overview">
@@ -265,9 +265,23 @@
             <h2>Relationship Between Other W3C WoT Documents</h2>
             <p>
                 The Binding Templates are referred to from other WoT WG documents, as also seen in [[[#fig-overview]]].
-                The WoT Architecture explains the mechanism of Binding Templates and refers to this <a>cor</a>
-                The Protocol and Payload Binding Templates allow a WoT Thing Description to describe the concrete protocol
-                and payload usage in the 
+                More concretely, the relationship can be summarized as:
+                <ul>
+                    <li>
+                        The WoT Architecture explains the mechanism of Binding Templates and refers to this <a>Core Specification</a>.</li>
+                    <li>
+                        The Protocol and Payload Binding Templates allow a WoT Thing Description to describe the concrete 
+                        protocol and payload usage in the <code>Forms</code> fields.</li>
+                    <li>
+                        The WoT Scripting API implementations use Thing Descriptions and generate protocol specific 
+                        messages and their handling, thus using the Protocol and Payload Binding Templates.
+                    </li>
+                    <li>
+                        WoT Profiles use certain protocols and payload formats, referring to the Binding Templates
+                        for the concrete keywords to use in profile compliant Thing Descriptions.
+                    </li>
+                </ul>
+                Please consult the [[WOT-ARCHITECTURE]] and the respective documents for more information.
             </p>
         </section>
 

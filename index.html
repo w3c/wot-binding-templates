@@ -241,23 +241,35 @@
         <figure id="fig-overview">
             <img src="images/binding-templates-overview.png" alt="Binding Templates Overview and their relationship with other 
             W3C WoT documents" />
-            <figcaption>Binding Templates Overview and their relationship with other 
-                W3C WoT documents</figcaption>
+            <figcaption>Binding Templates Overview and their relationship with other W3C WoT documents</figcaption>
         </figure>
 
-        <section>
-            <h2>Relationships Between Binding Template Documents</h2>
+        <section id="sec-relationships-bindings">
+            <h2>Relationship Between Binding Template Documents</h2>
             <p>
-                As described in [[[#introduction]]], the binding templates are composed of a core specification and 3 
-                <a>subspecification</a> categories, namely Protocols, Payloads and Platforms.
-            </p>
-            <p>
+                As described in [[[#introduction]]] and [[[#fig-overview]]], the binding templates are composed of a core 
+                specification and 3 <a>subspecification</a> categories, namely Protocols, Payloads and Platforms.
                 The sections [[[#protocol-intro]]], [[[#payloads-intro]]] and [[[#platforms-intro]]] lists the idea 
                 behind the category of the binding, the currently existing bindings and requirements for new bindings.
             </p>
+            <p>
+                Each Protocol and Payload Binding Template is specified in a way that they stay independent from each other.
+                This means that each document can be read independently from each other and can also develop independently.
+                However, Platform Binding Templates are dependent on the Protocol and Payload Binding Templates, since a given
+                platform uses different protocols and payload formats that need to be specified first in their respective 
+                binding templates and referred to within a Platform Binding Template.
+            </p>
         </section>
 
-
+        <section id="sec-relationships-others">
+            <h2>Relationship Between Other W3C WoT Documents</h2>
+            <p>
+                The Binding Templates are referred to from other WoT WG documents, as also seen in [[[#fig-overview]]].
+                The WoT Architecture explains the mechanism of Binding Templates and refers to this <a>cor</a>
+                The Protocol and Payload Binding Templates allow a WoT Thing Description to describe the concrete protocol
+                and payload usage in the 
+            </p>
+        </section>
 
 
         <section id="protocol-intro">

@@ -7,15 +7,16 @@
     <script class='remove'>
         var respecConfig = {
             specStatus: "ED",
-            editors: [
-                {
-                    name: "EDITOR NAME",
-                    // w3cid: "1232",
-                }
-            ],
-            edDraftURI: "https://w3c.github.io/wot-binding-templates/BINDINGNAME",
-            github: "https://github.com/w3c/wot-binding-templates",// please do not change this
-            shortName: "wot-BINDINGNAME-template", // or "wot-BINDINGNAME-binding"
+            group: "wg/wot",
+            editors: [{
+                name: "Klaus Hartke",
+                w3cid: "107859",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+            }],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/",
+            shortName: "wot-bacnet-binding",
+            github: "https://github.com/w3c/wot-binding-templates",
             otherLinks: [{
                 key: "Core Binding Templates Specification",
                 data: [
@@ -27,23 +28,20 @@
             }]
         };
     </script>
-    <title>Web of Things (WoT) BINDINGNAME Binding Template</title>
+    <title>Web of Things (WoT) BACnet Binding Template</title>
 </head>
 
 <body>
     <section id='abstract'>
-        <p class="ednote">Please update according to the binding in question. Make sure to replace X with the binding in question.</p>
         <p>
             In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to
             implement a specific IoT protocol, data format or IoT platform.
             The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
-            This document gives implementation guidelines regarding the X, which is used here and there, has features Y and Z.
-            <!-- Please make sure that the part starts by "This document" is not longer than 2 or 3 sentences and it is objective,
-            i.e. do not say it is the best protocol to do something -->
+            This document gives implementation guidelines regarding BACnet.
         </p>
         <p>
             More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document,
-            and associated rules which allow to describe WoT operations using X over the network.
+            and associated rules which allow to describe WoT operations using BACnet over the network.
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
         </p>
     </section>
@@ -55,13 +53,17 @@
         <p>
             <em>This document is a work in progress</em>
         </p>
+        <p>
+            BACnet&reg; is a registered trademark of ASHRAE.
+            This document has not been reviewed for publication by ASHRAE, and no endorsement by ASHRAE is implied.
+        </p>
     </section>
     <section id="url">
         <h2>URL format</h2>
         <p class="ednote">TODO: Describe the URL format of the protocol binding template. Provide syntax and examples. </p>
     </section>
     <section id="vocabulary">
-        <h2>BINDING NAME Vocabulary</h2>
+        <h2>BACnet Vocabulary</h2>
         <p class="ednote">TODO: Introduce briefly the vocabulary</p>
         <section>
             <h3>Form terms</h3>
@@ -85,7 +87,6 @@
                 Bindings may introduce domain specific concepts or data types. Add a dedicated section for each
                 domain specific term. If the term can have a finite set of values fill the table below to describe the possibilities.
             </p>
-
             <table class="def" title="Entity values">
                 <thead>
                     <tr>
@@ -97,12 +98,10 @@
                 </tbody>
             </table>
         </section>
-
     </section>
     <section id="mappings">
         <h2>Mappings</h2>
-        This section describes the strategies and default values to use protocol specific concepts within the <a>WoT Interaction model</a>.
-
+        <p>This section describes the strategies and default values to use protocol specific concepts within the <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.</p>
         <section id="default-mappings">
             <h3>Default mappings</h3>
             <p class="ednote"> Map WoT Interaction model verbs to default values if any </p>

@@ -307,6 +307,14 @@
                         <code>"https://"</code>, <code>"coap://"</code>) or they can be declared in the protocol
                         subspecification (e.g. <code>"mqtt://"</code>, <code>"modbus+tcp://"</code>). How the full URI
                         can be constructed for different affordances (or resources) MUST be specified as well.
+                    </li>
+                    <li>
+                        <b><code>@context</code> Usage and Ontology:</b> A vocabulary that allows adding protocol options
+                        to a Thing Description forms SHOULD be provided to allow semantic annotations of the operations 
+                        with protocol specific information.
+                        The prefix and IRI to be used in the <code>@context</code> in order to link to the vocabulary 
+                        of the protocol SHOULD be also provided.
+                    </li>
                     <li>
                         <b>Mapping to WoT Operations:</b> Most protocols have a set of methods or verbs that adds a
                         meaning to the messages of the protocol.
@@ -315,8 +323,7 @@
                         the mapping, the mapping SHOULD be bidirectional, i.e. it should be clear how to
                         do a <code>readproperty</code> operation with the given protocol and how an existing
                         implementation's endpoints can be mapped to a WoT operation should be also clear.
-                        A vocabulary detailing the operations methods SHOULD be provided to allow semantic annotations
-                        of the operations with protocol specific information.
+                        
                     </li>
                     <li>
                         <b>Specification:</b> The official specification document of the protocol SHOULD be

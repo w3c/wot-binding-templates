@@ -1,4 +1,4 @@
 /bindings/protocols/coap/ @ektrah
-/bindings/protocols/http/ @egekorkan
+/bindings/protocols/http/ @egekorkan @mjkoster
 /bindings/protocols/modbus/ @relu91
-/bindings/protocols/mqtt/ @egekorkan @relu91
+/bindings/protocols/mqtt/ @egekorkan @relu91 @mjkoster

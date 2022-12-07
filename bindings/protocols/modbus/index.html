@@ -91,7 +91,7 @@
         Considering that in Web of Things context all protocol binding templates are required to at least support the Internet Protocol, for the Modbus protocol <code>modbus+tcp://</code> 
         was selected as the only valid URL scheme. The following shows the typical structure of an URL of the Modbus protocol:
         <pre>
-            modbus+tcp://{address}:{port}/{?unitID}
+            modbus+tcp://{address}:{port}/{unitID}/{address}?quantity={?quantity}
         </pre>
 
         <p>
@@ -100,7 +100,10 @@
                 <li><code>{address}</code> is the IP address of the Modbus device</li>
                 <li><code>{port}</code> is the port of the Modbus device</li>
                 <li><code>{unitID}</code> is the unit ID of the Modbus device. See <a href="#vocabulary">vocabulary</a></li>
+                <li><code>{address}</code> is the address of the register/coil referenced in this URL. See <a href="#vocabulary">vocabulary</a></li>
+                <li><code>{quantity}</code> the amount of registers/coils referenced in this URL. See <a href="#vocabulary">vocabulary</a></li>
             </ul>
+            For the full syntax see [[[#abnf]]]
         </p>
     </section>
     <section id="vocabulary">
@@ -108,6 +111,52 @@
         This section describes the vocabulary used in the Modbus protocol. 
         A protocol binding template implementation should use the vocabulary defined in this section to
         describe the different configuration that can be used to exchanged data between Web of Things.
+        <section>
+            <h3>URL terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+                    
+        
+        <tr>
+            <td><code>modbus:address</code></td>
+            <td>Specifies the starting address of the Modbus operations</td>
+            <td>required</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        
+        <tr>
+            <td><code>modbus:unitID</code></td>
+            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
+            <td>required</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        
+        <tr>
+            <td><code>modbus:quantity</code></td>
+            <td>Specifies the amount of either registers or coils to be read or written to</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+                </tbody>
+            </table>
+        </section>
         <section>
             <h3>Form terms</h3>
             <table class="def">
@@ -122,33 +171,6 @@
                 <tbody>
                     <!-- Generate forms terms from the ontology-->
                     
-        <tr>
-            <td><code>modbus:address</code></td>
-            <td>Specifies the starting address of the Modbus operations</td>
-            <td>required</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
-        <tr>
-            <td><code>modbus:unitID</code></td>
-            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
-            <td>required</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
-        <tr>
-            <td><code>modbus:quantity</code></td>
-            <td>Specifies the amount of either registers or coils to be read or written to</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
         <tr>
             <td><code>modbus:pollingTime</code></td>
             <td>Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
@@ -490,32 +512,29 @@
         a short description of the modbus endpoint.
         <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
                     {
-                        "href": "modbus+tcp://127.0.0.1:60000/1",
+                        "href": "modbus+tcp://127.0.0.1:60000/1/1",
                         "op": [
                             "readproperty",
                             "writeproperty"
                         ],
                         "modbus:entity": "Coil",
-                        "modbus:address": 1
                     }
         </pre>
         A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
         <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
                             {
-                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "readproperty",
                                 ],
                                 "modbus:function": "readCoil",
-                                "modbus:address": 1
                             },
                             {
-                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "writeproperty",
                                 ],
                                 "modbus:function": "writeCoil",
-                                "modbus:address": 1
                             },
         </pre>
         Reducing effectively the verbosity of a TD. 
@@ -525,14 +544,12 @@
         8 HoldingRegisters. 
         <pre id="example-read-holding" class="example" title="Read 8 holding registers">
                             {
-                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "href": "modbus+tcp://127.0.0.1:60000/1/40001?quantity=8",
                                 "op": [
                                     "readproperty",
                                     "writeproperty"
                                 ],
-                                "modbus:entity": "HoldingRegister",
-                                "modbus:address": 40001,
-                                "modbus:quantity": 8
+                                "modbus:entity": "HoldingRegister"
                             }
                 </pre>
         When possible WoT consumers will use Modbus features to read the desired amount of data with a single
@@ -541,14 +558,12 @@
         In these circumstances consumers will perform different requests to satisfy the configuration requirements. 
         <pre id="example-read-coil-range" class="example" title="Read and write 8 single coils with one form">
                             {
-                                "href": "modbus+tcp://127.0.0.1:60000/1",
+                                "href": "modbus+tcp://127.0.0.1:60000/1/1?quantity=8",
                                 "op": [
                                     "readproperty",
                                     "writeproperty"
                                 ],
-                                "modbus:entity": "Coil",
-                                "modbus:address": 1,
-                                "modbus:quantity": 8
+                                "modbus:entity": "Coil"
                             }
                 </pre>
         Another notable configuration of a form using the Modbus vocabulary is the polling mechanism. Thanks
@@ -559,13 +574,12 @@
         default for observing a property. 
         <pre  id="example-polling" class="example" title="Polling">
             {
-                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "href": "modbus+tcp://127.0.0.1:60000/1/1",
                 "op": [
                     "observeproperty"
                 ],
                 "modbus:entity": "Coil",
                 "modbus:pollingTime": 1000,
-                "modbus:address": 1
             }
         </pre>
         Finally, [[[#full-td]]] shows a complete device described using Modbus ontology.
@@ -587,7 +601,7 @@
                   },
                   "security": "nosec_sc",
               
-                  "base": "",
+                  "base": "modbus+tcp://192.168.178.32:502/1/",
                   "properties": {
                       "limitSwitch1": {
                           "title": "downLimitSwitch",
@@ -596,11 +610,8 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "modbus+tcp://192.168.178.32:502",
+                                  "href": "10003",
                                   "modbus:function": "readDiscreteInput",
-                                  "modbus:quantity": 1,
-                                  "modbus:address": 10003,
-                                  "modbus:unitID": 1,
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -612,11 +623,8 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "modbus+tcp://192.168.178.32:502",
+                                  "href": "10002",
                                   "modbus:function": "readDiscreteInput",
-                                  "modbus:quantity": 1,
-                                  "modbus:address": 10002,
-                                  "modbus:unitID": 1,
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -632,11 +640,8 @@
                                       "observeproperty",
                                       "readproperty"
                                   ],
-                                  "href": "modbus+tcp://192.168.178.32:502",
+                                  "href": "6",
                                   "modbus:entity": "Coil",
-                                  "modbus:quantity": 1,
-                                  "modbus:address": 6,
-                                  "modbus:unitID": 1,
                                   "modbus:pollingTime": 100,
                                   "contentType": "application/octet-stream"
                               }
@@ -653,11 +658,8 @@
                                       "observeproperty",
                                       "readproperty"
                                   ],
-                                  "href": "modbus+tcp://192.168.178.32:502",
+                                  "href": "3",
                                   "modbus:entity": "Coil",
-                                  "modbus:quantity": 1,
-                                  "modbus:address": 3,
-                                  "modbus:unitID": 1,
                                   "modbus:pollingRate": 100,
                                   "contentType": "application/octet-stream"
                               }
@@ -666,6 +668,17 @@
                   }
               }
               </pre>
+    </section>
+    <section class="appendix" id="abnf">
+        <h2>Modbus URL ABNF syntax</h2>
+        <p>The following describe the [[[#url]]] using [[[RFC2234]]] with the reference to [[[uri]]] specification. </p>
+        <pre class="syntax">
+            MODBUS-URI = "modbus+tcp://" authority path-modbus [ "?quantity=" quantity ]
+            path-modbus = "/" unitID "/" address
+            unitID=1*DIGIT
+            address=1*DIGIT
+            quantity=1*DIGIT
+        </pre>
     </section>
 </body>
 

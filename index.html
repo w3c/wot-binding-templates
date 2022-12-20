@@ -255,6 +255,12 @@
         <section id="protocol-intro">
             <h3>Protocol Binding Templates</h3>
             <p>
+                [[WOT-THING-DESCRIPTION]] defines abstract operations such as <code>readproperty</code>, <code>invokeaction</code> and
+                <code>subscribeevent</code> that describe the intended semantics of performing the operation described by the form.
+                In order for the operations to be performed on the affordance, a binding of the operation to the 
+                protocol needs to happen.
+            </p>
+            <p>
                 Most protocols have a relatively small set of methods that define the message type, the semantic
                 intention of the message.
                 REST and PubSub architecture patterns result in different protocols with different methods.
@@ -906,10 +912,6 @@
         
             <section id="operation-types">
                 <h2>Operation Types</h2>
-                <p>
-                    Form Operation Types describe the intended semantics of performing the operation
-                    described by the form.
-                </p>
                 <p>
                     For example, the Property interaction allows read and write operations. The
                     protocol binding may contain a form for the read operation and a different

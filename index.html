@@ -315,7 +315,7 @@
 
             <p>
                 In some cases, header options or other parameters of the protocols need to be included.
-                Give 
+                Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]]
             </p>
         
             <section id="protocol-bindings-table">
@@ -988,31 +988,6 @@
         
             <section id="protocol-methods-options">
                 <h2>Protocol Methods and Options</h2>
-        
-                <p>
-                    Header options in HTTP, CoAP, MQTT sometimes must be included in a protocol binding in order to
-                    successfully interact with the underlying protocol. The example below shows the structure of
-                    the definition for HTTP header options, according to the W3C HTTP Vocabulary in RDF.
-                </p>
-        
-                <pre class="example" title="HTTP Vocabulary Example for Header Options">
-                    "htv:headers":
-                    [
-                        {
-                        "htv:fieldName": "Accept",
-                        "htv:fieldValue": "application/json"
-                        },
-                        {
-                        "htv:fieldName": "Transfer-Encoding",
-                        "htv:fieldValue": "chunked"
-                        }
-                    ]
-                </pre>
-        
-                <p>
-                    Note: different forms in a binding may need different header constructions,
-                    therefore the <code>htv:headers</code> construct is an extension of the TD "form" element.
-                </p>
         
                 <p>
                     Protocols may have defined sub-protocols that can be used for some interaction

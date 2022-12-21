@@ -25,6 +25,7 @@ This section should be removed in the final survey sent to people.
   - W3C WoT Twitter
   - Liaison contacts
 - Visibility of the Survey: Public
+- Visibility of the Results: Member list
 - Collecting Emails: Optional
 
 ## Questions

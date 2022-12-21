@@ -1,3 +1,5 @@
+THIS IS ONLY A PROPOSAL
+
 # Web of Things (WoT) Binding Templates Survey
 
 The Binding Templates Task Force of the W3C Web of Things (WoT) wants to reach out to the WoT developers to get their feedback on the Binding Templates.
@@ -10,6 +12,9 @@ This section should be removed in the final survey sent to people.
 
 - Tools for Collecting Answers: W3C Questionnaire, Google or Microsoft Forms, GitHub PRs.
 - Date for Sending the Survey: Once the "good enough to send state" is reached for the core document. TODO: Agree on a deadline
+- Who to send to:
+  - Industry Stakeholders (Liaison SDOs)
+  - More discussion is needed in WG to complete this
 - Where to send the survey to: 
   - public-wot-wg@w3.org (Public WG Mailing List)
   - public-wot-ig@w3.org (Public IG Mailing List)
@@ -18,6 +23,7 @@ This section should be removed in the final survey sent to people.
   - public-web-thing-protocol@w3.org (Public Web Thing Protocol CG Mailing List)
   - group-wot-ie@w3.org (Invited Experts)
   - W3C WoT Twitter
+  - Liaison contacts
 - Visibility of the Survey: Public
 - Collecting Emails: Optional
 

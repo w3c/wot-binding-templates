@@ -255,58 +255,111 @@
         <section id="protocol-intro">
             <h3>Protocol Binding Templates</h3>
             <p>
+                [[WOT-THING-DESCRIPTION]] defines abstract operations such as <code>readproperty</code>, <code>invokeaction</code> and
+                <code>subscribeevent</code> that describe the intended semantics of performing the operation described 
+                by the form in a <a>Thing Description</a>.
+                In order for the operations to be performed on the affordance, a binding of the operation to the 
+                protocol needs to happen.
+                In other words, the form needs to contain all the information for a Consumer to, for example read a property,
+                 with the protocol in the form.
+            </p>
+            <p>
                 Most protocols have a relatively small set of methods that define the message type, the semantic
                 intention of the message.
                 REST and PubSub architecture patterns result in different protocols with different methods.
-                Common methods found in these protocols are GET, PUT, POST, DELETE, PUBLISH, and SUBSCRIBE.
-                Binding Templates describe how these existing methods and vocabularies can be described in a Thing
-                Description.
+                Each target protocol may specify different method names for similar operations, and there may be 
+                semantic differences between similar method names of different protocols.
+                Additionally, <a>Things</a> may use different methods for performing a particular WoT operation. 
+                For example, an HTTP POST request may be used for a <code>writeproperty</code> operation in one Thing, 
+                while HTTP PUT may be used in another. 
+                For these reasons, Thing Descriptions require the ability to specify which method to use per operation. 
             </p>
             <p>
+                Common methods found in REST and PubSub protocols are GET, PUT, POST, DELETE, PUBLISH, and SUBSCRIBE.
+                Binding Templates describe how these existing methods and associated vocabularies can be used in 
+                a <a>Thing Description</a> to bind to the WoT operations.
                 This is done by defining the URI scheme of the protocol and mapping the protocol
                 methods to the abstract WoT operations such as <code>readproperty</code>, <code>invokeaction</code> and
                 <code>subscribeevent</code>.
+                In some cases, additional instructions are provided to explain how the vocabulary terms should be used 
+                in different cases of protocol usage.
             </p>
             <p>
-                The table below summarizes the currently specified protocols in their respective <a>Binding Template Subspecification</a>.
+                The examples below shows the binding of the <code>readproperty</code> operation for the HTTP and Modbus protocols.
             </p>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Abbreviation</th>
-                        <th>Name</th>
-                        <th>Link to Binding Template</th>
-                        <th>Link to Ontology</th>
-                    </tr>
-                </thead>
+            <table>
                 <tbody>
                     <tr>
-                        <td>HTTP</td>
-                        <td>Hypertext Transfer Protocol</td>
-                        <td><a href="./bindings/protocols/http/index.html">Binding Template</a></td>
-                        <td><a href="https://www.w3.org/TR/HTTP-in-RDF10/">Ontology</a></td>
-                    </tr>
-                    <tr>
-                        <td>CoAP</td>
-                        <td>Constrained Application Protocol</td>
-                        <td><a href="./bindings/protocols/coap/index.html">Binding Template</a></td>
-                        <td>Not available</td>
-                    </tr>
-                    <tr>
-                        <td>MQTT</td>
-                        <td>Message Queuing Telemetry Transport</td>
-                        <td><a href="./bindings/protocols/mqtt/index.html">Binding Template</a></td>
-                        <td><a href="./ontology/mqtt.html">Ontology</a></td>
-                    </tr>
-                    <tr>
-                        <td>Modbus</td>
-                        <td>Modbus</td>
-                        <td><a href="./bindings/protocols/modbus/index.html">Binding Template</a></td>
-                        <td><a href="./ontology/modbus.html">Ontology</a></td>
+                        <td style="vertical-align: top; width: 50%">
+                            <pre class="example" title="Binding example of a readproperty operation to HTTP">
+                                {
+                                    "href": "http://example.com/props/temperature",
+                                    "op": "readproperty",
+                                    "htv:methodName": "GET"
+                                }
+                            </pre>
+                        </td>
+                        <td style="vertical-align: top; width: 50%">
+                            <pre class="example" title="Binding example of an readproperty operation to Modbus">
+                                {
+                                    "href": "modbus+tcp://127.0.0.1:60000/1",
+                                    "op": "readproperty",
+                                    "modbus:function": "readCoil",
+                                    "modbus:address": 1
+                                }
+                            </pre>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+
+            <p>
+                In some cases, header options or other parameters of the protocols need to be included.
+                Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]]
+            </p>
         
+            <section id="protocol-bindings-table">
+                <h4>Existing Protocol Binding Templates</h4>
+                <p>
+                    The table below summarizes the currently specified protocols in their respective <a>Binding Template Subspecification</a>.
+                </p>
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Abbreviation</th>
+                            <th>Name</th>
+                            <th>Link to Binding Template</th>
+                            <th>Link to Ontology</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTTP</td>
+                            <td>Hypertext Transfer Protocol</td>
+                            <td><a href="./bindings/protocols/http/index.html">Binding Template</a></td>
+                            <td><a href="https://www.w3.org/TR/HTTP-in-RDF10/">Ontology</a></td>
+                        </tr>
+                        <tr>
+                            <td>CoAP</td>
+                            <td>Constrained Application Protocol</td>
+                            <td><a href="./bindings/protocols/coap/index.html">Binding Template</a></td>
+                            <td>Not available</td>
+                        </tr>
+                        <tr>
+                            <td>MQTT</td>
+                            <td>Message Queuing Telemetry Transport</td>
+                            <td><a href="./bindings/protocols/mqtt/index.html">Binding Template</a></td>
+                            <td><a href="./ontology/mqtt.html">Ontology</a></td>
+                        </tr>
+                        <tr>
+                            <td>Modbus</td>
+                            <td>Modbus</td>
+                            <td><a href="./bindings/protocols/modbus/index.html">Binding Template</a></td>
+                            <td><a href="./ontology/modbus.html">Ontology</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
             <section>
                 <h4>Creating a new Protocol Binding Template Subspecification</h4>
         
@@ -360,9 +413,6 @@
                 </p>
         
             </section>
-            <p class="ednote">
-                The rest of this chapter (4.1.2) is not restructured yet
-            </p>
         
         </section>
         
@@ -891,8 +941,8 @@
         
     </section>
 
-    <section id="sec-orphaned">
-        <h2>Orphaned Sections</h2>
+    <section id="sec-temp">
+        <h2>Temporary Sections</h2>
 
         <p class="ednote">
             The below chapters are copied from other places in this document. They require discussion on where to place
@@ -906,31 +956,6 @@
                 and descriptions of the protocol settings and options expected to be used when
                 between the Consumer and the Thing for the interaction.
             </p>
-        
-            <section id="operation-types">
-                <h2>Operation Types</h2>
-                <p>
-                    Form Operation Types describe the intended semantics of performing the operation
-                    described by the form.
-                </p>
-                <p>
-                    For example, the Property interaction allows read and write operations. The
-                    protocol binding may contain a form for the read operation and a different
-                    form for the write operation. The value of the <code>op</code> attribute of the form
-                    indicates which form is which and allows the Consumer to select the correct
-                    form for the operation required.
-                </p>
-        
-                <pre class="example" title="Form Operation Types">
-                    "op": "readproperty"
-                    "op": "writeproperty"
-                </pre>
-        
-                <p>
-                    The vocabulary in section 4 lists the recommended set of form operations,
-                    and the full TD examples in section 5 contain example uses of form operations types.
-                </p>
-            </section>
         
             <section id="content-types">
                 <h2>Content Types</h2>
@@ -963,61 +988,6 @@
         
             <section id="protocol-methods-options">
                 <h2>Protocol Methods and Options</h2>
-                <p>
-                    Each target protocol may specify different method names for similar
-                    operations, and there may be semantic differences between similar method names of
-                    different protocols. Additionally, platforms may use different methods
-                    for realizing a particular WoT Interaction Affordance. For example, POST may
-                    be used for writing a Property value in one platform, while PUT may be
-                    used in another. For these reasons, we require the ability to specify
-                    which method to use for a particular Interaction. We also will provide
-                    vocabulary to differentiate between methods of different protocols.
-                </p>
-                <p>
-                    The W3C RDF vocabulary for HTTP [[HTTP-in-RDF10]] is used to identify the methods
-                    and options specified in the HTTP protocol bindings.
-                </p>
-                <p>
-                    For the sake of consistency, we will use the same ontology design pattern
-                    to derive a vocabulary for each target protocol, e.g. CoAP, MQTT.
-                </p>
-        
-                <p>
-                    The example below shows some method definitions for various protocols.
-                </p>
-        
-                <pre class="example" title="Vocabulary Example for Methods">
-                                "htv:methodName": "GET"
-        
-                                "mqv:controlPacketValue": "SUBSCRIBE"
-        
-                                "cov:methodName": "GET"
-                            </pre>
-        
-                <p>
-                    Header options in HTTP, CoAP, MQTT sometimes must be included in a protocol binding in order to
-                    successfully interact with the underlying protocol. The example below shows the structure of
-                    the definition for HTTP header options, according to the W3C HTTP Vocabulary in RDF.
-                </p>
-        
-                <pre class="example" title="HTTP Vocabulary Example for Header Options">
-                    "htv:headers":
-                    [
-                        {
-                        "htv:fieldName": "Accept",
-                        "htv:fieldValue": "application/json"
-                        },
-                        {
-                        "htv:fieldName": "Transfer-Encoding",
-                        "htv:fieldValue": "chunked"
-                        }
-                    ]
-                </pre>
-        
-                <p>
-                    Note: different forms in a binding may need different header constructions,
-                    therefore the <code>htv:headers</code> construct is an extension of the TD "form" element.
-                </p>
         
                 <p>
                     Protocols may have defined sub-protocols that can be used for some interaction

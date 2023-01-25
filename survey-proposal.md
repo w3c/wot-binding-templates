@@ -10,7 +10,7 @@ This initiative has been started in the [GitHub Issue 221](https://github.com/w3
 
 This section should be removed in the final survey sent to people.
 
-- Tools for Collecting Answers: W3C Questionnaire, Google or Microsoft Forms, GitHub PRs.
+- Tools for Collecting Answers: W3C Questionnaire, Google or Microsoft Forms, GitHub PRs or simply any tool that we seem fit. A single tool should be selected to make it easy to collect the results.
 - Date for Sending the Survey: Once the "good enough to send state" is reached for the core document. TODO: Agree on a deadline
 - Who to send to:
   - Industry Stakeholders (Liaison SDOs)

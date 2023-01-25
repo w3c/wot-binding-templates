@@ -30,7 +30,7 @@ sttl.connect(q => {
 });
 
 const ontologies = [
-    'ontology/coap.ttl',
+    // 'ontology/coap.ttl',
     'ontology/mqtt.ttl',
     'ontology/modbus.ttl'
 ];

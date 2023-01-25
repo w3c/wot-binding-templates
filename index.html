@@ -394,7 +394,11 @@
                         the mapping, the mapping SHOULD be bidirectional, i.e. it should be clear how to
                         do a <code>readproperty</code> operation with the given protocol and how an existing
                         implementation's endpoints can be mapped to a WoT operation should be also clear.
-                        
+                    </li>
+                    <li>
+                        <b>JSON Schema:</b> A JSON Schema to validate the forms of a TD using the Protocol Binding SHOULD be provided. This allows validation of the URI scheme and the vocabulary terms.
+                        The JSON Schema instance SHOULD follow the template provided in <a
+                        href="https://github.com/w3c/wot-binding-templates/blob/main/bindings/protocols/template.schema.json">the Binding Templates GitHub Repository.</a> 
                     </li>
                     <li>
                         <b>Specification:</b> The official specification document of the protocol SHOULD be

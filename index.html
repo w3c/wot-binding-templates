@@ -463,94 +463,60 @@
                     </p>
 
                     <p>
-                        In the examples below, you can find content types for structured data such as JSON and XML.
+                        In the example below, you can find the form elements with content types for JSON and text payloads 
+                        such as JSON and CBOR with additional parameters.
+                        In this specific case, the forms describe that reading this property with <code>http</code> or 
+                        <code>coap</code> result in different content types.
                         For structured media types, a Data Schema is generally provided in the affordance level as 
-                        explained in [[[#payload-bindings-dataschema]]].
+                        explained in [[[#payload-bindings-dataschema]]] and <a href="https://w3c.github.io/wot-thing-description/#sec-data-schema-vocabulary-definition">
+                        in the Data Schema section of the TD specification</a>.
+                        However, for unstructured data such as images and videos, a Data Schema is typically not available.
                     </p>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="vertical-align: top; width: 50%">
-                                    <pre class="example" title="JSON media type in a form">
-                                        {
-                                            "href": "http://ex.com/temperature",
-                                            "op": "readproperty",
-                                            "contentType": "application/json"
-                                        }
-                                    </pre>
-                                </td>
-                                <td style="vertical-align: top; width: 50%">
-                                    <pre class="example" title="XML media type in a form">
-                                        {
-                                            "href": "http://ex.com/temperature",
-                                            "op": "readproperty",
-                                            "contentType": "application/xml"
-                                        }
-                                    </pre>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                    <pre class="example" title="JSON and CBOR media types in forms" id="example-payload-binding">
+                        {
+                            "forms":[
+                            {
+                                "href": "http://example.com/properties/temperature",
+                                "op": "readproperty",
+                                "contentType": "application/json"
+                            },
+                            {
+                                "href": "coap://example.com/properties/temperature",
+                                "op": "readproperty",
+                                "contentType": "application/cbor;charset=utf-8"
+                            }]
+                        }
+                    </pre>
 
                     <p>
-                        Content type can be also used for unstructured data such as images and videos.
-                        In these cases, a Data Schema is typically not available.
+                        Other content types can be also expressed in TDs. 
+                        In the list below, examples of different content type variations can be found.
+                        These content types can replace the ones in [[[#example-payload-binding]]].
                     </p>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="vertical-align: top; width: 50%">
-                                    <pre class="example" title="A JPEG image in a form">
-                                        {
-                                            "href": "http://ex.com/lastphoto",
-                                            "op": "readproperty",
-                                            "contentType": "image/jpeg"
-                                        }
-                                    </pre>
-                                </td>
-                                <td style="vertical-align: top; width: 50%">
-                                    <pre class="example" title="A WebM video file in a form">
-                                        {
-                                            "href": "http://ex.com/lasthourvideo",
-                                            "op": "readproperty",
-                                            "contentType": "video/webm"
-                                        }
-                                    </pre>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <p>
-                        Further parameters can also be expressed in the forms.
-                        These include the encoding (e.g. <code>charset=UTF-8</code>) by using the semicolon (<code>;</code>)
-                        notation or additional rules and structures using the plus (<code>+</code>) notation.
-                    </p>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td style="vertical-align: top; width: 50%">
-                                    <pre class="example" title="UTF-8 encoding for text/plain media type">
-                                        {
-                                            "href": "coap://[2001:DB8::1]/status",
-                                            "op": "readproperty",
-                                            "contentType": "text/plain;charset=utf-8"
-                                        }
-                                    </pre>
-                                </td>
-                                <td style="vertical-align: top; width: 50%">
-                                    <pre class="example" title="CBOR serialization with OCF rules and namespaces on the payload">
-                                        {
-                                            "href": "http://example.com/props/temperature",
-                                            "op": "readproperty",
-                                            "contentType": "application/ocf+cbor"
-                                        }
-                                    </pre>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
+                    <ul>
+                        <li>Structured Content Types without Parametrization</li>
+                        <ul>
+                            <li><code>application/json</code>: JSON [[RFC8259]]</li>
+                            <li><code>application/xml</code>: XML [[RFC5364]]</li>
+                            <li><code>application/cbor</code>: CBOR [[RFC8949]]</li>
+                            <li><code>text/csv</code>: CSV [[RFC4180]]</li>
+                        </ul>
+                        <li>Structured Content Types with Parametrization</li>
+                        <ul>
+                            <li><code>application/senml+json</code>: SenML Data serialized in JSON [[RFC8259]]</li>
+                            <li><code>application/senml+xml</code>: SenML Data serialized as XML</li>
+                            <li><code>application/ocf+cbor</code>: OCF payload serialized in CBOR</li>
+                            <li><code>text/csv;charset=utf-8</code>: CSV encoded in UTF-8 [[RFC4180]]</li>
+                        </ul>
+                        <li>Unstructured Content Types</li>
+                        <ul>
+                            <li><code>image/jpeg</code>: JPEG image</li>
+                            <li><code>video/mp4</code>: MP4 Video</li>
+                            <li><code>application/octet-stream</code>: Generic binary stream</li>
+                        </ul>
+                    </ul>
                 </section>
                 <section id="payload-bindings-dataschema">
                     <h5>Data Schemas</h5>

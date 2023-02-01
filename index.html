@@ -422,7 +422,7 @@
         
         </section>
         
-        <section id="payloads-bindings">
+        <section id="payload-bindings">
             <h3>Payload Binding Templates</h3>
             <section id="payload-bindings-intro">
                 <h4>Introduction to Payload Binding Templates</h4>
@@ -555,10 +555,12 @@
                 <section id="payload-bindings-dataschema">
                     <h5>Data Schemas</h5>
 
+                    <p>
+                        Data Schema concept to describe the structure of the messages, which are used together with media types.
                     Even though it is largely inspired by JSON Schema [[json-schema]], it can be used for describing
                     other payload types such as [[XML]], string-encoded images, bit representations of integers, etc.
                     Data Schema SHOULD be used in addition to the media types.
-
+                    </p>
                 </section>
             </section>
             <section id="payload-bindings-table">
@@ -633,7 +635,7 @@
             There are already various IoT platforms on the market that allows exposing physical and virtual Things
             to the Internet.
             These platforms generally propose a certain API specification over a protocol and media type.
-            Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings-intro"></a>. 
+            Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings"></a>. 
             Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs on how to integrate these
             platforms in to the W3C Web of Things.
             </p>

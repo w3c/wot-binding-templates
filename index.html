@@ -463,8 +463,8 @@
                     </p>
 
                     <p>
-                        In the example below, you can find the form elements with content types for JSON and text payloads 
-                        such as JSON and CBOR with additional parameters.
+                        In the example below, you can find the form elements with content types for JSON and plain text 
+                         with additional parameters.
                         In this specific case, the forms describe that reading this property with <code>http</code> or 
                         <code>coap</code> result in different content types.
                         For structured media types, a Data Schema is generally provided in the affordance level as 
@@ -484,7 +484,7 @@
                             {
                                 "href": "coap://example.com/properties/temperature",
                                 "op": "readproperty",
-                                "contentType": "application/cbor;charset=utf-8"
+                                "contentType": "text/plain;charset=utf-8"
                             }]
                         }
                     </pre>

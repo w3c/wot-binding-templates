@@ -1,0 +1,80 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "MqttForm": {
+            "type": "object",
+            "properties": {
+                "mqv:retain": {
+                    "type": "boolean"
+                },
+                "mqv:controlPacket": {
+                    "type": "string",
+                    "enum": [
+                        "publish",
+                        "subscribe",
+                        "unsubscribe"
+                    ]
+                },
+                "mqv:qos": {
+                    "type": "string",
+                    "enum": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                "mqv:filter": {
+                    "type": "string"
+                },
+                "mqv:topic": {
+                    "type": "string"
+                }
+            }
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/MqttForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "array",
+            "contains": {
+                "type": "object",
+                "properties": {
+                    "bindingPrefix": {
+                        "type": "string",
+                        "enum": [
+                            "BINDING CONTEXT"
+                        ]
+                    }
+                }
+            }
+        },
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        }
+    }
+}

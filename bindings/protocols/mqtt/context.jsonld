@@ -25,6 +25,9 @@
         },
         "publish": "mqv:PUBLISH",
         "subscribe": "mqv:SUBSCRIBE",
-        "unsubscribe": "mqv:UNSUBSCRIBE"
+        "unsubscribe": "mqv:UNSUBSCRIBE",
+        "0": "quality:0",
+        "1": "quality:1",
+        "2": "quality:2"
     }
 }

@@ -548,8 +548,42 @@
                         </ul>
                     </p>
                     <p>
-
+                        Below is an example of a simple JSON object payload with the corresponding Data Schema. 
+                        Examples from various IoT Platforms and Standards can be found in the appendice X.
                     </p>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align: top; width: 50%">
+                                    <pre class="example" title="Simple JSON Object Payload">
+                                        {
+                                        "level": 50,
+                                        "time": 10
+                                        }
+                                    </pre>
+                                </td>
+                                <td style="vertical-align: top; width: 50%">
+                                    <pre class="example" title="DataSchema for Simple JSON Object Payload">
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "level": {
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "time": {
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "maximum": 65535
+                                                }
+                                            }
+                                        }
+                                    </pre>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
             </section>
             <section id="payload-bindings-table">
@@ -1243,47 +1277,7 @@
         
                 <p>
                     Below are examples of different payloads and their corresponding <code>DataSchema</code>.
-                </p>
-        
-                <p>
-                    For example, a simple payload structure may use a map:
-                </p>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td style="vertical-align: top; width: 50%">
-                                <pre class="example" title="Simple JSON Object Payload">
-                                    {
-                                    "level": 50,
-                                    "time": 10
-                                    }
-                                </pre>
-                            </td>
-                            <td style="vertical-align: top; width: 50%">
-                                <pre class="example" title="DataSchema for Simple JSON Object Payload">
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "level": {
-                                                "@type": ["iot:LevelData"],
-                                                "type": "integer",
-                                                "minimum": 0,
-                                                "maximum": 255
-                                            },
-                                            "time": {
-                                                "@type": ["iot:TransitionTimeData"],
-                                                "type": "integer",
-                                                "minimum": 0,
-                                                "maximum": 65535
-                                            }
-                                        }
-                                    }
-                                </pre>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-        
+                </p>        
         
                 <p>
                     SenML [[RFC8428]] might use the following construct:

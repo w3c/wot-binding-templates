@@ -522,7 +522,7 @@
                     <h5>Data Schemas</h5>
 
                     <p>
-                        Data Schema as explained in [[WOT-THING-DESCRIPTION]] describes the structure of the messages, which are used together with media types.
+                        Data Schema, as explained in [[WOT-THING-DESCRIPTION]], describes the structure of the messages, which are used together with media types.
                         Even though it is largely inspired by JSON Schema [[json-schema]], it can be used for describing
                         other payload types such as [[XML]], string-encoded images, bit representations of integers, etc.
                         Data Schema SHOULD be used in addition to the media types.
@@ -530,6 +530,25 @@
                     <p>
                         Depending on the case, the structure of the messages can be anything from a simple number to
                         arrays or objects with multiple levels of nesting.
+                        Existing IoT Platforms and Standards have certain payload formats with variations on how the data is structured.
+                        As explained in [[WOT-THING-DESCRIPTION]], Data Schema can be used in a TD in one of the following places:
+                        <ul>
+                            <li><b>Property Affordances:</b> Each property affordance can contain terms for Data Schema
+                            and describe the property values when read, observed or written to.</li>
+                            <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> keywords are used 
+                                to provide two different schemas when data is exchanged in both directions, such as in 
+                                the case of invoking an Action Affordance with input parameters and receiving status information.</li>
+                            <li><b>Event Affordances:</b> <code>data</code>, <code>dataResponse</code>, <code>subscription</code> 
+                                and <code>cancellation</code> are used to describe the payload when the event data
+                                is delivered by the Exposed Thing, the payload to reply with for event deliveries,
+                                 the payload needed to subscribe to the event and the payload needed to cancel receiving event
+                                data from the Exposed Thing, respectively.</li>
+                            <li><b>URI Variables:</b> In the Thing or Affordance level, <code>uriVariables</code> can
+                            describe the data that needs to be supplied inside the request URI as a string.</li>
+                        </ul>
+                    </p>
+                    <p>
+
                     </p>
                 </section>
             </section>
@@ -1221,36 +1240,6 @@
         
             <section id="payload-structure">
                 <h2>Payload Structure</h2>
-                <p>
-                    Payload Structure is determined by <code>DataSchema</code> elements of a Thing Description.
-                    DataSchema elements should be used by an instance of a <code>PropertyAffordance</code>,
-                    <code>input</code>/<code>output</code> of <code>ActionAffordance</code>,
-                    <code>data</code>/<code>subscription</code>/<code>cancellation</code> of an
-                    <code>EventAffordance</code> or by
-                    a <code>uriVariable</code> of the <code>InteractionAffordance</code>.
-                    As indicated in the [[WOT-THING-DESCRIPTION]], <code>DataSchema</code> Vocabulary is a subset of
-                    JSON Schema [[json-schema]]
-                </p>
-                <p>
-                    In the case of Action Affordances, the additional keywords <code>input</code> and
-                    <code>output</code> are used to provide two different schemas when data
-                    might be exchanged in both directions, such as in the case of invoking an Action Affordance
-                    with input parameters and receiving status information.
-                </p>
-                <p>
-                    In the case of Event Affordances, the additional keywords <code>data</code>,
-                    <code>subscription</code> and <code>cancellation</code> are used to describe the payload when the event data
-                    is delivered by the
-                    Exposed Thing, the payload needed to subscribe to the event and the payload needed to cancel receiving event
-                    data
-                    from the Exposed Thing, respectively.
-                </p>
-                <p>
-                    In addition to the example pattern in [[WOT-THING-DESCRIPTION]] of an object with name/value
-                    constructs or simple arrays, Protocol Bindings for existing standards
-                    may require nested arrays and objects, and some constant values to
-                    be specified.
-                </p>
         
                 <p>
                     Below are examples of different payloads and their corresponding <code>DataSchema</code>.

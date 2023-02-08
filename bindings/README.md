@@ -5,3 +5,5 @@ binding template specific documentation. Each sub-folder must provide:
 - shacl file that describes which ontology terms can be used and how
 - context.jsonld file containing the related jsonld `@context` definition
 
+And optionally:
+- A JSON Schema file based on [template.schema.json](/template.schema.json) that describes the binding template structure for validation purposes.

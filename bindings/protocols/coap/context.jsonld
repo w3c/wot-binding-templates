@@ -1,0 +1,43 @@
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "cov": "https://www.w3.org/2019/wot/cov#",
+        "method": {
+            "@id": "cov:hasMethod",
+            "@type": "xsd:string"
+        },
+        "BlockWiseTransferParameters": {
+            "@id": "cov:BlockWiseTransferParameters"
+        },
+        "blockwise": {
+            "@id": "cov:hasBlockwise",
+            "@type": "@id",
+            "@container": "@index"
+        },
+        "qblockwise": {
+            "@id": "cov:hasQBlockwise",
+            "@type": "@id",
+            "@container": "@index"
+        },
+        "block2SZX": {
+            "@id": "cov:hasblock2SZX",
+            "@type": "xsd:unsignedShort"
+        },
+        "block1SZX": {
+            "@id": "cov:hasblock1SZX",
+            "@type": "xsd:unsignedShort"
+        },
+        "accept": {
+            "@id": "cov:hasAccept",
+            "@type": "xsd:unsignedShort"
+        },
+        "contentFormat": {
+            "@id": "cov:hasContentFormat",
+            "@type": "xsd:unsignedShort"
+        },
+        "hopLimit": {
+            "@id": "cov:hasHopLimit",
+            "@type": "xsd:unsignedByte"
+        }
+    }
+}

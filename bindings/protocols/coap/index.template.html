@@ -479,66 +479,7 @@
                 </thead>
                 <tbody>
                     <!-- Form terms from the ontology-->
-                    <tr>
-                        <td><code>cov:method</code></td>
-                        <td>
-                            Indicates the CoAP method to be used in the request.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#string">string</a> (e.g., <code>GET</code>, <code>PUT</code>, <code>POST</code>, <code>DELETE</code>, <code>FETCH</code>, <code>iPATCH</code>, or <code>PATCH</code>)<p>(See the <a href="https://www.iana.org/assignments/core-parameters/#method-codes">CoAP Method Codes</a> registry for the set of possible values.)</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:blockwise</code></td>
-                        <td>
-                            Indicates that block-wise transfer [[RFC7959]] is supported.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="#blockwisetransferparameters">BlockWiseTransferParameters</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:qblockwise</code></td>
-                        <td>
-                            Indicates that quick block-wise transfer [[RFC9177]] is supported.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="#blockwisetransferparameters">BlockWiseTransferParameters</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:hopLimit</code></td>
-                        <td>
-                            Indicates that a CoAP Hop-Limit option [[RFC8768]] should be included in the request.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:contentFormat</code></td>
-                        <td>
-                            Indicates a numeric CoAP Content-Format [[RFC7252]] as a combination of Media Type and Content Coding. Must match the given <code>contentType</code> and <code>contentCoding</code> members.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>cov:accept</code></td>
-                        <td>
-                            Indicates that a Consumer must include an Accept option [[RFC7252]] with the given value when requesting the resource associated with this Form.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a>
-                        </td>
-                    </tr>
+                    %s
                 </tbody>
             </table>
         </section>
@@ -558,16 +499,7 @@
                 </thead>
                 <tbody>
                     <!-- Response terms from the ontology-->
-                    <tr>
-                        <td><code>cov:contentFormat</code></td>
-                        <td>
-                            Indicates a numeric CoAP Content-Format [[RFC7252]] as a combination of Media Type and Content Coding. Must match the given <code>contentType</code> and <code>contentCoding</code> members.
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a>
-                        </td>
-                    </tr>
+                    %s
                 </tbody>
             </table>
         </section>
@@ -584,30 +516,7 @@
                 </thead>
                 <tbody>
                     <!-- Blockwise terms from the ontology-->
-                    <tr>
-                        <td>
-                            <code>cov:block2Size</code>
-                        </td>
-                        <td>
-                            Indicates the largest block size that may be used in a Block2 or Q-Block2 Option
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a> (one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, or <code>1024</code>)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <code>cov:block1Size</code>
-                        </td>
-                        <td>
-                            Indicates the largest block size that may be used in a Block1 or Q-Block1 Option
-                        </td>
-                        <td>optional</td>
-                        <td>
-                            <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a> (one of <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>256</code>, <code>512</code>, or <code>1024</code>)
-                        </td>
-                    </tr>
+                    %s
                 </tbody>
             </table>
         </section>

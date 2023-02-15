@@ -44,20 +44,6 @@
     },
     "type": "object",
     "properties": {
-        "@context": {
-            "type": "array",
-            "contains": {
-                "type": "object",
-                "properties": {
-                    "htv": {
-                        "type": "string",
-                        "enum": [
-                            "http://www.w3.org/2011/http#"
-                        ]
-                    }
-                }
-            }
-        },
         "properties": {
             "$ref": "#/definitions/affordance"
         },

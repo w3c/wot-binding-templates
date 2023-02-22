@@ -52,6 +52,9 @@
         },
         "events": {
             "$ref": "#/definitions/affordance"
+        },
+        "@context": {
+            "$comment":"When the HTTP vocabulary is not part of the TD vocabulary anymore, requirements on the context usage should be added"
         }
     }
 }

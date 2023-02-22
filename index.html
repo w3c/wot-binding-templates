@@ -316,6 +316,66 @@
                 </table>
 
                 <p>
+                    The form elements in the examples above convey the following statements:
+                    <ul>
+                        <li>
+                            Left Example: To do a <code>readproperty</code> of the subject Property Affordance by 
+                            performing an HTTP GET request on the resource <code>props/temperature</code> to the host 
+                            at <code>example.com</code> on port <code>80</code> (Port 80 is assumed as per [[RFC2616]]).
+                        </li>
+                        <li>
+                            Right Example: To do a <code>readproperty</code> of the subject Property Affordance using the 
+                            <code>readCoil</code> function of Modbus at coil <code>1</code> of the device 
+                            with the <code>127.0.0.1</code> address at its port <code>60000</code> 
+                        </li>
+                    </ul>
+                    These bindings and their statements are possible for other operations and protocols as well. 
+                    Below are examples for <code>invokeaction</code> and <code>subscribeevent</code>:
+                </p>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: top; width: 50%">
+                                <pre class="example" title="Binding example of an invokeaction operation to HTTP">
+                                    {
+                                        "op": "invokeaction",
+                                        "href": "http://192.168.1.32:8081/example/levelaction",
+                                        "htv:methodName": "POST"
+                                    }
+                                </pre>
+                            </td>
+                            <td style="vertical-align: top; width: 50%">
+                                <pre class="example" title="Binding example of an subscribeevent operation to Modbus">
+                                    {
+                                        "op": "subscribeevent",
+                                        "href": "mqtt://iot.platform.com:8088",
+                                        "mqv:filter": "thing1/events/overheating",
+                                        "mqv:controlPacket": "subscribe"
+                                    }
+                                </pre>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>
+                    The form elements in the examples above convey the following statements:
+                    <ul>
+                        <li>
+                            Left Example: To do an <code>invokeaction</code> of the subject Action Affordance by 
+                            performing an HTTP POST request on the resource <code>example/levelaction</code> to the host 
+                            at <code>192.168.1.32</code> on port <code>8081</code>.
+                        </li>
+                        <li>
+                            Right Example: To do a <code>subscribeevent</code> of the subject Event Affordance by connecting 
+                            to the MQTT broker at <code>iot.platform.com</code> and port <code>8088</code>, then subscribing
+                            to the topic <code>thing1/events/overheating</code>.
+                        </li>
+                    </ul>
+                </p>
+
+                <p>
                     In some cases, header options or other parameters of the protocols need to be included.
                     Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]]
                 </p>
@@ -1388,124 +1448,6 @@
                 For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
                 operations as defined by [[RFC6741]]
             </p>
-        </section>
-        
-        <section id="sec-interaction-patterns" class="informative">
-            <h1>Interaction Affordances</h1>
-            <p>
-                This section describes unique aspects of protocol bindings for the three WoT Interaction Affordances.
-            </p>
-        
-            <section id="property-bindings">
-                <h2>Bindings for Properties</h2>
-                <p>
-                    This section describes unique aspects of protocol bindings for WoT Property interactions.
-                </p>
-
-                <p>
-                    The abstract operations exposed for the Property Interaction are <code>readproperty</code>,
-                    <code>writeproperty</code>, <code>observeproperty</code> and <code>unobserveproperty</code>.
-                    These are mapped by using form operations that describe how the abstract operation is performed,
-                    resulting in a semantic interpretation similar to HTML form submission.
-                </p>
-        
-                <p>
-                    Additionally, the abstract operations exposed for multiple Property Interactions are
-                    <code>readallproperties</code>, <code>writeallproperties</code>,
-                    <code>readmultipleproperties</code> and <code>writemultipleproperties</code>.
-                </p>
-        
-                <pre class="example" title="Example use of form operation for Property">
-                    {
-                        "op": "writeproperty",
-                        "href": "/example/level",
-                        "htv:methodName": "POST"
-                    }
-                </pre>
-        
-                <p>
-                    The form element in the example above conveys the statement:
-                    <i>"To do a <code>writeproperty</code> of the subject Property (context of the form), perform
-                        an <code> HTTP POST</code> on the resource at the target URI <code>/example/level</code>."</i>
-                </p>
-
-                <p>
-                    Properties may be observable, defined by the TD keyword "observable".
-                    If there is an observe form and a retrieve form, the observe form may be
-                    indicated by including <code>op=observeproperty</code> in the form. The observe form may
-                    also specify header options to use, as specified in Observing in CoAP[[?RFC7641]]for example
-                    setting the CoAP Observe option to <code>0</code> in the header, starts observation.
-                </p>
-            </section>
-        
-            <section id="action-bindings" class="informative">
-                <h2>Bindings for Actions</h2>
-                <p>
-                    This section describes unique aspects of protocol bindings for Actions.
-                </p>
-                <p>
-        
-                    The abstract operation on Actions is <code>invokeaction</code>.
-                    In the same way that the abstract operations on Properties are mapped using form operation
-                    types, the abstract operation of Actions is also mapped.
-                </p>
-        
-                <pre class="example" title="Example use of form operation for Action">
-                    {
-                        "op": "invokeaction",
-                        "href": "/example/levelaction",
-                        "http:methodName": "POST"
-                    }
-                </pre>
-        
-                <p>
-                    The form element in the example above conveys the statement: <i>"To do an
-                        <code>invokeaction</code> of the subject Action (context of the form), perform a
-                        <code>POST</code> on the resource at the target URI <code>/example/levelaction</code>."</i>
-                </p>
-            </section>
-        
-            <section id="event-bindings" class="informative">
-                <h2>Bindings for Events</h2>
-                <p>
-                    This section describes unique aspects of protocol bindings for WoT Event Interaction Affordances.
-                </p>
-        
-                <p>
-                    The abstract operations on Events are <code>subscribeevent</code> and
-                    <code>unsubscribeevent</code>.
-                    The <code>subscribeevent</code> operation may directly enable event instance delivery
-                    from the pre-defined URI to observable resources or pubsub topics encoded in URIs.
-                    Alternatively, it may return a location or resource URI from which event instance may be
-                    obtained, either by observation or some other mechanism, depending on the transfer protocol.
-                </p>
-                <p>
-                    Usually, the <code>unsubscribeevent</code> only occurs when the transfer protocol has no
-                    implicit unsubscribe operation such as closing the connection. Examples are Webhooks that require
-                    particular unsubscribe requests.
-        
-                </p>
-                <p>
-                    If the binding offers an observable Event resource from which events are
-                    obtained, there will be a form which describes the required transfer layer
-                    operation, for example CoAP Observe or HTTP Long Polling.
-                </p>
-        
-                <pre class="example" title="Example use of form operation for Events">
-                    {
-                        "op": "subscribeevent",
-                        "href": "mqtt://wot.example.com/levelevent",
-                        "mqv:controlPacketValue": "SUBSCRIBE"
-                    }
-                </pre>
-        
-                <p>
-                    The form element in the example above conveys the statement: <i>"To do an
-                        <code>subscribeevent</code> of the subject Event (context of the form), perform an
-                        <code>MQTT SUBSCRIBE</code> on the topic <code>/levelevent</code> on the broker at
-                        <code>wot.example.com</code> using the default MQTT port."</i>
-                </p>
-            </section>
         </section>
 
     <script id="dstimer" language="javascript">

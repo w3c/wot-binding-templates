@@ -317,7 +317,30 @@
 
                 <p>
                     In some cases, header options or other parameters of the protocols need to be included.
-                    Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]]
+                    Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]].
+                    Additionally, protocols may have defined Subprotocols that can be used for some interaction types. 
+                    For example, to receive asynchronous notifications using HTTP, some servers may support long polling
+                     (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>) and Server-Sent Events [[eventsource]] (<code>sse</code>).
+                </p>
+
+                <p>
+                    The use of a subprotocol is expressed with the <code>subprotocol</code> field, as defined in [[!WOT-THING-DESCRIPTION]].
+                    It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its special use of HTTP:
+                    <pre class="example" title="Subprotocol usage for subscribing events">
+                        {
+                            "op": "subscribeevent",
+                            "href": "https://mylamp.example.com/overheating",
+                            "subprotocol": "longpoll"
+                        }
+                    </pre>
+                </p>
+        
+                <p>
+                    The value of the <code>subprotocol</code> term is not constrained by the [[!WOT-THING-DESCRIPTION]]
+                    since different protocols can have different Subprotocols.
+                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
+                    For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
+                    operations as defined by [[RFC6741]]
                 </p>
             </section>
             <section id="protocol-bindings-table">
@@ -1339,34 +1362,6 @@
             The below chapters are copied from other places in this document. They require discussion on where to place
             them, i.e. either here or another document of the working group, or to be completely removed.
         </p>
-
-        <section id="subprotocol-element">
-            <h2>Subprotols</h2> 
-            <p>
-                Protocols may have defined Subprotocols that can be used for some interaction
-                types. For example, to receive asynchronous notifications using HTTP, some
-                servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]]
-                (<code>websub</code>) and Server-Sent Events [[eventsource]] (<code>sse</code>).
-    
-                The <code>subprotocol</code> field is defined in [[!WOT-THING-DESCRIPTION]].
-                It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its special use of HTTP:
-                <pre class="example" title="subprotocol">
-                    {
-                        "op": "subscribeevent",
-                        "href": "https://mylamp.example.com/overheating",
-                        "subprotocol": "longpoll"
-                    }
-                </pre>
-            </p>
-
-            <p>
-                The value of the <code>subprotocol</code> term is not constrained by the [[!WOT-THING-DESCRIPTION]]
-                since different protocols can have different Subprotocols.
-                For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
-                For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
-                operations as defined by [[RFC6741]]
-            </p>
-        </section>
         
         <section id="sec-interaction-patterns" class="informative">
             <h1>Interaction Affordances</h1>

@@ -1,0 +1,60 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "HttpForm": {
+            "type": "object",
+            "properties": {
+                "htv:methodName": {"type": "string", "examples":["GET","PUT","POST","DELETE","PATCH"]},
+                "htv:headers": {
+                    "type": "array",
+                    "items":{
+                        "type":"object",
+                        "properties":{
+                            "htv:fieldName":{
+                                "type": "string", "examples":["Accept","Transfer-Encoding"]
+                            },
+                            "htv:fieldValue":{
+                                "type": "string"
+                            }
+                        },
+                        "required":["htv:fieldName"]
+                    }
+                }
+            }
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/HttpForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        },
+        "@context": {
+            "$comment":"When the HTTP vocabulary is not part of the TD vocabulary anymore, requirements on the context usage should be added"
+        }
+    }
+}

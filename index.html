@@ -317,7 +317,31 @@
 
                 <p>
                     In some cases, header options or other parameters of the protocols need to be included.
-                    Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]]
+                    Given that these are highly protocol dependent, please refer to the bindings listed in [[[#protocol-bindings-table]]].
+                    Additionally, protocols may have defined Subprotocols that can be used for some interaction types. 
+                    For example, to receive asynchronous notifications using HTTP, some servers may support long polling
+                     (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>) and Server-Sent Events [[eventsource]] (<code>sse</code>).
+                </p>
+
+                <p>
+                    The use of a subprotocol is expressed with the <code>subprotocol</code> field, as defined in [[!WOT-THING-DESCRIPTION]].
+                    It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its special use of HTTP:
+                    <pre class="example" title="Subprotocol usage for subscribing events">
+                        {
+                            "op": "subscribeevent",
+                            "href": "https://mylamp.example.com/overheating",
+                            "subprotocol": "longpoll"
+                        }
+                    </pre>
+                </p>
+        
+                <p>
+                    The values that the <code>subprotocol</code> term can take is not constrained by the [[!WOT-THING-DESCRIPTION]]
+                    since different protocols can have different Subprotocols.
+                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
+                    For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
+                    operations as defined by [[RFC6741]].
+                    The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
             </section>
             <section id="protocol-bindings-table">
@@ -1339,56 +1363,6 @@
             The below chapters are copied from other places in this document. They require discussion on where to place
             them, i.e. either here or another document of the working group, or to be completely removed.
         </p>
-
-        <section id="form-element">
-            <h2>Forms Element</h2>
-            <p>
-                The form elements contain the URI [[RFC3986]] pointing to an instance of the interaction
-                and descriptions of the protocol settings and options expected to be used when
-                between the Consumer and the Thing for the interaction.
-            </p>
-        
-            <section id="protocol-methods-options">
-                <h2>Protocol Methods and Options</h2>
-        
-                <p>
-                    Protocols may have defined sub-protocols that can be used for some interaction
-                    types. For example, to receive asynchronous notifications using HTTP, some
-                    servers may support long polling (<code>longpoll</code>), WebSub [[WebSub]]
-                    (<code>websub</code>) and Server-Sent Events [[eventsource]] (<code>sse</code>).
-        
-                    The <code>subprotocol</code> item may be defined in a form instance to indicate the
-                    use of one of these protocols, for example long polling with its special use of HTTP:
-                    <pre class="example" title="subprotocol">
-                        {
-                            "op": "subscribeevent",
-                            "href": "https://mylamp.example.com/overheating",
-                            "subprotocol": "longpoll"
-                        }
-                    </pre>
-                </p>
-        
-            </section>
-        </section>
-
-        <section>
-            
-            <h3><code>subprotocol</code> Vocabulary</h3>
-            <p>
-                The <code>subprotocol</code> field is defined in [[!WOT-THING-DESCRIPTION]].
-            </p>
-            <p>
-                Currently, the supported values are <code>longpoll</code>, <code>websub</code> and <code>sse</code>
-                defined for HTTP. Subprotocols can be used for asynchronous event delivery or observing Properties.
-            </p>
-            <p>
-                For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
-            </p>
-            <p>
-                For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
-                operations as defined by [[RFC6741]]
-            </p>
-        </section>
         
         <section id="sec-interaction-patterns" class="informative">
             <h1>Interaction Affordances</h1>

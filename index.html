@@ -336,11 +336,12 @@
                 </p>
         
                 <p>
-                    The value of the <code>subprotocol</code> term is not constrained by the [[!WOT-THING-DESCRIPTION]]
+                    The values that the <code>subprotocol</code> term can take is not constrained by the [[!WOT-THING-DESCRIPTION]]
                     since different protocols can have different Subprotocols.
                     For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
                     For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
-                    operations as defined by [[RFC6741]]
+                    operations as defined by [[RFC6741]].
+                    The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
             </section>
             <section id="protocol-bindings-table">

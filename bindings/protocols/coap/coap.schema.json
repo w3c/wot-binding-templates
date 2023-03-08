@@ -28,7 +28,7 @@
                 "cov:block2Size": {
                     "$ref": "#/definitions/blockWiseValues"
                 },
-                "cov:block1SZX": {
+                "cov:block1Size": {
                     "$ref": "#/definitions/blockWiseValues"
                 }
             }

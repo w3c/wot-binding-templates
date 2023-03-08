@@ -11,13 +11,13 @@
 
 
 <https://www.w3.org/2019/wot/mqtt> rdf:type owl:Ontology ;
-                                    dct:author [ rdf:type schema:Person ;
-                                                 schema:affiliation [ rdf:type schema:Organization ;
-                                                                      schema:name "Invited Expert" ;
-                                                                      schema:url "https://github.com/mjkoster/"
-                                                                    ] ;
-                                                 schema:name "Michael Koster"
-                                               ] ;
+                                    dct:creator [ rdf:type schema:Person ;
+                                                  schema:affiliation [ rdf:type schema:Organization ;
+                                                                       schema:name "Invited Expert" ;
+                                                                       schema:url "https://github.com/mjkoster/"
+                                                                     ] ;
+                                                  schema:name "Michael Koster"
+                                                ] ;
                                     dct:contributor <https://www.vcharpenay.link/#me> ,
                                                     [ rdf:type schema:Person ;
                                                       schema:affiliation _:genid4 ;

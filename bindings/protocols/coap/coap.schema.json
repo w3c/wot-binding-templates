@@ -25,7 +25,7 @@
         "blockWiseTransferParameters": {
             "type": "object",
             "properties": {
-                "cov:block2SZX": {
+                "cov:block2Size": {
                     "$ref": "#/definitions/blockWiseValues"
                 },
                 "cov:block1SZX": {

@@ -68,7 +68,7 @@ template :editor(?o) {
     "companyURL:" ?url
     "}" ; separator = ","
 } where {
-    { ?o dct:author ?ed } union { ?o dct:contributor ?ed }
+    { ?o dct:creator ?ed } union { ?o dct:contributor ?ed }
     ?ed schema:name ?name ; schema:affiliation ?org .
     ?org schema:name ?company ; schema:url ?url .
 }

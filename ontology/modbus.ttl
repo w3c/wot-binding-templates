@@ -12,7 +12,7 @@
 @base <https://www.w3.org/2019/wot/modbus> .
 
 <https://www.w3.org/2019/wot/modbus> rdf:type owl:Ontology ;
-                                      dct:author "Jakob Müller https://github.com/Drukob" ;
+                                      dct:creator "Jakob Müller https://github.com/Drukob" ;
                                       dct:contributor "Cristiano Aguzzi https://github.com/relu91" ,
                                                       "Elisa Riforgiato https://github.com/elithkob" ,
                                                       "Jakob Müller https://github.com/Drukob" ,

@@ -6,8 +6,8 @@ prefix schema: <http://schema.org/>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix vann: <http://purl.org/vocab/vann/>
 prefix dct: <http://purl.org/dc/terms/>
-prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
-prefix binding: <https://www.w3.org/2019/wot/binding#> 
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix binding: <https://www.w3.org/2019/wot/binding#>
 prefix : <http://w3c.github.io/wot-binding-templates/ontology#>
 
 template :modbus(?ns) {
@@ -17,7 +17,7 @@ template :modbus(?ns) {
 <html>
     <head>
     <meta charset='utf-8'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
     <script class='remove'>
         var respecConfig = {
             specStatus: "ED",

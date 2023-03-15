@@ -171,6 +171,18 @@
         </ul>
         </p>
 
+        <p>
+            Each Interaction Affordance in a TD needs to have a binding to a protocol and to a payload format.
+            Figure [[[#fig-mechanism]]] below illustrates a TD with examples of HTTP and JSON bindings.
+            Other types of bindings in a TD are possible and are explained in [[[#binding-overview]]].
+        </p>
+
+        <figure id="fig-mechanism">
+            <img src="images/binding-mechanism.drawio.png" alt="Binding Templates mechanism with a TD, Thing and Consumer" />
+            <figcaption>Binding Templates Mechanism inside a TD with messages of its Thing and a Consumer.</figcaption>
+        </figure>
+            
+
         <section id="sec-relationships-bindings">
             <h2>Relationship Between Binding Template Documents</h2>
 
@@ -178,7 +190,8 @@
                 Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and publication date.
                 This document, called the <a>Binding Template Core Specification</a>, explains the binding mechanism by
                 giving requirements per respective binding category and links to the respective subspecification.
-                These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and [[[#platforms-intro]]]
+                These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and [[[#platforms-intro]]].
+                This Relationship is also illustrated in [[[#fig-overview]]].
             </p>
 
             <figure id="fig-overview">

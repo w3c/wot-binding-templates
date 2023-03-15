@@ -405,6 +405,60 @@
                     operations as defined by [[RFC6741]].
                     The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
+
+                <p>
+                    Overall, a protocol binding template specifies the values and structure of the following keywords in a TD.
+                    In addition to these, additional terms for describing protocol options are typically added.
+                </p>
+
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Class</th>
+                            <th>Assignment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@context</td>
+                            <td>Thing</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>href</td>
+                            <td>Form</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>subprotocol</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>ExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>AdditionalExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentCoding</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                
             </section>
             <section id="protocol-bindings-table">
                 <h4>Existing Protocol Binding Templates</h4>
@@ -673,6 +727,43 @@
                         </tbody>
                     </table>
                 </section>
+                <p>
+                    Overall, a payload binding template specifies the values and structure of the following keywords in a TD.
+                    In addition to these, additional vocabulary terms can be added and restrictions to Data Schema terms can be placed.
+                </p>
+
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Class</th>
+                            <th>Assignment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>contentType</td>
+                            <td>Form</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>ExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>AdditionalExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentCoding</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </section>
             <section id="payload-bindings-table">
                 <h4>Existing Payload Binding Templates</h4>

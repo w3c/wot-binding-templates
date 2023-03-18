@@ -173,13 +173,17 @@
 
         <p>
             Each Interaction Affordance in a TD needs to have a binding to a protocol and to a payload format.
-            Figure [[[#fig-mechanism]]] below illustrates a TD with examples of HTTP and JSON bindings.
+            Figure [[[#fig-mechanism]]] below illustrates an excerpt of a TD of a robot arm with of HTTP and JSON bindings.
+            Here, the Consumer intends to invoke an action of the robot arm (<code>goTo</code>) in order to move it to the position
+            x equals 12 and y equals 100.
+            In order to do so, it creates the correct payload, serializes it and sends it using the correct protocol options.
+            The Thing gets the message over the network and responds with a message that corresponds to its TD.
             Other types of bindings in a TD are possible and are explained in [[[#binding-overview]]].
         </p>
 
         <figure id="fig-mechanism">
-            <img src="images/binding-mechanism.drawio.png" alt="Binding Templates mechanism with a TD, Thing and Consumer" />
-            <figcaption>Binding Templates Mechanism inside a TD with messages of its Thing and a Consumer.</figcaption>
+            <img src="images/binding-mechanism.drawio.svg" alt="Binding Templates mechanism with a TD, Thing and Consumer" />
+            <figcaption>Binding Templates Mechanism inside a TD excerpt with messages of its Thing and a Consumer.</figcaption>
         </figure>
             
 

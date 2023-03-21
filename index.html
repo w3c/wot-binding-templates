@@ -157,43 +157,12 @@
         <p>
             Binding Templates consist of multiple specifications, referred to as a <a>subspecification</a>
              in this document, that enable an application client (a WoT Consumer) to interact, using WoT Thing 
-             Description[[WOT-THING-DESCRIPTION]] (TD), with Things that exhibit diverse protocols, payload formats and their usage.
-            These subspecifications are categorized into three:
-        <ul>
-            <li> <a href="#protocol-bindings"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
-                MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing
-                Description[[WOT-THING-DESCRIPTION]] forms via reusable vocabulary and extensions.</li>
-            <li> <a href="#payload-bindings-intro"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
-                can be represented in a TD via Data Schemas or forms.</li>
-            <li> <a href="#platforms-intro"></a>: Platforms and frameworks who combine the use of protocols and payloads
-                in a certain way, which can be represented via entire Thing Models described by the [[WOT-THING-DESCRIPTION]]
-                or examples of TDs.</li>
-        </ul>
+             Description[[WOT-THING-DESCRIPTION]] (TD), with Things that exhibit diverse protocols, payload formats and a
+             combination of these in platforms and frameworks.
+             The mechanism that allows this is called the Binding Mechanism, without which TDs could not build Hypermedia Controls
+             as explained in the [[WOT-ARCHITECTURE]].
         </p>
-
-        <section id="sec-relationships-bindings">
-            <h2>Relationship Between Binding Template Documents</h2>
-
-            <p>
-                Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and publication date.
-                This document, called the <a>Binding Template Core Specification</a>, explains the binding mechanism by
-                giving requirements per respective binding category and links to the respective subspecification.
-                These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and [[[#platforms-intro]]]
-            </p>
-
-            <figure id="fig-overview">
-                <img src="images/binding-templates-overview.png" alt="Binding Templates Overview and the relationships between each document type" />
-                <figcaption>Binding Templates Overview and the Relationships between each Document Type</figcaption>
-            </figure>
-
-            <p>
-                Each Protocol and Payload Binding Template is specified in a way that they stay independent from each other.
-                This means that each document can be read independently from each other and can also develop independently.
-                However, Platform Binding Templates are dependent on the Protocol and Payload Binding Templates, since a given
-                platform uses different protocols and payload formats that need to be specified first in their respective 
-                binding templates and referred to within a Platform Binding Template.
-            </p>
-        </section>
+        <!-- Merging PR 262 should change how this looks like -->
     </section>
 
     <section id="conformance">
@@ -249,7 +218,43 @@
         <h1>Binding Template Mechanisms</h1>
 
         <p>
-            This section describes the mechanisms of binding templates for protocols, payload formats and platforms.
+            TDs can bound to specific protocols, payload formats and platforms.
+            This is possible through the three core mechanisms that allow WoT to be used in various domains and scenarios.
+            This section explains how these binding mechanism types are structured, should be specified, and links to
+            corresponding binding documents (subspecifications).
+            These 3 types of mechanisms are:
+            <ul>
+                <li> <a href="#protocol-bindings"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
+                    MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing
+                    Description[[WOT-THING-DESCRIPTION]] forms via reusable vocabulary and extensions.</li>
+                <li> <a href="#payload-bindings-intro"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
+                    can be represented in a TD via Data Schemas or forms.</li>
+                <li> <a href="#platforms-intro"></a>: Platforms and frameworks who combine the use of protocols and payloads
+                    in a certain way, which can be represented via entire Thing Models described by the [[WOT-THING-DESCRIPTION]]
+                    or examples of TDs.</li>
+            </ul>
+        </p>
+        <p>
+            Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and
+            publication date.
+            This document, called the <a>Binding Template Core Specification</a>, explains the binding mechanism by
+            giving requirements per respective binding category and links to the respective subspecification.
+            These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and
+            [[[#platforms-intro]]].
+        </p>
+    
+        <figure id="fig-overview">
+            <img src="images/binding-templates-overview.png"
+                alt="Binding Templates Overview and the relationships between each document type" />
+            <figcaption>Binding Templates Overview and the Relationships between each Document Type</figcaption>
+        </figure>
+    
+        <p>
+            Each Protocol and Payload Binding Template is specified in a way that they stay independent from each other.
+            This means that each document can be read independently from each other and can also develop independently.
+            However, Platform Binding Templates are dependent on the Protocol and Payload Binding Templates, since a given
+            platform uses different protocols and payload formats that need to be specified first in their respective
+            binding templates and referred to within a Platform Binding Template.
         </p>
 
         <section id="protocol-bindings">

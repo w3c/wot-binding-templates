@@ -449,13 +449,30 @@
                 </table>
             </section>
             <section>
-                <h4>Consuming a TD using a Protocol Binding Template Subspecification</h4>
+                <h4>Consuming a TD with a Protocol Binding Template Subspecification</h4>
 
+                <p>
+                    Protocol Binding Templates contain vocabularies that extend the vocabulary found in the [[WOT-THING-DESCRIPTION]].
+                    This means that the way a TD is consumed is adapted to such vocabularies.
+                    The steps below explain how this process typically looks like.
+                    <!-- this text should be extended after the PR 262 is merged -->
+                </p>
                 <ol>
-                    <li>Detect the protocol -> Each form or base url</li>
-                    <li>Choose the correct binding library</li>
-                    <li>Validate the forms part of the TD</li>
-                    <li>Send requests as specified by the form and additional behavior that is expected from the form (subprotocol or other terms)</li>
+                    <li>
+                        <b>Detect the protocol:</b> Upon the activation of a form to execute the operation, the Consumer 
+                        SHOULD look at the <code>href</code> member and the <code>base</code> (if exists) and identify the protocol.
+                    </li>
+                    <li>
+                        <b>Choose the correct protocol stack:</b> The Consumer SHOULD use choose the correct protocol from its protocol software stacks.
+                    </li>
+                    <li>
+                        <b>Validate the forms part of the TD</b>: Using the JSON Schema instances provided in the respective subspecification, the
+                        Consumer SHOULD validate the respective form terms in order to verify they are correctly specified in the TD instance.
+                    </li>
+                    <li>
+                        <b>Start communication:</b> The Consumer SHOULD send requests as specified by the form and additional behavior that is expected.
+                        These are specified using the different form terms such as <code>subprotocol</code> or other vocabulary terms introduced by the protocol binding. The interaction affordance data exchanged with the Thing SHOULD be according to the Data Schema and Content Type present in the TD.
+                    </li>
                 </ol>
                 
             </section>

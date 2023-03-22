@@ -422,6 +422,62 @@
                     operations as defined by [[RFC6741]].
                     The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
+
+                <p>
+                    Overall, a protocol binding template specifies the values and structure of certain vocabulary terms in a TD.
+                    The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required to
+                    specify the values the term can take.
+                    In addition to these, additional terms for describing protocol options are typically added.
+                </p>
+
+                <table class="def" id="table-protocol-terms">
+                    <thead>
+                        <tr>
+                            <th>Vocabulary Term</th>
+                            <th>Class</th>
+                            <th>Specification Requirement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@context</td>
+                            <td>Thing</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>href</td>
+                            <td>Form</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>subprotocol</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>ExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>AdditionalExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentCoding</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                
             </section>
             <section id="protocol-bindings-table">
                 <h4>Existing Protocol Binding Templates</h4>
@@ -640,7 +696,7 @@
                         <ul>
                             <li><b>Property Affordances:</b> Each property affordance can contain terms for Data Schema
                             and describe the property values when read, observed or written to.</li>
-                            <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> keywords are used 
+                            <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> vocabulary terms are used 
                                 to provide two different schemas when data is exchanged in both directions, such as in 
                                 the case of invoking an Action Affordance with input parameters and receiving status information.</li>
                             <li><b>Event Affordances:</b> <code>data</code>, <code>dataResponse</code>, <code>subscription</code> 
@@ -690,6 +746,45 @@
                         </tbody>
                     </table>
                 </section>
+                <p>
+                    Overall, a payload binding template specifies the values and structure of certain vocabulary terms in a TD.
+                    The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required to specify the values
+                    the term can take.
+                    In addition to these, additional vocabulary terms can be added and restrictions to Data Schema terms can be placed.
+                </p>
+
+                <table class="def" id="table-payload-terms">
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Class</th>
+                            <th>Specification Requirement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>contentType</td>
+                            <td>Form</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>ExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>AdditionalExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentCoding</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </section>
             <section id="payload-bindings-table">
                 <h4>Existing Payload Binding Templates</h4>
@@ -766,6 +861,11 @@
             Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings"></a>. 
             Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs on how to integrate these
             platforms in to the W3C Web of Things.
+            </p>
+
+            <p>
+                Correspondingly, a platform binding specifies the values and structure of the combination of vocabulary terms in 
+                [[[#table-protocol-terms]]] and [[[#table-payload-terms]]].
             </p>
 
             <p>

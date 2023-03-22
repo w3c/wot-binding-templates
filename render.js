@@ -27,7 +27,7 @@ sttl.connect(async (query) => {
 });
 
 const ontologies = [
-    'bindings/protocols/coap/ontology.ttl',
+    'ontology/coap.ttl',
     'ontology/mqtt.ttl',
     'ontology/modbus.ttl',
 ];
@@ -64,7 +64,7 @@ const mappings = [
     },
     {
         ontologyFile: 'bindings/protocols/coap/mapping.ttl',
-        baseOntologyFile: 'bindings/protocols/coap/ontology.ttl',
+        baseOntologyFile: 'ontology/coap.ttl',
         templateURI: 'http://w3c.github.io/wot-binding-templates/mappings#coap',
         contextFile: 'bindings/protocols/coap/context.jsonld',
     },

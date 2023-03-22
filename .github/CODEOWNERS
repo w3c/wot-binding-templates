@@ -5,5 +5,3 @@
 /bindings/protocols/modbus/ @relu91
 /bindings/protocols/mqtt/ @egekorkan @mjkoster @relu91
 /index.html @egekorkan @mjkoster
-/ontology/modbus.* @relu91
-/ontology/mqtt.* @egekorkan @mjkoster @relu91

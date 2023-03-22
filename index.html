@@ -171,6 +171,22 @@
         </ul>
         </p>
 
+        <p>
+            Each Interaction Affordance in a TD needs to have a binding to a protocol and to a payload format.
+            Figure [[[#fig-mechanism]]] below illustrates an excerpt of a TD of a robot arm with of HTTP and JSON bindings.
+            Here, the Consumer intends to invoke an action of the robot arm (<code>goTo</code>) in order to move it to the position
+            x equals 12 and y equals 100.
+            In order to do so, it creates the correct payload, serializes it and sends it using the correct protocol options.
+            The Thing gets the message over the network and responds with a message that corresponds to its TD.
+            Other types of bindings in a TD are possible and are explained in [[[#binding-overview]]].
+        </p>
+
+        <figure id="fig-mechanism">
+            <img src="images/binding-mechanism.drawio.svg" alt="Binding Templates mechanism with a TD, Thing and Consumer" />
+            <figcaption>Binding Templates Mechanism inside a TD excerpt with messages of its Thing and a Consumer.</figcaption>
+        </figure>
+            
+
         <section id="sec-relationships-bindings">
             <h2>Relationship Between Binding Template Documents</h2>
 
@@ -178,11 +194,12 @@
                 Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and publication date.
                 This document, called the <a>Binding Template Core Specification</a>, explains the binding mechanism by
                 giving requirements per respective binding category and links to the respective subspecification.
-                These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and [[[#platforms-intro]]]
+                These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and [[[#platforms-intro]]].
+                This Relationship is also illustrated in [[[#fig-overview]]].
             </p>
 
             <figure id="fig-overview">
-                <img src="images/binding-templates-overview.png" alt="Binding Templates Overview and the relationships between each document type" />
+                <img src="images/binding-templates-overview.drawio.svg" alt="Binding Templates Overview and the relationships between each document type" />
                 <figcaption>Binding Templates Overview and the Relationships between each Document Type</figcaption>
             </figure>
 
@@ -405,6 +422,62 @@
                     operations as defined by [[RFC6741]].
                     The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
+
+                <p>
+                    Overall, a protocol binding template specifies the values and structure of certain vocabulary terms in a TD.
+                    The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required to
+                    specify the values the term can take.
+                    In addition to these, additional terms for describing protocol options are typically added.
+                </p>
+
+                <table class="def" id="table-protocol-terms">
+                    <thead>
+                        <tr>
+                            <th>Vocabulary Term</th>
+                            <th>Class</th>
+                            <th>Specification Requirement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@context</td>
+                            <td>Thing</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>href</td>
+                            <td>Form</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>subprotocol</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>ExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>AdditionalExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentCoding</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                
             </section>
             <section id="protocol-bindings-table">
                 <h4>Existing Protocol Binding Templates</h4>
@@ -623,8 +696,8 @@
                         <ul>
                             <li><b>Property Affordances:</b> Each property affordance can contain terms for Data Schema
                             and describe the property values when read, observed or written to.</li>
-                            <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> keywords are used
-                                to provide two different schemas when data is exchanged in both directions, such as in
+                            <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> vocabulary terms are used 
+                                to provide two different schemas when data is exchanged in both directions, such as in 
                                 the case of invoking an Action Affordance with input parameters and receiving status information.</li>
                             <li><b>Event Affordances:</b> <code>data</code>, <code>dataResponse</code>, <code>subscription</code>
                                 and <code>cancellation</code> are used to describe the payload when the event data
@@ -673,6 +746,45 @@
                         </tbody>
                     </table>
                 </section>
+                <p>
+                    Overall, a payload binding template specifies the values and structure of certain vocabulary terms in a TD.
+                    The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required to specify the values
+                    the term can take.
+                    In addition to these, additional vocabulary terms can be added and restrictions to Data Schema terms can be placed.
+                </p>
+
+                <table class="def" id="table-payload-terms">
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Class</th>
+                            <th>Specification Requirement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>contentType</td>
+                            <td>Form</td>
+                            <td>mandatory</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>ExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentType</td>
+                            <td>AdditionalExpectedResponse</td>
+                            <td>optional</td>
+                        </tr>
+                        <tr>
+                            <td>contentCoding</td>
+                            <td>Form</td>
+                            <td>optional</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </section>
             <section id="payload-bindings-table">
                 <h4>Existing Payload Binding Templates</h4>
@@ -749,6 +861,11 @@
             Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings"></a>.
             Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs on how to integrate these
             platforms in to the W3C Web of Things.
+            </p>
+
+            <p>
+                Correspondingly, a platform binding specifies the values and structure of the combination of vocabulary terms in 
+                [[[#table-protocol-terms]]] and [[[#table-payload-terms]]].
             </p>
 
             <p>

@@ -27,7 +27,7 @@ sttl.connect(async (query) => {
 });
 
 const ontologies = [
-    // 'ontology/coap.ttl',
+    'ontology/coap.ttl',
     'ontology/mqtt.ttl',
     'ontology/modbus.ttl',
 ];
@@ -62,6 +62,12 @@ const mappings = [
         templateURI: 'http://w3c.github.io/wot-binding-templates/mappings#mqtt',
         contextFile: 'bindings/protocols/mqtt/context.jsonld',
     },
+    {
+        ontologyFile: 'bindings/protocols/coap/mapping.ttl',
+        baseOntologyFile: 'ontology/coap.ttl',
+        templateURI: 'http://w3c.github.io/wot-binding-templates/mappings#coap',
+        contextFile: 'bindings/protocols/coap/context.jsonld',
+    },
 ];
 
 const modbusTemplate = fs.readFileSync(
@@ -72,8 +78,13 @@ const mqttTemplate = fs.readFileSync(
     'bindings/protocols/mqtt/template.sparql',
     'utf-8'
 );
+const coapTemplate = fs.readFileSync(
+    'bindings/protocols/coap/template.sparql',
+    'utf-8'
+);
 sttl.register(modbusTemplate);
 sttl.register(mqttTemplate);
+sttl.register(coapTemplate);
 
 mappings.reduce(async (previousPromise, mapping) => {
     const { ontologyFile, baseOntologyFile, templateURI, contextFile } = mapping;

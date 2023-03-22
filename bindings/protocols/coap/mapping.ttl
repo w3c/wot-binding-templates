@@ -1,0 +1,122 @@
+@prefix : <https://www.w3.org/ns/wot/binding/coap-validation#> .
+@prefix binding: <https://www.w3.org/2019/wot/binding#> .
+@prefix cov: <https://www.w3.org/2019/wot/coap#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix td: <https://www.w3.org/ns/wot/td#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix wotsec: <https://www.w3.org/2019/wot/security#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <https://www.w3.org/ns/wot/binding/coap-validation#> .
+
+<> rdf:type owl:Ontology ;
+    owl:imports <https://www.w3.org/2019/wot/coap> ;
+    vann:preferredNamespacePrefix "cov" ;
+    vann:preferredNamespaceUri "https://www.w3.org/ns/wot/binding/coap-validation#" ;
+    rdfs:comment "Vocabulary to map CoAP concepts to the standard Thing Interaction model."@en ;
+    rdfs:label "CoAP protocol binding"@en .
+
+:CoapFormShape a sh:NodeShape ;
+    sh:targetClass hctl:Form ;
+    sh:order 1 ; # Used to select the shape
+    sh:closed false ;
+    sh:property [
+        sh:order 1 ;
+        sh:path cov:method ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        skos:example (
+            "GET"
+            "PUT"
+            "POST"
+            "DELETE"
+            "FETCH"
+            "iPATCH"
+            "PATCH"
+        ) ;
+    ] ;
+    sh:property [
+        sh:order 2 ;
+        sh:path cov:blockwise ;
+        sh:class cov:BlockWiseTransferParameters ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:order 3 ;
+        sh:path cov:qblockwise ;
+        sh:class cov:BlockWiseTransferParameters ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:order 4 ;
+        sh:path cov:hopLimit ;
+        sh:datatype xsd:unsignedByte ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:order 5 ;
+        sh:path cov:contentFormat ;
+        sh:datatype xsd:unsignedShort ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:order 6 ;
+        sh:path cov:accept ;
+        sh:datatype xsd:unsignedShort ;
+        sh:maxCount 1 ;
+    ] .
+
+:CoapResponseShape a sh:NodeShape ;
+    sh:targetClass hctl:ExpectedResponse, hctl:AdditionalExpectedResponse ;
+    sh:order 2 ; # Used to select the shape
+    sh:closed false ;
+    sh:property [
+        sh:path cov:contentFormat ;
+        sh:datatype xsd:unsignedShort ;
+        sh:maxCount 1 ;
+    ] .
+
+:CoapBlockwiseShape a sh:NodeShape ;
+    sh:targetClass cov:BlockWiseTransferParameters;
+    sh:order 3 ; # Used to select the shape
+    sh:closed false ;
+    sh:property [
+        sh:nodeKind sh:Literal ;
+        sh:path cov:block2Size ;
+        sh:datatype xsd:unsignedShort ;
+        sh:maxCount 1 ;
+        sh:in (
+            16
+            32
+            64
+            128
+            256
+            512
+            1024
+        ) ;
+    ] ;
+    sh:property [
+        sh:nodeKind sh:Literal ;
+        sh:path cov:block1Size ;
+        sh:datatype xsd:unsignedShort ;
+        sh:maxCount 1 ;
+        sh:in (
+            16
+            32
+            64
+            128
+            256
+            512
+            1024
+        ) ;
+    ]  .

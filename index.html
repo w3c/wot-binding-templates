@@ -211,6 +211,8 @@
             <dfn class="lint-ignore">Property</dfn>,
             <dfn class="lint-ignore">Action</dfn>,
             <dfn class="lint-ignore">Event</dfn>,
+            <dfn class="lint-ignore">Data Schema</dfn>,
+            <dfn class="lint-ignore">Content Type</dfn>,
             <dfn class="lint-ignore">Protocol Binding</dfn>,
             <dfn class="lint-ignore">Binding Template</dfn>,
             <dfn class="lint-ignore">Servient</dfn>,
@@ -466,12 +468,13 @@
                         <b>Choose the correct protocol stack:</b> The <a>Consumer</a> SHOULD use choose the correct protocol from its protocol software stacks.
                     </li>
                     <li>
-                        <b>Validate the forms part of the TD</b>: Using the JSON Schema instances provided in the respective subspecification, the
-                        <a>Consumer</a> SHOULD validate the respective form terms in order to verify they are correctly specified in the TD instance.
+                        <b>Validate the forms part of the TD</b>: Using the JSON Schema instances provided in the respective subspecification or through programmatically checking key value pairs, the <a>Consumer</a> MAY validate the respective form terms in order to verify they are correctly specified in the TD instance.
                     </li>
                     <li>
-                        <b>Start communication:</b> The <a>Consumer</a> SHOULD send requests as specified by the form and additional behavior that is expected.
-                        These are specified using the different form terms such as <code>subprotocol</code> or other vocabulary terms introduced by the protocol binding. The interaction affordance data exchanged with the Thing SHOULD be according to the Data Schema and Content Type present in the TD.
+                        <b>Start communication:</b> The <a>Consumer</a> SHOULD send requests for the chosen operation as specified by the form and additional behavior that is expected.
+                        These are specified using the different form terms such as <code>subprotocol</code> or other vocabulary terms introduced by the protocol binding. 
+                        The interaction affordance data exchanged with the Thing SHOULD be according to the <a>Data Schema</a> and <a>Content Type</a> present in the TD. 
+                        The corresponding Data Schema to the operation can be found in the [[WOT-THING-DESCRIPTION]], table called <i>Mapping op Values to Data Schemas</i>.
                     </li>
                 </ol>
                 

@@ -1,0 +1,144 @@
+prefix binding: <https://www.w3.org/2019/wot/binding#>
+prefix cov: <https://www.w3.org/2019/wot/coap#>
+prefix hctl: <https://www.w3.org/2019/wot/hypermedia#>
+prefix jsonld: <http://www.w3.org/ns/json-ld#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix st: <http://ns.inria.fr/sparql-template/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
+
+template :coap {
+    format {
+        <file://./bindings/protocols/coap/index.template.html>
+        st:call-template(:coapFormTerms, ?coapBase, ?prefix, hctl:Form, 1)
+        st:call-template(:coapFormTerms, ?coapBase, ?prefix, hctl:ExpectedResponse, 2)
+        st:call-template(:coapBlockwiseTerms, ?coapBase, ?prefix)
+    }
+}  where {
+    ?mappings a owl:Ontology ;
+              owl:imports ?coapBase .
+    ?coapBase a owl:Ontology ;
+              vann:preferredNamespacePrefix ?prefix .
+}
+
+template :coapFormTerms(?ns ?prefix ?class ?order){
+    format {
+                 """<tr>
+                        <td><code>%s</code></td>
+                        <td>
+                            %s
+                        </td>
+                        <td>%s</td>
+                        <td>
+                            <a href=\"%s\">%s</a>%s%s
+                        </td>
+                    </tr>"""
+        st:call-template(:term, ?ns, ?prefix, ?term)
+        ?desc
+        if(?count > 0, "required","optional")
+        if(strstarts(?type,str(?ns)), lcase(replace(?type, ?ns,"","g")),?type )
+        strafter(?type,"#")
+        st:call-template(:enum, ?class, ?property, ?term, ?ns, 0)
+        if(strlen(?reference) > 0, concat("<p>(", ?reference, ")</p>"), "")
+    } ; separator = "\n                    "
+} where {
+    ?shape a sh:NodeShape ;
+           sh:targetClass ?class ;
+           sh:order ?order ;
+           sh:property ?property .
+
+    ?property sh:path ?term .
+    ?term rdfs:comment ?desc .
+    optional {
+        ?property sh:minCount ?count
+    }
+    optional {
+        ?property sh:class ?type
+    }
+    optional {
+        ?property sh:datatype ?type
+    }
+    optional {
+        ?term rdfs:seeAlso ?reference
+    }
+    optional {
+        ?property sh:order ?propOrder
+    }
+
+    BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
+    BIND ( IF (BOUND (?reference), ?reference, "" )  as ?reference  )
+    BIND ( IF (BOUND (?propOrder), ?propOrder, 9000 )  as ?propOrder  )
+} order by (?propOrder)
+
+template :coapBlockwiseTerms(?ns ?prefix){
+    format {
+                 """<tr>
+                        <td>
+                            <code>%s</code>
+                        </td>
+                        <td>
+                            %s
+                        </td>
+                        <td>%s</td>
+                        <td>
+                            <a href=\"%s\">%s</a>%s
+                        </td>
+                    </tr>"""
+        st:call-template(:term, ?ns, ?prefix, ?term)
+        ?desc
+        if(?count > 0, "required","optional")
+        if(strstarts(?type,str(?ns)), lcase(replace(?type, ?ns,"","g")),?type )
+        strafter(?type,"#")
+        st:call-template(:enum, cov:BlockWiseTransferParameters, ?property, ?path, ?ns, 0)
+    } ; separator = "\n                    "
+} where {
+    ?shape a sh:NodeShape ;
+           sh:targetClass cov:BlockWiseTransferParameters ;
+           sh:order 3 ;
+           sh:property ?property .
+
+    ?property sh:path ?term .
+    ?term rdfs:comment ?desc .
+    ?property sh:path ?path .
+
+    optional {
+        ?property sh:minCount ?count
+    }
+    optional {
+        ?property sh:class ?type
+    }
+    optional {
+        ?property sh:datatype ?type
+    }
+
+    BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
+}
+
+template :enum(?class ?prop ?path ?ns ?index) {
+    format {
+        "%s<code>%s</code>%s"
+        if(?first, if(?eg, " (e.g., ", " (one of "),
+        if(?last, "or ", ""))
+        ?val
+        if(?last, ")", concat(", ", st:call-template(:enum, ?class, ?prop, ?path, ?ns, ?index + 1)))
+    }
+} where {
+    ?shape a sh:NodeShape ;
+           sh:targetClass ?class ;
+           sh:property ?prop .
+
+    ?prop sh:path ?path .
+
+    { ?prop sh:in ?list bind (false as ?eg) }
+    union
+    { ?prop skos:example ?list bind (true as ?eg) }
+
+    bind (<javascript:urdf.valueAt>(?list, ?index) as ?val)
+    bind ((?index = 0) as ?first)
+    bind ((?index + 1 = <javascript:urdf.length>(?list)) as ?last)
+}

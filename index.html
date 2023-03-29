@@ -863,6 +863,9 @@
                     These platforms generally require a certain use of a protocol and payload.
                     Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings"></a>.
                     In these cases, the use of protocol and payload bindings needs to be supported with how they are related to each other in the specific platform.
+                </p>
+                
+                <p>
                     For example, Things of a certain platform can require the usage of HTTP and Websockets together with certain JSON payload structures.
                     Thus, Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs that allow to semantically group multiple binding templates.
                     This allows creation of TDs for these platforms in a consistent manner and makes it easier to develop <a>Consumer</a>s for them.
@@ -871,6 +874,8 @@
                 <p>
                     Since Platform Binding Templates combine the usage of protocol and payload binding templates, the vocabulary terms and values they can specify
                     are the combination of vocabulary terms in [[[#table-protocol-terms]]] and [[[#table-payload-terms]]].
+                    Similarly, a Platform Binding subspecification SHOULD NOT introduce new protocol binding templates or media types inside its own document.
+                    If a Platform Binding subspecification requires the usage of protocol or media type, corresponding protocol or payload binding templates MUST be created first.
                 </p>
             </section>
 

@@ -225,6 +225,8 @@
             <dfn class="lint-ignore">Property</dfn>,
             <dfn class="lint-ignore">Action</dfn>,
             <dfn class="lint-ignore">Event</dfn>,
+            <dfn class="lint-ignore">Data Schema</dfn>,
+            <dfn class="lint-ignore">Content Type</dfn>,
             <dfn class="lint-ignore">Protocol Binding</dfn>,
             <dfn class="lint-ignore">Binding Template</dfn>,
             <dfn class="lint-ignore">Servient</dfn>,
@@ -232,7 +234,7 @@
             <dfn class="lint-ignore">WoT Interface</dfn>,
             <dfn class="lint-ignore">WoT Runtime</dfn>,
             <dfn class="lint-ignore">IoT Platform</dfn>,
-            etc. is defined in <a href="https://w3c.github.io/wot-architecture/#terminology">Section 3</a>
+            etc. is defined in <a data-cite="WOT-ARCHITECTURE#terminology">Section 3</a>
             of the WoT Architecture specification [[WOT-ARCHITECTURE]].
         </p>
 
@@ -464,7 +466,8 @@
                     In addition to these, additional terms for describing protocol options are typically added.
                 </p>
 
-                <table class="def" id="table-protocol-terms">
+                <table class="def numbered" id="table-protocol-terms">
+                    <caption>Terms specified by Protocol Binding Templates</caption>
                     <thead>
                         <tr>
                             <th>Vocabulary Term</th>
@@ -518,7 +521,8 @@
                 <p>
                     The table below summarizes the currently specified protocols in their respective <a>Binding Template Subspecification</a>.
                 </p>
-                <table class="def">
+                <table class="def numbered">
+                    <caption>Existing Protocol Binding Templates</caption>
                     <thead>
                         <tr>
                             <th>Abbreviation</th>
@@ -538,22 +542,51 @@
                             <td>CoAP</td>
                             <td>Constrained Application Protocol</td>
                             <td><a href="./bindings/protocols/coap/index.html">Binding Template</a></td>
-                            <td><a href="./ontology/coap.html">Ontology</a></td>
+                            <td><a href="./bindings/protocols/coap/ontology.html">Ontology</a></td>
                         </tr>
                         <tr>
                             <td>MQTT</td>
                             <td>Message Queuing Telemetry Transport</td>
                             <td><a href="./bindings/protocols/mqtt/index.html">Binding Template</a></td>
-                            <td><a href="./ontology/mqtt.html">Ontology</a></td>
+                            <td><a href="./bindings/protocols/mqtt/ontology.html">Ontology</a></td>
                         </tr>
                         <tr>
                             <td>Modbus</td>
                             <td>Modbus</td>
                             <td><a href="./bindings/protocols/modbus/index.html">Binding Template</a></td>
-                            <td><a href="./ontology/modbus.html">Ontology</a></td>
+                            <td><a href="./bindings/protocols/modbus/ontology.html">Ontology</a></td>
                         </tr>
                     </tbody>
                 </table>
+            </section>
+            <section>
+                <h4>Using a Thing Description with a Protocol Binding Template Subspecification</h4>
+
+                <p>
+                    Protocol Binding Templates contain vocabularies that extend the vocabulary found in the [[WOT-THING-DESCRIPTION]].
+                    This means that the way a TD is consumed and how the interactions happen with the Thing are adapted to such vocabularies.
+                    The steps below explain how this process typically looks like.
+                    <!-- this text should be extended after the PR 262 is merged -->
+                </p>
+                <ol>
+                    <li>
+                        <b>Detect the protocol:</b> Upon the activation of a form to execute the operation, the <a>Consumer</a>
+                        SHOULD look at the <code>href</code> member and the <code>base</code> (if exists) and identify the protocol.
+                    </li>
+                    <li>
+                        <b>Choose the correct protocol stack:</b> The <a>Consumer</a> SHOULD use choose the correct protocol from its protocol software stacks.
+                    </li>
+                    <li>
+                        <b>Validate the forms part of the TD</b>: Using the JSON Schema instances provided in the respective subspecification or through programmatically checking key value pairs, the <a>Consumer</a> MAY validate the respective form terms in order to verify they are correctly specified in the TD instance.
+                    </li>
+                    <li>
+                        <b>Start communication:</b> The <a>Consumer</a> SHOULD send requests for the chosen operation as specified by the form and additional behavior that is expected.
+                        These are specified using the different form terms such as <code>subprotocol</code> or other vocabulary terms introduced by the protocol binding. 
+                        The interaction affordance data exchanged with the Thing SHOULD be according to the <a>Data Schema</a> and <a>Content Type</a> present in the TD. 
+                        The corresponding Data Schema to the operation can be found in the [[WOT-THING-DESCRIPTION]], table called <i>Mapping op Values to Data Schemas</i>.
+                    </li>
+                </ol>
+                
             </section>
             <section>
                 <h4>Creating a new Protocol Binding Template Subspecification</h4>
@@ -663,7 +696,7 @@
                         In this specific case, the forms describe that reading this property with <code>http</code> or
                         <code>coap</code> result in different content types.
                         For structured media types, a Data Schema is generally provided in the affordance level as
-                        explained in [[[#payload-bindings-dataschema]]] and <a href="https://w3c.github.io/wot-thing-description/#sec-data-schema-vocabulary-definition">
+                        explained in [[[#payload-bindings-dataschema]]] and <a data-cite="WOT-THING-DESCRIPTION#sec-data-schema-vocabulary-definition">
                         in the Data Schema section of the TD specification</a>.
                         However, for unstructured data such as images and videos, a Data Schema is typically not available.
                     </p>
@@ -787,7 +820,8 @@
                     In addition to these, additional vocabulary terms can be added and restrictions to Data Schema terms can be placed.
                 </p>
 
-                <table class="def" id="table-payload-terms">
+                <table class="def numbered" id="table-payload-terms">
+                    <caption>Terms specified by Payload Binding Templates</caption>
                     <thead>
                         <tr>
                             <th>Term</th>
@@ -824,7 +858,8 @@
                 <h4>Existing Payload Binding Templates</h4>
                 The table below summarizes the currently specified payload binding templates.
 
-                <table class="def">
+                <table class="def numbered">
+                    <caption>Existing Platform Binding Templates</caption>
                     <thead>
                         <tr>
                             <th>Abbreviation</th>
@@ -887,7 +922,6 @@
         </section>
         <section id="platform-bindings">
             <h3>Platform Binding Templates</h3>
-
             <section id="platform-bindings-intro">
             <h3>Introduction to Platform Binding Templates</h3>
                 <p>
@@ -940,7 +974,7 @@
                     </tbody>
                 </table>
             </section>
-
+            
             <section>
                 <h4>Creating a new Platform Binding Template Subspecification</h4>
 
@@ -1300,32 +1334,32 @@
 
         <p>
             The <a
-                href="https://w3c.github.io/wot-architecture/#dfn-wot-thing-description">WoT
+                data-cite="WOT-ARCHITECTURE#dfn-wot-thing-description">WoT
                 Thing Description</a> must be used together with integrity protection mechanisms and access control
             policies.
             Users must ensure that no sensitive information is included in the <a
-                href="https://w3c.github.io/wot-architecture/#dfn-td">TDs</a>
+                data-cite="WOT-ARCHITECTURE/#dfn-td">TDs</a>
             themselves.
         </p>
 
         <p>
             The <a
-                href="https://w3c.github.io/wot-architecture/#dfn-wot-binding-templates">WoT
+                data-cite="WOT-ARCHITECTURE#dfn-wot-binding-templates">WoT
                 Binding Templates</a> must correctly cover the security mechanisms employed by the underlying <a
-                href="https://w3c.github.io/wot-architecture/#dfn-iot-platform">IoT
+                data-cite="WOT-ARCHITECTURE#dfn-iot-platform">IoT
                 platform</a>.
             Due to the automation of network interactions necessary in the IoT, operators need to ensure that <a
-                href="https://w3c.github.io/wot-architecture/#dfn-thing">Things</a>
+                data-cite="WOT-ARCHITECTURE#dfn-thing">Things</a>
             are exposed and consumed in a way that is compliant with their security policies.
         </p>
 
         <p>
-            The <a href="https://w3c.github.io/wot-architecture/#dfn-wot-runtime">
+            The <a data-cite="WOT-ARCHITECTURE#dfn-wot-runtime">
             WoT Runtime</a> implementation for the
-            <a href="https://w3c.github.io/wot-architecture/#dfn-wot-scripting-api">WoT
+            <a data-cite="WOT-ARCHITECTURE#dfn-wot-scripting-api">WoT
             Scripting API</a> must have mechanisms to prevent malicious access to the system and isolate scripts in
             multi-tenant <a
-            href="https://w3c.github.io/wot-architecture/#dfn-servient">Servients</a>.
+            data-cite="WOT-ARCHITECTURE#dfn-servient">Servients</a>.
         </p>
 
     </section>

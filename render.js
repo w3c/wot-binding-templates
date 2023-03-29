@@ -27,9 +27,9 @@ sttl.connect(async (query) => {
 });
 
 const ontologies = [
-    'ontology/coap.ttl',
-    'ontology/mqtt.ttl',
-    'ontology/modbus.ttl',
+    'bindings/protocols/coap/ontology.ttl',
+    'bindings/protocols/mqtt/ontology.ttl',
+    'bindings/protocols/modbus/ontology.ttl',
 ];
 
 console.log("Rendering ontology documentation...");
@@ -51,20 +51,20 @@ console.log("Rendering WoT binding documentation...");
 const mappings = [
     {
         ontologyFile: 'bindings/protocols/modbus/mapping.ttl',
-        baseOntologyFile: 'ontology/modbus.ttl',
+        baseOntologyFile: 'bindings/protocols/modbus/ontology.ttl',
         templateURI:
             'http://w3c.github.io/wot-binding-templates/mappings#modbus',
         contextFile: 'bindings/protocols/modbus/context.jsonld',
     },
     {
         ontologyFile: 'bindings/protocols/mqtt/mapping.ttl',
-        baseOntologyFile: 'ontology/mqtt.ttl',
+        baseOntologyFile: 'bindings/protocols/mqtt/ontology.ttl',
         templateURI: 'http://w3c.github.io/wot-binding-templates/mappings#mqtt',
         contextFile: 'bindings/protocols/mqtt/context.jsonld',
     },
     {
         ontologyFile: 'bindings/protocols/coap/mapping.ttl',
-        baseOntologyFile: 'ontology/coap.ttl',
+        baseOntologyFile: 'bindings/protocols/coap/ontology.ttl',
         templateURI: 'http://w3c.github.io/wot-binding-templates/mappings#coap',
         contextFile: 'bindings/protocols/coap/context.jsonld',
     },

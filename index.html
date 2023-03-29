@@ -156,7 +156,10 @@
         <h1>Introduction</h1>
         <p>
             IoT addresses multiple use cases from different application domains, while requiring different deployment patterns for devices.
-        </p>
+            This results in different protocols and media types and forms the central challenge for the Web of Things: 
+            enabling interactions with the plethora of different <a>IoT platforms</a> and devices that do not follow any particular standard, 
+            but provide an eligible interface over a suitable network protocol.
+            WoT is addressing this challenge through Binding Templates.
         <p>
             Binding Templates consist of multiple specifications, referred to as a <a>subspecification</a>
             in this document, that enable an application client (a WoT <a>Consumer</a>) to interact, using WoT Thing 
@@ -165,6 +168,21 @@
             The mechanism that allows Consumers to interact with a variety of Things is called the Binding Mechanism,
              without which TDs could not build Hypermedia Controls as explained in the [[WOT-ARCHITECTURE]].
         </p>
+
+        <p>
+            When describing a particular IoT device or platform, the corresponding Binding Template can be used to look up the
+            communication metadata that is to be provided in the <a>Thing Description</a> to support that platform.
+            [[[#fig-building-block]]] shows how Binding Templates are used. 
+            Based on the protocol, media type or platform binding template, a TD is created.
+            The Consumer that is processing a TD implements the required Binding Template that is present in the TD by including a
+            corresponding protocol stack, media type encoder/decoder or platform stack and by configuring the stack (or its
+            messages) according to the information given in the TD such as serialization format of the messages and header options.
+        </p>
+
+        <figure id="fig-building-block">
+            <img src="images/binding-templates.svg" alt="Platforms, Protocols and Media Types as building blocks for binding templates and TD" />
+            <figcaption>Platforms, Protocols and Media Types as building blocks for binding templates and TD</figcaption>
+        </figure>
         
         <p>
             Each Interaction Affordance in a TD needs to have a binding to a protocol and to a payload format.

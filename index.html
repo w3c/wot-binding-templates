@@ -162,7 +162,22 @@
             The mechanism that allows Consumers to interact with a variety of Things is called the Binding Mechanism,
              without which TDs could not build Hypermedia Controls as explained in the [[WOT-ARCHITECTURE]].
         </p>
-        <!-- Merging PR 262 should change how this looks like -->
+        
+        <p>
+            Each Interaction Affordance in a TD needs to have a binding to a protocol and to a payload format.
+            Figure [[[#fig-mechanism]]] below illustrates an excerpt of a TD of a robot arm with of HTTP and JSON bindings.
+            Here, the Consumer intends to invoke an action of the robot arm (<code>goTo</code>) in order to move it to the
+            position
+            x equals 12 and y equals 100.
+            In order to do so, it creates the correct payload, serializes it and sends it using the correct protocol options.
+            The Thing gets the message over the network and responds with a message that corresponds to its TD.
+            Other types of bindings in a TD are possible and are explained in [[[#binding-overview]]].
+        </p>
+
+        <figure id="fig-mechanism">
+            <img src="images/binding-mechanism.drawio.svg" alt="Binding Templates mechanism with a TD, Thing and Consumer" />
+            <figcaption>Binding Templates Mechanism inside a TD excerpt with messages of its Thing and a Consumer.</figcaption>
+        </figure>
     </section>
 
     <section id="conformance">
@@ -224,12 +239,12 @@
             corresponding binding documents (subspecifications).
             These 3 types of mechanisms are:
             <ul>
-                <li> <a href="#protocol-bindings"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
+                <li> <b>Protocols</b>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
                     MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing
                     Description[[WOT-THING-DESCRIPTION]] forms via reusable vocabulary and extensions.</li>
-                <li> <a href="#payload-bindings-intro"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
+                <li> <b>Payloads</b>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
                     can be represented in a TD via Data Schemas or forms.</li>
-                <li> <a href="#platforms-intro"></a>: Platforms and frameworks who combine the use of protocols and payloads
+                <li> <b>Platforms</b>: Platforms and frameworks who combine the use of protocols and payloads
                     in a certain way, which can be represented via entire Thing Models described by the [[WOT-THING-DESCRIPTION]]
                     or examples of TDs.</li>
             </ul>

@@ -155,62 +155,59 @@
     <section id="introduction">
         <h1>Introduction</h1>
         <p>
+            IoT addresses multiple use cases from different application domains, while requiring different deployment patterns for devices.
+            This results in different protocols and media types, creating the central challenge for the Web of Things: 
+            enabling interactions with the plethora of different <a>IoT platforms</a> and devices that do not follow any particular standard, 
+            but provide an eligible interface over a suitable network protocol.
+            WoT is addressing this challenge through Binding Templates.
+        <p>
             Binding Templates consist of multiple specifications, referred to as a <a>subspecification</a>
-             in this document, that enable an application client (a WoT Consumer) to interact, using WoT Thing
-             Description[[WOT-THING-DESCRIPTION]] (TD), with Things that exhibit diverse protocols, payload formats and their usage.
-            These subspecifications are categorized into three:
-        <ul>
-            <li> <a href="#protocol-bindings"></a>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
-                MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing
-                Description[[WOT-THING-DESCRIPTION]] forms via reusable vocabulary and extensions.</li>
-            <li> <a href="#payload-bindings-intro"></a>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
-                can be represented in a TD via Data Schemas or forms.</li>
-            <li> <a href="#platforms-intro"></a>: Platforms and frameworks who combine the use of protocols and payloads
-                in a certain way, which can be represented via entire Thing Models described by the [[WOT-THING-DESCRIPTION]]
-                or examples of TDs.</li>
-        </ul>
+            in this document, that enable an application client (a WoT <a>Consumer</a>) to interact, using WoT Thing 
+            Description[[WOT-THING-DESCRIPTION]] (TD), with Things that exhibit diverse protocols, payload formats and a
+            combination of these in platforms and frameworks.
+            The mechanism that allows Consumers to interact with a variety of Things is called the Binding Mechanism,
+             without which TDs could not build Hypermedia Controls as explained in the [[WOT-ARCHITECTURE]].
         </p>
 
         <p>
+            When describing a particular IoT device or platform, the corresponding Binding Template can be used to look up the
+            communication metadata that is to be provided in the <a>Thing Description</a> to support that platform.
+            [[[#fig-building-block]]] shows how Binding Templates are used. 
+            Based on the protocol, media type or platform binding template, a TD is created.
+            The Consumer that is processing a TD implements the required Binding Template that is present in the TD by including a
+            corresponding protocol stack, media type encoder/decoder or platform stack and by configuring the stack (or its
+            messages) according to the information given in the TD such as serialization format of the messages and header options.
+        </p>
+
+        <figure id="fig-building-block">
+            <img src="images/binding-templates.svg" alt="Platforms, Protocols and Media Types as building blocks for binding templates and TD" />
+            <figcaption>Platforms, Protocols and Media Types as building blocks for binding templates and TD</figcaption>
+        </figure>
+        
+        <p>
             Each Interaction Affordance in a TD needs to have a binding to a protocol and to a payload format.
             [[[#fig-mechanism]]] below illustrates an excerpt of a TD of a robot arm with of HTTP and JSON bindings.
-            Here, the Consumer intends to invoke an action of the robot arm (<code>goTo</code>) in order to move it to the position
-            x equals 12 and y equals 100.
+            Here, the Consumer intends to invoke an action of the robot arm (<code>goTo</code>) in order to move it to the
+            position x equals 12 and y equals 100.
             In order to do so, it creates the correct payload, serializes it and sends it using the correct protocol options.
             The Thing gets the message over the network and responds with a message that corresponds to its TD.
-            Other types of bindings in a TD are possible and are explained in [[[#binding-overview]]].
+            Other protocols, payload formats or their combination are possible and are explained in [[[#binding-overview]]].
         </p>
 
         <figure id="fig-mechanism">
             <img src="images/binding-mechanism.drawio.svg" alt="Binding Templates mechanism with a TD, Thing and Consumer" />
             <figcaption>Binding Templates Mechanism inside a TD excerpt with messages of its Thing and a Consumer.</figcaption>
         </figure>
-            
 
-        <section id="sec-relationships-bindings">
-            <h2>Relationship Between Binding Template Documents</h2>
+        <p class="ednote">
+            The editors also recommend reading the related chapters in [[WOT-ARCHITECTURE]], such as
+            <a href="https://www.w3.org/TR/wot-architecture11/#sec-binding-templates">WoT Binding Templates Building Block</a>, 
+            <a href="https://www.w3.org/TR/wot-architecture11/#sec-hypermedia-controls">Hypermedia Controls</a>, 
+            <a href="https://www.w3.org/TR/wot-architecture11/#sec-protocol-bindings">Protocol Bindings</a> and 
+            <a href="https://www.w3.org/TR/wot-architecture11/#media-types">Media Types</a>.
+        </p>
 
-            <p>
-                Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and publication date.
-                This document, called the <a>Binding Template Core Specification</a>, explains the binding mechanism by
-                giving requirements per respective binding category and links to the respective subspecification.
-                These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and [[[#platforms-intro]]].
-                This Relationship is also illustrated in [[[#fig-overview]]].
-            </p>
 
-            <figure id="fig-overview">
-                <img src="images/binding-templates-overview.drawio.svg" alt="Binding Templates Overview and the relationships between each document type" />
-                <figcaption>Binding Templates Overview and the Relationships between each Document Type</figcaption>
-            </figure>
-
-            <p>
-                Each Protocol and Payload Binding Template is specified in a way that they stay independent from each other.
-                This means that each document can be read independently from each other and can also develop independently.
-                However, Platform Binding Templates are dependent on the Protocol and Payload Binding Templates, since a given
-                platform uses different protocols and payload formats that need to be specified first in their respective
-                binding templates and referred to within a Platform Binding Template.
-            </p>
-        </section>
     </section>
 
     <section id="conformance">
@@ -236,6 +233,7 @@
             <dfn class="lint-ignore">Vocabulary</dfn>,
             <dfn class="lint-ignore">WoT Interface</dfn>,
             <dfn class="lint-ignore">WoT Runtime</dfn>,
+            <dfn class="lint-ignore">IoT Platform</dfn>,
             etc. is defined in <a data-cite="WOT-ARCHITECTURE#terminology">Section 3</a>
             of the WoT Architecture specification [[WOT-ARCHITECTURE]].
         </p>
@@ -268,7 +266,43 @@
         <h1>Binding Template Mechanisms</h1>
 
         <p>
-            This section describes the mechanisms of binding templates for protocols, payload formats and platforms.
+            TDs can bound to specific protocols, payload formats and platforms.
+            This is possible through the three core mechanisms that allow WoT to be used in various domains and scenarios.
+            This section explains how these binding mechanism types are structured, should be specified, and links to
+            corresponding binding documents (subspecifications).
+            These 3 types of mechanisms are:
+            <ul>
+                <li> <b>Protocols</b>: Application layer protocols (e.g., HTTP[[?RFC7231]], CoAP[[?RFC7252]],
+                    MQTT[[?MQTT]], etc.) whose different message types are mapped to the WoT Thing
+                    Description[[WOT-THING-DESCRIPTION]] forms via reusable vocabulary and extensions.</li>
+                <li> <b>Payloads</b>: Different payload formats and media types [[IANA-MEDIA-TYPES]] which
+                    can be represented in a TD via Data Schemas or forms.</li>
+                <li> <b>Platforms</b>: Platforms and frameworks who combine the use of protocols and payloads
+                    in a certain way, which can be represented via entire Thing Models described by the [[WOT-THING-DESCRIPTION]]
+                    or examples of TDs.</li>
+            </ul>
+        </p>
+        <p>
+            Each <a>Binding Template Subspecification</a> is an independent document that has a separate list of authors and
+            publication date.
+            This document, called the <a>Binding Template Core Specification</a>, explains the binding mechanism by
+            giving requirements per respective binding category and links to the respective subspecification.
+            These can be found in sections [[[#protocol-bindings]]], [[[#payload-bindings-intro]]] and
+            [[[#platforms-intro]]].
+        </p>
+    
+        <figure id="fig-overview">
+            <img src="images/binding-templates-overview.png"
+                alt="Binding Templates Overview and the relationships between each document type" />
+            <figcaption>Binding Templates Overview and the Relationships between each Document Type</figcaption>
+        </figure>
+    
+        <p>
+            Each Protocol and Payload Binding Template is specified in a way that they stay independent from each other.
+            This means that each document can be read independently from the other and can be also developed independently.
+            However, Platform Binding Templates are dependent on the Protocol and Payload Binding Templates, since a given
+            platform uses different protocols and payload formats that need to be specified first in their respective
+            binding templates and referred to within a Platform Binding Template.
         </p>
 
         <section id="protocol-bindings">
@@ -886,51 +920,61 @@
                 </p>
             </section>
         </section>
-        <section id="platforms-intro">
+        <section id="platform-bindings">
             <h3>Platform Binding Templates</h3>
+            <section id="platform-bindings-intro">
+            <h3>Introduction to Platform Binding Templates</h3>
+                <p>
+                    There are already various IoT platforms on the market that allows exposing physical and virtual Things to the Internet.
+                    These platforms generally require a certain use of a protocol and payload.
+                    Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings"></a>.
+                    In these cases, the use of protocol and payload bindings needs to be supported with how they are related to each other in the specific platform.
+                </p>
+                
+                <p>
+                    For example, Things of a certain platform can require the usage of HTTP and Websockets together with certain JSON payload structures.
+                    Thus, Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs that allow to semantically group multiple binding templates.
+                    This allows creation of TDs for these platforms in a consistent manner and makes it easier to develop <a>Consumer</a>s for them.
+                </p>
 
-            <p>
-            There are already various IoT platforms on the market that allows exposing physical and virtual Things
-            to the Internet.
-            These platforms generally propose a certain API specification over a protocol and media type.
-            Thus, they can be seen as a combination of the <a href="#protocol-bindings"></a> and <a href="#payload-bindings"></a>.
-            Platform Binding <a>subspecification</a>s provide Thing Models and examples of TDs on how to integrate these
-            platforms in to the W3C Web of Things.
-            </p>
+                <p>
+                    Since Platform Binding Templates combine the usage of protocol and payload binding templates, the vocabulary terms and values they can specify
+                    are the combination of vocabulary terms in [[[#table-protocol-terms]]] and [[[#table-payload-terms]]].
+                    Similarly, a Platform Binding subspecification SHOULD NOT introduce new protocol binding templates or media types inside its own document.
+                    If a Platform Binding subspecification requires the usage of protocol or media type, corresponding protocol or payload binding templates MUST be created first.
+                </p>
+            </section>
 
-            <p>
-                Correspondingly, a platform binding specifies the values and structure of the combination of vocabulary terms in 
-                [[[#table-protocol-terms]]] and [[[#table-payload-terms]]].
-            </p>
+            <section id="platform-bindings-table">
+                <h3>Existing Platform Binding Templates</h3>
+                <p>
+                    The table below summarizes the currently specified platform binding template <a>subspecification</a>s.
+                </p>
 
-            <p>
-            The table below summarizes the currently specified platform binding template <a>subspecification</a>s.
-            </p>
-
-            <table class="def numbered">
-                <caption>Existing Platform Binding Templates</caption>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Philips Hue</td>
-                        <td>TODO</td>
-                    </tr>
-                    <tr>
-                        <td>ECHONET</td>
-                        <td>TODO</td>
-                    </tr>
-                    <tr>
-                        <td>OPC-UA</td>
-                        <td>TODO</td>
-                    </tr>
-                </tbody>
-            </table>
-
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Philips Hue</td>
+                            <td>TODO</td>
+                        </tr>
+                        <tr>
+                            <td>ECHONET</td>
+                            <td>TODO</td>
+                        </tr>
+                        <tr>
+                            <td>OPC-UA</td>
+                            <td>TODO</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
             <section>
                 <h4>Creating a new Platform Binding Template Subspecification</h4>
 

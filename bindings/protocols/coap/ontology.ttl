@@ -58,7 +58,7 @@ cov:hopLimit a rdf:Property, owl:DatatypeProperty ;
 
 cov:contentFormat a rdf:Property, owl:DatatypeProperty ;
                   rdfs:range xsd:unsignedShort ;
-                  rdfs:comment "Indicates a numeric CoAP Content-Format [[RFC7252]] as a combination of Media Type and Content Coding. Must match the given <code>contentType</code> and <code>contentCoding</code> members."@en ;
+                  rdfs:comment "Specifies the Content-Format to be used by a client for input data and the Content-Format to be used by a server for output data (where applicable). The value must be the numeric Content-Format ID registered with IANA for the combination of the <code>contentType</code> and <code>contentCoding</code> specified in the same form."@en ;
                   rdfs:isDefinedBy <> ;
                   rdfs:label "contentFormat"@en .
 

@@ -442,22 +442,27 @@
                     <h4>Subprotocols</h4>
 
                     <p>
+                        As defined in  [[WOT-ARCHITECTURE]], a subprotocol is an extension mechanism to a protocol.
+                        A subprotocol can require a sequence of protocol messages or a specific structure of message payloads,
+                        which can have its own semantics within that subprotocol.
                         The use of a subprotocol is expressed with the <code>subprotocol</code> field, as defined in
                         [[!WOT-THING-DESCRIPTION]].
                         It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its
                         special use of HTTP:
                     <pre class="example" title="Subprotocol usage for subscribing events">
-                                            {
-                                                "op": "subscribeevent",
-                                                "href": "https://mylamp.example.com/overheating",
-                                                "subprotocol": "longpoll"
-                                            }
-                                        </pre>
+                        {
+                            "op": "subscribeevent",
+                            "href": "https://mylamp.example.com/overheating",
+                            "subprotocol": "longpoll"
+                        }
+                    </pre>
                     </p>
                     
                     <p>
                         The values that the <code>subprotocol</code> term can take is not constrained by the [[!WOT-THING-DESCRIPTION]]
-                        since different protocols can have different Subprotocols.
+                        since different protocols can have different subprotocols.
+                        Correspondingly, subprotocols are linked to the protocol they are extending and should be understood together with 
+                        the protocol indicated in <code>href</code> of the forms (or the <code>base</code>).
                         For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
                         For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
                         operations as defined by [[RFC6741]].

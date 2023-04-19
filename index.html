@@ -785,8 +785,8 @@
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="Simple JSON Object Payload">
                                         {
-                                        "level": 50,
-                                        "time": 10
+                                            "level": 50,
+                                            "time": 10
                                         }
                                     </pre>
                                 </td>
@@ -1395,15 +1395,15 @@
                         <pre class="example" title="SenML Payload Example">
                         [
                             {
-                            "bn": "/example/light/"
+                                "bn": "/example/light/"
                             },
                             {
-                            "n": "level",
-                            "v": 50
+                                "n": "level",
+                                "v": 50
                             },
                             {
-                            "n": "time",
-                            "v": 10
+                                "n": "time",
+                                "v": 10
                             }
                         ]
                         </pre>
@@ -1416,40 +1416,40 @@
                             {
                                 "type": "object",
                                 "properties": {
-                                "bn": {
-                                    "type": "string",
-                                    "const": "example/light"
-                                }
-                                }
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                "n": {
-                                    "type": "string",
-                                    "const": "level"
-                                },
-                                "v": {
-                                    "@type": ["iot:LevelData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                }
+                                    "bn": {
+                                        "type": "string",
+                                        "const": "example/light"
+                                    }
                                 }
                             },
                             {
                                 "type": "object",
                                 "properties": {
-                                "n": {
-                                    "type": "string",
-                                    "const": "time"
-                                },
-                                "v": {
-                                    "@type": ["iot:TransitionTimeData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 65535
+                                    "n": {
+                                        "type": "string",
+                                        "const": "level"
+                                    },
+                                    "v": {
+                                        "@type": ["iot:LevelData"],
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 255
+                                    }
                                 }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "n": {
+                                        "type": "string",
+                                        "const": "time"
+                                    },
+                                    "v": {
+                                        "@type": ["iot:TransitionTimeData"],
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 65535
+                                    }
                                 }
                             }
                             ]

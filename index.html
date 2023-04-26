@@ -266,7 +266,7 @@
         <h1>Binding Template Mechanisms</h1>
 
         <p>
-            TDs can bound to specific protocols, payload formats and platforms.
+            TDs can be bound to specific protocols, payload formats and platforms.
             This is possible through the three core mechanisms that allow WoT to be used in various domains and scenarios.
             This section explains how these binding mechanism types are structured, should be specified, and links to
             corresponding binding documents (subspecifications).
@@ -340,7 +340,7 @@
                     in different cases of protocol usage.
                 </p>
                 <p>
-                    The examples below shows the binding of the <code>readproperty</code> operation for the HTTP and Modbus protocols.
+                    The examples below show the binding of the <code>readproperty</code> operation for the HTTP and Modbus protocols.
                     Please note that these are examples and please always refer to the corresponding binding to learn about the
                     relevant vocabulary terms and their values.
                 </p>
@@ -357,7 +357,7 @@
                                 </pre>
                             </td>
                             <td style="vertical-align: top; width: 50%">
-                                <pre class="example" title="Binding example of an readproperty operation to Modbus">
+                                <pre class="example" title="Binding example of a readproperty operation to Modbus">
                                     {
                                         "href": "modbus+tcp://127.0.0.1:60000/1",
                                         "op": "readproperty",
@@ -401,7 +401,7 @@
                                 </pre>
                             </td>
                             <td style="vertical-align: top; width: 50%">
-                                <pre class="example" title="Binding example of an subscribeevent operation to MQTT">
+                                <pre class="example" title="Binding example of a subscribeevent operation to MQTT">
                                     {
                                         "op": "subscribeevent",
                                         "href": "mqtt://iot.platform.com:8088",
@@ -801,8 +801,8 @@
                                 <td style="vertical-align: top; width: 50%">
                                     <pre class="example" title="Simple JSON Object Payload">
                                         {
-                                        "level": 50,
-                                        "time": 10
+                                            "level": 50,
+                                            "time": 10
                                         }
                                     </pre>
                                 </td>
@@ -1415,15 +1415,15 @@
                         <pre class="example" title="SenML Payload Example">
                         [
                             {
-                            "bn": "/example/light/"
+                                "bn": "/example/light/"
                             },
                             {
-                            "n": "level",
-                            "v": 50
+                                "n": "level",
+                                "v": 50
                             },
                             {
-                            "n": "time",
-                            "v": 10
+                                "n": "time",
+                                "v": 10
                             }
                         ]
                         </pre>
@@ -1436,40 +1436,40 @@
                             {
                                 "type": "object",
                                 "properties": {
-                                "bn": {
-                                    "type": "string",
-                                    "const": "example/light"
-                                }
-                                }
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                "n": {
-                                    "type": "string",
-                                    "const": "level"
-                                },
-                                "v": {
-                                    "@type": ["iot:LevelData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                }
+                                    "bn": {
+                                        "type": "string",
+                                        "const": "example/light"
+                                    }
                                 }
                             },
                             {
                                 "type": "object",
                                 "properties": {
-                                "n": {
-                                    "type": "string",
-                                    "const": "time"
-                                },
-                                "v": {
-                                    "@type": ["iot:TransitionTimeData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 65535
+                                    "n": {
+                                        "type": "string",
+                                        "const": "level"
+                                    },
+                                    "v": {
+                                        "@type": ["iot:LevelData"],
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 255
+                                    }
                                 }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "n": {
+                                        "type": "string",
+                                        "const": "time"
+                                    },
+                                    "v": {
+                                        "@type": ["iot:TransitionTimeData"],
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 65535
+                                    }
                                 }
                             }
                             ]

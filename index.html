@@ -438,9 +438,17 @@
                      (<code>longpoll</code>), WebSub [[WebSub]] (<code>websub</code>) and Server-Sent Events [[eventsource]] (<code>sse</code>).
                 </p>
 
-                <p>
-                    The use of a subprotocol is expressed with the <code>subprotocol</code> field, as defined in [[!WOT-THING-DESCRIPTION]].
-                    It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its special use of HTTP:
+                <section>
+                    <h4>Subprotocols</h4>
+
+                    <p>
+                        As defined in  [[WOT-ARCHITECTURE]], a subprotocol is an extension mechanism to a protocol.
+                        A subprotocol can require a sequence of protocol messages or a specific structure of message payloads,
+                        which can have its own semantics within that subprotocol.
+                        The use of a subprotocol is expressed with the <code>subprotocol</code> field, as defined in
+                        [[!WOT-THING-DESCRIPTION]].
+                        It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its
+                        special use of HTTP:
                     <pre class="example" title="Subprotocol usage for subscribing events">
                         {
                             "op": "subscribeevent",
@@ -448,24 +456,32 @@
                             "subprotocol": "longpoll"
                         }
                     </pre>
-                </p>
+                    </p>
+                    
+                    <p>
+                        The values that the <code>subprotocol</code> term can take is not constrained by the [[!WOT-THING-DESCRIPTION]]
+                        since different protocols can have different subprotocols.
+                        Correspondingly, subprotocols are linked to the protocol they are extending and should be understood together with 
+                        the protocol indicated in <code>href</code> of the forms (or the <code>base</code>).
+                        For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
+                        For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
+                        operations as defined by [[RFC6741]].
+                        The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
+                    </p>
+                </section>
 
-                <p>
-                    The values that the <code>subprotocol</code> term can take is not constrained by the [[!WOT-THING-DESCRIPTION]]
-                    since different protocols can have different Subprotocols.
-                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
-                    For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
-                    operations as defined by [[RFC6741]].
-                    The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
-                </p>
+            </section>
 
+            <section>
+                <h3>Terms Specified by Protocol Binding Templates</h3>
                 <p>
                     Overall, a protocol binding template specifies the values and structure of certain vocabulary terms in a TD.
-                    The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required to
+                    The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required
+                    to
                     specify the values the term can take.
                     In addition to these, additional terms for describing protocol options are typically added.
                 </p>
-
+            
                 <table class="def numbered" id="table-protocol-terms">
                     <caption>Terms specified by Protocol Binding Templates</caption>
                     <thead>
@@ -511,11 +527,11 @@
                             <td>Form</td>
                             <td>optional</td>
                         </tr>
-
+            
                     </tbody>
                 </table>
-                
             </section>
+
             <section id="protocol-bindings-table">
                 <h4>Existing Protocol Binding Templates</h4>
                 <p>
@@ -813,6 +829,9 @@
                         </tbody>
                     </table>
                 </section>
+            </section>
+            <section>
+                <h3>Terms Specified by Payload Binding Templates</h3>
                 <p>
                     Overall, a payload binding template specifies the values and structure of certain vocabulary terms in a TD.
                     The table below lists the vocabulary term, the class it belongs to and whether the subspecification is required to specify the values
@@ -854,6 +873,7 @@
                     </tbody>
                 </table>
             </section>
+
             <section id="payload-bindings-table">
                 <h4>Existing Payload Binding Templates</h4>
                 The table below summarizes the currently specified payload binding templates.

@@ -1013,18 +1013,18 @@
         <p>
             The following TD examples uses CoAP and MQTT Protocol Binding Templates.
             These TD Context Extensions assume that there is a CoAP and MQTT in RDF vocabulary similar to
-            [[?HTTP-in-RDF10]] that is accessible via the namespace <code>http://www.example.org/coap-binding#</code>
+            [[?HTTP-in-RDF10]] that is accessible via the namespaces <code>http://www.example.org/coap-binding#</code>
             and <code>http://www.example.org/mqtt-binding#</code>, respectively.
-            The supplemented <code>cov:methodName</code> member instructs the Consumer which CoAP method has to be
+            The supplemented <code>cov:method</code> member instructs the Consumer which CoAP method has to be
             applied (e.g., <code>GET</code> for the CoAP Method Code 0.01, <code>POST</code> for the CoAP Method Code
             0.02, or <code>iPATCH</code> for CoAP Method Code 0.07).
-            The supplemented <code>"mqv:controlPacketValue"</code> member instructs the Consumer which MQTT command has
-            to be applied (e.g., <code>8</code> for the subscribing and <code>10</code> for unsubscribing).
+            The supplemented <code>"mqv:controlPacket"</code> member instructs the Consumer which MQTT command has
+            to be applied (e.g., <code>subscribe</code> for the subscribing to a topic and <code>unsubscribe</code> for unsubscribing).
         </p>
 
         <p>
             A TD with simple payload format and protocols can be seen below.
-            Here each interaction affordance has one form with one protocol.
+            Here, each interaction affordance has one form with one protocol.
         </p>
 
         <pre class="example" title="TD with a Simple Payload">

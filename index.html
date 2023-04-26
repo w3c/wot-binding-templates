@@ -373,18 +373,20 @@
 
                 <p>
                     The form elements in the examples above convey the following statements:
-                    <ul>
-                        <li>
-                            Left Example: To do a <code>readproperty</code> of the subject Property Affordance by
-                            performing an HTTP GET request on the resource <code>props/temperature</code> to the host
-                            at <code>example.com</code> on port <code>80</code> (Port 80 is assumed as per [[RFC2616]]).
-                        </li>
-                        <li>
-                            Right Example: To do a <code>readproperty</code> of the subject Property Affordance using the
-                            <code>readCoil</code> function of Modbus at coil <code>1</code> of the device
-                            with the <code>127.0.0.1</code> address at its port <code>60000</code>
-                        </li>
-                    </ul>
+                </p>
+                <ul>
+                    <li>
+                        Left Example: To do a <code>readproperty</code> of the subject Property Affordance by
+                        performing an HTTP GET request on the resource <code>props/temperature</code> to the host
+                        at <code>example.com</code> on port <code>80</code> (Port 80 is assumed as per [[RFC2616]]).
+                    </li>
+                    <li>
+                        Right Example: To do a <code>readproperty</code> of the subject Property Affordance using the
+                        <code>readCoil</code> function of Modbus at coil <code>1</code> of the device
+                        with the <code>127.0.0.1</code> address at its port <code>60000</code>
+                    </li>
+                </ul>
+                <p>
                     These bindings and their statements are possible for other operations and protocols as well.
                     Below are examples for <code>invokeaction</code> and <code>subscribeevent</code>:
                 </p>
@@ -417,19 +419,20 @@
 
                 <p>
                     The form elements in the examples above convey the following statements:
-                    <ul>
-                        <li>
-                            Left Example: To do an <code>invokeaction</code> of the subject Action Affordance by
-                            performing an HTTP POST request on the resource <code>example/levelaction</code> to the host
-                            at <code>192.168.1.32</code> on port <code>8081</code>.
-                        </li>
-                        <li>
-                            Right Example: To do a <code>subscribeevent</code> of the subject Event Affordance by connecting
-                            to the MQTT broker at <code>iot.platform.com</code> and port <code>8088</code>, then subscribing
-                            to the topic <code>thing1/events/overheating</code>.
-                        </li>
-                    </ul>
                 </p>
+                <ul>
+                    <li>
+                        Left Example: To do an <code>invokeaction</code> of the subject Action Affordance by
+                        performing an HTTP POST request on the resource <code>example/levelaction</code> to the host
+                        at <code>192.168.1.32</code> on port <code>8081</code>.
+                    </li>
+                    <li>
+                        Right Example: To do a <code>subscribeevent</code> of the subject Event Affordance by connecting
+                        to the MQTT broker at <code>iot.platform.com</code> and port <code>8088</code>, then subscribing
+                        to the topic <code>thing1/events/overheating</code>.
+                    </li>
+                </ul>
+                
 
                 <p>
                     In some cases, header options or other parameters of the protocols need to be included.
@@ -450,6 +453,8 @@
                         [[!WOT-THING-DESCRIPTION]].
                         It can be used in a form instance to indicate the use of one of these protocols, for example long polling with its
                         special use of HTTP:
+                    </p>
+
                     <pre class="example" title="Subprotocol usage for subscribing events">
                         {
                             "op": "subscribeevent",
@@ -457,8 +462,7 @@
                             "subprotocol": "longpoll"
                         }
                     </pre>
-                    </p>
-                    
+                   
                     <p>
                         The values that the <code>subprotocol</code> term can take is not constrained by the [[!WOT-THING-DESCRIPTION]]
                         since different protocols can have different subprotocols.
@@ -741,26 +745,29 @@
                     </p>
 
                     <ul>
-                        <li>Structured Content Types without Parametrization</li>
-                        <ul>
-                            <li><code>application/json</code>: JSON [[RFC8259]]</li>
-                            <li><code>application/xml</code>: XML [[RFC5364]]</li>
-                            <li><code>application/cbor</code>: CBOR [[RFC8949]]</li>
-                            <li><code>text/csv</code>: CSV [[RFC4180]]</li>
-                        </ul>
-                        <li>Structured Content Types with Parametrization</li>
-                        <ul>
-                            <li><code>application/senml+json</code>: SenML Data serialized in JSON [[RFC8259]]</li>
-                            <li><code>application/senml+xml</code>: SenML Data serialized as XML</li>
-                            <li><code>application/ocf+cbor</code>: OCF payload serialized in CBOR</li>
-                            <li><code>text/csv;charset=utf-8</code>: CSV encoded in UTF-8 [[RFC4180]]</li>
-                        </ul>
-                        <li>Unstructured Content Types</li>
-                        <ul>
-                            <li><code>image/jpeg</code>: JPEG image</li>
-                            <li><code>video/mp4</code>: MP4 Video</li>
-                            <li><code>application/octet-stream</code>: Generic binary stream</li>
-                        </ul>
+                        <li>Structured Content Types without Parametrization
+                            <ul>
+                                <li><code>application/json</code>: JSON [[RFC8259]]</li>
+                                <li><code>application/xml</code>: XML [[RFC5364]]</li>
+                                <li><code>application/cbor</code>: CBOR [[RFC8949]]</li>
+                                <li><code>text/csv</code>: CSV [[RFC4180]]</li>
+                            </ul>
+                        </li>
+                        <li>Structured Content Types with Parametrization
+                            <ul>
+                                <li><code>application/senml+json</code>: SenML Data serialized in JSON [[RFC8259]]</li>
+                                <li><code>application/senml+xml</code>: SenML Data serialized as XML</li>
+                                <li><code>application/ocf+cbor</code>: OCF payload serialized in CBOR</li>
+                                <li><code>text/csv;charset=utf-8</code>: CSV encoded in UTF-8 [[RFC4180]]</li>
+                            </ul>
+                        </li>
+                        <li>Unstructured Content Types
+                            <ul>
+                                <li><code>image/jpeg</code>: JPEG image</li>
+                                <li><code>video/mp4</code>: MP4 Video</li>
+                                <li><code>application/octet-stream</code>: Generic binary stream</li>
+                            </ul>
+                        </li>
                     </ul>
                 </section>
                 <section id="payload-bindings-dataschema">
@@ -777,21 +784,22 @@
                         arrays or objects with multiple levels of nesting.
                         Existing IoT Platforms and Standards have certain payload formats with variations on how the data is structured.
                         As explained in [[WOT-THING-DESCRIPTION]], Data Schema can be used in a TD in one of the following places:
-                        <ul>
-                            <li><b>Property Affordances:</b> Each property affordance can contain terms for Data Schema
-                            and describe the property values when read, observed or written to.</li>
-                            <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> vocabulary terms are used 
-                                to provide two different schemas when data is exchanged in both directions, such as in 
-                                the case of invoking an Action Affordance with input parameters and receiving status information.</li>
-                            <li><b>Event Affordances:</b> <code>data</code>, <code>dataResponse</code>, <code>subscription</code>
-                                and <code>cancellation</code> are used to describe the payload when the event data
-                                is delivered by the Exposed Thing, the payload to reply with for event deliveries,
-                                 the payload needed to subscribe to the event and the payload needed to cancel receiving event
-                                data from the Exposed Thing, respectively.</li>
-                            <li><b>URI Variables:</b> In the Thing or Affordance level, <code>uriVariables</code> can
-                            describe the data that needs to be supplied inside the request URI as a string.</li>
-                        </ul>
                     </p>
+                    <ul>
+                        <li><b>Property Affordances:</b> Each property affordance can contain terms for Data Schema
+                        and describe the property values when read, observed or written to.</li>
+                        <li><b>Action Affordances:</b> <code>input</code> and <code>output</code> vocabulary terms are used 
+                            to provide two different schemas when data is exchanged in both directions, such as in 
+                            the case of invoking an Action Affordance with input parameters and receiving status information.</li>
+                        <li><b>Event Affordances:</b> <code>data</code>, <code>dataResponse</code>, <code>subscription</code>
+                            and <code>cancellation</code> are used to describe the payload when the event data
+                            is delivered by the Exposed Thing, the payload to reply with for event deliveries,
+                                the payload needed to subscribe to the event and the payload needed to cancel receiving event
+                            data from the Exposed Thing, respectively.</li>
+                        <li><b>URI Variables:</b> In the Thing or Affordance level, <code>uriVariables</code> can
+                        describe the data that needs to be supplied inside the request URI as a string.</li>
+                    </ul>
+                    
                     <p>
                         Below is an example of a simple JSON object payload with the corresponding Data Schema.
                         Examples from various IoT Platforms and Standards can be found in [[[#sec-payload-examples]]].
@@ -928,6 +936,8 @@
                     If it is not registered, the binding document can propose a mime type.
                     Additionally, how that media type is represented in a Data Schema SHOULD be demonstrated with examples.
                     In all cases, the following information SHOULD be provided:
+                </p>
+
                 <ul>
                     <li>
                         <b>Specification:</b> The official specification document of the payload format SHOULD be
@@ -938,7 +948,7 @@
                         introduction, explaining how to get access to the specification.
                     </li>
                 </ul>
-                </p>
+                
             </section>
         </section>
         <section id="platform-bindings">
@@ -1597,7 +1607,7 @@
     </section>
 
 
-    <script id="dstimer" language="javascript">
+    <script id="dstimer">
         //<![CDATA[
         if (dschk() == 1) {
             if (typeof (dsSetTimers) != "undefined") {

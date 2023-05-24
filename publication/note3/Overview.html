@@ -249,20 +249,23 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
     }
   },
   "publishISODate": "2023-05-17T00:00:00.000Z",
-  "generatedSubtitle": "17 May 2023"
+  "generatedSubtitle": "W3C Editor's Draft 17 May 2023"
 }</script>
-<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/base.css"></head>
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED"></head>
 
 <body class="h-entry toc-inline"><div class="head">
-    
+    <p class="logos"><a class="logo" href="https://www.w3.org/"><img crossorigin="" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72" height="48">
+  </a></p>
     <h1 id="title" class="title">Web of Things (WoT) Binding Templates</h1> 
-    <p id="w3c-state"> <time class="dt-published" datetime="2023-05-17">W3C Group Note 17 May 2023</time></p>
+    <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">W3C Editor's Draft</a> <time class="dt-published" datetime="2023-05-17">17 May 2023</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
-        
+        <dt>This version:</dt><dd>
+                <a class="u-url" href="https://w3c.github.io/wot-binding-templates/">https://w3c.github.io/wot-binding-templates/</a>
+              </dd>
         <dt>Latest published version:</dt><dd>
-                <a href="https://www.w3.org/wot-binding-templates/">https://www.w3.org/wot-binding-templates/</a>
+                <a href="https://www.w3.org/TR/wot-binding-templates/">https://www.w3.org/TR/wot-binding-templates/</a>
               </dd>
         <dt>Latest editor's draft:</dt><dd><a href="https://w3c.github.io/wot-binding-templates/">https://w3c.github.io/wot-binding-templates/</a></dd>
         <dt>History:</dt><dd>
@@ -336,11 +339,11 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         </p>
     </section>
 
-    <section id="sotd" class="introductory"><h2>Status of This Document</h2><p>
-      This document is merely a <abbr title="World Wide Web Consortium">W3C</abbr>-internal
-       document. It has no official standing
-      of any kind and does not represent consensus of the <abbr title="World Wide Web Consortium">W3C</abbr> Membership.
-    </p>
+    <section id="sotd" class="introductory"><h2>Status of This Document</h2><p><em>This section describes the status of this
+      document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr>
+      publications and the latest revision of this technical report can be found
+      in the <a href="https://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+      https://www.w3.org/TR/.</em></p>
         <div class="note" id="issue-container-generatedID"><div role="heading" class="ednote-title marker" id="h-ednote" aria-level="3"><span>Editor's note</span><span class="issue-label">: The W3C WoT WG is asking for feedback</span></div><p class="">
             Please contribute to this draft using the
             <a href="https://github.com/w3c/wot-binding-templates/issues">GitHub Issue</a>
@@ -350,7 +353,37 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
             <a href="https://github.com/w3c/wot-security/issues">WoT Security and Privacy</a>
             Issues, as they are cross-cutting over all our documents.
         </p></div>
-    </section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#introduction"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#terminology"><bdi class="secno">3. </bdi>Terminology</a></li><li class="tocline"><a class="tocxref" href="#binding-overview"><bdi class="secno">4. </bdi>Binding Template Mechanisms</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#protocol-bindings"><bdi class="secno">4.1 </bdi>Protocol Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#protocol-bindings-intro"><bdi class="secno">4.1.1 </bdi>Introduction to Protocol Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#subprotocols"><bdi class="secno">4.1.1.1 </bdi>Subprotocols</a></li></ol></li><li class="tocline"><a class="tocxref" href="#terms-specified-by-protocol-binding-templates"><bdi class="secno">4.1.2 </bdi>Terms Specified by Protocol Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#protocol-bindings-table"><bdi class="secno">4.1.3 </bdi>Existing Protocol Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#using-a-thing-description-with-a-protocol-binding-template-subspecification"><bdi class="secno">4.1.4 </bdi>Using a Thing Description with a Protocol Binding Template Subspecification</a></li><li class="tocline"><a class="tocxref" href="#creating-a-new-protocol-binding-template-subspecification"><bdi class="secno">4.1.5 </bdi>Creating a new Protocol Binding Template Subspecification</a></li></ol></li><li class="tocline"><a class="tocxref" href="#payload-bindings"><bdi class="secno">4.2 </bdi>Payload Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#payload-bindings-intro"><bdi class="secno">4.2.1 </bdi>Introduction to Payload Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#payload-bindings-contentType"><bdi class="secno">4.2.1.1 </bdi>Content Types</a></li><li class="tocline"><a class="tocxref" href="#payload-bindings-dataschema"><bdi class="secno">4.2.1.2 </bdi>Data Schemas</a></li></ol></li><li class="tocline"><a class="tocxref" href="#terms-specified-by-payload-binding-templates"><bdi class="secno">4.2.2 </bdi>Terms Specified by Payload Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#payload-bindings-table"><bdi class="secno">4.2.3 </bdi>Existing Payload Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#payload-bindings-creating"><bdi class="secno">4.2.4 </bdi>Creating a new Payload Binding Template Subspecification</a></li></ol></li><li class="tocline"><a class="tocxref" href="#platform-bindings"><bdi class="secno">4.3 </bdi>Platform Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#platform-bindings-intro"><bdi class="secno">4.3.1 </bdi>Introduction to Platform Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#platform-bindings-table"><bdi class="secno">4.3.2 </bdi>Existing Platform Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#creating-a-new-platform-binding-template-subspecification"><bdi class="secno">4.3.3 </bdi>Creating a new Platform Binding Template Subspecification</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#binding-examples"><bdi class="secno">5. </bdi>Examples of Thing Descriptions with Protocol Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#sec-security-considerations"><bdi class="secno">6. </bdi>Security and Privacy Considerations</a></li><li class="tocline"><a class="tocxref" href="#sec-acknowledgements"><bdi class="secno">A. </bdi>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#sec-payload-examples"><bdi class="secno">B. </bdi>Examples of Payloads and Data Schemas from IoT Platforms and Standards</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">C. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">C.1 </bdi>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">C.2 </bdi>Informative references</a></li></ol></li></ol></nav>
+    <p>
+    This document was published by the <a href="https://www.w3.org/groups/wg/wot">Web of Things Working Group</a> as
+    an Editor's Draft. 
+  </p><p>Publication as an Editor's Draft does not
+  imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. </p><p>
+    This is a draft document and may be updated, replaced or obsoleted by other
+    documents at any time. It is inappropriate to cite this document as other
+    than work in progress.
+    
+  </p><p>
+    
+        This document was produced by a group
+        operating under the
+        <a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent
+          Policy</a>.
+      
+    
+                <abbr title="World Wide Web Consortium">W3C</abbr> maintains a
+                <a rel="disclosure" href="https://www.w3.org/groups/wg/wot/ipr">public list of any patent disclosures</a>
+          made in connection with the deliverables of
+          the group; that page also includes
+          instructions for disclosing a patent. An individual who has actual
+          knowledge of a patent which the individual believes contains
+          <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>
+          must disclose the information in accordance with
+          <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+        
+  </p><p>
+                  This document is governed by the
+                  <a id="w3c_process_revision" href="https://www.w3.org/2021/Process-20211102/">2 November 2021 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+                </p></section><nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2><ol class="toc"><li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li><li class="tocline"><a class="tocxref" href="#sotd">Status of This Document</a></li><li class="tocline"><a class="tocxref" href="#introduction"><bdi class="secno">1. </bdi>Introduction</a></li><li class="tocline"><a class="tocxref" href="#conformance"><bdi class="secno">2. </bdi>Conformance</a></li><li class="tocline"><a class="tocxref" href="#terminology"><bdi class="secno">3. </bdi>Terminology</a></li><li class="tocline"><a class="tocxref" href="#binding-overview"><bdi class="secno">4. </bdi>Binding Template Mechanisms</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#protocol-bindings"><bdi class="secno">4.1 </bdi>Protocol Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#protocol-bindings-intro"><bdi class="secno">4.1.1 </bdi>Introduction to Protocol Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#subprotocols"><bdi class="secno">4.1.1.1 </bdi>Subprotocols</a></li></ol></li><li class="tocline"><a class="tocxref" href="#terms-specified-by-protocol-binding-templates"><bdi class="secno">4.1.2 </bdi>Terms Specified by Protocol Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#protocol-bindings-table"><bdi class="secno">4.1.3 </bdi>Existing Protocol Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#using-a-thing-description-with-a-protocol-binding-template-subspecification"><bdi class="secno">4.1.4 </bdi>Using a Thing Description with a Protocol Binding Template Subspecification</a></li><li class="tocline"><a class="tocxref" href="#creating-a-new-protocol-binding-template-subspecification"><bdi class="secno">4.1.5 </bdi>Creating a new Protocol Binding Template Subspecification</a></li></ol></li><li class="tocline"><a class="tocxref" href="#payload-bindings"><bdi class="secno">4.2 </bdi>Payload Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#payload-bindings-intro"><bdi class="secno">4.2.1 </bdi>Introduction to Payload Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#payload-bindings-contentType"><bdi class="secno">4.2.1.1 </bdi>Content Types</a></li><li class="tocline"><a class="tocxref" href="#payload-bindings-dataschema"><bdi class="secno">4.2.1.2 </bdi>Data Schemas</a></li></ol></li><li class="tocline"><a class="tocxref" href="#terms-specified-by-payload-binding-templates"><bdi class="secno">4.2.2 </bdi>Terms Specified by Payload Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#payload-bindings-table"><bdi class="secno">4.2.3 </bdi>Existing Payload Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#payload-bindings-creating"><bdi class="secno">4.2.4 </bdi>Creating a new Payload Binding Template Subspecification</a></li></ol></li><li class="tocline"><a class="tocxref" href="#platform-bindings"><bdi class="secno">4.3 </bdi>Platform Binding Templates</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#platform-bindings-intro"><bdi class="secno">4.3.1 </bdi>Introduction to Platform Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#platform-bindings-table"><bdi class="secno">4.3.2 </bdi>Existing Platform Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#creating-a-new-platform-binding-template-subspecification"><bdi class="secno">4.3.3 </bdi>Creating a new Platform Binding Template Subspecification</a></li></ol></li></ol></li><li class="tocline"><a class="tocxref" href="#binding-examples"><bdi class="secno">5. </bdi>Examples of Thing Descriptions with Protocol Binding Templates</a></li><li class="tocline"><a class="tocxref" href="#sec-security-considerations"><bdi class="secno">6. </bdi>Security and Privacy Considerations</a></li><li class="tocline"><a class="tocxref" href="#sec-acknowledgements"><bdi class="secno">A. </bdi>Acknowledgements</a></li><li class="tocline"><a class="tocxref" href="#sec-payload-examples"><bdi class="secno">B. </bdi>Examples of Payloads and Data Schemas from IoT Platforms and Standards</a></li><li class="tocline"><a class="tocxref" href="#references"><bdi class="secno">C. </bdi>References</a><ol class="toc"><li class="tocline"><a class="tocxref" href="#normative-references"><bdi class="secno">C.1 </bdi>Normative references</a></li><li class="tocline"><a class="tocxref" href="#informative-references"><bdi class="secno">C.2 </bdi>Informative references</a></li></ol></li></ol></nav>
 
     <section id="introduction"><div class="header-wrapper"><h2 id="x1-introduction"><bdi class="secno">1. </bdi>Introduction</h2><a class="self-link" href="#introduction" aria-label="Permalink for Section 1."></a></div>
         

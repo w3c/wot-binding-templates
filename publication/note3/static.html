@@ -111,6 +111,7 @@ dd{margin-left:0}
 <meta name="description" content="W3C Web of Things enables applications to interact with and orchestrate connected Things at the Web scale.
             The standardized abstract interaction model exposed by the WoT Thing Description enables applications to
             scale and evolve independently of the individual Things.">
+<link rel="canonical" href="https://www.w3.org/TR/wot-binding-templates/">
 <style>
 .hljs{display:block;overflow-x:auto;padding:.5em;color:#383a42;background:#fafafa}
 .hljs-comment,.hljs-quote{color:#717277;font-style:italic}
@@ -133,7 +134,7 @@ var[data-type]::after{content:attr(data-type);transform:translateX(-50%) transla
 var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
 </style>
 <script id="initialUserConfig" type="application/json">{
-  "specStatus": "ED",
+  "specStatus": "NOTE",
   "processVersion": 2017,
   "shortName": "wot-binding-templates",
   "copyrightStart": 2017,
@@ -248,21 +249,21 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       "date": "26 April 2012"
     }
   },
-  "publishISODate": "2023-05-17T00:00:00.000Z",
-  "generatedSubtitle": "W3C Editor's Draft 17 May 2023"
+  "publishISODate": "2023-05-24T00:00:00.000Z",
+  "generatedSubtitle": "W3C Group Note 24 May 2023"
 }</script>
-<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED"></head>
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-NOTE"></head>
 
 <body class="h-entry toc-inline"><div class="head">
     <p class="logos"><a class="logo" href="https://www.w3.org/"><img crossorigin="" alt="W3C" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72" height="48">
   </a></p>
     <h1 id="title" class="title">Web of Things (WoT) Binding Templates</h1> 
-    <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">W3C Editor's Draft</a> <time class="dt-published" datetime="2023-05-17">17 May 2023</time></p>
+    <p id="w3c-state"><a href="https://www.w3.org/standards/types#NOTE">W3C Group Note</a> <time class="dt-published" datetime="2023-05-24">24 May 2023</time></p>
     <details open="">
       <summary>More details about this document</summary>
       <dl>
         <dt>This version:</dt><dd>
-                <a class="u-url" href="https://w3c.github.io/wot-binding-templates/">https://w3c.github.io/wot-binding-templates/</a>
+                <a class="u-url" href="https://www.w3.org/TR/2023/NOTE-wot-binding-templates-20230524/">https://www.w3.org/TR/2023/NOTE-wot-binding-templates-20230524/</a>
               </dd>
         <dt>Latest published version:</dt><dd>
                 <a href="https://www.w3.org/TR/wot-binding-templates/">https://www.w3.org/TR/wot-binding-templates/</a>
@@ -355,31 +356,25 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         </p></div>
     <p>
     This document was published by the <a href="https://www.w3.org/groups/wg/wot">Web of Things Working Group</a> as
-    an Editor's Draft. 
-  </p><p>Publication as an Editor's Draft does not
-  imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members. </p><p>
+    a Group Note using the
+        <a href="https://www.w3.org/2021/Process-20211102/#recs-and-notes">Note track</a>. 
+  </p><p>This Group Note is endorsed by
+        the <a href="https://www.w3.org/groups/wg/wot">Web of Things Working Group</a>, but is not endorsed by
+        <abbr title="World Wide Web Consortium">W3C</abbr> itself nor its
+        Members. </p><p>
     This is a draft document and may be updated, replaced or obsoleted by other
     documents at any time. It is inappropriate to cite this document as other
     than work in progress.
     
-  </p><p>
+  </p><p data-deliverer="95969">
     
-        This document was produced by a group
-        operating under the
+        The
         <a href="https://www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent
-          Policy</a>.
+          Policy</a>
+        does not carry any licensing requirements or commitments on this
+        document.
       
     
-                <abbr title="World Wide Web Consortium">W3C</abbr> maintains a
-                <a rel="disclosure" href="https://www.w3.org/groups/wg/wot/ipr">public list of any patent disclosures</a>
-          made in connection with the deliverables of
-          the group; that page also includes
-          instructions for disclosing a patent. An individual who has actual
-          knowledge of a patent which the individual believes contains
-          <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a>
-          must disclose the information in accordance with
-          <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
-        
   </p><p>
                   This document is governed by the
                   <a id="w3c_process_revision" href="https://www.w3.org/2021/Process-20211102/">2 November 2021 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
@@ -1878,7 +1873,14 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         }
         //]]>
     </script>
-
+<div data-netlify-deploy-id="646e85879e210300073d05de" data-netlify-site-id="6374ba5c-cfe8-470a-a88d-2de8cf805c37" data-vcs="github" style="background: transparent; bottom: 0px; color-scheme: normal; margin: 0px; padding: 0px; position: fixed; z-index: 2147483647; left: calc(50% - 390px);">
+  
+  <script async="" src="https://netlify-cdp-loader.netlify.app/netlify.js"></script>
+<iframe allow="microphone; camera; clipboard-write; display-capture" src="https://app.netlify.com/cdp/?deployID=646e85879e210300073d05de&amp;siteID=6374ba5c-cfe8-470a-a88d-2de8cf805c37&amp;vcs=github" title="Netlify Drawer" style="background: transparent !important; border: 0px none !important; display: block !important; height: 48px; min-height: initial; max-height: initial; transform: initial; width: 780px;"></iframe></div><center>
+<a href="https://www.netlify.com">
+  <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify">
+</a>
+</center>
 
 
 <section id="references" class="appendix"><div class="header-wrapper"><h2 id="c-references"><bdi class="secno">C. </bdi>References</h2><a class="self-link" href="#references" aria-label="Permalink for Appendix C."></a></div><section id="normative-references"><div class="header-wrapper"><h3 id="c-1-normative-references"><bdi class="secno">C.1 </bdi>Normative references</h3><a class="self-link" href="#normative-references" aria-label="Permalink for Appendix C.1"></a></div>

@@ -1299,8 +1299,8 @@
               <td>Hypertext Transfer Protocol</td>
               <td>
                 <a href=
-                "./bindings/protocols/http/index.html">Binding
-                Template</a>
+                "https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html">
+                Binding Template</a>
               </td>
               <td>
                 <a href=
@@ -1312,12 +1312,13 @@
               <td>Constrained Application Protocol</td>
               <td>
                 <a href=
-                "./bindings/protocols/coap/index.html">Binding
-                Template</a>
+                "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/index.html">
+                Binding Template</a>
               </td>
               <td>
                 <a href=
-                "./bindings/protocols/coap/ontology.html">Ontology</a>
+                "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/ontology.html">
+                Ontology</a>
               </td>
             </tr>
             <tr>
@@ -1325,8 +1326,8 @@
               <td>Message Queuing Telemetry Transport</td>
               <td>
                 <a href=
-                "./bindings/protocols/mqtt/index.html">Binding
-                Template</a>
+                "https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/index.html">
+                Binding Template</a>
               </td>
               <td>
                 <a href=
@@ -1338,12 +1339,13 @@
               <td>Modbus</td>
               <td>
                 <a href=
-                "./bindings/protocols/modbus/index.html">Binding
-                Template</a>
+                "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/index.html">
+                Binding Template</a>
               </td>
               <td>
                 <a href=
-                "./bindings/protocols/modbus/ontology.html">Ontology</a>
+                "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/ontology.html">
+                Ontology</a>
               </td>
             </tr>
           </tbody>
@@ -1913,8 +1915,8 @@
               <td><code>application/xml</code></td>
               <td>
                 <a href=
-                "./bindings/payloads/xml/index.html">Link</a>(Work
-                in Progress)
+                "https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html">
+                Link</a> (Work in Progress)
               </td>
             </tr>
             <tr>
@@ -3009,25 +3011,45 @@
             }
         }
         //]]>
+  </script> 
+  <script>
+
+        // <![CDATA[  <-- For SVG support
+        if ('WebSocket' in window) {
+                (function () {
+                        function refreshCSS() {
+                                var sheets = [].slice.call(document.getElementsByTagName("link"));
+                                var head = document.getElementsByTagName("head")[0];
+                                for (var i = 0; i < sheets.length; ++i) {
+                                        var elem = sheets[i];
+                                        var parent = elem.parentElement || head;
+                                        parent.removeChild(elem);
+                                        var rel = elem.rel;
+                                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                                                var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                                                elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                                        }
+                                        parent.appendChild(elem);
+                                }
+                        }
+                        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                        var address = protocol + window.location.host + window.location.pathname + '/ws';
+                        var socket = new WebSocket(address);
+                        socket.onmessage = function (msg) {
+                                if (msg.data == 'reload') window.location.reload();
+                                else if (msg.data == 'refreshcss') refreshCSS();
+                        };
+                        if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                                console.log('Live reload enabled.');
+                                sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+                        }
+                })();
+        }
+        else {
+                console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+        }
+        // ]]>
   </script>
-  <div data-netlify-deploy-id="646e85879e210300073d05de"
-  data-netlify-site-id="6374ba5c-cfe8-470a-a88d-2de8cf805c37"
-  data-vcs="github" style=
-  "background: transparent; bottom: 0px; color-scheme: normal; margin: 0px; padding: 0px; position: fixed; z-index: 2147483647; left: calc(50% - 390px);">
-    <script async="async" src=
-    "https://netlify-cdp-loader.netlify.app/netlify.js"></script>
-    <iframe allow=
-    "microphone; camera; clipboard-write; display-capture" src=
-    "https://app.netlify.com/cdp/?deployID=646e85879e210300073d05de&amp;siteID=6374ba5c-cfe8-470a-a88d-2de8cf805c37&amp;vcs=github"
-    title="Netlify Drawer" style=
-    "background: transparent !important; border: 0px none !important; display: block !important; height: 48px; min-height: initial; max-height: initial; transform: initial; width: 780px;">
-    </iframe>
-  </div>
-  <center>
-    <a href="https://www.netlify.com"><img src=
-    "https://www.netlify.com/img/global/badges/netlify-color-accent.svg"
-    alt="Deploys by Netlify" /></a>
-  </center>
   <section id="references" class="appendix">
     <div class="header-wrapper">
       <h2 id="c-references"><bdi class="secno">C.</bdi>

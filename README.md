@@ -93,6 +93,14 @@ $ node render.js
 This rendering process is mandated through the use of a [Husky](https://www.npmjs.com/package/husky) pre-commit hook.
 Make sure to run `npm install` first to install husky in the first place.
 
+## Specberus
+
+Many information about a spec can be obtained from [Specberus](https://github.com/w3c/specberus) hosted by the W3C.
+Below are some requests that are usually useful:
+
+1. Get general information: `curl "https://www.w3.org/pubrules/api/metadata?url=https://w3c.github.io/wot-binding-templates/"`
+2. Validate document: `curl "https://www.w3.org/pubrules/api/validate?url=https://w3c.github.io/wot-binding-templates/&profile=auto"`
+
 ## Editing Conventions
 
 Please use [EditorConfig](https://editorconfig.org/) by installing a plugin for your favorite editor.

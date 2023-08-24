@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove' defer></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            editors: [{name:"Klaus Hartke",company:"Siemens AG",companyURL:"https://www.siemens.com/"},{name:"Jan Romann",company:"Invited Expert",companyURL:"https://github.com/JKRhb/"}],
+            group: "wg/wot",
+            edDraftURI: "https://www.w3.org/2019/wot/coap",
+            shortName: "wot-binding-templates"
+        };
+    </script>
+    <title>CoAP Vocabulary for the Web of Things</title>
+    </head>
+    <body>
+        <section id='abstract'>
+            <p>This document contains RDF Vocabulary that can be used in CoAP forms of Web of Things Thing Descriptions.</p>
+        </section>
+        <section id='sotd'>
+            <p>
+                <em>This document is a work in progress</em>
+            </p>
+        </section>
+        <section>
+            <h2>Introduction</h2>
+
+            <p>
+                To use in TD forms.
+            </p>
+        </section>
+
+        <section><h2>Axiomatization</h2><section><h3>Classes</h3><section><h4>BlockWiseTransferParameters</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#BlockWiseTransferParameters</code></p><span>Parameters used for block-wise transfer [[RFC7959]] and block-wise transfer supporting robust transmission [[RFC9177]].</span><table class="def"><tbody><tr><td>In the domain of</td><td><code><a href="#block1size">block1Size</a></code><br><code><a href="#block2size">block2Size</a></code></td></tr></tbody></table></section></section><section><h3>Object Properties</h3><section><h4>blockwise</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#blockwise</code></p><span>Indicates that block-wise transfer [[RFC7959]] is supported.</span><table class="def"><tbody><tr><td>Range</td><td><code><a href="#blockwisetransferparameters">BlockWiseTransferParameters</a></code></td></tr></tbody></table></section>
+<section><h4>qblockwise</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#qblockwise</code></p><span>Indicates that quick block-wise transfer [[RFC9177]] is supported.</span><table class="def"><tbody><tr><td>Range</td><td><code><a href="#blockwisetransferparameters">BlockWiseTransferParameters</a></code></td></tr></tbody></table></section></section><section><h3>Datatype Properties</h3><section><h4>accept</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#accept</code></p><span>Indicates that a Consumer must include an Accept option [[RFC7252]] with the given value when requesting the resource associated with this Form.</span><table class="def"><tbody><tr><td>Range</td><td><code><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></code></td></tr></tbody></table></section>
+<section><h4>block1Size</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#block1Size</code></p><span>Indicates the largest block size that may be used in a Block1 or Q-Block1 Option</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="#blockwisetransferparameters">BlockWiseTransferParameters</a></code></td></tr><tr><td>Domain</td><td><code><a href="#blockwisetransferparameters">BlockWiseTransferParameters</a></code></td></tr><tr><td>Range</td><td><code><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></code></td></tr></tbody></table></section>
+<section><h4>block2Size</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#block2Size</code></p><span>Indicates the largest block size that may be used in a Block2 or Q-Block2 Option</span><table class="def"><tbody><tr><td>Domain includes</td><td><code><a href="#blockwisetransferparameters">BlockWiseTransferParameters</a></code></td></tr><tr><td>Domain</td><td><code><a href="#blockwisetransferparameters">BlockWiseTransferParameters</a></code></td></tr><tr><td>Range</td><td><code><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></code></td></tr></tbody></table></section>
+<section><h4>contentFormat</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#contentFormat</code></p><span>Specifies the Content-Format to be used by a client for input data and the Content-Format to be used by a server for output data (where applicable). The value must be the numeric Content-Format ID registered with IANA for the combination of the <code>contentType</code> and <code>contentCoding</code> specified in the same form.</span><table class="def"><tbody><tr><td>Range</td><td><code><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></code></td></tr></tbody></table></section>
+<section><h4>hopLimit</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#hopLimit</code></p><span>Indicates that a CoAP Hop-Limit option [[RFC8768]] should be included in the request.</span><table class="def"><tbody><tr><td>Range</td><td><code><a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a></code></td></tr></tbody></table></section>
+<section><h4>method</h4><p>IRI: <code>https://www.w3.org/2019/wot/coap#method</code></p><span>Indicates the CoAP method to be used in the request.</span><table class="def"><tbody><tr><td>Range</td><td><code><a href="http://www.w3.org/2001/XMLSchema#string">string</a></code></td></tr></tbody></table></section></section></section>
+    </body>
+</html>

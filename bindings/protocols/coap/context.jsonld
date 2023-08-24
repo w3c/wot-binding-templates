@@ -1,0 +1,36 @@
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "cov": "https://www.w3.org/2019/wot/coap#",
+        "method": {
+            "@id": "cov:method",
+            "@type": "xsd:string"
+        },
+        "blockwise": {
+            "@id": "cov:blockwise"
+        },
+        "qblockwise": {
+            "@id": "cov:qblockwise"
+        },
+        "block2Size": {
+            "@id": "cov:block2Size",
+            "@type": "xsd:unsignedShort"
+        },
+        "block1Size": {
+            "@id": "cov:block1Size",
+            "@type": "xsd:unsignedShort"
+        },
+        "accept": {
+            "@id": "cov:accept",
+            "@type": "xsd:unsignedShort"
+        },
+        "contentFormat": {
+            "@id": "cov:contentFormat",
+            "@type": "xsd:unsignedShort"
+        },
+        "hopLimit": {
+            "@id": "cov:hopLimit",
+            "@type": "xsd:unsignedByte"
+        }
+    }
+}

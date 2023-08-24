@@ -1,0 +1,88 @@
+@prefix cov: <https://www.w3.org/2019/wot/coap#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <https://www.w3.org/2019/wot/coap> .
+
+<> a owl:Ontology ;
+   dcterms:title "CoAP Vocabulary for the Web of Things"@en ;
+   rdfs:label "CoAP Vocabulary for the Web of Things"@en ; # TODO: Refactor
+   dcterms:creator [ a dcterms:Agent ,
+                       schema:Person ;
+                     schema:name "Klaus Hartke" ;
+                     schema:affiliation [ a schema:Organization ;
+                                          schema:name "Siemens AG" ;
+                                          schema:url "https://www.siemens.com/"
+                                        ]
+                   ] ,
+                   [ a dcterms:Agent ,
+                       schema:Person ;
+                     schema:name "Jan Romann" ;
+                     schema:affiliation [ a schema:Organization ;
+                                          schema:name "Invited Expert" ;
+                                          schema:url "https://github.com/JKRhb/"
+                                        ]
+                   ] ;
+   vann:preferredNamespacePrefix "cov" ;
+   vann:preferredNamespaceUri "https://www.w3.org/2019/wot/coap#" ;
+   rdfs:comment "This document contains RDF Vocabulary that can be used in CoAP forms of Web of Things Thing Descriptions." .
+
+cov:method a rdf:Property, owl:DatatypeProperty ;
+           rdfs:range xsd:string ;
+           rdfs:comment "Indicates the CoAP method to be used in the request."@en ;
+           rdfs:isDefinedBy <> ;
+           rdfs:seeAlso "See the <a href=\"https://www.iana.org/assignments/core-parameters/#method-codes\">CoAP Method Codes</a> registry for the set of possible values.";
+           rdfs:label "method"@en .
+
+cov:blockwise a rdf:Property, owl:ObjectProperty ;
+              rdfs:range cov:BlockWiseTransferParameters ;
+              rdfs:comment "Indicates that block-wise transfer [[RFC7959]] is supported."@en ;
+              rdfs:isDefinedBy <> ;
+              rdfs:label "blockwise"@en .
+
+cov:qblockwise a rdf:Property, owl:ObjectProperty ;
+               rdfs:range cov:BlockWiseTransferParameters ;
+               rdfs:comment "Indicates that quick block-wise transfer [[RFC9177]] is supported."@en ;
+               rdfs:isDefinedBy <> ;
+               rdfs:label "qblockwise"@en .
+
+cov:hopLimit a rdf:Property, owl:DatatypeProperty ;
+             rdfs:range xsd:unsignedByte ;
+             rdfs:comment "Indicates that a CoAP Hop-Limit option [[RFC8768]] should be included in the request."@en ;
+             rdfs:isDefinedBy <> ;
+             rdfs:label "hopLimit"@en .
+
+cov:contentFormat a rdf:Property, owl:DatatypeProperty ;
+                  rdfs:range xsd:unsignedShort ;
+                  rdfs:comment "Specifies the Content-Format to be used by a client for input data and the Content-Format to be used by a server for output data (where applicable). The value must be the numeric Content-Format ID registered with IANA for the combination of the <code>contentType</code> and <code>contentCoding</code> specified in the same form."@en ;
+                  rdfs:isDefinedBy <> ;
+                  rdfs:label "contentFormat"@en .
+
+cov:accept a rdf:Property, owl:DatatypeProperty ;
+           rdfs:range xsd:unsignedShort ;
+           rdfs:comment "Indicates that a Consumer must include an Accept option [[RFC7252]] with the given value when requesting the resource associated with this Form."@en ;
+           rdfs:isDefinedBy <> ;
+           rdfs:label "accept"@en .
+
+cov:block2Size a rdf:Property, owl:DatatypeProperty ;
+               rdfs:domain cov:BlockWiseTransferParameters ;
+               schema:domainIncludes cov:BlockWiseTransferParameters ;
+               rdfs:range xsd:unsignedShort ;
+               rdfs:comment "Indicates the largest block size that may be used in a Block2 or Q-Block2 Option"@en ;
+               rdfs:label "block2Size"@en .
+
+cov:block1Size a rdf:Property, owl:DatatypeProperty ;
+               rdfs:domain cov:BlockWiseTransferParameters ;
+               schema:domainIncludes cov:BlockWiseTransferParameters ;
+               rdfs:range xsd:unsignedShort ;
+               rdfs:comment "Indicates the largest block size that may be used in a Block1 or Q-Block1 Option"@en ;
+               rdfs:label "block1Size"@en .
+
+cov:BlockWiseTransferParameters a rdfs:Class, owl:Class ;
+                                rdfs:isDefinedBy <> ;
+                                rdfs:comment "Parameters used for block-wise transfer [[RFC7959]] and block-wise transfer supporting robust transmission [[RFC9177]]."@en ;
+                                rdfs:label "BlockWiseTransferParameters"@en .

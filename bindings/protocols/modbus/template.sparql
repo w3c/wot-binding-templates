@@ -16,6 +16,7 @@ prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
 template :modbus {
     format {
         <file://./bindings/protocols/modbus/index.template.html>
+        st:call-template(:urlTerms, ?modbusBase, ?prefix)
         st:call-template(:formTerms, ?modbusBase, ?prefix)
         st:call-template(:entityValues, ?modbusBase, ?prefix)
         st:call-template(:functionValues, ?modbusBase, ?prefix)
@@ -27,6 +28,47 @@ template :modbus {
     ?modbusBase a owl:Ontology;
        vann:preferredNamespacePrefix ?prefix
 }
+
+template :urlTerms(?ns ?prefix){
+    format {
+        """
+        
+        <tr>
+            <td><code>%s</code></td>
+            <td>%s</td>
+            <td>%s</td>
+            <td><a href=\"%s\">%s</a></td>
+
+        <tr>
+        """
+        st:call-template(:term, ?ns, ?prefix, ?term)
+        ?desc
+        if(?count > 0, "required","optional")
+        if(strstarts(?type,str(?ns)), lcase(replace(?type, ?ns,"","g")),?type )
+        strafter(?type,"#")
+
+    }
+} where {
+    ?shape a sh:NodeShape ;
+        sh:targetClass hctl:Form ;
+        sh:order 1 ;
+        sh:property ?property.
+    
+    ?property sh:path ?term .
+    ?term rdfs:comment ?desc .
+    optional {
+        ?property sh:minCount ?count 
+    }
+    optional {
+        ?property sh:class ?type
+    }
+    optional {
+        ?property sh:datatype ?type
+    }
+    
+    BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
+    filter( ?term = concat(?ns,"#hasAddress" ) || ?term = concat(?ns,"#hasUnitID" ) ||  ?term = concat(?ns,"#hasQuantity" ))
+} 
 
 template :formTerms(?ns ?prefix){
     format {
@@ -65,6 +107,8 @@ template :formTerms(?ns ?prefix){
     }
     
     BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
+    # Filter out URL terms
+    filter( ?term != concat(?ns,"#hasAddress" ) && ?term != concat(?ns,"#hasUnitID" ) &&  ?term != concat(?ns,"#hasQuantity" ))
    
 } 
 

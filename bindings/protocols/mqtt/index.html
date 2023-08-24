@@ -44,7 +44,7 @@
                   data: [
                       {
                         value: "MQTT in RDF",
-                        href: "../../../ontology/mqtt.html"
+                        href: "ontology.html"
                       }
                   ]
               }
@@ -104,6 +104,11 @@
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
     </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
     <section id='introduction'>
         <h2>Introduction</h2>
         <p>
@@ -136,11 +141,6 @@
             containing MQTT Binding is provided in the <a href="mqtt.schema.json">GitHub repository</a>.
         </p>
         
-    </section>
-    <section id='sotd'>
-        <p>
-            <em>This document is a work in progress</em>
-        </p>
     </section>
     <section id="url">
       <h2>URL format</h2>
@@ -248,19 +248,19 @@
           <!-- Generate packet values from the ontology-->
           
         <tr>
-            <td><code>mqv:publish</code></td>
+            <td><code>publish</code></td>
             <td>A PUBLISH packet is sent from a Client to a Server or from a Server to a Client to transport an Application Message.</td>
         <tr>
         
 
         <tr>
-            <td><code>mqv:subscribe</code></td>
+            <td><code>subscribe</code></td>
             <td>The SUBSCRIBE packet is sent from the Client to the Server to create one or more Subscriptions. Each Subscription registers a Client’s interest in one or more Topics.</td>
         <tr>
         
 
         <tr>
-            <td><code>mqv:unsubscribe</code></td>
+            <td><code>unsubscribe</code></td>
             <td>An UNSUBSCRIBE packet is sent by the Client to the Server, to unsubscribe from topics.</td>
         <tr>
         
@@ -294,21 +294,21 @@
           <!-- Generate qos values from the ontology-->
           
         <tr>
-            <td><code>quality:0</code></td>
+            <td><code>0</code></td>
             <td>atMostOnce</td>
             <td>The Server delivers the Application Message to the Client at most once</td>
         <tr>
         
 
         <tr>
-            <td><code>quality:1</code></td>
+            <td><code>1</code></td>
             <td>atLeastOnce</td>
             <td>The message is delivered at least once.</td>
         <tr>
         
 
         <tr>
-            <td><code>quality:2</code></td>
+            <td><code>2</code></td>
             <td>exactlyOnce</td>
             <td>The message is delivered exactly once.</td>
         <tr>
@@ -356,67 +356,67 @@
           
         <tr>
             <td><code>readproperty</code></td>
-            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+            <td><code>"mqv:controlPacket": "subscribe"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writeproperty</code></td>
-            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+            <td><code>"mqv:controlPacket": "publish"</code></td>
         <tr>
         
 
         <tr>
             <td><code>observeproperty</code></td>
-            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+            <td><code>"mqv:controlPacket": "subscribe"</code></td>
         <tr>
         
 
         <tr>
             <td><code>unobserveproperty</code></td>
-            <td><code>"mqv:controlPacket": "mqv:unsubscribe"</code></td>
+            <td><code>"mqv:controlPacket": "unsubscribe"</code></td>
         <tr>
         
 
         <tr>
             <td><code>readallproperties</code></td>
-            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+            <td><code>"mqv:controlPacket": "subscribe"</code></td>
         <tr>
         
 
         <tr>
             <td><code>readmultipleproperties</code></td>
-            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+            <td><code>"mqv:controlPacket": "subscribe"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writeallproperties</code></td>
-            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+            <td><code>"mqv:controlPacket": "publish"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writemultipleproperties</code></td>
-            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+            <td><code>"mqv:controlPacket": "publish"</code></td>
         <tr>
         
 
         <tr>
             <td><code>invokeaction</code></td>
-            <td><code>"mqv:controlPacket": "mqv:publish"</code></td>
+            <td><code>"mqv:controlPacket": "publish"</code></td>
         <tr>
         
 
         <tr>
             <td><code>subscribeevent</code></td>
-            <td><code>"mqv:controlPacket": "mqv:subscribe"</code></td>
+            <td><code>"mqv:controlPacket": "subscribe"</code></td>
         <tr>
         
 
         <tr>
             <td><code>unsubscribeevent</code></td>
-            <td><code>"mqv:controlPacket": "mqv:unsubscribe"</code></td>
+            <td><code>"mqv:controlPacket": "unsubscribe"</code></td>
         <tr>
         
         </tbody>
@@ -516,7 +516,7 @@
                   "op": [
                       "writeproperty"
                   ], 
-                  "mqv:qos": "quality:1", 
+                  "mqv:qos": "1", 
                   "mqv:retain" : true,
                   "mqv:topic": "application/devices/thing1/properties/test"
               },
@@ -526,7 +526,7 @@
                       "readproperty",
                       "observeproperty"
                   ], 
-                  "mqv:qos": "quality:1", 
+                  "mqv:qos": "1", 
                   "mqv:retain" : true,
                   "mqv:filter": "application/devices/thing1/properties/test"
               }]

@@ -44,7 +44,7 @@
                   data: [
                       {
                         value: "MQTT in RDF",
-                        href: "../../../ontology/mqtt.html"
+                        href: "ontology.html"
                       }
                   ]
               }
@@ -104,6 +104,11 @@
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
     </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
     <section id='introduction'>
         <h2>Introduction</h2>
         <p>
@@ -136,11 +141,6 @@
             containing MQTT Binding is provided in the <a href="mqtt.schema.json">GitHub repository</a>.
         </p>
         
-    </section>
-    <section id='sotd'>
-        <p>
-            <em>This document is a work in progress</em>
-        </p>
     </section>
     <section id="url">
       <h2>URL format</h2>
@@ -363,7 +363,7 @@
                   "op": [
                       "writeproperty"
                   ], 
-                  "mqv:qos": "quality:1", 
+                  "mqv:qos": "1", 
                   "mqv:retain" : true,
                   "mqv:topic": "application/devices/thing1/properties/test"
               },
@@ -373,7 +373,7 @@
                       "readproperty",
                       "observeproperty"
                   ], 
-                  "mqv:qos": "quality:1", 
+                  "mqv:qos": "1", 
                   "mqv:retain" : true,
                   "mqv:filter": "application/devices/thing1/properties/test"
               }]

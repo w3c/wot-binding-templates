@@ -1,0 +1,130 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "unsignedInt": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "blockWiseValues": {
+            "type": "integer",
+            "enum": [
+                16,
+                32,
+                64,
+                128,
+                256,
+                512,
+                1024
+            ]
+        },
+        "blockWiseTransferParameters": {
+            "type": "object",
+            "properties": {
+                "cov:block2Size": {
+                    "$ref": "#/definitions/blockWiseValues"
+                },
+                "cov:block1Size": {
+                    "$ref": "#/definitions/blockWiseValues"
+                }
+            }
+        },
+        "coapResponse": {
+            "type": "object",
+            "properties": {
+                "cov:contentFormat": {
+                    "$ref": "#/definitions/unsignedInt"
+                }
+            }
+        },
+        "coapForm": {
+            "type": "object",
+            "properties": {
+                "cov:method:": {
+                    "type": "string",
+                    "enum": [
+                        "GET",
+                        "PUT",
+                        "POST",
+                        "DELETE",
+                        "FETCH",
+                        "iPATCH",
+                        "PATCH"
+                    ],
+                    "$comment": "Might be extended by additional CoAP RFCs in the future."
+                },
+                "cov:blockwise": {
+                    "$ref": "#/definitions/blockWiseTransferParameters"
+                },
+                "cov:qblockwise": {
+                    "$ref": "#/definitions/blockWiseTransferParameters"
+                },
+                "cov:contentFormat": {
+                    "$ref": "#/definitions/unsignedInt"
+                },
+                "cov:accept": {
+                    "$ref": "#/definitions/unsignedInt"
+                },
+                "cov:hopLimit": {
+                    "$ref": "#/definitions/unsignedInt"
+                },
+                "response": {
+                    "$ref": "#/definitions/coapResponse"
+                },
+                "additionalResponses": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/coapResponse"
+                        }
+                    ]
+                }
+            }
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/coapForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "array",
+            "contains": {
+                "type": "object",
+                "properties": {
+                    "cov": {
+                        "type": "string",
+                        "enum": [
+                            "https://www.w3.org/2019/wot/coap"
+                        ],
+                        "$comment": "TODO: @context link needs to be updated."
+                    }
+                }
+            }
+        },
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        }
+    }
+}

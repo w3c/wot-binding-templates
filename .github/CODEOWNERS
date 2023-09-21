@@ -1,6 +1,6 @@
 /bindings/payloads/xml/ @egekorkan @mjkoster
 /bindings/platforms/hue/ @egekorkan @mjkoster
-/bindings/protocols/bacnet/ @ektrah @mjkoster
+/bindings/protocols/bacnet/ @ektrah @mjkoster @fennibay 
 /bindings/protocols/coap/ @ektrah
 /bindings/protocols/http/ @egekorkan @mjkoster
 /bindings/protocols/modbus/ @relu91

@@ -19,22 +19,8 @@
                         "InputRegister"
                     ]
                 },
-                "modbus:functionCode": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2,
-                        3,
-                        4,
-                        5,
-                        6,
-                        15,
-                        16,
-                        43
-                    ]
-                },
-                "modbus:functionName": {
-                    "type": "number",
+                "modbus:function": {
+                    "type": "string",
                     "enum": [
                         "readCoil",
                         "readDiscreteInput",
@@ -46,12 +32,8 @@
                         "writeSingleHoldingRegister"
                     ]
                 },
-                "modbus:address" : { "type" : "integer", "minimum": 0},
-                "modbus:quantity" : { "type": "integer", "minimum": 1},
                 "modbus:zeroBasedAddressing" : { "type" : "boolean"},
-                "modbus:timeout" : { "type": "number", "minimum": 0},
-                "modbus:unitID": { "type": "integer", "minimum": 0},
-                "required": ["modbus:address", "modbus:unitID"]
+                "modbus:timeout" : { "type": "number", "minimum": 0}
             }
         },
         "affordance": {

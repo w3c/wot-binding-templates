@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
   <meta name="generator" content=
-  "HTML Tidy for HTML5 for Linux version 5.7.45">
-  <meta charset="utf-8">
-  <meta name="generator" content="ReSpec 34.1.1">
+  "HTML Tidy for HTML5 for Linux version 5.7.27" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="ReSpec 34.1.8" />
   <meta name="viewport" content=
-  "width=device-width, initial-scale=1, shrink-to-fit=no">
+  "width=device-width, initial-scale=1, shrink-to-fit=no" />
   <style>
+  <![CDATA[
   span.example-title{text-transform:none}
   :is(aside,div).example,div.illegal-example{padding:.5em;margin:1em 0;position:relative;clear:both}
   div.illegal-example{color:red}
@@ -15,8 +16,10 @@
   :is(aside,div).example{border-left-width:.5em;border-left-style:solid;border-color:#e0cb52;background:#fcfaee}
   aside.example div.example{border-left-width:.1em;border-color:#999;background:#fff}
   .example pre{background-color:rgba(0,0,0,.03)}
+  ]]>
   </style>
   <style>
+  <![CDATA[
   .issue-label{text-transform:initial}
   .warning>p:first-child{margin-top:0}
   .warning{padding:.5em;border-left-width:.5em;border-left-style:solid}
@@ -28,8 +31,10 @@
   li.task-list-item{list-style:none}
   input.task-list-item-checkbox{margin:0 .35em .25em -1.6em;vertical-align:middle}
   .issue a.respec-gh-label{padding:5px;margin:0 2px 0 2px;font-size:10px;text-transform:none;text-decoration:none;font-weight:700;border-radius:4px;position:relative;bottom:2px;border:none;display:inline-block}
+  ]]>
   </style>
   <style>
+  <![CDATA[
   dfn{cursor:pointer}
   .dfn-panel{position:absolute;z-index:35;min-width:300px;max-width:500px;padding:.5em .75em;margin-top:.6em;font-family:"Helvetica Neue",sans-serif;font-size:small;background:#fff;color:#000;box-shadow:0 1em 3em -.4em rgba(0,0,0,.3),0 0 1px 1px rgba(0,0,0,.05);border-radius:2px}
   .dfn-panel:not(.docked)>.caret{position:absolute;top:-9px}
@@ -48,9 +53,11 @@
   .dfn-panel ul{padding:0}
   .dfn-panel li{margin-left:1em}
   .dfn-panel.docked{position:fixed;left:.5em;top:unset;bottom:2em;margin:0 auto;max-width:calc(100vw - .75em * 2 - .5em - .2em * 2);max-height:30vh;overflow:auto}
+  ]]>
   </style>
   <title>Web of Things (WoT) Binding Templates</title>
   <style id="respec-mainstyle">
+  <![CDATA[
   @keyframes pop{
   0%{transform:scale(1,1)}
   25%{transform:scale(1.25,1.25);opacity:.75}
@@ -107,12 +114,14 @@
   @media print{
   .removeOnSave{display:none}
   }
+  ]]>
   </style>
   <meta name="description" content=
-  "W3C Web of Things enables applications to interact with and orchestrate connected Things at the Web scale. The standardized abstract interaction model exposed by the WoT Thing Description enables applications to scale and evolve independently of the individual Things.">
+  "W3C Web of Things enables applications to interact with and orchestrate connected Things at the Web scale. The standardized abstract interaction model exposed by the WoT Thing Description enables applications to scale and evolve independently of the individual Things." />
   <link rel="canonical" href=
-  "https://www.w3.org/TR/wot-binding-templates/">
+  "https://www.w3.org/TR/wot-binding-templates/" />
   <style>
+  <![CDATA[
   .hljs{display:block;overflow-x:auto;padding:.5em;color:#383a42;background:#fafafa}
   .hljs-comment,.hljs-quote{color:#717277;font-style:italic}
   .hljs-doctag,.hljs-formula,.hljs-keyword{color:#a626a4}
@@ -125,18 +134,23 @@
   .hljs-emphasis{font-style:italic}
   .hljs-strong{font-weight:700}
   .hljs-link{text-decoration:underline}
+  ]]>
   </style>
   <style>
+  <![CDATA[
   var{position:relative;cursor:pointer}
   var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
   var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#000}
   var[data-type]::after{content:attr(data-type);transform:translateX(-50%) translateY(-100%);background:#000;text-align:center;font-family:"Dank Mono","Fira Code",monospace;font-style:normal;padding:6px;border-radius:3px;color:#daca88;text-indent:0;font-weight:400}
   var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
+  ]]>
   </style>
   <script id="initialUserConfig" type="application/json">
+  <![CDATA[
   {
   "specStatus": "NOTE",
-  "processVersion": 2017,
+  "publishDate": "2023-09-28",
+  "processVersion": 2023,
   "shortName": "wot-binding-templates",
   "copyrightStart": 2017,
   "group": "wg/wot",
@@ -250,24 +264,25 @@
       "date": "26 April 2012"
     }
   },
-  "publishISODate": "2023-05-25T00:00:00.000Z",
-  "generatedSubtitle": "W3C Group Note 25 May 2023"
+  "publishISODate": "2023-09-28T00:00:00.000Z",
+  "generatedSubtitle": "W3C Group Note 28 September 2023"
   }
+  ]]>
   </script>
   <link rel="stylesheet" href=
-  "https://www.w3.org/StyleSheets/TR/2021/W3C-NOTE">
+  "https://www.w3.org/StyleSheets/TR/2021/W3C-NOTE" />
 </head>
 <body class="h-entry toc-inline">
   <div class="head">
     <p class="logos"><a class="logo" href=
-    "https://www.w3.org/"><img crossorigin="" alt="W3C" src=
-    "https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"
-    height="48"></a></p>
+    "https://www.w3.org/"><img crossorigin="" alt="W3C" height="48"
+    src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width=
+    "72" /></a></p>
     <h1 id="title" class="title">Web of Things (WoT) Binding
     Templates</h1>
     <p id="w3c-state"><a href=
     "https://www.w3.org/standards/types#NOTE">W3C Group Note</a>
-    <time class="dt-published" datetime="2023-05-25">25 May
+    <time class="dt-published" datetime="2023-09-28">28 September
     2023</time></p>
     <details open="">
       <summary>
@@ -277,8 +292,8 @@
         <dt>This version:</dt>
         <dd>
           <a class="u-url" href=
-          "https://www.w3.org/TR/2023/NOTE-wot-binding-templates-20230525/">
-          https://www.w3.org/TR/2023/NOTE-wot-binding-templates-20230525/</a>
+          "https://www.w3.org/TR/2023/NOTE-wot-binding-templates-20230928/">
+          https://www.w3.org/TR/2023/NOTE-wot-binding-templates-20230928/</a>
         </dd>
         <dt>Latest published version:</dt>
         <dd>
@@ -293,8 +308,8 @@
         <dt>History:</dt>
         <dd>
           <a href=
-          "https://www.w3.org/standards/history/wot-binding-templates">
-          https://www.w3.org/standards/history/wot-binding-templates</a>
+          "https://www.w3.org/standards/history/wot-binding-templates/">
+          https://www.w3.org/standards/history/wot-binding-templates/</a>
         </dd>
         <dd>
           <a href=
@@ -362,10 +377,10 @@
     liability</a>, <a href=
     "https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">
     trademark</a> and <a rel="license" href=
-    "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document"
+    "https://www.w3.org/Consortium/Legal/2023/software-license"
     title="W3C Software and Document Notice and License">permissive
     document license</a> rules apply.</p>
-    <hr title="Separator for header">
+    <hr title="Separator for header" />
   </div>
   <section id="abstract" class="introductory">
     <h2>Abstract</h2>
@@ -424,7 +439,7 @@
     <p>This document was published by the <a href=
     "https://www.w3.org/groups/wg/wot">Web of Things Working
     Group</a> as a Group Note using the <a href=
-    "https://www.w3.org/2021/Process-20211102/#recs-and-notes">Note
+    "https://www.w3.org/2023/Process-20230612/#recs-and-notes">Note
     track</a>.</p>
     <p>This Group Note is endorsed by the <a href=
     "https://www.w3.org/groups/wg/wot">Web of Things Working
@@ -441,7 +456,7 @@
     document.</p>
     <p>This document is governed by the <a id=
     "w3c_process_revision" href=
-    "https://www.w3.org/2021/Process-20211102/">2 November 2021
+    "https://www.w3.org/2023/Process-20230612/">12 June 2023
     <abbr title="World Wide Web Consortium">W3C</abbr> Process
     Document</a>.</p>
   </section>
@@ -676,7 +691,7 @@
     options.</p>
     <figure id="fig-building-block">
       <img src="images/binding-templates.svg" alt=
-      "Platforms, Protocols and Media Types as building blocks for binding templates and TD">
+      "Platforms, Protocols and Media Types as building blocks for binding templates and TD" />
       <figcaption>
         <a class="self-link" href="#fig-building-block">Figure
         <bdi class="figno">1</bdi></a> <span class=
@@ -703,7 +718,7 @@
     Mechanisms</a>.</p>
     <figure id="fig-mechanism">
       <img src="images/binding-mechanism.drawio.svg" alt=
-      "Binding Templates mechanism with a TD, Thing and Consumer">
+      "Binding Templates mechanism with a TD, Thing and Consumer" />
       <figcaption>
         <a class="self-link" href="#fig-mechanism">Figure
         <bdi class="figno">2</bdi></a> <span class=
@@ -901,7 +916,7 @@
     Platform Binding Templates</a>.</p>
     <figure id="fig-overview">
       <img src="images/binding-templates-overview.drawio.svg" alt=
-      "Binding Templates Overview and the relationships between each document type">
+      "Binding Templates Overview and the relationships between each document type" />
       <figcaption>
         <a class="self-link" href="#fig-overview">Figure
         <bdi class="figno">3</bdi></a> <span class=
@@ -3014,44 +3029,6 @@
             }
         }
         //]]>
-  </script> 
-  <script>
-
-        // <![CDATA[  <-- For SVG support
-        if ('WebSocket' in window) {
-                (function () {
-                        function refreshCSS() {
-                                var sheets = [].slice.call(document.getElementsByTagName("link"));
-                                var head = document.getElementsByTagName("head")[0];
-                                for (var i = 0; i < sheets.length; ++i) {
-                                        var elem = sheets[i];
-                                        var parent = elem.parentElement || head;
-                                        parent.removeChild(elem);
-                                        var rel = elem.rel;
-                                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-                                                var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-                                                elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-                                        }
-                                        parent.appendChild(elem);
-                                }
-                        }
-                        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-                        var address = protocol + window.location.host + window.location.pathname + '/ws';
-                        var socket = new WebSocket(address);
-                        socket.onmessage = function (msg) {
-                                if (msg.data == 'reload') window.location.reload();
-                                else if (msg.data == 'refreshcss') refreshCSS();
-                        };
-                        if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-                                console.log('Live reload enabled.');
-                                sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-                        }
-                })();
-        }
-        else {
-                console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-        }
-        // ]]>
   </script>
   <section id="references" class="appendix">
     <div class="header-wrapper">
@@ -3310,9 +3287,9 @@
   </section>
   <p role="navigation" id="back-to-top"><a href=
   "#title"><abbr title="Back to Top">↑</abbr></a></p>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-thing" aria-label=
-  "Links in this document to definition: Thing" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-thing" aria-label=
+  "Links in this document to definition: Thing">
     <div>
       <a class="self-link" href="#dfn-thing" aria-label=
       "Permalink for definition: Thing. Activate to close this dialog.">
@@ -3327,9 +3304,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-consumer" aria-label=
-  "Links in this document to definition: Consumer" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-consumer" aria-label=
+  "Links in this document to definition: Consumer">
     <div>
       <a class="self-link" href="#dfn-consumer" aria-label=
       "Permalink for definition: Consumer. Activate to close this dialog.">
@@ -3358,10 +3335,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-thing-description" aria-label=
-  "Links in this document to definition: Thing Description" hidden=
-  "">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-thing-description" aria-label=
+  "Links in this document to definition: Thing Description">
     <div>
       <a class="self-link" href="#dfn-thing-description"
       aria-label="Permalink for definition: Thing Description. Activate to close this dialog.">
@@ -3382,9 +3358,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-td" aria-label=
-  "Links in this document to definition: TD" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-td" aria-label=
+  "Links in this document to definition: TD">
     <div>
       <a class="self-link" href="#dfn-td" aria-label=
       "Permalink for definition: TD. Activate to close this dialog.">
@@ -3395,10 +3371,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-interaction-model" aria-label=
-  "Links in this document to definition: Interaction Model" hidden=
-  "">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-interaction-model" aria-label=
+  "Links in this document to definition: Interaction Model">
     <div>
       <a class="self-link" href="#dfn-interaction-model"
       aria-label="Permalink for definition: Interaction Model. Activate to close this dialog.">
@@ -3409,10 +3384,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-interaction-affordance" aria-label=
-  "Links in this document to definition: Interaction Affordance"
-  hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-interaction-affordance" aria-label=
+  "Links in this document to definition: Interaction Affordance">
     <div>
       <a class="self-link" href="#dfn-interaction-affordance"
       aria-label=
@@ -3424,9 +3398,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-property" aria-label=
-  "Links in this document to definition: Property" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-property" aria-label=
+  "Links in this document to definition: Property">
     <div>
       <a class="self-link" href="#dfn-property" aria-label=
       "Permalink for definition: Property. Activate to close this dialog.">
@@ -3437,9 +3411,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-action" aria-label=
-  "Links in this document to definition: Action" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-action" aria-label=
+  "Links in this document to definition: Action">
     <div>
       <a class="self-link" href="#dfn-action" aria-label=
       "Permalink for definition: Action. Activate to close this dialog.">
@@ -3450,9 +3424,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-event" aria-label=
-  "Links in this document to definition: Event" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-event" aria-label=
+  "Links in this document to definition: Event">
     <div>
       <a class="self-link" href="#dfn-event" aria-label=
       "Permalink for definition: Event. Activate to close this dialog.">
@@ -3463,9 +3437,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-data-schema" aria-label=
-  "Links in this document to definition: Data Schema" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-data-schema" aria-label=
+  "Links in this document to definition: Data Schema">
     <div>
       <a class="self-link" href="#dfn-data-schema" aria-label=
       "Permalink for definition: Data Schema. Activate to close this dialog.">
@@ -3481,9 +3455,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-content-type" aria-label=
-  "Links in this document to definition: Content Type" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-content-type" aria-label=
+  "Links in this document to definition: Content Type">
     <div>
       <a class="self-link" href="#dfn-content-type" aria-label=
       "Permalink for definition: Content Type. Activate to close this dialog.">
@@ -3499,10 +3473,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-protocol-binding" aria-label=
-  "Links in this document to definition: Protocol Binding" hidden=
-  "">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-protocol-binding" aria-label=
+  "Links in this document to definition: Protocol Binding">
     <div>
       <a class="self-link" href="#dfn-protocol-binding" aria-label=
       "Permalink for definition: Protocol Binding. Activate to close this dialog.">
@@ -3513,10 +3486,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-binding-template" aria-label=
-  "Links in this document to definition: Binding Template" hidden=
-  "">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-binding-template" aria-label=
+  "Links in this document to definition: Binding Template">
     <div>
       <a class="self-link" href="#dfn-binding-template" aria-label=
       "Permalink for definition: Binding Template. Activate to close this dialog.">
@@ -3527,9 +3499,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-servient" aria-label=
-  "Links in this document to definition: Servient" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-servient" aria-label=
+  "Links in this document to definition: Servient">
     <div>
       <a class="self-link" href="#dfn-servient" aria-label=
       "Permalink for definition: Servient. Activate to close this dialog.">
@@ -3540,9 +3512,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-vocabulary" aria-label=
-  "Links in this document to definition: Vocabulary" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-vocabulary" aria-label=
+  "Links in this document to definition: Vocabulary">
     <div>
       <a class="self-link" href="#dfn-vocabulary" aria-label=
       "Permalink for definition: Vocabulary. Activate to close this dialog.">
@@ -3553,9 +3525,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-wot-interface" aria-label=
-  "Links in this document to definition: WoT Interface" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-wot-interface" aria-label=
+  "Links in this document to definition: WoT Interface">
     <div>
       <a class="self-link" href="#dfn-wot-interface" aria-label=
       "Permalink for definition: WoT Interface. Activate to close this dialog.">
@@ -3566,9 +3538,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-wot-runtime" aria-label=
-  "Links in this document to definition: WoT Runtime" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-wot-runtime" aria-label=
+  "Links in this document to definition: WoT Runtime">
     <div>
       <a class="self-link" href="#dfn-wot-runtime" aria-label=
       "Permalink for definition: WoT Runtime. Activate to close this dialog.">
@@ -3579,9 +3551,9 @@
       <li>Not referenced in this document.</li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-iot-platform" aria-label=
-  "Links in this document to definition: IoT Platform" hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-iot-platform" aria-label=
+  "Links in this document to definition: IoT Platform">
     <div>
       <a class="self-link" href="#dfn-iot-platform" aria-label=
       "Permalink for definition: IoT Platform. Activate to close this dialog.">
@@ -3595,10 +3567,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-subspecification" aria-label=
-  "Links in this document to definition: Binding Template Subspecification"
-  hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-subspecification" aria-label=
+  "Links in this document to definition: Binding Template Subspecification">
     <div>
       <a class="self-link" href="#dfn-subspecification" aria-label=
       "Permalink for definition: Binding Template Subspecification. Activate to close this dialog.">
@@ -3624,10 +3595,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-subspecification-0" aria-label=
-  "Links in this document to definition: subspecification" hidden=
-  "">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-subspecification-0" aria-label=
+  "Links in this document to definition: subspecification">
     <div>
       <a class="self-link" href="#dfn-subspecification-0"
       aria-label=
@@ -3680,10 +3650,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-corespecification" aria-label=
-  "Links in this document to definition: Binding Template Core Specification"
-  hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-corespecification" aria-label=
+  "Links in this document to definition: Binding Template Core Specification">
     <div>
       <a class="self-link" href="#dfn-corespecification"
       aria-label="Permalink for definition: Binding Template Core Specification. Activate to close this dialog.">
@@ -3698,10 +3667,9 @@
       </li>
     </ul>
   </div>
-  <div class="dfn-panel" role="dialog" aria-modal="true" id=
-  "dfn-panel-for-dfn-core-specification" aria-label=
-  "Links in this document to definition: Core Specification"
-  hidden="">
+  <div class="dfn-panel" hidden="" role="dialog" aria-modal="true"
+  id="dfn-panel-for-dfn-core-specification" aria-label=
+  "Links in this document to definition: Core Specification">
     <div>
       <a class="self-link" href="#dfn-core-specification"
       aria-label=
@@ -3717,6 +3685,7 @@
     </ul>
   </div>
   <script id="respec-dfn-panel">
+  <![CDATA[
   (() => {
   // @ts-check
   if (document.respec) {
@@ -3940,6 +3909,7 @@
   panel.classList.remove("docked");
   }
   })()
+  ]]>
   </script>
   <script src=
   "https://www.w3.org/scripts/TR/2021/fixup.js"></script>

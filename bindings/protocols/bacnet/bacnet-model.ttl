@@ -1,0 +1,196 @@
+@prefix : <http://www.w3.org/2022/bacnet#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
+@prefix td: <https://www.w3.org/2019/wot/td#> .
+@prefix jsonschema: <https://www.w3.org/2019/wot/json-schema#> .
+@prefix bacnet: <http://www.w3.org/2022/bacnet#> .
+
+@base <http://www.w3.org/2022/bacnet> .
+
+<http://www.w3.org/2022/bacnet> rdf:type owl:Ontology ;
+                                owl:versionIRI <http://www.w3.org/2022/bacnet> ;
+                                dcterms:contributor "Dogan Fennibay" ;
+                                dcterms:created "2021-07-01"^^xsd:date ;
+                                dcterms:creator "Dogan Fennibay" ;
+                                dcterms:modified "2022-01-13"^^xsd:date;
+                                dcterms:description "The BACnet model describes how WoT InteractionAffordances are represented on BACnet including data model and protocol specifics" ;
+                                # TODO: Use an open source license, or just leave out:
+                                # dcterms:license "TODO" ; 
+                                # dcterms:publisher "TODO" ;
+                                # dcterms:rights "TODO" ;
+                                dcterms:title "BACnet Model" ;
+                                dcterms:source "http://www.w3.org/2022/bacnet" ;
+                                vann:preferredNamespacePrefix "bacnet" ;
+                                vann:preferredNamespaceUri bacnet: ;
+                                vaem:hasOwner "Dogan Fennibay" ;
+                                owl:versionInfo "0.1.1" ;
+                                rdfs:comment """
+# BACnet Model
+BACnet model describes how InteractionAffordances are represented on BACnet. Essentially it is a [protocol binding for WoT TD via context extension](https://www.w3.org/TR/wot-thing-description/#adding-protocol-bindings).
+
+Wherever possible, this model refers to ANSI/ASHRAE Standard 135-2020 for BACnet.
+"""@en ;
+                                rdfs:label "BACnet in RDF for WoT"@en ;
+                                owl:versionInfo "0.1.1" .
+
+
+hctl:hasTarget rdfs:comment """
+Should be of form bacnet://<device>/<objecttypenr>,<objectinsttr>[/<property>[/<index>]]
+Additional parameters can be specified via URI variable syntax, e.g. ?bacnetCmdPrio=bacnet:CommandPrio8 for writing priority.
+"""@en ;
+               rdfs:seeAlso "ASHRAE 135-2020 BACnet Q.8 BACnet URI Scheme" .
+
+#################################################################
+#    Communication properties
+#################################################################
+
+bacnet:usesService rdf:type owl:DatatypeProperty ;
+                   rdfs:domain hctl:Form ;
+                   rdfs:range [owl:oneOf ("ReadProperty"^^xsd:string "WriteProperty"^^xsd:string "SubscribeCOV"^^xsd:string "UnsubscribeCOV"^^xsd:string)] ;
+                   rdfs:comment """
+Default BACnet service by td:OperationType:
+- td:readProperty -> ReadProperty
+- td:writeProperty -> WriteProperty
+- td:observeProperty -> SubscribeCOV, subscribe to object if no property ID is present in target, otherwise subscribe to property
+- td:unobserveProperty -> UnsubscribeCOV
+
+TODO: Can we specify the defaults in a machine-readable, RDF-standard way?
+
+Not mapped yet:
+- td:invokeAction
+- td:subscribeEvent, td:unsubscribeEvent
+- td:readAllProperties, td:writeAllProperties, td:readMultipleProperties, td:writeMultipleProperties, td:observeAllProperties, td:unobserveAllProperties
+"""@en .
+
+bacnet:covIncrement rdf:type owl:DatatypeProperty ;
+                    rdfs:domain hctl:Form ;
+                    rdfs:range xsd:float ;
+                    rdfs:comment "Specifies the minimum change in that will cause a COV notification to be issued to subscribers, if missing the default value on the object will be used instead."@en ;
+                    rdfs:seeAlso "ASHRAE 135-2020 BACnet 13.1 Change of Value Reporting" .
+
+bacnet:covPeriod rdf:type owl:DatatypeProperty ;
+                 rdfs:domain hctl:Form ;
+                 rdfs:range xsd:nonNegativeInteger ;
+                 rdfs:comment "Indicates the number of seconds to issue a COV notification periodically, even if there was no change. If 0 or missing, periodic COV notifications should be deactivated."@en ;
+                 rdfs:seeAlso "ASHRAE 135-2020 BACnet 13.1 Change of Value Reporting" .
+
+#################################################################
+#    Type information properties
+# BACnet has an own data model, which cannot always be derived
+# from the logical schema of the interaction affordances. Hence
+# the type information has to be amended in the protocol binding.
+#################################################################
+
+bacnet:hasDataType rdf:type owl:ObjectProperty ;
+                   rdfs:domain [ owl:unionOf (hctl:Form bacnet:NamedMember) ] ;
+                   rdfs:range bacnet:DataType .
+
+bacnet:DataType rdf:type owl:Class ;
+                rdfs:comment "Base for all BACnet data types" .
+
+bacnet:SequenceOf rdfs:subClassOf bacnet:DataType .
+
+bacnet:Sequence rdfs:subClassOf bacnet:DataType .
+
+bacnet:List rdfs:subClassOf bacnet:DataType .
+
+bacnet:Choice rdfs:subClassOf bacnet:DataType .
+
+bacnet:Date rdfs:subClassOf bacnet:DataType .
+
+bacnet:Time rdfs:subClassOf bacnet:DataType .
+
+bacnet:WeekNDay rdfs:subClassOf bacnet:DataType .
+
+bacnet:Unsigned rdfs:subClassOf bacnet:DataType .
+
+bacnet:Signed rdfs:subClassOf bacnet:DataType .
+
+bacnet:Real rdfs:subClassOf bacnet:DataType .
+
+bacnet:Double rdfs:subClassOf bacnet:DataType .
+
+bacnet:Boolean rdfs:subClassOf bacnet:DataType .
+
+bacnet:Enumerated rdfs:subClassOf bacnet:DataType .
+
+bacnet:String rdfs:subClassOf bacnet:DataType .
+
+bacnet:OctetString rdfs:subClassOf bacnet:DataType .
+
+bacnet:BitString rdfs:subClassOf bacnet:DataType .
+
+bacnet:Any rdfs:subClassOf bacnet:DataType .
+
+bacnet:Null rdfs:subClassOf bacnet:DataType .
+
+bacnet:ObjectIdentifier rdfs:subClassOf bacnet:DataType .
+
+bacnet:isIso8601 rdf:type owl:DatatypeProperty ;
+                 rdfs:domain bacnet:Sequence ;
+                 rdfs:range xsd:boolean ;
+                 rdfs:comment "This field indicates that the Sequence has a date and a time field, and should be collectively represented in the ISO 8601 (aka. RFC 3339, section 5.6) format"@en .
+
+bacnet:hasBinaryRepresentation rdf:type owl:DatatypeProperty ;
+                               rdfs:domain bacnet:OctetString ;
+                               rdfs:range [owl:oneOf ("hex"^^xsd:string "dotted-decimal"^^xsd:string "base64"^^xsd:string)] .
+
+bacnet:hasMember rdf:type owl:ObjectProperty ;
+                 rdfs:domain [owl:unionOf (bacnet:SequenceOf bacnet:List ) ];
+                 rdfs:range bacnet:DataType .
+
+bacnet:hasNamedMember rdf:type owl:ObjectProperty ;
+                 rdfs:domain [owl:unionOf (bacnet:Sequence bacnet:Choice ) ];
+                 rdfs:range bacnet:NamedMember .
+
+bacnet:NamedMember rdf:type owl:Class .
+
+bacnet:hasFieldName rdf:type owl:DatatypeProperty ;
+                    rdfs:domain bacnet:NamedMember ;
+                    rdfs:range xsd:string .
+
+bacnet:hasContextTags rdf:type owl:DatatypeProperty ;
+                      rdfs:domain [owl:unionOf (bacnet:Sequence bacnet:Choice) ];
+                      rdfs:range xsd:boolean .
+
+bacnet:ValueMap rdf:type owl:Class .
+
+bacnet:ValueMapEntry rdf:type owl:Class .
+
+bacnet:hasMapEntry rdf:type owl:ObjectProperty ;
+                   rdfs:domain bacnet:ValueMap ;
+                   rdfs:range bacnet:ValueMapEntry .
+
+bacnet:logicalVal rdf:type owl:DatatypeProperty ;
+                  rdfs:domain bacnet:ValueMapEntry ;
+                  rdfs:range [owl:unionOf (xsd:integer xsd:string xsd:boolean)] .
+
+bacnet:protocolVal rdf:type rdf:type owl:DatatypeProperty ;
+                   rdfs:domain bacnet:ValueMapEntry ;
+                   rdfs:range xsd:integer .
+
+
+bacnet:hasValueMap rdf:type owl:ObjectProperty ;
+                   rdfs:domain [owl:unionOf (bacnet:Boolean bacnet:Enumerated bacnet:Unsigned bacnet:BitString)] ;
+                   rdfs:range bacnet:ValueMap .
+
+#################################################################
+#    Commanding (Priority array) properties definitions
+# Based on ASHRAE 135-2020 BACnet 19.2 Command Prioritization
+# This can be used for instance for a URI Variable for writeproperty
+#################################################################
+
+bacnet:CommandPriority rdf:type jsonschema:IntegerSchema ;
+                       td:name "bacnetCmdPrio" ;
+                       # Prio 6 is reserved for minimum on off by BACnet, see clause 19.2.3 Minimum_On_Time and Minimum_Off_Time
+                       jsonschema:enum 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ;
+                       # Default priority for writing is 16, ref. ASHRAE 135-2020 BACnet 15.9.1.1.5 Priority
+                       jsonschema:default 16 ;    
+                       rdfs:seeAlso "ASHRAE 135-2020 BACnet 19.2 Command Prioritization" .

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            group: "wg/wot",
+            editors: [{
+                name: "Klaus Hartke",
+                w3cid: "107859",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+            },
+            {
+                name: "Michael Koster",
+                w3cid: "110658",
+                company: "Invited Expert",
+                companyURL: "https://github.com/mjkoster"
+            },
+            {
+                name: "Dogan Fennibay",
+                w3cid: "147431",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+            }],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/",
+            shortName: "wot-bacnet-binding",
+            github: "https://github.com/w3c/wot-binding-templates",
+            localBiblio: {
+                BACnet: {
+                    title: "ANSI/ASHRAE Standard 135-2020: BACnet – A Data Communication Protocol for Building Automation Networks",
+                    href: "https://www.ashrae.org/technical-resources/bookstore/bacnet",
+                    publisher: "ASHRAE",
+                    date: "2020"
+                },
+                "X.680": {
+                    title: "ITU-T X.680: Information technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation",
+                    href: "https://www.itu.int/rec/T-REC-X.680/en",
+                    publisher: "ITU-T",
+                    date: "2021"
+                },
+            },
+            otherLinks: [{
+                key: "Core Binding Templates Specification",
+                data: [{
+                    value: "Web of Things (WoT) Binding Templates",
+                    href: "../../../index.html",
+                }]
+            },
+            {
+                key: "Ontology",
+                data: [{
+                    value: "BACnet Vocabulary for the Web of Things",
+                    href: "bacnet-model.ttl",
+                }]
+            }]
+        };
+    </script>
+    <title>Web of Things (WoT) BACnet Binding Template</title>
+</head>
+
+<body>
+    <section id='abstract'>
+        <p>
+            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to
+            implement a specific IoT protocol, data format or IoT platform.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
+            This document gives implementation guidelines regarding BACnet [[BACnet]], a building automation and control networking protocol.
+        </p>
+        <p>
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document,
+            and associated rules which allow to describe WoT operations using BACnet over the network.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+        <p>
+            BACnet&reg; is a registered trademark of ASHRAE.
+            This document has not been reviewed for publication by ASHRAE, and no endorsement by ASHRAE is implied.
+        </p>
+    </section>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p>
+            BACnet [[BACnet]] is a building automation and control networking
+            protocol for applications such as heating, ventilating, and air
+            conditioning control, lighting control, access control, and fire
+            detection systems.
+        </p>
+        <p>
+            This document describes how the Web of Things specification can be
+            used to present devices that use BACnet in a Thing Description. In
+            particular, the document explain how to create valid Forms for the
+            different operations that BACnet can perform.
+        </p>
+    </section>
+    <section id="conformance">
+        <p>
+            Forms of a Thing Description instance with BACnet Binding complies with this specification if it follows
+            the normative statements in <a href="#vocabulary"></a> and <a href="#mappings"></a>.
+        </p>
+        <p>
+            A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
+            containing BACnet Binding is provided in the <a href="bacnet.schema.json">GitHub repository</a>.
+        </p>
+    </section>
+    <section id="scope">
+        <h2>Binding Scope</h2>
+        <p>
+            It is assumed the reader of this document is familiar with the basic
+            principles and mechanisms of the BACnet standard [[BACnet]].
+        </p>
+        <p>
+            The following subset of BACnet features is supported by this binding:
+            <ul>
+                <li>
+                    Services: ReadProperty, WriteProperty, SubscribeCOV, SubscribeCOVproperty
+                </li>
+                <li>
+                    Data Model: Device, Object, Property, Index
+                </li>
+            </ul>
+        </p>
+        <p>
+            This protocol binding is intended to be used to enable web applications
+            to interact with data and control affordances exposed by BACnet devices.
+            It is not intended that this binding be used for device commissioning,
+            onboarding, or device management.
+        </p>
+        <p>
+            WoT Interaction Affordances are mapped to BACnet Properties. If the BACnet
+            property-identifier is not present in the URI element of the form, the
+            object-identifier is used to interact with the BACnet Object, exposing
+            the present-value Property.
+        </p>
+        <p>
+            When it is necessary to expose properties other than the present-value
+            property, the property-identifier must be included in the URI element of
+            the form.
+        </p>
+        <p>
+            Selected BACnet Service parameters are exposed as URI Variables to enable
+            WoT consumers access to BACnet features, for example Command Priority.
+        </p>
+
+    </section>
+    <section id="url">
+        <h2>URI Scheme</h2>
+        <p>
+            In cases where a URI is needed to refer to data that is accessible
+            using BACnet services, the 'bacnet' URI scheme provides a means to
+            identify a property of an object in the scope of a BACnet device.
+            The 'bacnet' URI scheme does not provide means to identify the
+            BACnet network on which a device resides, or the network access
+            method, physical media, or protocol service to use.
+        </p>
+        <p>
+            The 'bacnet' URI Scheme used herein is defined in Annex Q.8 of
+            the BACnet Specification [[BACnet]].
+        </p>
+        <section>
+            <h3>URI Syntax</h3>
+            <p>
+                The syntax for the 'bacnet' URI scheme is specified below in
+                Augmented Backus-Naur Form (ABNF) [[RFC5234]]:
+            </p>
+            <pre class="abnf">
+bacnet-URI = scheme ":" scheme-specific-part
+scheme = "bacnet"
+scheme-specific-part = "//" device-identifier "/" object-identifier [ "/" property-identifier [ "/" property-array-index ] ]
+device-identifier = number / ".this"
+object-identifier = object-type "," object-instance
+object-type = number / identifier
+object-instance = number
+property-identifier = number / identifier
+property-array-index = number
+number = "0" / non-zero-digit *decimal-digit
+non-zero-digit = %x31-39  ; "1" to "9"
+decimal-digit = %x30-39  ; "0" to "9"
+identifier = lowercase *alphanumeric *( "-" 1*alphanumeric )
+alphanumeric = uppercase / lowercase / decimal-digit
+uppercase = %x41-5A  ; "A" to "Z"
+lowercase = %x61-7A  ; "a" to "z"
+</pre>
+            <section>
+                <h4><code>device-identifier</code> Component</h4>
+                <p>
+                    The <code>device</code> component specifies the device
+                    instance number in decimal. A <code>device</code> identifier
+                    of <code>.this</code> means "this device" so that it can be
+                    used in static files that do not need to be changed when the
+                    device identifier changes.
+                </p>
+                <pre class="abnf">
+device-identifier = number / ".this"
+</pre>
+                <p>
+                    A Protocol Binding conforming to this specification SHALL
+                    use number type for device-identifier.
+                </p>
+            </section>
+            <section>
+                <h4><code>object-identifier</code> Component</h4>
+                <p>
+                    The <code>object-identifier</code> component consist of two
+                    sub-components: the object-type and the object-instance
+                    number. The object-type is either a decimal number in the
+                    range 0 to 2<sup>10</sup>-1 (inclusive) or exactly equal to
+                    the identifier text of one of the named items of the
+                    BACnetObjectType enumeration defined in Clause 21 of
+                    [[BACnet]]. The object-instance number is a decimal number
+                    in the range 0 to 2<sup>22</sup>-1 (inclusive).
+                </p>
+                <pre class="abnf">
+object-identifier = object-type "," object-instance
+object-type = number / identifier
+object-instance = number
+</pre>
+                <p>
+                    A Protocol Binding conforming to this specification SHALL
+                    use number type for object-type.
+                </p>
+            </section>
+            <section>
+                <h4><code>property-identifier</code> Component</h4>
+                <p>
+                    The <code>property-identifier</code> component is either a decimal
+                    number or exactly equal to the identifier text of one of the
+                    named items of the BACnetPropertyIdentifier enumeration
+                    defined in Clause 21 of [[BACnet]]. If it is omitted, it
+                    defaults to <code>present-value</code> except for BACnet
+                    File objects, where the absence of the <code>property</code>
+                    component refers to the entire content of the file accessed
+                    with Stream Access.
+                </p>
+                <pre class="abnf">
+property-identifier = number / identifier
+</pre>
+                <p>
+                    A Protocol Binding conforming to this specification SHALL
+                    use number type for property-identifier.
+                </p>
+            </section>
+            <section>
+                <h4><code>property-array-index</code> Component</h4>
+                <p>
+                    The components of an array property may be individually
+                    accessed (read or written) using an "array index".
+                    The <code>index</code> component is a decimal number.
+                </p>
+                <pre class="abnf">
+property-array-index = number
+</pre>
+                <p>
+                    An index of 0 (zero) identifies the count of the number of data
+                    elements. If the array index is omitted, it means that all the
+                    elements of the array are to be accessed. An array index N,
+                    greater than zero, identifies the Nth element in the sequence.
+                </p>
+            </section>
+            <section>
+                <h4>Numbers</h4>
+                <p>
+                    A decimal number consists of one or more decimal digits. The
+                    first digit is not permitted to be zero unless the number
+                    consists of a single digit.
+                </p>
+                <pre class="abnf">
+number = "0" / non-zero-digit *decimal-digit
+non-zero-digit = %x31-39  ; "1" to "9"
+decimal-digit = %x30-39  ; "0" to "9"
+</pre>
+            </section>
+            <section>
+                <h4>Identifiers</h4>
+                <p>
+                    An identifier conforms to the definition of an identifier in
+                    ASN.1 notation (Clause 12.3 of [[X.680]]). It begins with a
+                    lowercase letter and is followed by zero or more letters,
+                    digits, and hyphens. A hyphen is not permitted to be the last
+                    character, nor is it to be followed by another hyphen. The case
+                    of letters in an identifier is significant.
+                </p>
+                <pre class="abnf">
+identifier = lowercase *alphanumeric *( "-" 1*alphanumeric )
+alphanumeric = uppercase / lowercase / decimal-digit
+uppercase = %x41-5A  ; "A" to "Z"
+lowercase = %x61-7A  ; "a" to "z"
+                </pre>
+            </section>
+
+        </section>
+    </section>
+    <section id="vocabulary">
+        <h2>BACnet Vocabulary</h2>
+        <p>
+            This section describes the vocabulary used in BACnet. A protocol
+            binding implementation should use the vocabulary defined in this
+            section to describe the different configurations that can be used to
+            exchange data between Web of Things clients, devices, and services.
+        </p>
+        <p>
+            This vocabulary is fully defined in the BACnet ontology published with this document.
+        </p>
+        <section>
+            <h3>URI Variables</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>CommandPriority</code></td>
+                        <td>Sets CmdPrio for Writes</td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#nonNegativeInteger"><code>integer</code></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>covIncrement</code></td>
+                        <td>Sets minimum change for reporting</td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#decimal"><code>decimal</code></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                URI Variables are not included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
+            </p>
+            <p>
+                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and covIncrement. The semantic annotation is optional.
+            </p>
+            <p>
+                This template could be used to construct the uriVariables element for TD interaction afffordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
+            </p>
+            <p>
+                These variables may be also used in a form element to provide a constant value for the BACnet driver to use for PDU option values. If the variable is set in the forms element, and the application appends a URI variable to the URI in the request to the BACnet driver, the BACnet driver MUST use the value provided by the application in the URI variable when constructing the BACnet PDU for the request.
+            </p>
+            <pre id="uri-variables" class="json" title="URI Variables">
+{
+    "context": {
+        "bacv": "[local ontology]"
+    },    
+    "uriVariables": {
+        "CommandPriority": {
+            "@type": "bacv:CommandPriority",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16
+        },
+        "covIncrement": {
+            "@type": "bacv:covIncrement",
+            "type": "number",
+            "minimum": 0
+        }
+    }  
+}
+            </pre>
+        </section>
+        <section>
+            <h3>Form terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Range</th>
+                        <th>Domain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>bacv:usesService</code></td>
+                        <td>Indicates the BACnet service to use</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOVproperty"</code>)</p>
+                        </td>
+                        <td>td:forms</td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:isISO8601</code></td>
+                        <td>This data uses ISO8601 format</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+                        </td>
+                        <td>bacv:Sequence</td>
+
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasBinaryRepresentation</code></td>
+                        <td>Points to the binary representation of the resource</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            <p>(one of <code>"hex"</code>, <code>"dotted-decimal"</code>, <code>"base64"</code>)</p>
+                        </td>
+                        <td>bacv:OctetString</td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasMember</code></td>
+                        <td>Member of a Sequence or List</td>
+                        <td>
+                            bacv:DataType
+                        </td>
+                        <td>bacv:Sequence, bacv:List</td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasNamedMember</code></td>
+                        <td>Named Member of a Sequence or Choice</td>
+                        <td>
+                            bacv:NamedMember
+                        </td>
+                        <td>bacv:Sequence, bacv:Choice</td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasFieldName</code></td>
+                        <td>Name of a Named Member of a Sequence or Choice</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                        </td>
+                        <td>
+                            bacv:NamedMember
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasContextTags</code></td>
+                        <td>Context Tage for a Sequence or Choice</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+                        </td>
+                        <td>
+                            bacv:Sequence, bacv:Choice
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasMapEntry</code></td>
+                        <td>An value map entry mapping an Enumerated value to text</td>
+                        <td>
+                            bacv:ValueMapEntry
+                        </td>
+                        <td>
+                            bacv:ValueMap
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasLogicalVal</code></td>
+                        <td>Logical Value for a ValueMap</td>
+                        <td>xsd:integer, xsd:string, xsd:boolean</td>
+                        <td>
+                            bacv:ValueMapEntry
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasProtocolVal</code></td>
+                        <td>Protocol Value for a ValueMap</td>
+                        <td>xsd:integer</td>
+                        <td>
+                            bacv:ValueMapEntry
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:hasValueMap</code></td>
+                        <td>Value map for an Enumeration</td>
+                        <td>
+                            bacv:ValueMap
+                        </td>
+                        <td>bacv:Boolean, bacv:Enumerated, bacv:Unsigned, bacv:BitString</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </section>
+    <section id="mappings">
+        <h2>Mappings</h2>
+        <p>
+            This section describes the strategies and default values to use
+            protocol specific concepts within the
+            <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
+        </p>
+        <section id="default-mappings">
+            <h3>Default Operation Mappings</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default Binding</th>
+                        <th>Variables and parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>readproperty</code></td>
+                        <td><code>"bacv:service": "ReadProperty"</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>writeproperty</code></td>
+                        <td><code>"bacv:service": "WriteProperty"</code></td>
+                        <td>CommandPriority</td>
+                    </tr>
+                    <tr>
+                        <td><code>observeproperty</code></td>
+                        <td><code>"bacv:service": "SubscribeCOVproperty"</code></td>
+                        <td>covIncrement</td>
+                    </tr>
+                    <tr>
+                        <td><code>unobserveproperty</code></td>
+                        <td><code>"bacv:service": "SubscribeCOVproperty"</code></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>observeproperty</code></td>
+                        <td><code>"bacv:service": "SubscribeCOV"</code></td>
+                        <td>Note: BACnet driver must handle Status Flags</td>
+                    </tr>
+                    <tr>
+                        <td><code>unobserveproperty</code></td>
+                        <td><code>"bacv:service": "SubscribeCOV"</code></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="datatype-mappings">
+            <h3>Data type Mappings</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>BACnet Type</th>
+                        <th>JSON Schema</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>bacv:SequenceOf</code></td>
+                        <td><code>{ "type":"array" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Sequence</code></td>
+                        <td><code>{ "type":"array" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:List</code></td>
+                        <td><code> "type":"array" </code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Choice</code></td>
+                        <td><code>{ "type":"array" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Date</code></td>
+                        <td><code>{ "type":"string" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Time</code></td>
+                        <td><code>{ "type":"string" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:WeekNDay</code></td>
+                        <td><code>{ "type":"string" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Unsigned</code></td>
+                        <td><code>{ "type":"integer", "minimum": 0 } </code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Signed</code></td>
+                        <td><code>{ "type":"integer" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Real</code></td>
+                        <td><code>{ "type":"number" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Double</code></td>
+                        <td><code>{ "type":"number" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Boolean</code></td>
+                        <td><code>{ "type":"boolean" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Enumerated</code></td>
+                        <td><code>{ "type":"array", "items": { "type": "integer", "minimum": 0 }}</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:String</code></td>
+                        <td><code>{ "type":"string" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:OctetString</code></td>
+                        <td><code>{ "type":"array" }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:BitString</code></td>
+                        <td><code>{ "type":"array", "uniqueItems": true }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Unsigned</code></td>
+                        <td><code>{ "type":"integer", "minimum": 0 }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:Any</code></td>
+                        <td>
+                            <code>
+                                { "anyOf": [
+                                { "type":"array" },
+                                { "type":"number" },
+                                { "type":"string" },
+                                { "type":boolean" },
+                                { "type": null }
+                                ]}
+                            </code>
+                        </td>
+                    <tr>
+                        <td><code>bacv:Null</code></td>
+                        <td><code>{ "type": null }</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:ObjectIdentifier</code></td>
+                        <td><code>{ "type": null }</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <!--
+        <section id="possible-mappings">
+            <h3>Possible mappings</h3>
+            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers.</p>
+        </section>
+        -->
+    </section>
+    <section>
+        <h2>Examples</h2>
+        <p>
+            This section will present a set of examples about how the terms
+            defined in this document can be used to describe and configure a
+            Form.
+        </p>
+        <p>
+            [[[#example-readproperty]]] shows the property with object type
+            <code>analog-input</code>, object instance <code>1</code>, and
+            property identifier <code>present-value</code> in the scope of a
+            BACnet device with device instance number <code>5</code>.
+        </p>
+        <pre id="example-readproperty" class="example" title="A BACnet property">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "analog1": {
+            "type": "number",
+            "readOnly": true,
+            "forms": [{
+                "op": [ "readproperty" ],
+                "href": "bacnet://5/0,1/85",
+                "bacv:service": "ReadProperty"
+            }]
+        }
+    }
+}
+</pre>
+
+<pre id="example-affordance-variables" class="example" title="uriVariables in the Interaction Affordance">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "analog1": {
+            "type": "number",
+            "readOnly": true,
+            "uriVariables": {
+                "covIncrement": {
+                    "@type": "bacv:covIncrement",
+                    "type": "number",
+                    "minimum": 0
+                }
+            },
+            "forms": [{
+                "op": [ "observeproperty" ],
+                "href": "bacnet://5/0,1/85",
+                "bacv:service": "subscribeCOVproperty"
+            }]
+        }
+    }
+}
+</pre>
+
+<pre id="example-form-variables" class="example" title="uriVariables in the forms element">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    ...
+    "properties": {
+        "analog1": {
+            "type": "number",
+            "readOnly": true,
+            "forms": [{
+                "op": [ "observeproperty" ],
+                "href": "bacnet://5/0,1/85",
+                "bacv:service": "subscribeCOVproperty",
+                "bacv:covIncrement": 0.2
+            }]
+        }
+    }
+}
+</pre>
+
+    </section>
+</body>
+
+</html>

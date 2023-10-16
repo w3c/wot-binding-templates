@@ -309,69 +309,6 @@ lowercase = %x61-7A  ; "a" to "z"
             This vocabulary is fully defined in the BACnet ontology published with this document.
         </p>
         <section>
-            <h3>URI Variables</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>CommandPriority</code></td>
-                        <td>Sets CmdPrio for Writes</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#nonNegativeInteger"><code>integer</code></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>covIncrement</code></td>
-                        <td>Sets minimum change for reporting</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#decimal"><code>decimal</code></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                URI Variables are not included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
-            </p>
-            <p>
-                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and covIncrement. The semantic annotation is optional.
-            </p>
-            <p>
-                This template could be used to construct the uriVariables element for TD interaction afffordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
-            </p>
-            <p>
-                These variables may be also used in a form element to provide a constant value for the BACnet driver to use for PDU option values. If the variable is set in the forms element, and the application appends a URI variable to the URI in the request to the BACnet driver, the BACnet driver MUST use the value provided by the application in the URI variable when constructing the BACnet PDU for the request.
-            </p>
-            <pre id="uri-variables" class="json" title="URI Variables">
-{
-    "context": {
-        "bacv": "[local ontology]"
-    },    
-    "uriVariables": {
-        "CommandPriority": {
-            "@type": "bacv:CommandPriority",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 16
-        },
-        "covIncrement": {
-            "@type": "bacv:covIncrement",
-            "type": "number",
-            "minimum": 0
-        }
-    }  
-}
-            </pre>
-        </section>
-        <section>
             <h3>Form terms</h3>
             <table class="def">
                 <thead>
@@ -383,6 +320,22 @@ lowercase = %x61-7A  ; "a" to "z"
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td><code>bacv:CommandPriority</code></td>
+                        <td>Sets CmdPrio for Writes</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a> (can be variable)
+                        </td>
+                        <td>td:forms and td:InteractionAffordance</td>
+                    </tr>
+                    <tr>
+                        <td><code>bacv:covIncrement</code></td>
+                        <td>Sets minimum change for reporting</td>
+                        <td>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#decimal"><code>decimal</code></a> (can be variable)
+                        </td>
+                        <td>td:forms and td:InteractionAffordance</td>
+                    </tr>
                     <tr>
                         <td><code>bacv:usesService</code></td>
                         <td>Indicates the BACnet service to use</td>
@@ -482,6 +435,13 @@ lowercase = %x61-7A  ; "a" to "z"
                     </tr>
                 </tbody>
             </table>
+
+            <p>
+                <code>bacv:CommandPriority</code> and <code>bacv:covIncrement</code> can be used in two ways.
+                They can be variable (set by the application-level script) to enable the
+                application to communicate the parameters to the BACnet driver, using a consistent format according to the schema constraints.
+                Alternatively, these variables may be used in a form element to provide a constant value for the BACnet driver to use for PDU option values. If the value is set in the forms element, the driver SHOULD pick the value and add to the request.
+            </p>
         </section>
 
     </section>
@@ -676,7 +636,7 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<pre id="example-affordance-variables" class="example" title="uriVariables in the Interaction Affordance">
+<pre id="example-affordance-variables" class="example" title="covIncrement in the Interaction Affordance">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -684,12 +644,9 @@ lowercase = %x61-7A  ; "a" to "z"
         "analog1": {
             "type": "number",
             "readOnly": true,
-            "uriVariables": {
-                "covIncrement": {
-                    "@type": "bacv:covIncrement",
-                    "type": "number",
-                    "minimum": 0
-                }
+            "bacv:covIncrement":{
+                "type": "number",
+                "minimum": 0
             },
             "forms": [{
                 "op": [ "observeproperty" ],
@@ -701,7 +658,7 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<pre id="example-form-variables" class="example" title="uriVariables in the forms element">
+<pre id="example-form-variables" class="example" title="covIncrement in the forms element">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...

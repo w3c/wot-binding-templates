@@ -56,6 +56,15 @@
                     value: "BACnet Vocabulary for the Web of Things",
                     href: "bacnet-model.ttl",
                 }]
+            },
+            {
+                key: "JSON Schema",
+                data: [
+                    {
+                        value: "BACnet JSON Schema",
+                        href: "bacnet.schema.json"
+                    }
+                ]
             }]
         };
     </script>
@@ -459,7 +468,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>bacv:hasLogicalVal</code></td>
                         <td>Logical Value for a ValueMap</td>
-                        <td>xsd:integer, xsd:string, xsd:boolean</td>
+                        <td><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a> or <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean">boolean</a></td>
                         <td>
                             bacv:ValueMapEntry
                         </td>
@@ -467,7 +476,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>bacv:hasProtocolVal</code></td>
                         <td>Protocol Value for a ValueMap</td>
-                        <td>xsd:integer</td>
+                        <td><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a></td>
                         <td>
                             bacv:ValueMapEntry
                         </td>
@@ -542,7 +551,7 @@ lowercase = %x61-7A  ; "a" to "z"
                 <thead>
                     <tr>
                         <th>BACnet Type</th>
-                        <th>JSON Schema</th>
+                        <th>WoT Data Schema</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -609,10 +618,6 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>bacv:BitString</code></td>
                         <td><code>{ "type":"array", "uniqueItems": true }</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Unsigned</code></td>
-                        <td><code>{ "type":"integer", "minimum": 0 }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Any</code></td>

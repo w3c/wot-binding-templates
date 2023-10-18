@@ -354,9 +354,10 @@ lowercase = %x61-7A  ; "a" to "z"
             </p>
             <pre id="uri-variables" class="json" title="URI Variables">
 {
-    "@context": {
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1",
+    {
         "bacv": "https://example.org/bacnet"
-    },
+    }],
     "uriVariables": {
         "CommandPriority": {
             "@type": "bacv:CommandPriority",

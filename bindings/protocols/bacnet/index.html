@@ -324,17 +324,18 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td><code>bacv:CommandPriority</code></td>
                         <td>Sets CmdPrio for Writes</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a> (can be variable)
+                            <a href="https://www.w3.org/2019/wot/json-schema#IntegerSchema"><code>IntegerSchema</code></a> with <code>"minimum":0</code> and possibly with a default value.
                         </td>
-                        <td>td:forms and td:InteractionAffordance</td>
+                        <td>td:forms</td>
                     </tr>
                     <tr>
                         <td><code>bacv:covIncrement</code></td>
                         <td>Sets minimum change for reporting</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#decimal"><code>decimal</code></a> (can be variable)
+                            <a href="https://www.w3.org/2019/wot/json-schema#NumberSchema"><code>NumberSchema</code></a> with
+                            <code>"minimum":0</code> and possibly with a default value.
                         </td>
-                        <td>td:forms and td:InteractionAffordance</td>
+                        <td>td:forms</td>
                     </tr>
                     <tr>
                         <td><code>bacv:usesService</code></td>
@@ -437,10 +438,10 @@ lowercase = %x61-7A  ; "a" to "z"
             </table>
 
             <p>
-                <code>bacv:CommandPriority</code> and <code>bacv:covIncrement</code> can be used in two ways.
-                They can be variable (set by the application-level script) to enable the
-                application to communicate the parameters to the BACnet driver, using a consistent format according to the schema constraints.
-                Alternatively, these variables may be used in a form element to provide a constant value for the BACnet driver to use for PDU option values. If the value is set in the forms element, the driver SHOULD pick the value and add to the request.
+                <code>bacv:CommandPriority</code> and <code>bacv:covIncrement</code> have Data Schema values.
+                This means that their values MAY be set by the application to communicate the parameters to the BACnet driver, using a consistent value according to the schema constraints.
+                If their schema contains a <code>default</code> term, the application MAY not set a value and the driver SHOULD 
+                use the value of <code>default</code>.
             </p>
         </section>
 
@@ -636,7 +637,7 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<pre id="example-affordance-variables" class="example" title="covIncrement in the Interaction Affordance">
+<pre id="example-affordance-variables" class="example" title="covIncrement with Data Schema value">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -644,21 +645,21 @@ lowercase = %x61-7A  ; "a" to "z"
         "analog1": {
             "type": "number",
             "readOnly": true,
-            "bacv:covIncrement":{
-                "type": "number",
-                "minimum": 0
-            },
             "forms": [{
-                "op": [ "observeproperty" ],
+                "op": "observeproperty",
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "subscribeCOVproperty"
+                "bacv:service": "subscribeCOVproperty",
+                "bacv:covIncrement":{
+                    "type": "number",
+                    "minimum": 0
+                }
             }]
         }
     }
 }
 </pre>
 
-<pre id="example-form-variables" class="example" title="covIncrement in the forms element">
+<pre id="example-form-variables" class="example" title="covIncrement with a default value in its Data Schema">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -667,10 +668,14 @@ lowercase = %x61-7A  ; "a" to "z"
             "type": "number",
             "readOnly": true,
             "forms": [{
-                "op": [ "observeproperty" ],
+                "op": "observeproperty",
                 "href": "bacnet://5/0,1/85",
                 "bacv:service": "subscribeCOVproperty",
-                "bacv:covIncrement": 0.2
+                "bacv:covIncrement":{
+                    "type": "number",
+                    "minimum": 0,
+                    "default":0.2
+                }
             }]
         }
     }

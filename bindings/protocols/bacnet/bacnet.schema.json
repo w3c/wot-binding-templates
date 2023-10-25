@@ -1,0 +1,115 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "title":"JSON Schema BACnet for TDs using BACnet Binding",
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "bacnetForm": {
+            "type": "object",
+            "properties": {
+                "bacv:usesService": {
+                    "type": "string",
+                    "enum": [
+                        "ReadProperty",
+                        "WriteProperty",
+                        "SubscribeCOVproperty"
+                    ]
+                },
+                "bacv:isISO8601": {
+                    "type": "boolean"
+                },
+                "bacv:hasBinaryRepresentation": {
+                    "type": "string",
+                    "enum": [
+                        "hex",
+                        "dotted-decimal",
+                        "base64"
+                    ]
+                },
+                "bacv:hasMember": {
+                    "type": "string",
+                    "enum": [
+                        "hex"
+                    ]
+                },
+                "bacv:hasNamedMember": {
+                    "type": "string",
+                    "enum": [
+                        "hex"
+                    ]
+                },
+                "bacv:hasFieldName": {
+                    "type": "boolean"
+                },
+                "bacv:hasContextTags": {
+                    "type": "boolean"
+                },
+                "bacv:hasMapEntry": {
+                    "type": "boolean"
+                },
+                "bacv:hasLogicalVal": {
+                    "oneOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "bacv:hasProtocolVal": {
+                    "type": "integer"
+                },
+                "bacv:hasValueMap": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/bacnetForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "array",
+            "contains": {
+                "type": "object",
+                "properties": {
+                    "bacv": {
+                        "type": "string",
+                        "enum": [
+                            "https://example.org/bacnet"
+                        ]
+                    }
+                }
+            }
+        },
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        }
+    }
+}

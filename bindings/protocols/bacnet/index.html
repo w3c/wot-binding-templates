@@ -560,88 +560,167 @@ lowercase = %x61-7A  ; "a" to "z"
                 <tbody>
                     <tr>
                         <td><code>bacv:SequenceOf</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td><code>{ "type": "array" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Sequence</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td>
+                            <code>{ "type": "object" }</code>
+                            <br />
+                            For the special case where a DateTime object is modeled as a Sequence <code>"bacv:isISO8601": true</code>:
+                            <br />
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",,
+                                    "$comment": "ISO8601 Date Time Format with optional wildcards"
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:List</code></td>
-                        <td><code> "type":"array" </code></td>
+                        <td><code> { "type": "array", "uniqueItems": true } </code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Choice</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td>
+                            <code>
+                                { "oneOf": [
+                                    { "type": "..." },
+                                    { "type": "..." },
+                                    { "...": "..." },
+                                ]}
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Date</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)$",
+                                    "$comment": "ISO8601 Date Format with optional wildcards"
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Time</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                                    "$comment": "ISO8601 Time Format with optional wildcards"
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:WeekNDay</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^((1[0-2]|0[1-9])|O|E|\\*)-(01|08|15|22|29|L7|B7|B14|B21|\\*)-([1-7]|\\*)$",
+                                    "$comment": "Custom WeekNDay string: first part month 01-12, O for odd, E for even, * for any; second part week of month: beginning on 01st, 08th, the last 7 days, they days before last 7 days, last 14 days.., or any; third part day of week: 1-7 (Mon-Sun) or any"
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Unsigned</code></td>
-                        <td><code>{ "type":"integer", "minimum": 0 } </code></td>
+                        <td><code>{ "type": "integer", "minimum": 0 } </code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Signed</code></td>
-                        <td><code>{ "type":"integer" }</code></td>
+                        <td><code>{ "type": "integer" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Real</code></td>
-                        <td><code>{ "type":"number" }</code></td>
+                        <td><code>{ "type": "number" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Double</code></td>
-                        <td><code>{ "type":"number" }</code></td>
+                        <td><code>{ "type": "number" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Boolean</code></td>
-                        <td><code>{ "type":"boolean" }</code></td>
+                        <td><code>{ "type": "boolean" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:Enumerated</code></td>
-                        <td><code>{ "type":"array", "items": { "type": "integer", "minimum": 0 }}</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "$comment": "Contains the possible enum members, as strings or integers",
+                                    "enum": []
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:String</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td><code>{ "type": "string" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:OctetString</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^(([0-9A-F]{2}-?)+|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2}))$",
+                                    "$comment": "Binary data encoded in hex, dotted decimal (e.g. IPv4 address) or base64"
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:BitString</code></td>
-                        <td><code>{ "type":"array", "uniqueItems": true }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "$comment": "Contains the possible bit numbers",
+                                        "enum": []
+                                    }
+                                    "uniqueItems": true
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Any</code></td>
                         <td>
                             <code>
                                 { "anyOf": [
-                                { "type":"array" },
-                                { "type":"number" },
-                                { "type":"string" },
-                                { "type":boolean" },
-                                { "type": null }
+                                    { "type": "object" },
+                                    { "type": "array" },
+                                    { "type": "number" },
+                                    { "type": "string" },
+                                    { "type": "boolean" },
+                                    { "type": "null" }
                                 ]}
                             </code>
                         </td>
                     <tr>
                         <td><code>bacv:Null</code></td>
-                        <td><code>{ "type": null }</code></td>
+                        <td><code>{ "type": "null" }</code></td>
                     </tr>
                     <tr>
                         <td><code>bacv:ObjectIdentifier</code></td>
-                        <td><code>{ "type": null }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string"
+                                    "format": "iri-reference",
+                                    "$comment": "BACnet Object Identifier is to be converted to an IRI, using the href schema of this protocol binding"
+                                }
+                            </code>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -18,58 +18,235 @@
                         "SubscribeCOVproperty"
                     ]
                 },
-                "bacv:isISO8601": {
-                    "type": "boolean"
+                "bacv:hasDataType": {
+                    "$ref": "#/definitions/bacnetDataType"
                 },
-                "bacv:hasBinaryRepresentation": {
-                    "type": "string",
-                    "enum": [
-                        "hex",
-                        "dotted-decimal",
-                        "base64"
-                    ]
+                "bacv:covIncrement": {
+                    "type": "number",
+                    "minimum": 0
                 },
-                "bacv:hasMember": {
-                    "type": "string",
-                    "enum": [
-                        "hex"
-                    ]
-                },
-                "bacv:hasNamedMember": {
-                    "type": "string",
-                    "enum": [
-                        "hex"
-                    ]
-                },
-                "bacv:hasFieldName": {
-                    "type": "boolean"
-                },
-                "bacv:hasContextTags": {
-                    "type": "boolean"
-                },
-                "bacv:hasMapEntry": {
-                    "type": "boolean"
-                },
-                "bacv:hasLogicalVal": {
-                    "oneOf": [
-                        {
-                            "type": "integer"
-                        },
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "boolean"
-                        }
-                    ]
-                },
-                "bacv:hasProtocolVal": {
-                    "type": "integer"
-                },
-                "bacv:hasValueMap": {
-                    "type": "boolean"
+                "bacv:covPeriod": {
+                    "type": "integer",
+                    "minimum": 0
                 }
-            }
+            },
+            "required": ["bacv:hasDataType"]
+        },
+        "bacnetDataType": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:SequenceOf"},
+                        "bacv:hasMember": {
+                            "$ref": "#/definitions/bacnetDataType"
+                        }
+                    },
+                    "required": ["@type", "bacv:hasMember"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Sequence"},
+                        "bacv:isISO8601": {"type": "boolean"},
+                        "bacv:hasNamedMember": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/bacnetNamedMember"
+                            },
+                            "minItems": 1
+                        },
+                        "bacv:hasContextTags": {"type": "boolean"}
+                    },
+                    "required": ["@type", "bacv:hasNamedMember", "bacv:hasContextTags"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:List"},
+                        "bacv:hasMember": {
+                            "$ref": "#/definitions/bacnetDataType"
+                        }
+                    },
+                    "required": ["@type", "bacv:hasMember"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Choice"},
+                        "bacv:hasNamedMember": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/bacnetNamedMember"
+                            },
+                            "minItems": 1
+                        },
+                        "bacv:hasContextTags": {"type": "boolean", "const": true}
+                    },
+                    "required": ["@type", "bacv:hasNamedMember", "bacv:hasContextTags"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Date"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Time"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:WeekNDay"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Unsigned"},
+                        "bacv:hasValueMap": {
+                            "$ref": "#/definitions/bacnetValueMap"
+                        }
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Signed"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Real"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Double"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Boolean"},
+                        "bacv:hasValueMap": {
+                            "$ref": "#/definitions/bacnetValueMap"
+                        }
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Enumerated"},
+                        "bacv:hasValueMap": {
+                            "$ref": "#/definitions/bacnetValueMap"
+                        }
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:String"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:OctetString"},
+                        "bacv:hasBinaryRepresentation": {
+                            "type": "string",
+                            "enum": [
+                                "hex",
+                                "dotted-decimal",
+                                "base64"
+                            ]
+                        }
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:BitString"},
+                        "bacv:hasValueMap": {
+                            "$ref": "#/definitions/bacnetValueMap"
+                        }
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Any"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:Null"}
+                    },
+                    "required": ["@type"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {"const": "bacv:ObjectIdentifier"}
+                    },
+                    "required": ["@type"]
+                }
+            ]
+        },
+        "bacnetNamedMember": {
+            "type": "object",
+            "properties": {
+                "bacv:hasFieldName": {
+                    "type": "string"
+                },
+                "bacv:hasDataType": {
+                    "$ref": "#/definitions/bacnetDataType"
+                }
+            },
+            "required": ["bacv:hasFieldName", "bacv:hasDataType"]
+        },
+        "bacnetValueMap": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "bacv:logicalVal": {
+                        "oneOf": [
+                            {"type": "integer"},
+                            {"type": "string"},
+                            {"type": "boolean"}
+                        ]
+                    },
+                    "bacv:protocolVal": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "minItems": 1
+        },
+        "bacnetCommandPriority": {
+            "type": "integer",
+            "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            "default": 16
         },
         "affordance": {
             "type": "object",

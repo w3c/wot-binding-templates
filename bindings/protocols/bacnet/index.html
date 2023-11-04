@@ -1042,6 +1042,49 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
+<pre id="example-form-variables" class="example" title="value mapping for an Enumeration">
+{
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1",
+    {
+        "bacv": "https://example.org/bacnet"
+    }],
+    ...
+    "properties": {
+        "multistate1": {
+            "type": "string",
+            "enum": ["on", "off", "auto", "manual"]
+            "readOnly": true,
+            "forms": [{
+                "op": [ "readproperty" ],
+                "href": "bacnet://5/14,1/85",
+                "bacv:usesService": "ReadProperty",
+                "bacv:hasDataType": {
+                    "@type": "bacv:Enumerated",
+                    "bacv:hasValueMap": [
+                        {
+                            "bacv:protocolVal": 1,
+                            "bacv:logicalVal": "on"
+                        },
+                        {
+                            "bacv:protocolVal": 2,
+                            "bacv:logicalVal": "off"
+                        },
+                        {
+                            "bacv:protocolVal": 3,
+                            "bacv:logicalVal": "auto"
+                        },
+                        {
+                            "bacv:protocolVal": 4,
+                            "bacv:logicalVal": "normal"
+                        }
+                    ]
+                }
+            }]
+        }
+    }
+}
+</pre>
+
     </section>
 </body>
 

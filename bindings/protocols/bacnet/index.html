@@ -517,32 +517,32 @@ lowercase = %x61-7A  ; "a" to "z"
                 <tbody>
                     <tr>
                         <td><code>readproperty</code></td>
-                        <td><code>"bacv:service": "ReadProperty"</code></td>
+                        <td><code>"bacv:usesService": "ReadProperty"</code></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><code>writeproperty</code></td>
-                        <td><code>"bacv:service": "WriteProperty"</code></td>
+                        <td><code>"bacv:usesService": "WriteProperty"</code></td>
                         <td>CommandPriority</td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
                         <td>covIncrement</td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOV"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td>Note: BACnet driver must handle Status Flags</td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOV"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -976,7 +976,10 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "readproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "ReadProperty"
+                "bacv:usesService": "ReadProperty",
+                "bacv:hasDataType": {
+                    "@type": "bacv:Real"
+                }
             }]
         }
     }
@@ -1004,7 +1007,10 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "subscribeCOVproperty"
+                "bacv:usesService": "subscribeCOVproperty",
+                "bacv:hasDataType": {
+                    "@type": "bacv:Real"
+                }
             }]
         }
     }
@@ -1025,8 +1031,11 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "subscribeCOVproperty",
-                "bacv:covIncrement": 0.2
+                "bacv:usesService": "subscribeCOVproperty",
+                "bacv:covIncrement": 0.2,
+                "bacv:hasDataType": {
+                    "@type": "bacv:Real"
+                }
             }]
         }
     }

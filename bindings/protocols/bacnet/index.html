@@ -517,131 +517,427 @@ lowercase = %x61-7A  ; "a" to "z"
                 <tbody>
                     <tr>
                         <td><code>readproperty</code></td>
-                        <td><code>"bacv:service": "ReadProperty"</code></td>
+                        <td><code>"bacv:usesService": "ReadProperty"</code></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><code>writeproperty</code></td>
-                        <td><code>"bacv:service": "WriteProperty"</code></td>
+                        <td><code>"bacv:usesService": "WriteProperty"</code></td>
                         <td>CommandPriority</td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
                         <td>covIncrement</td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOV"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td>Note: BACnet driver must handle Status Flags</td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:service": "SubscribeCOV"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
         </section>
         <section id="datatype-mappings">
-            <h3>Data type Mappings</h3>
+            <h3>WoT Data Schema and BACnet Types</h3>
+            <p>
+                BACnet has its own data model, which cannot always be derived
+                from the data schema of the interaction affordances. Hence
+                the type information is amended in the Form of the protocol binding.
+                The goal here is to abstract BACnet's data model into a Web-like JSON-based
+                data model, by still keeping the wire compatibility on the protocol.
+                The table below shows how the mappings are done, comprehensively for all BACnet types.
+            </p>
             <table class="def">
                 <thead>
                     <tr>
                         <th>BACnet Type</th>
                         <th>WoT Data Schema</th>
+                        <th>BACnet Type Description under the Form</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><code>bacv:SequenceOf</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td><code>{ "type": "array" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:SequenceOf",
+                                        "bacv:hasMember": {
+                                            "$comment": "Data type of the element",
+                                            "@type": "bacv:..."
+                                        }
+                                    }
+                                }                
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Sequence</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td>
+                            <code>{ "type": "object" }</code>
+                            <br />
+                            For the special case where a DateTime object is modeled as a Sequence <code>"bacv:isISO8601": true</code>:
+                            <br />
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",,
+                                    "$comment": "ISO8601 Date Time Format with optional wildcards"
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Sequence",
+                                        "bacv:isISO8601": true,
+                                        "bacv:hasContextTags": false,
+                                        "bacv:hasNamedMember": [
+                                            {
+                                                "bacv:hasFieldName": "date",
+                                                "bacv:hasDataType": {
+                                                    "@type": "bacv:Date"
+                                                }
+                                            },
+                                            {
+                                                "bacv:hasFieldName": "time",
+                                                "bacv:hasDataType": {
+                                                    "@type": "bacv:Time"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:List</code></td>
-                        <td><code> "type":"array" </code></td>
+                        <td><code> { "type": "array", "uniqueItems": true } </code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:List",
+                                        "bacv:hasMember": {
+                                            "@type": "bacv:..."
+                                        }
+                                    }
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Choice</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td>
+                            <code>
+                                { "oneOf": [
+                                    { "type": "..." },
+                                    { "type": "..." },
+                                    { "...": "..." },
+                                ]}
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Choice",
+                                        "bacv:hasContextTags": true,
+                                        "bacv:hasNamedMember": [
+                                            {
+                                                "bacv:hasFieldName": "...",
+                                                "bacv:hasDataType": {
+                                                    "@type": "bacv:..."
+                                                }
+                                            },
+                                            {
+                                                "bacv:hasFieldName": "...",
+                                                "bacv:hasDataType": {
+                                                    "@type": "bacv:..."
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Date</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)$",
+                                    "$comment": "ISO8601 Date Format with optional wildcards"
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Date"
+                                    }
+                                }                
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Time</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                                    "$comment": "ISO8601 Time Format with optional wildcards"
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Time"
+                                    }
+                                }                
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:WeekNDay</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^((1[0-2]|0[1-9])|O|E|\\*)-(01|08|15|22|29|L7|B7|B14|B21|\\*)-([1-7]|\\*)$",
+                                    "$comment": "Custom WeekNDay string: first part month 01-12, O for odd, E for even, * for any; second part week of month: beginning on 01st, 08th, the last 7 days, they days before last 7 days, last 14 days.., or any; third part day of week: 1-7 (Mon-Sun) or any"
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:WeekNDay"
+                                    }
+                                }                
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Unsigned</code></td>
-                        <td><code>{ "type":"integer", "minimum": 0 } </code></td>
+                        <td><code>{ "type": "integer", "minimum": 0 } </code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Unsigned"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Signed</code></td>
-                        <td><code>{ "type":"integer" }</code></td>
+                        <td><code>{ "type": "integer" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Signed"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Real</code></td>
-                        <td><code>{ "type":"number" }</code></td>
+                        <td><code>{ "type": "number" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Real"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Double</code></td>
-                        <td><code>{ "type":"number" }</code></td>
+                        <td><code>{ "type": "number" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Double"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Boolean</code></td>
-                        <td><code>{ "type":"boolean" }</code></td>
+                        <td><code>{ "type": "boolean" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Boolean"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Enumerated</code></td>
-                        <td><code>{ "type":"array", "items": { "type": "integer", "minimum": 0 }}</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "$comment": "Contains the possible enum members, as strings or integers",
+                                    "enum": []
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Enumerated"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:String</code></td>
-                        <td><code>{ "type":"string" }</code></td>
+                        <td><code>{ "type": "string" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:String"
+                                    }
+                                }              
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:OctetString</code></td>
-                        <td><code>{ "type":"array" }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string",
+                                    "pattern": "^(([0-9A-F]{2}-?)+|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2}))$",
+                                    "$comment": "Binary data encoded in hex, dotted decimal (e.g. IPv4 address) or base64"
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:OctetString",
+                                        "bacv:hasBinaryRepresentation": "..."
+                                    }
+                                }            
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:BitString</code></td>
-                        <td><code>{ "type":"array", "uniqueItems": true }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "$comment": "Contains the possible bit numbers",
+                                        "enum": []
+                                    }
+                                    "uniqueItems": true
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:BitString"
+                                    }
+                                }         
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:Any</code></td>
                         <td>
                             <code>
                                 { "anyOf": [
-                                { "type":"array" },
-                                { "type":"number" },
-                                { "type":"string" },
-                                { "type":boolean" },
-                                { "type": null }
+                                    { "type": "object" },
+                                    { "type": "array" },
+                                    { "type": "number" },
+                                    { "type": "string" },
+                                    { "type": "boolean" },
+                                    { "type": "null" }
                                 ]}
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:Any"
+                                    }
+                                }         
                             </code>
                         </td>
                     <tr>
                         <td><code>bacv:Null</code></td>
-                        <td><code>{ "type": null }</code></td>
+                        <td><code>{ "type": "null" }</code></td>
+                        <td>
+                            <code>
+                                "bacv:hasDataType": {
+                                    "@type": "bacv:Null"
+                                }
+                            </code>
+                        </td>
                     </tr>
                     <tr>
                         <td><code>bacv:ObjectIdentifier</code></td>
-                        <td><code>{ "type": null }</code></td>
+                        <td>
+                            <code>
+                                {
+                                    "type": "string"
+                                    "format": "iri-reference",
+                                    "$comment": "BACnet Object Identifier is to be converted to an IRI, using the href schema of this protocol binding"
+                                }
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                {
+                                    "bacv:hasDataType": {
+                                        "@type": "bacv:ObjectIdentifier"
+                                    }
+                                }
+                            </code>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -680,7 +976,10 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "readproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "ReadProperty"
+                "bacv:usesService": "ReadProperty",
+                "bacv:hasDataType": {
+                    "@type": "bacv:Real"
+                }
             }]
         }
     }
@@ -708,7 +1007,10 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "subscribeCOVproperty"
+                "bacv:usesService": "subscribeCOVproperty",
+                "bacv:hasDataType": {
+                    "@type": "bacv:Real"
+                }
             }]
         }
     }
@@ -729,8 +1031,54 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:service": "subscribeCOVproperty",
-                "bacv:covIncrement": 0.2
+                "bacv:usesService": "subscribeCOVproperty",
+                "bacv:covIncrement": 0.2,
+                "bacv:hasDataType": {
+                    "@type": "bacv:Real"
+                }
+            }]
+        }
+    }
+}
+</pre>
+
+<pre id="example-form-variables" class="example" title="value mapping for an Enumeration">
+{
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1",
+    {
+        "bacv": "https://example.org/bacnet"
+    }],
+    ...
+    "properties": {
+        "multistate1": {
+            "type": "string",
+            "enum": ["on", "off", "auto", "manual"]
+            "readOnly": true,
+            "forms": [{
+                "op": [ "readproperty" ],
+                "href": "bacnet://5/14,1/85",
+                "bacv:usesService": "ReadProperty",
+                "bacv:hasDataType": {
+                    "@type": "bacv:Enumerated",
+                    "bacv:hasValueMap": [
+                        {
+                            "bacv:protocolVal": 1,
+                            "bacv:logicalVal": "on"
+                        },
+                        {
+                            "bacv:protocolVal": 2,
+                            "bacv:logicalVal": "off"
+                        },
+                        {
+                            "bacv:protocolVal": 3,
+                            "bacv:logicalVal": "auto"
+                        },
+                        {
+                            "bacv:protocolVal": 4,
+                            "bacv:logicalVal": "normal"
+                        }
+                    ]
+                }
             }]
         }
     }

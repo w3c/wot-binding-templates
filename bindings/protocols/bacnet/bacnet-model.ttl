@@ -75,12 +75,6 @@ bacnet:covIncrement rdf:type owl:DatatypeProperty ;
                     rdfs:comment "Specifies the minimum change in that will cause a COV notification to be issued to subscribers, if missing the default value on the object will be used instead."@en ;
                     rdfs:seeAlso "ASHRAE 135-2020 BACnet 13.1 Change of Value Reporting" .
 
-bacnet:covPeriod rdf:type owl:DatatypeProperty ;
-                 rdfs:domain hctl:Form ;
-                 rdfs:range xsd:nonNegativeInteger ;
-                 rdfs:comment "Indicates the number of seconds to issue a COV notification periodically, even if there was no change. If 0 or missing, periodic COV notifications should be deactivated."@en ;
-                 rdfs:seeAlso "ASHRAE 135-2020 BACnet 13.1 Change of Value Reporting" .
-
 #################################################################
 #    Type information properties
 # BACnet has an own data model, which cannot always be derived

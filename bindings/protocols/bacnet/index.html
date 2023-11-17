@@ -998,7 +998,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "type": "number",
             "readOnly": true,
             "uriVariables": {
-                "covIncrement": {
+                "observeIncrement": {
                     "@type": "bacv:covIncrement",
                     "type": "number",
                     "minimum": 0
@@ -1006,33 +1006,8 @@ lowercase = %x61-7A  ; "a" to "z"
             },
             "forms": [{
                 "op": [ "observeproperty" ],
-                "href": "bacnet://5/0,1/85",
+                "href": "bacnet://5/0,1/85?covIncrement={observeIncrement}",
                 "bacv:usesService": "SubscribeCOV",
-                "bacv:hasDataType": {
-                    "@type": "bacv:Real"
-                }
-            }]
-        }
-    }
-}
-</pre>
-
-<pre id="example-form-variables" class="example" title="uriVariables in the forms element">
-{
-    "@context": ["https://www.w3.org/2022/wot/td/v1.1",
-    {
-        "bacv": "https://example.org/bacnet"
-    }],
-    ...
-    "properties": {
-        "analog1": {
-            "type": "number",
-            "readOnly": true,
-            "forms": [{
-                "op": [ "observeproperty" ],
-                "href": "bacnet://5/0,1/85",
-                "bacv:usesService": "SubscribeCOV",
-                "bacv:covIncrement": 0.2,
                 "bacv:hasDataType": {
                     "@type": "bacv:Real"
                 }

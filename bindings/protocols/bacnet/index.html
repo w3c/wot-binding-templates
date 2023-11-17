@@ -353,13 +353,14 @@ lowercase = %x61-7A  ; "a" to "z"
                 URI Variables are included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
             </p>
             <p>
-                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and covIncrement. The semantic annotation is optional.
+                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and CovIncrement. The semantic annotation is optional.
             </p>
             <p>
                 This template could be used to construct the uriVariables element for TD interaction afffordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
             </p>
             <p>
-                These variables may be also used in a form element to provide a constant value for the BACnet driver to use for PDU option values. If the variable is set in the forms element, and the application appends a URI variable to the URI in the request to the BACnet driver, the BACnet driver MUST use the value provided by the application in the URI variable when constructing the BACnet PDU for the request.
+                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to use constant value for this parameter.
+            </p>
             </p>
             <pre id="uri-variables" class="json" title="URI Variables">
 {

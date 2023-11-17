@@ -221,14 +221,14 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "bacv:logicalVal": {
+                    "bacv:hasLogicalVal": {
                         "oneOf": [
                             {"type": "integer"},
                             {"type": "string"},
                             {"type": "boolean"}
                         ]
                     },
-                    "bacv:protocolVal": {
+                    "bacv:hasProtocolVal": {
                         "type": "integer"
                     }
                 }

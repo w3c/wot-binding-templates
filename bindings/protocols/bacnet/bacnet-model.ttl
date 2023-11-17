@@ -185,13 +185,13 @@ bacnet:hasMapEntry rdf:type owl:ObjectProperty ;
                    rdfs:domain bacnet:ValueMap ;
                    rdfs:range bacnet:ValueMapEntry .
 
-bacnet:logicalVal rdf:type owl:DatatypeProperty ;
-                  rdfs:domain bacnet:ValueMapEntry ;
-                  rdfs:range [owl:unionOf (xsd:integer xsd:string xsd:boolean)] .
+bacnet:hasLogicalVal rdf:type owl:DatatypeProperty ;
+                     rdfs:domain bacnet:ValueMapEntry ;
+                     rdfs:range [owl:unionOf (xsd:integer xsd:string xsd:boolean)] .
 
-bacnet:protocolVal rdf:type rdf:type owl:DatatypeProperty ;
-                   rdfs:domain bacnet:ValueMapEntry ;
-                   rdfs:range xsd:integer .
+bacnet:hasProtocolVal rdf:type rdf:type owl:DatatypeProperty ;
+                      rdfs:domain bacnet:ValueMapEntry ;
+                      rdfs:range xsd:integer .
 
 
 bacnet:hasValueMap rdf:type owl:ObjectProperty ;

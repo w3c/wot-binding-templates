@@ -15,15 +15,11 @@
                     "enum": [
                         "ReadProperty",
                         "WriteProperty",
-                        "SubscribeCOVproperty"
+                        "SubscribeCOV"
                     ]
                 },
                 "bacv:hasDataType": {
                     "$ref": "#/definitions/bacnetDataType"
-                },
-                "bacv:covIncrement": {
-                    "type": "number",
-                    "minimum": 0
                 }
             },
             "required": ["bacv:hasDataType"]
@@ -239,7 +235,11 @@
             },
             "minItems": 1
         },
-        "bacnetCommandPriority": {
+        "covIncrement": {
+            "type": "number",
+            "minimum": 0
+        },
+        "commandPriority": {
             "type": "integer",
             "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             "default": 16

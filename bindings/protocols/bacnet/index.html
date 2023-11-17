@@ -128,7 +128,7 @@
             The following subset of BACnet features is supported by this binding:
             <ul>
                 <li>
-                    Services: ReadProperty, WriteProperty, SubscribeCOV, SubscribeCOVproperty
+                    Services: ReadProperty, WriteProperty, SubscribeCOV
                 </li>
                 <li>
                     Data Model: Device, Object, Property, Index
@@ -324,33 +324,33 @@ lowercase = %x61-7A  ; "a" to "z"
             <table class="def">
                 <thead>
                     <tr>
-                        <th>Vocabulary term</th>
+                        <th>URI variable</th>
                         <th>Description</th>
                         <th>Assignment</th>
-                        <th>Type</th>
+                        <th>Range</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>CommandPriority</code></td>
-                        <td>Sets CmdPrio for Writes</td>
+                        <td><code>commandPriority</code></td>
+                        <td>Sets priority for WriteProperty</td>
                         <td>optional</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#nonNegativeInteger"><code>integer</code></a>
+                            <a href="https://www.w3.org/2019/wot/json-schema#IntegerSchema"><code>integer</code></a>
                         </td>
                     </tr>
                     <tr>
                         <td><code>covIncrement</code></td>
-                        <td>Sets minimum change for reporting</td>
+                        <td>Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a property ID)</td>
                         <td>optional</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#decimal"><code>decimal</code></a>
+                            <a href="https://www.w3.org/2019/wot/json-schema#NumberSchema"><code>number</code></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <p>
-                URI Variables are not included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
+                URI Variables are included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
             </p>
             <p>
                 The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and covIncrement. The semantic annotation is optional.
@@ -368,14 +368,14 @@ lowercase = %x61-7A  ; "a" to "z"
         "bacv": "https://example.org/bacnet"
     }],
     "uriVariables": {
-        "CommandPriority": {
+        "commandPriority": {
             "@type": "bacv:CommandPriority",
             "type": "integer",
-            "minimum": 1,
-            "maximum": 16
+            "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            "default": 16
         },
         "covIncrement": {
-            "@type": "bacv:covIncrement",
+            "@type": "bacv:CovIncrement",
             "type": "number",
             "minimum": 0
         }
@@ -400,7 +400,7 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td>Indicates the BACnet service to use</td>
                         <td>
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOVproperty"</code>)</p>
+                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOV"</code>)</p>
                         </td>
                         <td>td:forms</td>
                     </tr>
@@ -527,12 +527,12 @@ lowercase = %x61-7A  ; "a" to "z"
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td>covIncrement</td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td></td>
                     </tr>
                     <tr>
@@ -1007,7 +1007,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:usesService": "subscribeCOVproperty",
+                "bacv:usesService": "SubscribeCOV",
                 "bacv:hasDataType": {
                     "@type": "bacv:Real"
                 }
@@ -1031,7 +1031,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85",
-                "bacv:usesService": "subscribeCOVproperty",
+                "bacv:usesService": "SubscribeCOV",
                 "bacv:covIncrement": 0.2,
                 "bacv:hasDataType": {
                     "@type": "bacv:Real"

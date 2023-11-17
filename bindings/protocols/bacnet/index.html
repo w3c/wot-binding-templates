@@ -361,6 +361,14 @@ lowercase = %x61-7A  ; "a" to "z"
             <p>
                 These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to use constant value for this parameter.
             </p>
+            <p>
+                Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes regarding URI variables:
+                <ol>
+                    <li>Showing the link of URI variables to exactly which operations they are applicable to.</li>
+                    <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
+                    <li>Providing a standardized set of parameters.</li>
+                    <li>Having the ability to use parameters also in other places than the href</li>
+                </ol>
             </p>
             <pre id="uri-variables" class="json" title="URI Variables">
 {

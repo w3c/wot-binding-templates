@@ -1,7 +1,7 @@
 # Vocabulary Creation Guide
 
-Thing Description Forms can be extended with annotations on how to activate affordances.
-These annotations are typically from protocol vocabularies that need to exist separately from the binding template document.
+Thing Description Forms can be extended with annotations that further describe how to access affordances.
+These annotations are typically reused from existing protocol vocabularies that need to exist separately from the binding template document.
 This document gives guidance how such vocabularies can be created and how they should be used together with the templates and tools provided.
 
 ## Components of a Binding Template
@@ -9,7 +9,7 @@ This document gives guidance how such vocabularies can be created and how they s
 Besides the actual binding template document that is to be used by implementors
 (the `index.html` file), there are several additional companion documents which
 enable the binding to be used in practice.
-To enable TD consumers to work with the added vocabulary, the definition of a
+To enable TD consumers to understand the reused vocabularies, the definition of a
 JSON-LD context file (`context.jsonld`) is necessary.
 This file maps the TD-specific vocabulary defined in the binding template to an
 OWL ontology (`ontology.ttl`), enabling the use of Semantic Web technologies.

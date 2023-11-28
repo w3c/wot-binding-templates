@@ -128,7 +128,7 @@
             The following subset of BACnet features is supported by this binding:
             <ul>
                 <li>
-                    Services: ReadProperty, WriteProperty, SubscribeCOV, SubscribeCOVproperty
+                    Services: ReadProperty, WriteProperty, SubscribeCOV
                 </li>
                 <li>
                     Data Model: Device, Object, Property, Index
@@ -169,7 +169,7 @@
             method, physical media, or protocol service to use.
         </p>
         <p>
-            The 'bacnet' URI Scheme used herein is defined in Annex Q.8 of
+            The 'bacnet' URI Scheme used herein is based on the definition in Annex Q.8 of
             the BACnet Specification [[BACnet]].
         </p>
         <section>
@@ -179,7 +179,7 @@
                 Augmented Backus-Naur Form (ABNF) [[RFC5234]]:
             </p>
             <pre class="abnf">
-bacnet-URI = scheme ":" scheme-specific-part
+bacnet-URI = scheme ":" scheme-specific-part [uri-variable-part]
 scheme = "bacnet"
 scheme-specific-part = "//" device-identifier "/" object-identifier [ "/" property-identifier [ "/" property-array-index ] ]
 device-identifier = number / ".this"
@@ -188,6 +188,7 @@ object-type = number / identifier
 object-instance = number
 property-identifier = number / identifier
 property-array-index = number
+uri-variable-part = ?(key1=value1) *( "&" keyN=valueN )
 number = "0" / non-zero-digit *decimal-digit
 non-zero-digit = %x31-39  ; "1" to "9"
 decimal-digit = %x30-39  ; "0" to "9"
@@ -273,6 +274,19 @@ property-array-index = number
                 </p>
             </section>
             <section>
+                <h4><code>uri-variable-part</code> Component</h4>
+                <p>
+                    URI variables can be used to supply additional parameters to the BACnet operation.
+                    See <a href="#uri-variables-0">URI Variables</a> for further details.
+                </p>
+                <pre class="abnf">
+uri-variable-part = ?(key1=value1) *( "&" keyN=valueN )
+</pre>
+                <p>
+                    A string of key-value pairs starting with ? and separated via &amp;.
+                </p>
+            </section>
+            <section>
                 <h4>Numbers</h4>
                 <p>
                     A decimal number consists of one or more decimal digits. The
@@ -324,42 +338,51 @@ lowercase = %x61-7A  ; "a" to "z"
             <table class="def">
                 <thead>
                     <tr>
-                        <th>Vocabulary term</th>
+                        <th>URI variable</th>
                         <th>Description</th>
                         <th>Assignment</th>
-                        <th>Type</th>
+                        <th>Range</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>CommandPriority</code></td>
-                        <td>Sets CmdPrio for Writes</td>
+                        <td><code>commandPriority</code></td>
+                        <td>Sets priority for WriteProperty</td>
                         <td>optional</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#nonNegativeInteger"><code>integer</code></a>
+                            <a href="https://www.w3.org/2019/wot/json-schema#IntegerSchema"><code>integer</code></a>
                         </td>
                     </tr>
                     <tr>
                         <td><code>covIncrement</code></td>
-                        <td>Sets minimum change for reporting</td>
+                        <td>Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a property ID)</td>
                         <td>optional</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#decimal"><code>decimal</code></a>
+                            <a href="https://www.w3.org/2019/wot/json-schema#NumberSchema"><code>number</code></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <p>
-                URI Variables are not included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
+                URI Variables are included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
             </p>
             <p>
-                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and covIncrement. The semantic annotation is optional.
+                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and CovIncrement. The semantic annotation is optional.
             </p>
             <p>
                 This template could be used to construct the uriVariables element for TD interaction afffordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
             </p>
             <p>
-                These variables may be also used in a form element to provide a constant value for the BACnet driver to use for PDU option values. If the variable is set in the forms element, and the application appends a URI variable to the URI in the request to the BACnet driver, the BACnet driver MUST use the value provided by the application in the URI variable when constructing the BACnet PDU for the request.
+                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to use constant value for this parameter.
+            </p>
+            <p>
+                Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes regarding URI variables:
+                <ol>
+                    <li>Showing the link of URI variables to exactly which operations they are applicable to.</li>
+                    <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
+                    <li>Providing a standardized set of parameters.</li>
+                    <li>Having the ability to use parameters also in other places than the href</li>
+                </ol>
             </p>
             <pre id="uri-variables" class="json" title="URI Variables">
 {
@@ -368,14 +391,14 @@ lowercase = %x61-7A  ; "a" to "z"
         "bacv": "https://example.org/bacnet"
     }],
     "uriVariables": {
-        "CommandPriority": {
+        "commandPriority": {
             "@type": "bacv:CommandPriority",
             "type": "integer",
-            "minimum": 1,
-            "maximum": 16
+            "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            "default": 16
         },
         "covIncrement": {
-            "@type": "bacv:covIncrement",
+            "@type": "bacv:CovIncrement",
             "type": "number",
             "minimum": 0
         }
@@ -400,9 +423,9 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td>Indicates the BACnet service to use</td>
                         <td>
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOVproperty"</code>)</p>
+                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOV"</code>)</p>
                         </td>
-                        <td>td:forms</td>
+                        <td>hctl:Form</td>
                     </tr>
                     <tr>
                         <td><code>bacv:isISO8601</code></td>
@@ -411,7 +434,6 @@ lowercase = %x61-7A  ; "a" to "z"
                             <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
                         </td>
                         <td>bacv:Sequence</td>
-
                     </tr>
                     <tr>
                         <td><code>bacv:hasBinaryRepresentation</code></td>
@@ -527,12 +549,12 @@ lowercase = %x61-7A  ; "a" to "z"
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td>covIncrement</td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOVproperty"</code></td>
+                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
                         <td></td>
                     </tr>
                     <tr>
@@ -998,7 +1020,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "type": "number",
             "readOnly": true,
             "uriVariables": {
-                "covIncrement": {
+                "observeIncrement": {
                     "@type": "bacv:covIncrement",
                     "type": "number",
                     "minimum": 0
@@ -1006,33 +1028,8 @@ lowercase = %x61-7A  ; "a" to "z"
             },
             "forms": [{
                 "op": [ "observeproperty" ],
-                "href": "bacnet://5/0,1/85",
-                "bacv:usesService": "subscribeCOVproperty",
-                "bacv:hasDataType": {
-                    "@type": "bacv:Real"
-                }
-            }]
-        }
-    }
-}
-</pre>
-
-<pre id="example-form-variables" class="example" title="uriVariables in the forms element">
-{
-    "@context": ["https://www.w3.org/2022/wot/td/v1.1",
-    {
-        "bacv": "https://example.org/bacnet"
-    }],
-    ...
-    "properties": {
-        "analog1": {
-            "type": "number",
-            "readOnly": true,
-            "forms": [{
-                "op": [ "observeproperty" ],
-                "href": "bacnet://5/0,1/85",
-                "bacv:usesService": "subscribeCOVproperty",
-                "bacv:covIncrement": 0.2,
+                "href": "bacnet://5/0,1/85?covIncrement={observeIncrement}",
+                "bacv:usesService": "SubscribeCOV",
                 "bacv:hasDataType": {
                     "@type": "bacv:Real"
                 }
@@ -1062,20 +1059,20 @@ lowercase = %x61-7A  ; "a" to "z"
                     "@type": "bacv:Enumerated",
                     "bacv:hasValueMap": [
                         {
-                            "bacv:protocolVal": 1,
-                            "bacv:logicalVal": "on"
+                            "bacv:hasProtocolVal": 1,
+                            "bacv:hasLogicalVal": "on"
                         },
                         {
-                            "bacv:protocolVal": 2,
-                            "bacv:logicalVal": "off"
+                            "bacv:hasProtocolVal": 2,
+                            "bacv:hasLogicalVal": "off"
                         },
                         {
-                            "bacv:protocolVal": 3,
-                            "bacv:logicalVal": "auto"
+                            "bacv:hasProtocolVal": 3,
+                            "bacv:hasLogicalVal": "auto"
                         },
                         {
-                            "bacv:protocolVal": 4,
-                            "bacv:logicalVal": "normal"
+                            "bacv:hasProtocolVal": 4,
+                            "bacv:hasLogicalVal": "normal"
                         }
                     ]
                 }

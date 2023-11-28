@@ -16,12 +16,19 @@ OWL ontology (`ontology.ttl`), enabling the use of Semantic Web technologies.
 Finally, a JSON schema file (`example-protocol.schema.json`) should be provided
 to enable automatic validation of forms using the binding template.
 
+## Creating a New Vocabulary
+
+TODO
+
 ## Document Rendering Workflow
 
-Building upon this set of documents, an automated rendering process of the
-binding template document from the ontology can be established.
-To do so, a `template.sparql` file needs to be created which can insert rendered
-tables into placeholders (`%s`) within an `index.template.index` file.
+Building upon the set of documents mentioned above, an automated rendering
+process of the binding template document from the ontology can be established.
+To do so, a `template.sparql` file needs to be created based on
+[STTL](https://ns.inria.fr/sparql-template/), which defines rules for
+transforming a source RDF graph into a result text.
+The rules are applied to an `index.template.html` file which contains
+placeholders (`%s`) where the resulting tables are inserted.
 To be able to create these tables, the ontology vocabulary needs to be brought
 into the right form using a mapping (in `mapping.ttl`) based on SHACL
 (Shapes Constraint Language).

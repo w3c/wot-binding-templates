@@ -179,7 +179,7 @@
                 Augmented Backus-Naur Form (ABNF) [[RFC5234]]:
             </p>
             <pre class="abnf">
-bacnet-URI = scheme ":" scheme-specific-part
+bacnet-URI = scheme ":" scheme-specific-part [uri-variable-part]
 scheme = "bacnet"
 scheme-specific-part = "//" device-identifier "/" object-identifier [ "/" property-identifier [ "/" property-array-index ] ]
 device-identifier = number / ".this"
@@ -188,6 +188,7 @@ object-type = number / identifier
 object-instance = number
 property-identifier = number / identifier
 property-array-index = number
+uri-variable-part = ?(key1=value1) *( "&" keyN=valueN )
 number = "0" / non-zero-digit *decimal-digit
 non-zero-digit = %x31-39  ; "1" to "9"
 decimal-digit = %x30-39  ; "0" to "9"
@@ -270,6 +271,19 @@ property-array-index = number
                     elements. If the array index is omitted, it means that all the
                     elements of the array are to be accessed. An array index N,
                     greater than zero, identifies the Nth element in the sequence.
+                </p>
+            </section>
+            <section>
+                <h4><code>uri-variable-part</code> Component</h4>
+                <p>
+                    URI variables can be used to supply additional parameters to the BACnet operation.
+                    See <a href="#uri-variables-0">URI Variables</a> for further details.
+                </p>
+                <pre class="abnf">
+uri-variable-part = ?(key1=value1) *( "&" keyN=valueN )
+</pre>
+                <p>
+                    A string of key-value pairs starting with ? and separated via &amp;.
                 </p>
             </section>
             <section>

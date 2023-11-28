@@ -16,6 +16,8 @@ OWL ontology (`ontology.ttl`), enabling the use of Semantic Web technologies.
 Finally, a JSON schema file (`example-protocol.schema.json`) should be provided
 to enable automatic validation of forms using the binding template.
 
+## Document Rendering Workflow
+
 Building upon this set of documents, an automated rendering process of the
 binding template document from the ontology can be established.
 To do so, a `template.sparql` file needs to be created which can insert rendered

@@ -64,11 +64,11 @@ Default BACnet service by td:OperationType:
 TODO: Can we specify the defaults in a machine-readable, RDF-standard way?
 
 Not mapped yet:
-- td:invokeAction, td:queryAction, td:cancelaction
+- td:invokeAction, td:queryAction, td:cancelAction
 - td:subscribeEvent, td:unsubscribeEvent
 - td:readAllProperties, td:writeAllProperties, td:readMultipleProperties, td:writeMultipleProperties, td:observeAllProperties, td:unobserveAllProperties
 - td:queryAllActions
-- td:subscribeallevents, td:unsubscribeallevents
+- td:subscribeAllEvents, td:unsubscribeAllEvents
 """@en .
 
 bacnet:CovIncrement rdf:type owl:Class ;

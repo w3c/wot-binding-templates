@@ -9,8 +9,8 @@
         "modbusForm": {
             "type": "object",
             "properties": {
-                "modbus:pollingTime": {"type": "number", "minimum": 0},
-                "modbus:entity": {
+                "modv:pollingTime": {"type": "number", "minimum": 0},
+                "modv:entity": {
                     "type":"string",
                     "enum": [
                         "Coil",
@@ -19,7 +19,7 @@
                         "InputRegister"
                     ]
                 },
-                "modbus:function": {
+                "modv:function": {
                     "type": "string",
                     "enum": [
                         "readCoil",
@@ -32,8 +32,8 @@
                         "writeSingleHoldingRegister"
                     ]
                 },
-                "modbus:zeroBasedAddressing" : { "type" : "boolean"},
-                "modbus:timeout" : { "type": "number", "minimum": 0}
+                "modv:zeroBasedAddressing" : { "type" : "boolean"},
+                "modv:timeout" : { "type": "number", "minimum": 0}
             }
         },
         "affordance": {
@@ -58,7 +58,7 @@
             "contains": {
                 "type": "object",
                 "properties": {
-                    "modbus": {
+                    "modv": {
                         "type": "string",
                         "enum": [
                             "https://www.w3.org/2019/wot/modbus"

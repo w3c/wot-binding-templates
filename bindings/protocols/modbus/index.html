@@ -541,7 +541,7 @@
         </pre>
         A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
         <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
-                            {
+                            [{
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "readproperty",
@@ -554,7 +554,7 @@
                                     "writeproperty",
                                 ],
                                 "modv:function": "writeCoil",
-                            },
+                            }]
         </pre>
         Reducing effectively the verbosity of a TD. 
 
@@ -607,7 +607,7 @@
                   "@context": [
                       "https://www.w3.org/2019/wot/td/v1",
                       {
-                          "modv": "https://www.example.com/ns/modbustcp"
+                          "modv": "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/context.jsonld"
                       }
                   ],
                   "title": "ModbusPLC",

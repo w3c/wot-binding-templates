@@ -146,7 +146,7 @@
                     
         
         <tr>
-            <td><code>modbus:address</code></td>
+            <td><code>modv:address</code></td>
             <td>Specifies the starting address of the Modbus operations</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -156,7 +156,7 @@
 
         
         <tr>
-            <td><code>modbus:unitID</code></td>
+            <td><code>modv:unitID</code></td>
             <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -166,7 +166,7 @@
 
         
         <tr>
-            <td><code>modbus:quantity</code></td>
+            <td><code>modv:quantity</code></td>
             <td>Specifies the amount of either registers or coils to be read or written to</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -191,7 +191,7 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
-            <td><code>modbus:pollingTime</code></td>
+            <td><code>modv:pollingTime</code></td>
             <td>Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -200,7 +200,7 @@
         
 
         <tr>
-            <td><code>modbus:timeout</code></td>
+            <td><code>modv:timeout</code></td>
             <td>Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a reply from the device.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -209,7 +209,7 @@
         
 
         <tr>
-            <td><code>modbus:zeroBasedAddressing</code></td>
+            <td><code>modv:zeroBasedAddressing</code></td>
             <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
@@ -218,7 +218,7 @@
         
 
         <tr>
-            <td><code>modbus:entity</code></td>
+            <td><code>modv:entity</code></td>
             <td>A registry type to let the runtime automatically detect the right function code</td>
             <td>optional</td>
             <td><a href="#entity">Entity</a></td>
@@ -227,7 +227,7 @@
         
 
         <tr>
-            <td><code>modbus:function</code></td>
+            <td><code>modv:function</code></td>
             <td>Function Code sent by the master in every request. Specifying the desired interaction.</td>
             <td>optional</td>
             <td><a href="#function">Function</a></td>
@@ -240,7 +240,7 @@
         <section id="entity">
             <h3>Entity</h3>
             A more user-friendly property to specify [[[#function]]]. The client will then determine the right function code to be applied in
-            the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modbus:function</code> cannot (See the
+            the modbus request. Futhermore, it can be used in multi-operation forms whereas <code>modv:function</code> cannot (See the
             [[[#example-read-coil-entity]]])
             
             <table class="def" title="Entity values">
@@ -278,7 +278,7 @@
         
                 </tbody>
             </table>
-            <b>Notice</b> that when used in conjunction with <code>modbus:function</code>, the value of <code>modbus:function</code> property should be ignored.
+            <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of <code>modv:function</code> property should be ignored.
         </section>
         <section id="function">
             <h3>Function</h3>
@@ -393,37 +393,37 @@
                     
         <tr>
             <td><code>writeproperty</code></td>
-            <td><code>"modbus:function": "writeSingleCoil"</code></td>
+            <td><code>"modv:function": "writeSingleCoil"</code></td>
         <tr>
         
 
         <tr>
             <td><code>invokeaction</code></td>
-            <td><code>"modbus:function": "writeSingleCoil"</code></td>
+            <td><code>"modv:function": "writeSingleCoil"</code></td>
         <tr>
         
 
         <tr>
             <td><code>readallproperties</code></td>
-            <td><code>"modbus:function": "readHoldingRegisters"</code></td>
+            <td><code>"modv:function": "readHoldingRegisters"</code></td>
         <tr>
         
 
         <tr>
             <td><code>readmultipleproperties</code></td>
-            <td><code>"modbus:function": "readHoldingRegisters"</code></td>
+            <td><code>"modv:function": "readHoldingRegisters"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writeallproperties</code></td>
-            <td><code>"modbus:function": "writeMultipleHoldingRegisters"</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
 
         <tr>
             <td><code>writemultipleproperties</code></td>
-            <td><code>"modbus:function": "writeMultipleHoldingRegisters"</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
                 </tbody>
@@ -439,21 +439,21 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>modbus:quantity</code></td>
+                        <td><code>modv:quantity</code></td>
                         <td>
                             <code>1</code>
                         </td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><code>modbus:zeroBaseAddressing</code></td>
+                        <td><code>modv:zeroBaseAddressing</code></td>
                         <td>
                             <code>false</code>
                         </td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><code>modbus:timeout</code></td>
+                        <td><code>modv:timeout</code></td>
                         <td>
                             <code>infinite</code>
                         </td>
@@ -479,32 +479,32 @@
                     <tr>
                         <td><code>writeproperty</code></td>
                         <td>
-                            <code>"modbus:function":"writeMultipleCoils"</code>
+                            <code>"modv:function":"writeMultipleCoils"</code>
                         </td>
                     </tr>
                     <tr>
                         <td><code>writeproperty</code></td>
                         <td>
-                            <code>"modbus:function":"writeSingleHoldingRegister"</code>
+                            <code>"modv:function":"writeSingleHoldingRegister"</code>
                         </td>
                     </tr>
                     <tr>
                         <td><code>readproperty</code></td>
                         <td>
-                            <code>"modbus:function":"readDeviceIdentification"</code>
+                            <code>"modv:function":"readDeviceIdentification"</code>
                         </td>
                     </tr>
                     <tr>
                         <td><code>readproperty</code></td>
                         <td>
-                            <code>"modbus:function":"readDiscreteInput"</code>
+                            <code>"modv:function":"readDiscreteInput"</code>
                         </td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
                         <td>
-                            <code>"modbus:function":"readCoil"</code>;
-                            <code>"modbus:pollingTime": 1000</code>
+                            <code>"modv:function":"readCoil"</code>;
+                            <code>"modv:pollingTime": 1000</code>
                         </td>
                     </tr>
                 </tbody>
@@ -523,8 +523,8 @@
                 "op": [
                     "readproperty"
                 ],
-                "modbus:function": "readCoil",
-                "modbus:address": 1
+                "modv:function": "readCoil",
+                "modv:address": 1
             }
         </pre>
         To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
@@ -536,25 +536,25 @@
                             "readproperty",
                             "writeproperty"
                         ],
-                        "modbus:entity": "Coil",
+                        "modv:entity": "Coil",
                     }
         </pre>
         A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
         <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
-                            {
+                            [{
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "readproperty",
                                 ],
-                                "modbus:function": "readCoil",
+                                "modv:function": "readCoil",
                             },
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "writeproperty",
                                 ],
-                                "modbus:function": "writeCoil",
-                            },
+                                "modv:function": "writeCoil",
+                            }]
         </pre>
         Reducing effectively the verbosity of a TD. 
 
@@ -568,7 +568,7 @@
                                     "readproperty",
                                     "writeproperty"
                                 ],
-                                "modbus:entity": "HoldingRegister"
+                                "modv:entity": "HoldingRegister"
                             }
                 </pre>
         When possible WoT consumers will use Modbus features to read the desired amount of data with a single
@@ -582,7 +582,7 @@
                                     "readproperty",
                                     "writeproperty"
                                 ],
-                                "modbus:entity": "Coil"
+                                "modv:entity": "Coil"
                             }
                 </pre>
         Another notable configuration of a form using the Modbus vocabulary is the polling mechanism. Thanks
@@ -597,8 +597,8 @@
                 "op": [
                     "observeproperty"
                 ],
-                "modbus:entity": "Coil",
-                "modbus:pollingTime": 1000,
+                "modv:entity": "Coil",
+                "modv:pollingTime": 1000,
             }
         </pre>
         Finally, [[[#full-td]]] shows a complete device described using Modbus ontology.
@@ -607,7 +607,7 @@
                   "@context": [
                       "https://www.w3.org/2019/wot/td/v1",
                       {
-                          "modbus": "https://www.example.com/ns/modbustcp"
+                          "modv": "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/context.jsonld"
                       }
                   ],
                   "title": "ModbusPLC",
@@ -630,7 +630,7 @@
                               {
                                   "op": "readproperty",
                                   "href": "10003",
-                                  "modbus:function": "readDiscreteInput",
+                                  "modv:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -643,7 +643,7 @@
                               {
                                   "op": "readproperty",
                                   "href": "10002",
-                                  "modbus:function": "readDiscreteInput",
+                                  "modv:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -660,8 +660,8 @@
                                       "readproperty"
                                   ],
                                   "href": "6",
-                                  "modbus:entity": "Coil",
-                                  "modbus:pollingTime": 100,
+                                  "modv:entity": "Coil",
+                                  "modv:pollingTime": 100,
                                   "contentType": "application/octet-stream"
                               }
                           ]
@@ -678,8 +678,8 @@
                                       "readproperty"
                                   ],
                                   "href": "3",
-                                  "modbus:entity": "Coil",
-                                  "modbus:pollingRate": 100,
+                                  "modv:entity": "Coil",
+                                  "modv:pollingRate": 100,
                                   "contentType": "application/octet-stream"
                               }
                           ]

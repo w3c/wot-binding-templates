@@ -1,51 +1,51 @@
 {
     "@context": {
         "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "modbus":"https://www.w3.org/2019/wot/modbus#",
+        "modv":"https://www.w3.org/2019/wot/modbus#",
         "address": {
-            "@id": "modbus:hasAddress",
+            "@id": "modv:hasAddress",
             "@type": "xsd:integer"
         },
         "timeout" : {
-            "@id": "modbus:hasTimeout",
+            "@id": "modv:hasTimeout",
             "@type": "xsd:integer"
         }, 
         "zeroBasedAddressing" : {
-            "@id": "modbus:hasZeroBasedAddressingFlag",
+            "@id": "modv:hasZeroBasedAddressingFlag",
             "@type": "xsd:boolean"
         }, 
         "quantity" : {
-            "@id": "modbus:hasQuantity",
+            "@id": "modv:hasQuantity",
             "@type": "xsd:integer"
         }, 
         "pollingTime" : {
-            "@id": "modbus:hasPollingTime",
+            "@id": "modv:hasPollingTime",
             "@type": "xsd:integer"
         }, 
         "unitID": {
-            "@id": "modbus:hasUnitID",
+            "@id": "modv:hasUnitID",
             "@type": "xsd:integer"
         },
         "entity" : {
-            "@id": "modbus:hasEntity",
+            "@id": "modv:hasEntity",
             "@type": "@vocab"
         }, 
         "function" : {
-            "@id": "modbus:hasFunction",
+            "@id": "modv:hasFunction",
             "@type": "@vocab"
         },
-        "Coil": "modbus:Coil",
-        "DiscreteInput" : "modbus:DiscreteInput",
-        "HoldingRegister": "modbus:HoldingRegister",
-        "InputRegister": "modbus:InputRegister",
-        "readCoil": "modbus:readCoil",
-        "readDiscreteInput": "modbus:readDiscreteInput",
-        "readHoldingRegister" : "modbus:readHoldingRegister",
-        "readInputRegister": "modbus:readInputRegister",
-        "writeSingleCoil": "modbus:writeSingleCoil",
-        "writeMultipleCoils": "modbus:writeMultipleCoils",
-        "writeMultipleHoldingRegister": "modbus:writeMultipleHoldingRegister",
-        "writeSingleHoldingRegister" : "modbus:writeSingleHoldingRegister"
+        "Coil": "modv:Coil",
+        "DiscreteInput" : "modv:DiscreteInput",
+        "HoldingRegister": "modv:HoldingRegister",
+        "InputRegister": "modv:InputRegister",
+        "readCoil": "modv:readCoil",
+        "readDiscreteInput": "modv:readDiscreteInput",
+        "readHoldingRegister" : "modv:readHoldingRegister",
+        "readInputRegister": "modv:readInputRegister",
+        "writeSingleCoil": "modv:writeSingleCoil",
+        "writeMultipleCoils": "modv:writeMultipleCoils",
+        "writeMultipleHoldingRegister": "modv:writeMultipleHoldingRegister",
+        "writeSingleHoldingRegister" : "modv:writeSingleHoldingRegister"
 
     }
 }

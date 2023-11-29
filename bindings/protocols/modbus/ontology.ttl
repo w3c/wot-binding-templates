@@ -17,7 +17,7 @@
                                                       "Elisa Riforgiato https://github.com/elithkob" ,
                                                       "Jakob Müller https://github.com/Drukob" ,
                                                       "Luca Roffia https://github.com/lroffia" ;
-                                      vann:preferredNamespacePrefix "modbus" ;
+                                      vann:preferredNamespacePrefix "modv" ;
                                       vann:preferredNamespaceUri : ;
                                       rdfs:comment "Vocabulary to represent Modbus messages in RDF."@en ;
                                       rdfs:label "Modbus in RDF"@en .

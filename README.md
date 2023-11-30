@@ -44,6 +44,11 @@ For convenience purposes, the currently available Editor's Draft of subspecifica
             <td>Modbus</td>
             <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/index.html">Link</a></td>
         </tr>
+        <tr>
+            <td>BACnet</td>
+            <td>BACnet</td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html">Binding Template</a></td>
+        </tr>
     </tbody>
 </table>
 

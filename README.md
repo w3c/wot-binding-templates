@@ -46,8 +46,8 @@ For convenience purposes, the currently available Editor's Draft of subspecifica
         </tr>
         <tr>
             <td>BACnet</td>
-            <td>BACnet</td>
-            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html">Binding Template</a></td>
+            <td>Building Automation and Control Networks</td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html">Link</a></td>
         </tr>
     </tbody>
 </table>

@@ -1,6 +1,6 @@
 # Vocabulary Creation Guide
 
-Thing Description Forms can be extended with annotations that further describe how to access affordances.
+Thing Description Forms can be extended with annotations that further describe how to activate affordances.
 These annotations are typically reused from existing protocol vocabularies that need to exist separately from the binding template document.
 This document gives guidance on how such vocabularies can be created and how they should be used together with the templates and tools provided.
 

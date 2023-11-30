@@ -54,7 +54,7 @@ into the right form using a mapping (in `mapping.ttl`) based on SHACL
 Once the files are in place, they need to be inserted into the top-level
 `render.js` file, which can not only create a rendered binding template
 (`index.html`) file but also a human-readable ontology file (`ontology.html`)
-which can be used as a alternative representation based on content negotiation.
+which can be used as an alternative representation based on content negotiation.
 
 Examples of existing binding template files can be found in the `bindings`
 directory.

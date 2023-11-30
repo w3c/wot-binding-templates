@@ -75,13 +75,13 @@
     <section id='abstract'>
         <p>
             In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to
-            implement a specific IoT protocol, data format or IoT platform.
+            implement a specific IoT protocol, data format, or IoT platform.
             The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
             This document gives implementation guidelines regarding BACnet [[BACnet]], a building automation and control networking protocol.
         </p>
         <p>
             More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document,
-            and associated rules which allow to describe WoT operations using BACnet over the network.
+            and associated rules that allow to description of WoT operations using BACnet over the network.
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
         </p>
     </section>
@@ -104,7 +104,7 @@
         </p>
         <p>
             This document describes how the Web of Things Thing Description [[WOT-THING-DESCRIPTION]] (TD) can be used to represent devices that use BACnet. 
-            In particular, the document explain how to create valid TD Forms for the
+            In particular, the document explains how to create valid TD Forms for the
             different operations that BACnet can perform.
         </p>
     </section>
@@ -154,7 +154,7 @@
         </p>
         <p>
             Selected BACnet Service parameters are exposed as URI Variables to enable
-            WoT consumers access to BACnet features, for example Command Priority.
+            WoT consumers access to BACnet features, for example, Command Priority.
         </p>
 
     </section>
@@ -328,7 +328,7 @@ lowercase = %x61-7A  ; "a" to "z"
             exchange data between Web of Things clients, devices, and services.
         </p>
         <p>
-            This vocabulary is fully defined in the BACnet ontology published with this document.
+            This vocabulary is fully defined in the BACnet ontology published together with this document.
         </p>
         <p class="ednote">
             Until the JSON-LD context is published, this document will use the  example URI <code>"https://example.org/bacnet"</code>for the context with the prefix <code>"bacv"</code>.
@@ -364,21 +364,21 @@ lowercase = %x61-7A  ; "a" to "z"
                 </tbody>
             </table>
             <p>
-                URI Variables are included in the 'bacnet' URI Scheme, and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
+                URI Variables are included in the 'bacnet' URI Scheme and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
             </p>
             <p>
-                The following JSON example shows usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and CovIncrement. The semantic annotation is optional.
+                The following JSON example shows the usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and CovIncrement. The semantic annotation is optional.
             </p>
             <p>
-                This template could be used to construct the uriVariables element for TD interaction afffordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
+                This template could be used to construct the uriVariables element for TD interaction affordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
             </p>
             <p>
-                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to use constant value for this parameter.
+                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to use a constant value for this parameter.
             </p>
             <p>
                 Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes regarding URI variables:
                 <ol>
-                    <li>Showing the link of URI variables to exactly which operations they are applicable to.</li>
+                    <li>Showing the link of URI variables to exactly which operations they apply to.</li>
                     <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
                     <li>Providing a standardized set of parameters.</li>
                     <li>Having the ability to use parameters also in other places than the href</li>
@@ -523,7 +523,7 @@ lowercase = %x61-7A  ; "a" to "z"
         <h2>Mappings</h2>
         <p>
             This section describes the strategies and default values to use
-            protocol specific concepts within the
+            protocol-specific concepts within the
             <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
         </p>
         <section id="default-mappings">
@@ -974,12 +974,12 @@ lowercase = %x61-7A  ; "a" to "z"
     <section>
         <h2>Examples</h2>
         <p>
-            This section will present a set of examples about how the terms
+            This section will present a set of examples of how the terms
             defined in this document can be used to describe and configure a
             Form.
         </p>
         <p>
-            [[[#example-readproperty]]] shows the property with object type
+            [[[#example-readproperty]]] shows a property with the object type
             <code>analog-input</code>, object instance <code>1</code>, and
             property identifier <code>present-value</code> in the scope of a
             BACnet device with device instance number <code>5</code>.

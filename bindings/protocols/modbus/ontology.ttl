@@ -175,7 +175,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasUnitID rdf:type owl:DatatypeProperty ;
            rdfs:domain :Request ;
            rdfs:range xsd:integer ;
-           rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included" ;
+           rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons still often included" ;
            rdfs:label "hasUnitID"@en .
 
 
@@ -241,7 +241,7 @@ On the contrary, the response operation is identified with an error code or exce
 
 ###  https://www.w3.org/2019/wot/modbus#Message
 :Message rdf:type owl:Class ;
-         rdfs:comment "A Modbus Message class represents the comunication between client and server"@en ;
+         rdfs:comment "A Modbus Message class represents the communication between client and server"@en ;
          rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
          rdfs:label "A Modbus Message"@en .
 
@@ -255,7 +255,7 @@ On the contrary, the response operation is identified with an error code or exce
 ###  https://www.w3.org/2019/wot/modbus#Request
 :Request rdf:type owl:Class ;
          rdfs:subClassOf :Message ;
-         rdfs:comment "A Request message is sent by a client device to a server device. The comunication client/server stats only with a request sent by the client."@en ;
+         rdfs:comment "A Request message is sent by a client device to a server device. The communication client/server stats only with a request sent by the client."@en ;
          rdfs:label "Request"@en .
 
 
@@ -286,8 +286,8 @@ On the contrary, the response operation is identified with an error code or exce
 :DataRequest rdf:type owl:Class ;
               rdfs:subClassOf :Data_Field ;
               rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code. 
-This can include items like discree and register address, the quantity of items to be handled, and the count of actual data bytes in the field.
-The data request field my be nonexistent (zero length) in certain kid of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;
+This can include items like discree?? and register address, the quantity of items to be handled, and the count of actual data bytes in the field.
+The data request field may be nonexistent (zero length) in certain kind of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;
               rdfs:label "Data request" .
 
 
@@ -436,7 +436,7 @@ The data request field my be nonexistent (zero length) in certain kid of request
 :readDeviceIdentification rdf:type owl:NamedIndividual ,
                                    :Function ;
                           :hasCodeNumber 43 ;
-                          rdfs:comment "Read Device Identification for diagnostic purposes. Avaiable in the majority of Modbus implementations."@en ;
+                          rdfs:comment "Read Device Identification for diagnostic purposes. Available in the majority of Modbus implementations."@en ;
                           rdfs:label "Read Device Identification"@en .
 
 

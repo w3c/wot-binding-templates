@@ -19,7 +19,7 @@ to enable automatic validation of forms using the binding template.
 ## Creating a New Vocabulary
 
 In order to create a new Binding Template, you need to first conceptualize
-how the different parameters that can be set for a procotocol interaction can
+how the different parameters that can be set for a protocol interaction can
 be mapped to the different types of Interaction Affordances (Properties,
 Actions, and Events).
 For instance, an HTTP vocabulary for the Web of Things can define vocabulary

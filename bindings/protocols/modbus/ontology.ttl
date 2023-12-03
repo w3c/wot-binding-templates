@@ -108,6 +108,14 @@ binding:assignment rdf:type owl:AnnotationProperty .
              rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
              rdfs:label "hasFunction"@en .
 
+###  https://www.w3.org/2019/wot/modbus#hasFunction
+:hasType rdf:type owl:ObjectProperty ;
+             rdfs:domain :Request ,
+                         :NormalResponse ;
+             rdfs:range :PayloadDataType ;
+             rdfs:comment "Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of 'xsd:decimal'."@en ;
+             rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
+             rdfs:label "hasType"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#readFrom
 :readFrom rdf:type owl:ObjectProperty ;
@@ -181,10 +189,22 @@ binding:assignment rdf:type owl:AnnotationProperty .
 
 ###  https://www.w3.org/2019/wot/modbus#hasZeroBasedAddressingFlag
 :hasZeroBasedAddressingFlag rdf:type owl:DatatypeProperty ;
-                            rdfs:domain :Entity ;
+                            rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
                             rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False."@en ;
                             rdfs:label "hasZeroBasedAddressingFlag"@en .
+
+:hasMostSignificantByte rdf:type owl:DatatypeProperty ;
+                            rdfs:domain :Request ;
+                            rdfs:range xsd:boolean ;
+                            rdfs:comment "Specifies whether the byte order of the data in the Modbus message is most significant byte first (e.g., Big-Endian) or least significant byte first."@en ;
+                            rdfs:label "hasMostSignificantByte"@en .
+
+:hasMostSignificantWord rdf:type owl:DatatypeProperty ;
+                            rdfs:domain :Request ;
+                            rdfs:range xsd:boolean ;
+                            rdfs:comment "Specifies whether the word order of the data in the Modbus message is most significant word first (e.g., no swap) or least significant word first (e.g. byte swapping)"@en ;
+                            rdfs:label "hasMostSignificantWord"@en .
 
 
 #################################################################
@@ -228,6 +248,29 @@ binding:assignment rdf:type owl:AnnotationProperty .
           rdfs:subClassOf :Function_Field ;
           rdfs:comment "Function code identifies the operation requested by client, indicates to the server what kind of action to perform. For a normal response, the server simply echoes to the request the original function code."@en ;
           rdfs:label "Function"@en .
+
+        
+###  https://www.w3.org/2019/wot/modbus#PayloadDataType
+:PayloadDataType rdf:type owl:Class ;
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:oneOf ( xsd:integer
+                                            xsd:boolean
+                                            xsd:string
+                                            xsd:float
+                                            xsd:decimal
+                                            xsd:byte
+                                            xsd:short
+                                            xsd:int
+                                            xsd:long
+                                            xsd:unsignedByte
+                                            xsd:unsignedShort
+                                            xsd:unsignedInt
+                                            xsd:unsignedLong
+                                            xsd:double
+                                          )
+                              ] ;
+          rdfs:comment "Represents the data types that can be used to define the payload content in Modbus messages."@en ;
+          rdfs:label "PayloadDataType"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#Function_Field

@@ -41,6 +41,11 @@
         sh:maxCount 1 ;
     ] ;
     sh:property [
+        sh:path modbus:hasType ;
+		sh:class modbus:PayloadDataType ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
         sh:path modbus:hasAddress ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
@@ -66,6 +71,16 @@
         sh:path modbus:hasTimeout ;
         sh:maxCount 1 ;
         sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path modbus:hasMostSignificantByte ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path modbus:hasMostSignificantWord ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
     ] ;
     sh:property [
         sh:path modbus:hasZeroBasedAddressingFlag ;

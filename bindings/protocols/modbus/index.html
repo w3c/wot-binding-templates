@@ -157,7 +157,7 @@
         
         <tr>
             <td><code>modv:unitID</code></td>
-            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
+            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons still often included</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -191,6 +191,15 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
+            <td><code>modv:zeroBasedAddressing</code></td>
+            <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False.</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
+        
+
+        <tr>
             <td><code>modv:pollingTime</code></td>
             <td>Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
             <td>optional</td>
@@ -209,8 +218,8 @@
         
 
         <tr>
-            <td><code>modv:zeroBasedAddressing</code></td>
-            <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False.</td>
+            <td><code>modv:mostSignificantByte</code></td>
+            <td>Specifies whether the byte order of the data in the Modbus message is most significant byte first (e.g., Big-Endian) or least significant byte first.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
 
@@ -218,10 +227,10 @@
         
 
         <tr>
-            <td><code>modv:entity</code></td>
-            <td>A registry type to let the runtime automatically detect the right function code</td>
+            <td><code>modv:mostSignificantWord</code></td>
+            <td>Specifies whether the word order of the data in the Modbus message is most significant word first (e.g., no swap) or least significant word first (e.g. byte swapping)</td>
             <td>optional</td>
-            <td><a href="#entity">Entity</a></td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
 
         <tr>
         
@@ -234,8 +243,44 @@
 
         <tr>
         
+
+        <tr>
+            <td><code>modv:type</code></td>
+            <td>Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of 'xsd:decimal'.</td>
+            <td>optional</td>
+            <td><a href="#payloaddatatype">PayloadDataType</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modv:entity</code></td>
+            <td>A registry type to let the runtime automatically detect the right function code</td>
+            <td>optional</td>
+            <td><a href="#entity">Entity</a></td>
+
+        <tr>
+        
                 </tbody>
             </table>
+            <p>
+                The <code>modv:mostSignificantByte</code> and <code>modv:mostSignificantWord</code> properties within the Modbus
+                binding template define the byte and word order of data within Modbus messages. In Modbus
+                communication, the arrangement of bytes and words may vary between systems, and these properties provide a
+                declarative way to capture such configurations. For instance, in Big-Endian byte order (e.g., AABBCC), the most
+                significant byte comes first, and setting <code>modv:mostSignificantByte</code> to true ensures the correct
+                interpretation of the data as AABBCC. Conversely, in Little-Endian byte order (e.g., CCBBAA), the least significant
+                byte comes first, therefore <code>modv:mostSignificantByte</code> has to be set to false.
+                On the other hand, the <code>modv:mostSignificantWord</code> property extends this functionality to message payloads
+                composed by more than two registers. For example, given a message payload composed by four registers (e.g., AABBCCDD),
+                with <code>modv:mostSignificantWord</code> set to true let the client to correctly interpretate the data as AABBCCDD, 
+                while setting the property to false will result in the interpretation of the data as DDCCAABB. For further examples, see
+                [[[#example-read-holding-32bit]]].
+                Note that while word swapping is not part of the Modbus specification, it is a practice observed in off-the-shelf devices. 
+                Therefore, when creating a Thing Description (TD), users may need to account for such deviations by configuring the
+                <code>hasMostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties accordingly.
+            </p>
+
         </section>
         <section id="entity">
             <h3>Entity</h3>
@@ -308,7 +353,7 @@
             <td><code>readDeviceIdentification</code></td>
             <td>Read Device Identification</td>
             <td>43</td>
-            <td>Read Device Identification for diagnostic purposes. Avaiable in the majority of Modbus implementations.</td>
+            <td>Read Device Identification for diagnostic purposes. Available in the majority of Modbus implementations.</td>
         <tr>
         
 
@@ -369,6 +414,61 @@
         
                 </tbody>
             </table>
+        </section>
+        <section id="payloaddatatype">
+            <h3>Payload DataType</h3>
+            <p>
+                The <code>PayloadDataType</code> class within the Modbus Binding Template serves as value for the <code>modv:type</code> property to specify
+                the expected data types of payload content in Modbus messages. It offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to
+                cover the most common data types used in Modbus messages. Note that the <code>PayloadDataType</code> 
+                entity is designed for describing established conventions in the Modbus ecosystem, further development might remove this 
+                functionality or add new terms.
+                Currently, the <code>PayloadDataType</code> class contains the following data types:
+            </p>
+            <ul>
+                
+        <li><code>xsd:integer</code></li>
+        
+
+        <li><code>xsd:boolean</code></li>
+        
+
+        <li><code>xsd:string</code></li>
+        
+
+        <li><code>xsd:float</code></li>
+        
+
+        <li><code>xsd:decimal</code></li>
+        
+
+        <li><code>xsd:byte</code></li>
+        
+
+        <li><code>xsd:short</code></li>
+        
+
+        <li><code>xsd:int</code></li>
+        
+
+        <li><code>xsd:long</code></li>
+        
+
+        <li><code>xsd:unsignedbyte</code></li>
+        
+
+        <li><code>xsd:unsignedshort</code></li>
+        
+
+        <li><code>xsd:unsignedint</code></li>
+        
+
+        <li><code>xsd:unsignedlong</code></li>
+        
+
+        <li><code>xsd:double</code></li>
+        
+            </ul>
         </section>
     </section>
     <section id="mappings">
@@ -449,6 +549,20 @@
                         <td><code>modv:zeroBaseAddressing</code></td>
                         <td>
                             <code>false</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modv:mostSignificantByte</code></td>
+                        <td>
+                            <code>true</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>modv:mostSignificantWord</code></td>
+                        <td>
+                            <code>true</code>
                         </td>
                         <td></td>
                     </tr>
@@ -584,7 +698,23 @@
                                 ],
                                 "modv:entity": "Coil"
                             }
-                </pre>
+        </pre>
+
+        When dealing with multi registers payloads it is possible to specify further details about the data type
+        sent on the wire in the payload request. The following example shows how to read a 32bit integer Little-Endian
+        value stored in two HoldingRegisters.
+        <pre id="example-read-holding-32bit" class="example" title="Read a 32bit integer">
+            {
+                "href": "modbus+tcp://127.0.0.1:60000/1/1?quantity=2",
+                "op": [
+                    "readproperty"
+                ],
+                "modv:entity": "HoldingRegister",
+                "modv:type": "xsd:int"
+                "modv:mostSignificantByte": false
+            }
+        </pre>
+
         Another notable configuration of a form using the Modbus vocabulary is the polling mechanism. Thanks
         to the keyword <code>pollingTime</code> the user can indicate the intervals for observing a particular
         set of registers. Supposing that the device knows that the value of coil register 1 does change every 

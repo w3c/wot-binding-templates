@@ -81,8 +81,8 @@
             control of the relays and generic contact statuses.
         </p>
         <p>
-            All Modbus devices operate by exposing a certain set of their coils (bits) and registers (group of 16 bits) over the network.
-            These coils or registers can be read or written to with a simple request-response mechanism.
+            All Modbus devices operate by exposing a certain set of coils (bits) and registers (group of 16 bits) over the network.
+            These coils or registers can be read or written with a simple request-response mechanism.
             Very typically, registers are also combined to represent data that is larger than 16 bits, i.e. two registers can be used
             together to represent a 32 bit integer.
             Thus, a Modbus client can read a set of registers at once and obtain a large value.
@@ -94,11 +94,10 @@
             Thanks to this encapsulation strategy, the Modbus protocol can reach remote nodes deployed in distant facilities over the Internet. 
             Moreover, over the years, due to its simplicity and cost-effectiveness the Modbus protocol became a standard all over the world. 
             This popularity, together with the advancement of the microcontroller/microprocessor, has led to a shift on how applications pack the information.
-            Building on this, this document we are focusing on the Modbus TCP.
-            Other versions of Modbus can be incorporated into this document in the future.
         </p>
         <p>
             Concretely, this document describes how WoT TDs can be used to describe devices that use the Modbus TCP protocol.
+            Other versions of Modbus can be incorporated into this document in the future.
             In particular, the document explain how to create valid URLs and Forms for the different operations that the Modbus TCP protocol can perform. 
             Developers are encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations. 
             The following sections will cover the URL format, the vocabulary and a list of Form examples. 

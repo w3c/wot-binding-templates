@@ -197,13 +197,15 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasMostSignificantByte rdf:type owl:DatatypeProperty ;
                             rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "Specifies whether the byte order of the data in the Modbus message is most significant byte first (e.g., Big-Endian) or least significant byte first."@en ;
+                            rdfs:comment "When true, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e., Little-Endian)."@en ;
+
                             rdfs:label "hasMostSignificantByte"@en .
 
 :hasMostSignificantWord rdf:type owl:DatatypeProperty ;
                             rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "Specifies whether the word order of the data in the Modbus message is most significant word first (e.g., no swap) or least significant word first (e.g. byte swapping)"@en ;
+                            rdfs:comment "When true, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When false, it describes the least significant word first (i.e. word swapping)"@en ;
+
                             rdfs:label "hasMostSignificantWord"@en .
 
 

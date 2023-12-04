@@ -174,7 +174,7 @@
                 On the other hand, the <code>modv:mostSignificantWord</code> property extends this functionality to message payloads
                 composed by more than two registers. For example, given a message payload composed by four registers (e.g., AABBCCDD),
                 with <code>modv:mostSignificantWord</code> set to true let the client to correctly interpretate the data as AABBCCDD, 
-                while setting the property to false will result in the interpretation of the data as DDCCAABB. For further examples, see
+                while setting the property to false will result in the interpretation of the data as CCDDAABB. For further examples, see
                 [[[#example-read-holding-32bit]]].
                 Note that while word swapping is not part of the Modbus specification, it is a practice observed in off-the-shelf devices. 
                 Therefore, when creating a Thing Description (TD), users may need to account for such deviations by configuring the
@@ -430,7 +430,7 @@
                             }
         </pre>
 
-        When dealing with multi registers payloads it is possible to specify further details about the data type
+        When dealing with multi registers payloads, it is possible to specify further details about the data type
         sent on the wire in the payload request. The following example shows how to read a 32bit integer Little-Endian
         value stored in two HoldingRegisters.
         <pre id="example-read-holding-32bit" class="example" title="Read a 32bit integer">

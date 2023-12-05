@@ -111,7 +111,7 @@
     <section id="conformance">
         <p>
             Forms of a Thing Description instance with BACnet Binding complies with this specification if it follows
-            the normative statements in <a href="#vocabulary"></a> and <a href="#mappings"></a>.
+            the normative statements in [[[#vocabulary]]] and [[[#mappings]]].
         </p>
         <p>
             A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
@@ -277,7 +277,7 @@ property-array-index = number
                 <h4><code>uri-variable-part</code> Component</h4>
                 <p>
                     URI variables can be used to supply additional parameters to the BACnet operation.
-                    See <a href="#uri-variables-0">URI Variables</a> for further details.
+                    See [[[#vocabulary-uri-variables]]] for further details.
                 </p>
                 <pre class="abnf">
 uri-variable-part = ?(key1=value1) *( "&" keyN=valueN )
@@ -334,7 +334,7 @@ lowercase = %x61-7A  ; "a" to "z"
             Until the JSON-LD context is published, this document will use the  example URI <code>"https://example.org/bacnet"</code>for the context with the prefix <code>"bacv"</code>.
         </p>
         <section>
-            <h3>URI Variables</h3>
+            <h3 id="vocabulary-uri-variables">URI Variables</h3>
             <table class="def">
                 <thead>
                     <tr>
@@ -384,7 +384,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <li>Having the ability to use parameters also in other places than the href</li>
                 </ol>
             </p>
-            <pre id="uri-variables" class="json" title="URI Variables">
+            <pre id="example-uri-variables" class="example" title="URI Variables Usage in BACnet">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -407,7 +407,7 @@ lowercase = %x61-7A  ; "a" to "z"
             </pre>
         </section>
         <section>
-            <h3>Form terms</h3>
+            <h3 id="vocabulary-form-terms">Form terms</h3>
             <table class="def">
                 <thead>
                     <tr>
@@ -972,7 +972,7 @@ lowercase = %x61-7A  ; "a" to "z"
         -->
     </section>
     <section>
-        <h2>Examples</h2>
+        <h2 id="examples">Examples</h2>
         <p>
             This section will present a set of examples of how the terms
             defined in this document can be used to describe and configure a
@@ -984,7 +984,7 @@ lowercase = %x61-7A  ; "a" to "z"
             property identifier <code>present-value</code> in the scope of a
             BACnet device with device instance number <code>5</code>.
         </p>
-        <pre id="example-readproperty" class="example" title="A BACnet property">
+<pre id="example-readproperty" class="example" title="A BACnet property">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1008,7 +1008,14 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<pre id="example-affordance-variables" class="example" title="uriVariables in the Interaction Affordance">
+<p>
+    [[[#example-uri-variables-with-forms]]] demonstrates how the <code>uriVariables</code> in the affordance-level can be 
+    used and how they need to be represented in a <code>forms</code> element.
+    The <code>"bacv:covIncrement"</code> indicates that the URI variable set by the Consumer application will be used to notify the 
+    Consumer only if the property value changes more than the set amount by the URI variable. 
+</p>
+
+<pre id="example-uri-variables-with-forms" class="example" title="uriVariables in the Affordance Level with Associated forms">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1039,7 +1046,12 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<pre id="example-form-variables" class="example" title="value mapping for an Enumeration">
+<p>
+    [[[#example-enum-mapping]]] shows how an <code>enum</code> in the Data Schema is extended in the <code>forms</code> 
+    to make it understandable by BACnet drivers.
+</p>
+
+<pre id="example-enum-mapping" class="example" title="Enum Mapping for BACnet Types">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {

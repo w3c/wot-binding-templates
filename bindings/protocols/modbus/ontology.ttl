@@ -129,54 +129,54 @@ binding:assignment rdf:type owl:AnnotationProperty .
 #################################################################
 
 ###  https://www.w3.org/2019/wot/modbus#hasAddress
-:hasAddress rdf:type owl:DatatypeProperty ;
+:address rdf:type owl:DatatypeProperty ;
             rdfs:domain :Request ;
             rdfs:range xsd:integer ;
             rdfs:comment "Specifies the starting address of the Modbus operations"@en ;
-            rdfs:label "hasAddress"@en ;
+            rdfs:label "address"@en ;
             binding:assignment binding:required .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasCodeNumber
-:hasCodeNumber rdf:type owl:DatatypeProperty ;
+:codeNumber rdf:type owl:DatatypeProperty ;
                rdfs:domain :Function ,
                            :ResponseCode ,
                            :ExceptionFunction ;
                rdfs:range xsd:integer ;
                rdfs:comment "Specifies the Modbus function/exception code number"@en ;
-               rdfs:label "hasCodeNumber"@en .
+               rdfs:label "codeNumber"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasPollingTime
-:hasPollingTime rdf:type owl:DatatypeProperty ;
+:pollingTime rdf:type owl:DatatypeProperty ;
                 rdfs:domain :Request ;
                 rdfs:range xsd:integer ;
                 rdfs:comment "Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds." ;
-                rdfs:label "hasPollingTime"@en .
+                rdfs:label "pollingTime"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasQuantity
-:hasQuantity rdf:type owl:DatatypeProperty ;
+:quantity rdf:type owl:DatatypeProperty ;
              rdfs:domain :Request ;
              rdfs:range xsd:integer ;
              rdfs:comment "Specifies the amount of either registers or coils to be read or written to"@en ;
-             rdfs:label "hasQuantity"@en .
+             rdfs:label "quantity"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasTimeout
-:hasTimeout rdf:type owl:DatatypeProperty ;
+:timeout rdf:type owl:DatatypeProperty ;
             rdfs:domain :Request ;
             rdfs:range xsd:integer ;
             rdfs:comment "Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a reply from the device." ;
-            rdfs:label "hasTimeout"@en .
+            rdfs:label "timeout"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasUnitID
-:hasUnitID rdf:type owl:DatatypeProperty ;
+:unitID rdf:type owl:DatatypeProperty ;
            rdfs:domain :Request ;
            rdfs:range xsd:integer ;
            rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included" ;
-           rdfs:label "hasUnitID"@en .
+           rdfs:label "unitID"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasZeroBasedAddressingFlag

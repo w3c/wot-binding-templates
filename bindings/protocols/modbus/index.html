@@ -144,35 +144,6 @@
                 <tbody>
                     <!-- Generate forms terms from the ontology-->
                     
-        
-        <tr>
-            <td><code>modv:address</code></td>
-            <td>Specifies the starting address of the Modbus operations</td>
-            <td>required</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
-        
-        <tr>
-            <td><code>modv:unitID</code></td>
-            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included</td>
-            <td>required</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
-        
-        <tr>
-            <td><code>modv:quantity</code></td>
-            <td>Specifies the amount of either registers or coils to be read or written to</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
                 </tbody>
             </table>
         </section>
@@ -190,24 +161,6 @@
                 <tbody>
                     <!-- Generate forms terms from the ontology-->
                     
-        <tr>
-            <td><code>modv:pollingTime</code></td>
-            <td>Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
-        <tr>
-            <td><code>modv:timeout</code></td>
-            <td>Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a reply from the device.</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-
-        <tr>
-        
-
         <tr>
             <td><code>modv:zeroBasedAddressing</code></td>
             <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False.</td>

@@ -109,7 +109,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
              rdfs:label "hasFunction"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#hasFunction
-:hasType rdf:type owl:ObjectProperty ;
+:hasPayloadDataType rdf:type owl:ObjectProperty ;
              rdfs:domain :Request ,
                          :NormalResponse ;
              rdfs:range :PayloadDataType ;

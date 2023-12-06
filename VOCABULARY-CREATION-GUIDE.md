@@ -14,7 +14,7 @@ JSON-LD context file (`context.jsonld`) is necessary.
 This file maps the TD-specific vocabulary defined in the binding template to an
 OWL ontology (`ontology.ttl`), enabling the use of Semantic Web technologies.
 Finally, a JSON schema file (`example-protocol.schema.json`) should be provided
-to enable automatic validation of forms using the binding template.
+to enable automatic syntactic validation of forms using the binding template.
 
 ## Creating a New Vocabulary
 
@@ -28,7 +28,7 @@ usable in requests.
 Vocabulary terms can also be more specific to a certain type of Interaction
 Affordance or operation type, e.g., Event Affordances or observable Properties.
 
-The mapping then needs to be cast into vocabulary terms based on the Web
+The mapping then needs to be described as vocabulary terms based on the Web
 Ontology Language (OWL) and – more generally – the Resource Description
 Framework (RDF).
 This mapping can reuse existing, more general vocabularies and integrate them
@@ -46,8 +46,9 @@ To do so, a `template.sparql` file needs to be created based on
 [STTL](https://ns.inria.fr/sparql-template/), which defines rules for
 transforming a source RDF graph into a result text.
 The rules are applied to an `index.template.html` file which contains
-placeholders (`%s`) where the resulting tables are inserted.
-To be able to create these tables, the ontology vocabulary needs to be brought
+placeholders (`%s`) where a formatted version of the vocabulary terms
+(e.g., a table) can be inserted.
+To be able to create a formatted version, the ontology vocabulary needs to be brought
 into the right form using a mapping (in `mapping.ttl`) based on SHACL
 (Shapes Constraint Language).
 

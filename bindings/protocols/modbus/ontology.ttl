@@ -269,6 +269,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
                                             xsd:unsignedInt
                                             xsd:unsignedLong
                                             xsd:double
+                                            xsd:hexBinary
                                           )
                               ] ;
           rdfs:comment "Represents the data types that can be used to define the payload content in Modbus messages."@en ;

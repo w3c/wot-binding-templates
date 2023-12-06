@@ -191,8 +191,17 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
-            <td><code>modv:zeroBasedAddressing</code></td>
-            <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as <code>true</code> or <code>false</code>.</td>
+            <td><code>modv:mostSignificantByte</code></td>
+            <td>When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modv:mostSignificantWord</code></td>
+            <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
 
@@ -218,8 +227,8 @@
         
 
         <tr>
-            <td><code>modv:mostSignificantByte</code></td>
-            <td>When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).</td>
+            <td><code>modv:zeroBasedAddressing</code></td>
+            <td>Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as <code>true</code> or <code>false</code>.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
 
@@ -227,10 +236,10 @@
         
 
         <tr>
-            <td><code>modv:mostSignificantWord</code></td>
-            <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)</td>
+            <td><code>modv:entity</code></td>
+            <td>A registry type to let the runtime automatically detect the right function code</td>
             <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+            <td><a href="#entity">Entity</a></td>
 
         <tr>
         
@@ -249,15 +258,6 @@
             <td>Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of <code>xsd:decimal</code>.</td>
             <td>optional</td>
             <td><a href="#payloaddatatype">PayloadDataType</a></td>
-
-        <tr>
-        
-
-        <tr>
-            <td><code>modv:entity</code></td>
-            <td>A registry type to let the runtime automatically detect the right function code</td>
-            <td>optional</td>
-            <td><a href="#entity">Entity</a></td>
 
         <tr>
         
@@ -468,6 +468,9 @@
 
         <li><code>xsd:double</code></li>
         
+
+        <li><code>xsd:hexbinary</code></li>
+        
             </ul>
         </section>
     </section>
@@ -492,6 +495,18 @@
                     <!-- Generate mappings from the mapping ontology -->
                     
         <tr>
+            <td><code>writeallproperties</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writemultipleproperties</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
             <td><code>writeproperty</code></td>
             <td><code>"modv:function": "writeSingleCoil"</code></td>
         <tr>
@@ -512,18 +527,6 @@
         <tr>
             <td><code>readmultipleproperties</code></td>
             <td><code>"modv:function": "readHoldingRegisters"</code></td>
-        <tr>
-        
-
-        <tr>
-            <td><code>writeallproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-        <tr>
-        
-
-        <tr>
-            <td><code>writemultipleproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
                 </tbody>

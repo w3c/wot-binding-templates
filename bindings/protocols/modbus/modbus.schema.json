@@ -48,7 +48,8 @@
                         "xsd:unsignedshort",
                         "xsd:unsignedint",
                         "xsd:unsignedlong",
-                        "xsd:double"
+                        "xsd:double",
+                        "xsd:hexBinary"
                     ]
                 },
                 "modv:mostSignificantByte" : { "type" : "boolean"},

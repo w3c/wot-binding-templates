@@ -286,7 +286,8 @@ On the contrary, the response operation is identified with an error code or exce
 :DataRequest rdf:type owl:Class ;
               rdfs:subClassOf :Data_Field ;
               rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code. 
-This can include items like discree?? and register address, the quantity of items to be handled, and the count of actual data bytes in the field.
+This can include items like register address, the quantity of items to be handled, and the count of actual data bytes in the field.
+
 The data request field may be nonexistent (zero length) in certain kind of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;
               rdfs:label "Data request" .
 

@@ -113,7 +113,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
              rdfs:domain :Request ,
                          :NormalResponse ;
              rdfs:range :PayloadDataType ;
-             rdfs:comment "Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of 'xsd:decimal'."@en ;
+             rdfs:comment "Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of <code>xsd:decimal</code>."@en ;
              rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
              rdfs:label "hasType"@en .
 
@@ -191,20 +191,20 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasZeroBasedAddressingFlag rdf:type owl:DatatypeProperty ;
                             rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False."@en ;
+                            rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as <code>true</code> or <code>false</code>."@en ;
                             rdfs:label "hasZeroBasedAddressingFlag"@en .
 
 :hasMostSignificantByte rdf:type owl:DatatypeProperty ;
                             rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "When true, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e., Little-Endian)."@en ;
+                            rdfs:comment "When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian)."@en ;
 
                             rdfs:label "hasMostSignificantByte"@en .
 
 :hasMostSignificantWord rdf:type owl:DatatypeProperty ;
                             rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "When true, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When false, it describes the least significant word first (i.e. word swapping)"@en ;
+                            rdfs:comment "When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)"@en ;
 
                             rdfs:label "hasMostSignificantWord"@en .
 

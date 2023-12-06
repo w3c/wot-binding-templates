@@ -41,8 +41,7 @@
         sh:maxCount 1 ;
     ] ;
     sh:property [
-sh:property [
-         sh:path modbus:hasPayloadDataType ;
+        sh:path modbus:hasPayloadDataType ;
 		sh:class modbus:PayloadDataType ;
         sh:maxCount 1 ;
     ] ;

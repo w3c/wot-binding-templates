@@ -216,7 +216,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 ###  https://www.w3.org/2019/wot/modbus#Data_Field
 :Data_Field rdf:type owl:Class ;
             rdfs:subClassOf :Payload ;
-            rdfs:comment "The Data Field of a Modbus messages can contain different kind of informations: additional informations that the server uses to take the action defined by the function code (data request), informations regarded the performed action requested by the client (data response), informations about the reason of the error (exception code)."@en ;
+            rdfs:comment "The Data Field of a Modbus messages can contain different kind of information: additional information that the server uses to take the action defined by the function code (data request), information regarding the performed action requested by the client (data response), information about the reason of the error (exception code)."@en ;
             rdfs:label "Data Field" .
 
 
@@ -341,7 +341,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
 ###  https://www.w3.org/2019/wot/modbus#DataResponse
 :DataResponse rdf:type owl:Class ;
                rdfs:subClassOf :Data_Field ;
-               rdfs:comment "Data response contains the informations requested by the client to the server."@en ;
+               rdfs:comment "Data response contains the information requested by the client to the server."@en ;
                rdfs:label "Data response" .
 
 

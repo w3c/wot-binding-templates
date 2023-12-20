@@ -20,6 +20,7 @@ template :modbus {
         st:call-template(:formTerms, ?modbusBase, ?prefix)
         st:call-template(:entityValues, ?modbusBase, ?prefix)
         st:call-template(:functionValues, ?modbusBase, ?prefix)
+        st:call-template(:typesValues, ?modbusBase, ?prefix)
         st:call-template(:mappings, ?modbusBase, ?prefix)
     }
 }  where {
@@ -204,6 +205,21 @@ template :functionValues(?ns ?prefix){
          rdfs:comment ?desc
     
     bind(IRI(CONCAT(STR( ?ns),"#Function")) as ?funcode)
+}
+
+template :typesValues(?ns ?prefix){
+    format {
+        """
+        <li><code>xsd:%s</code></li>
+        """
+        lcase(strafter(?type,"#"))
+       
+    }
+}where {
+     ?PayloadDataType owl:equivalentClass ?eq .
+     ?eq owl:oneOf ?type .
+    
+    bind(IRI(CONCAT(STR( ?ns),"#PayloadDataType")) as ?PayloadDataType)
 }
 
 template :nameValues(?ns ?prefix){

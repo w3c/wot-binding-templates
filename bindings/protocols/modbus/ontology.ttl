@@ -108,6 +108,14 @@ binding:assignment rdf:type owl:AnnotationProperty .
              rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
              rdfs:label "hasFunction"@en .
 
+###  https://www.w3.org/2019/wot/modbus#hasFunction
+:hasPayloadDataType rdf:type owl:ObjectProperty ;
+             rdfs:domain :Request ,
+                         :NormalResponse ;
+             rdfs:range :PayloadDataType ;
+             rdfs:comment "Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of <code>xsd:decimal</code>."@en ;
+             rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
+             rdfs:label "hasType"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#readFrom
 :readFrom rdf:type owl:ObjectProperty ;
@@ -175,16 +183,30 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasUnitID rdf:type owl:DatatypeProperty ;
            rdfs:domain :Request ;
            rdfs:range xsd:integer ;
-           rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compability reasons still often included" ;
+           rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons still often included" ;
            rdfs:label "hasUnitID"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#hasZeroBasedAddressingFlag
 :hasZeroBasedAddressingFlag rdf:type owl:DatatypeProperty ;
-                            rdfs:domain :Entity ;
+                            rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as True or False."@en ;
+                            rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as <code>true</code> or <code>false</code>."@en ;
                             rdfs:label "hasZeroBasedAddressingFlag"@en .
+
+:hasMostSignificantByte rdf:type owl:DatatypeProperty ;
+                            rdfs:domain :Request ;
+                            rdfs:range xsd:boolean ;
+                            rdfs:comment "When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian)."@en ;
+
+                            rdfs:label "hasMostSignificantByte"@en .
+
+:hasMostSignificantWord rdf:type owl:DatatypeProperty ;
+                            rdfs:domain :Request ;
+                            rdfs:range xsd:boolean ;
+                            rdfs:comment "When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)"@en ;
+
+                            rdfs:label "hasMostSignificantWord"@en .
 
 
 #################################################################
@@ -194,7 +216,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 ###  https://www.w3.org/2019/wot/modbus#Data_Field
 :Data_Field rdf:type owl:Class ;
             rdfs:subClassOf :Payload ;
-            rdfs:comment "The Data Field of a Modbus messages can contain different kind of informations: additional informations that the server uses to take the action defined by the function code (data request), informations regarded the performed action requested by the client (data response), informations about the reason of the error (exception code)."@en ;
+            rdfs:comment "The Data Field of a Modbus messages can contain different kind of information: additional information that the server uses to take the action defined by the function code (data request), information regarding the performed action requested by the client (data response), information about the reason of the error (exception code)."@en ;
             rdfs:label "Data Field" .
 
 
@@ -229,6 +251,30 @@ binding:assignment rdf:type owl:AnnotationProperty .
           rdfs:comment "Function code identifies the operation requested by client, indicates to the server what kind of action to perform. For a normal response, the server simply echoes to the request the original function code."@en ;
           rdfs:label "Function"@en .
 
+        
+###  https://www.w3.org/2019/wot/modbus#PayloadDataType
+:PayloadDataType rdf:type owl:Class ;
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:oneOf ( xsd:integer
+                                            xsd:boolean
+                                            xsd:string
+                                            xsd:float
+                                            xsd:decimal
+                                            xsd:byte
+                                            xsd:short
+                                            xsd:int
+                                            xsd:long
+                                            xsd:unsignedByte
+                                            xsd:unsignedShort
+                                            xsd:unsignedInt
+                                            xsd:unsignedLong
+                                            xsd:double
+                                            xsd:hexBinary
+                                          )
+                              ] ;
+          rdfs:comment "Represents the data types that can be used to define the payload content in Modbus messages."@en ;
+          rdfs:label "PayloadDataType"@en .
+
 
 ###  https://www.w3.org/2019/wot/modbus#Function_Field
 :Function_Field rdf:type owl:Class ;
@@ -241,7 +287,7 @@ On the contrary, the response operation is identified with an error code or exce
 
 ###  https://www.w3.org/2019/wot/modbus#Message
 :Message rdf:type owl:Class ;
-         rdfs:comment "A Modbus Message class represents the comunication between client and server"@en ;
+         rdfs:comment "A Modbus Message class represents the communication between client and server"@en ;
          rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
          rdfs:label "A Modbus Message"@en .
 
@@ -255,7 +301,7 @@ On the contrary, the response operation is identified with an error code or exce
 ###  https://www.w3.org/2019/wot/modbus#Request
 :Request rdf:type owl:Class ;
          rdfs:subClassOf :Message ;
-         rdfs:comment "A Request message is sent by a client device to a server device. The comunication client/server stats only with a request sent by the client."@en ;
+         rdfs:comment "A Request message is sent by a client device to a server device. The communication client/server stats only with a request sent by the client."@en ;
          rdfs:label "Request"@en .
 
 
@@ -286,15 +332,16 @@ On the contrary, the response operation is identified with an error code or exce
 :DataRequest rdf:type owl:Class ;
               rdfs:subClassOf :Data_Field ;
               rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code. 
-This can include items like discree and register address, the quantity of items to be handled, and the count of actual data bytes in the field.
-The data request field my be nonexistent (zero length) in certain kid of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;
+This can include items like register address, the quantity of items to be handled, and the count of actual data bytes in the field.
+
+The data request field may be nonexistent (zero length) in certain kind of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;
               rdfs:label "Data request" .
 
 
 ###  https://www.w3.org/2019/wot/modbus#DataResponse
 :DataResponse rdf:type owl:Class ;
                rdfs:subClassOf :Data_Field ;
-               rdfs:comment "Data response contains the informations requested by the client to the server."@en ;
+               rdfs:comment "Data response contains the information requested by the client to the server."@en ;
                rdfs:label "Data response" .
 
 
@@ -436,7 +483,7 @@ The data request field my be nonexistent (zero length) in certain kid of request
 :readDeviceIdentification rdf:type owl:NamedIndividual ,
                                    :Function ;
                           :hasCodeNumber 43 ;
-                          rdfs:comment "Read Device Identification for diagnostic purposes. Avaiable in the majority of Modbus implementations."@en ;
+                          rdfs:comment "Read Device Identification for diagnostic purposes. Available in the majority of Modbus implementations."@en ;
                           rdfs:label "Read Device Identification"@en .
 
 

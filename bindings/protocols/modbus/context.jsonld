@@ -14,6 +14,14 @@
             "@id": "modv:hasZeroBasedAddressingFlag",
             "@type": "xsd:boolean"
         }, 
+        "mostSignificantByte" : {
+            "@id": "modv:hasMostSignificantByte",
+            "@type": "xsd:boolean"
+        }, 
+        "mostSignificantWord" : {
+            "@id": "modv:hasMostSignificantWord",
+            "@type": "xsd:boolean"
+        }, 
         "quantity" : {
             "@id": "modv:hasQuantity",
             "@type": "xsd:integer"
@@ -32,6 +40,10 @@
         }, 
         "function" : {
             "@id": "modv:hasFunction",
+            "@type": "@vocab"
+        },
+        "type" : {
+            "@id": "modv:hasType",
             "@type": "@vocab"
         },
         "Coil": "modv:Coil",

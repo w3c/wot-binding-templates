@@ -32,6 +32,28 @@
                         "writeSingleHoldingRegister"
                     ]
                 },
+                "modv:type": {
+                    "type": "string",
+                    "enum": [
+                        "xsd:integer",
+                        "xsd:boolean",
+                        "xsd:string",
+                        "xsd:float",
+                        "xsd:decimal",
+                        "xsd:byte",
+                        "xsd:short",
+                        "xsd:int",
+                        "xsd:long",
+                        "xsd:unsignedbyte",
+                        "xsd:unsignedshort",
+                        "xsd:unsignedint",
+                        "xsd:unsignedlong",
+                        "xsd:double",
+                        "xsd:hexBinary"
+                    ]
+                },
+                "modv:mostSignificantByte" : { "type" : "boolean"},
+                "modv:mostSignificantWord" : { "type" : "boolean"},
                 "modv:zeroBasedAddressing" : { "type" : "boolean"},
                 "modv:timeout" : { "type": "number", "minimum": 0}
             }

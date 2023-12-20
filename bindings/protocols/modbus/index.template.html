@@ -85,7 +85,7 @@
             These coils or registers can be read or written with a simple request-response mechanism.
             Very typically, registers are also combined to represent data that is larger than 16 bits, i.e. two registers can be used
             together to represent a 32 bit integer.
-            Thus, a Modbus client can read a set of registers at once and obtain a large value.
+            Thus, a Modbus client can read a set of registers at once and obtain a larger value.
         </p>
         <p>
             The physical layer can be RS485 differential bus which has less susceptibility to the EMC interference.
@@ -94,6 +94,7 @@
             Thanks to this encapsulation strategy, the Modbus protocol can reach remote nodes deployed in distant facilities over the Internet. 
             Moreover, over the years, due to its simplicity and cost-effectiveness the Modbus protocol became a standard all over the world. 
             This popularity, together with the advancement of the microcontroller/microprocessor, has led to a shift on how applications pack the information.
+            Today it is usual to store and read any type of data in the Holdings Registers like bits, bytes, strings, floats etc.
         </p>
         <p>
             Concretely, this document describes how WoT TDs can be used to describe devices that use the Modbus TCP protocol.

@@ -108,14 +108,14 @@ binding:assignment rdf:type owl:AnnotationProperty .
              rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
              rdfs:label "hasFunction"@en .
 
-###  https://www.w3.org/2019/wot/modbus#hasFunction
+###  https://www.w3.org/2019/wot/modbus#hasPayloadDataType
 :hasPayloadDataType rdf:type owl:ObjectProperty ;
              rdfs:domain :Request ,
                          :NormalResponse ;
              rdfs:range :PayloadDataType ;
              rdfs:comment "Specifies the data type contained in the request or response payload. Users can define the specific data type using a sub type of <code>xsd:decimal</code>."@en ;
              rdfs:isDefinedBy <https://www.w3.org/2019/wot/modbus> ;
-             rdfs:label "hasType"@en .
+             rdfs:label "hasPayloadDataType"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#readFrom
 :readFrom rdf:type owl:ObjectProperty ;

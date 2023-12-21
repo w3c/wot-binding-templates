@@ -43,7 +43,7 @@
             "@type": "@vocab"
         },
         "type" : {
-            "@id": "modv:hasType",
+            "@id": "modv:hasPayloadDataType",
             "@type": "@vocab"
         },
         "Coil": "modv:Coil",

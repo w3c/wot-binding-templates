@@ -320,7 +320,7 @@
                 This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.
             </p>
             <p>
-                A resource can be observed by sending a GET request with the Observe option set.
+                A resource can be observed by sending a GET or FETCH [[RFC8132]] request with the Observe option set.
                 The server will then respond with the current representation of the resource, as well as send notifications to the client.
                 A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
             </p>
@@ -339,7 +339,6 @@
                 "cov:method": "GET",
                 "href": "coap://[2001:DB8::1]/status",
                 "contentType": "text/plain;charset=utf-8",
-                "subprotocol": "cov:observe",
                 "op": ["observeproperty"]
             }]
         }
@@ -710,11 +709,11 @@
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>readmultipleproperties</code></td>
@@ -734,11 +733,11 @@
                     </tr>
                     <tr>
                         <td><code>observeallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>invokeaction</code></td>
@@ -758,19 +757,19 @@
                     </tr>
                     <tr>
                         <td><code>subscribeevent</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeevent</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>subscribeallevents</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeallevents</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                 </tbody>
             </table>

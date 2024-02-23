@@ -32,8 +32,8 @@
                   key: "Ontology",
                   data: [
                       {
-                      value: "To be published soon",
-                      href: ""
+                      value: "PROFINET in RDF",
+                      href: "ontology.html"
                       }
                   ]
               },
@@ -42,7 +42,7 @@
                   data: [
                       {
                       value: "PROFINET JSON Schema",
-                      href: "profinet.schema.json"
+                      href: "modbus.schema.json"
                       }
                   ]
               }
@@ -60,7 +60,7 @@
             implement a specific IoT protocol, data format or IoT platform.
             The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
             This document gives implementation guidelines regarding the PROFINET protocol, which is a well-known 
-            high-speed industrial ethernet protocol for communication between industrial control systems (PLC, DCS,  PC software) and automation devices. 
+            high-speed industrial ethernet protocol for communication between industrial control and automation devices. 
         </p>
         <p>
             More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document, 
@@ -82,7 +82,7 @@
             It can also have a safety (PROFIsafe) implementation onboard for safety related application. 
         </p>
         <p>
-            Generally, PROFINET is classified into PROFINET IO (Input Output) which is used for distributed input/output processes of field devices (sensors and actuators) 
+            Generally, profinet is classified into PROFINET IO (Input Output) which is used for distributed input/output processes of field devices (sensors and actuators) 
             data and PROFINET CBA (Component Based Automation) which is used for distributed automation. The scope of this document focuses on the PROFINET IO. 
             PROFINET IO network consist of three main actors which are IO controller, IO supervisor and IO device. 
             The IO controllers are PLCs and DCS, they are most used for profinet cyclic communications like IO data exchange. 
@@ -93,7 +93,7 @@
             Due to the different requirements by different industrial automation applications, PROFINET IO provides three different communications channels to exchange data between IO controllers and IO device or IO supervisor and IO devices. 
             The Real-Time (RT) and Isochronous Real Time (IRT) channels are used for cyclic data transfer and high-speed cyclic data transfer for motion control application respectively, 
             the User Data Protocol (UDP) channel is mostly used by IO supervisor for parameterization, diagnostic and acyclic communications. 
-            The addressing in PROFINET uses slot/sublsot/index mechanism where the slot identifies a module and subslot identifies submodules that exist within a module and the index identifies datapoint of interest in the submodule.
+            The addressing in PROFINET slot/sublsot/index mechanism where the slot identifies a module and subslot identifies submodules that exist within a module. The index identifies datapoint of interest in the submodule.
         </p>
         <p>
             Concretely, this document describes how WoT TDs can be used to describe devices that use the PROFINET acyclic communication (IO supervisor). 
@@ -108,13 +108,13 @@
         </p>
         <p>
             A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
-            containing PROFINET Binding is provided in the <a href="modbus.schema.json">GitHub repository</a>.
+            containing PROFINET Binding is provided in the <a href="profinet.schema.json">GitHub repository</a>.
         </p>
     </section>
     <section id="url">
         <h2>URL format</h2>
         In conformance to the structure of other bindings provided in the WoT TD, the url form defines a resource endpoint information and it 
-        follows standard URL scheme common to the web. For PROFINET, the url scheme will begin with <code>profinet://</code> and that will be the
+        follows standard URL scheme common to the web. For PROFINET, the url scheme will begin with <code>profinet://</code> and that will the
         only valid scheme to consider. 
        
         The following shows the typical structure of an URL of the PROFINET protocol:
@@ -211,8 +211,8 @@
                     <tr>
                         <th>Vocabulary term</th>
                         <th>Description</th>
+                        <th>Assignment</th>
                         <th>Type</th>
-                        <th>Domain</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -221,8 +221,8 @@
         <tr>
             <td><code>profv:mostSignificantByte</code></td>
             <td>When <code>true</code>, it describes that the byte order of the data in the PROFINET message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).If the term is not provided, the TD processor defaults it to <code>true</code></td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-            <td>hctl:Form</td>
 
         <tr>
         
@@ -230,16 +230,18 @@
         <tr>
             <td><code>profv:mostSignificantWord</code></td>
             <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping). If the term is not provided, the TD processor defaults it to <code>true</code></td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-            <td>htcl:Form</td>
+            
 
         <tr>
 
         <tr>
             <td><code>profv:method</code></td>
             <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping). If the term is not provided, the TD processor defaults it to <code>true</code></td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a><p>(one of "READ", "WRITE")</p></td>
-            <td>htcl:Form</td>
+            
 
         <tr>
         
@@ -247,32 +249,26 @@
         <tr>
             <td><code>profv:pollingTime</code></td>
             <td>IO supervisor polling rate in milliseconds. It is recommended to keep the polling rate above IO device send clock time. this will ensure that the cyclic communication will not be interferrupted in anyway.</td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-            <td>htcl:Form</td>
+            
 
         <tr>
         
         <tr>
             <td><code>profv:timeout</code></td>
             <td>PROFINET response maximum waiting time. Defines how much time the runtime should wait until it receives a reply from the device.</td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-            <td>htcl:Form</td>
-
-        <tr>
-
-        <tr>
-            <td><code>profv:payloadMapping</code></td>
-            <td>provides logical mapping information of the complex data type payload.</td>
-            <td>Map of <a href="#payloadMapping">Payload Mapping</a></td>
-            <td>htcl:Form</td>
+        
 
         <tr>
 
         <tr>
             <td><code>profv:offset</code></td>
             <td>used for <code>object</code> type properties to identify the starting point within a byte stream payload that represent a property.</td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-            <td>profv:payloadMapping</td>
 
         <tr>
         
@@ -280,71 +276,52 @@
         <tr>
             <td><code>profv:byte</code></td>
             <td>used for <code>object</code> type properties to identify the byte length of a proterty from the byte stream payload</td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-            <td>htcl:Form, profv:payloadMapping</td>
 
         <tr>
 
         <tr>
-            <td><code>profv:bitMask</code></td>
+            <td><code>profv:Bit</code></td>
             <td>used for <code>object</code> type properties to identify the byte length of a proterty from the byte stream payload</td>
+            <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-            <td>htcl:Form, profv:payloadMapping</td>
 
         <tr>
 
         <tr>
-            <td><code>profv:enumeratedValue</code></td>
-            <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#array">Array</a> of <a href="#enumeratedValue">Enumerated Value</a></td>
-            <td>htcl:Form, profv:payloadMapping</td>
+            <td><code>profv:payloadMapping</code></td>
+            <td>used for <code>object</code> to rovides logical mapping information of the complex payload from PROFINET device</td>
+            <td>optional</td>
+            <td> Map of <a href="#payloadMapping">PayloadMapping</a></td>
 
         <tr>
-
-        <tr>
-            <td><code>profv:encodedPayload</code></td>
-            <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-            <td>profv:enumeratedValue</td>
-
-        <tr>
-
-        <tr>
-            <td><code>profv:decodedPayload</code></td>
-            <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a> , <a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-            <td>profv:enumeratedValue</td>
-
-        <tr>
-        
 
         <tr>
             <td><code>profv:type</code></td>
             <td>Specifies the data type contained in the request or response payload.</td>
+            <td>optional</td>
             <td><a href="#payloaddatatype">PayloadDataType</a></td>
-            <td>htcl:Form, profv:payloadMapping</td>
 
         <tr>
         
                 </tbody>
             </table>
             <p>
-                The <code>modv:mostSignificantByte</code> and <code>modv:mostSignificantWord</code> properties within the PROFINET
+                The <code>profv:mostSignificantByte</code> and <code>profv:mostSignificantWord</code> properties within the PROFINET
                 binding template define the byte and word order of data within PROFINET payload. In PROFINET
                 communication,. The arrangement of bytes and words may vary between systems, and these properties provide a declarative way to capture such configurations. 
-                For instance, in Big-Endian byte order (e.g., AABBCC), the most significant byte comes first, and setting <code>modv:mostSignificantByte</code> to true ensures the correct
+                For instance, in Big-Endian byte order (e.g., AABBCC), the most significant byte comes first, and setting <code>profv:mostSignificantByte</code> to true ensures the correct
                 interpretation of the data as AABBCC. Conversely, in Little-Endian byte order (e.g., CCBBAA), the least significant
-                byte comes first, therefore <code>modv:mostSignificantByte</code> has to be set to false.
-                On the other hand, the <code>modv:mostSignificantWord</code> property extends this functionality to message payloads
+                byte comes first, therefore <code>profv:mostSignificantByte</code> has to be set to false.
+                On the other hand, the <code>profv:mostSignificantWord</code> property extends this functionality to message payloads
                 composed by more than two registers. For example, given a message payload composed by four registers (e.g., AABBCCDD),
-                with <code>modv:mostSignificantWord</code> set to true let the client to correctly interpretate the data as AABBCCDD, 
-                while setting the property to false will result in the interpretation of the data as CCDDAABB. For further examples, see
-                [[[#example-read-holding-32bit]]].
-
-                Though, almost all implemtnetations provided by vendors are in Big-Endian but PROFINET specification does not specifically adopt Big-Endianness 
-                so some off-the-shelf implementation of user specific implementaiton might adopt a different endianness.
+                with <code>profv:mostSignificantWord</code> set to true let the client to correctly interpretate the data as AABBCCDD, 
+                while setting the property to false will result in the interpretation of the data as CCDDAABB. 
+                Though, almost all implemtnetations provided by vendors are in Big-Endian but PROFINET specification does not specifically adopt Big-Endianness.
+                So, some off-the-shelf implementation or user specific implementaiton might adopt a different endianness.
                 Therefore, when creating a Thing Description (TD), users may need to account for such deviations by configuring the
-                <code>hasMostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties accordingly.
+                <code>profv:mostSignificantWord</code> and <code>profv:mostSignificantByte</code> properties accordingly.
             </p>
 
         </section>
@@ -373,18 +350,6 @@
             <td>Boolean</td>
             <td>1</td>
             <td>1</td>
-        <tr>
-
-        <tr>
-            <td>Bit</td>
-            <td>1</td>
-            <td>-</td>
-        <tr>
-
-        <tr>
-            <td>BitArea</td>
-            <td>-</td>
-            <td>-</td>
         <tr>
 
         <tr>
@@ -622,101 +587,108 @@
         <section id="payloadMapping">
             <h3>Payload Mapping</h3>
             <p>
-                The <code>PayloadMapping</code> class within the PROFINET Binding Template serves as a logical mappings that can be used for complex types payload. The terms in the profv:payloadMapping helps applications
-                to  understand the context of complex types payload with the help of offset information and byte lengths. 
-                The table belows shows the terms defined in prof:payloadMapping object.
+                The payloadMapping class within PROFINET binding template helps map the nested properties of object types. 
+                It is common that the payload of a PROFINET device response are provided in a complex/object form. this payload requires mapping the individual parameters to object definitions provided at the thing description dataSchema class. 
+                The table below shows the terms provided in payloadMapping class.
+                
             </p>
             <table class="def">
                 <thead>
                     <tr>
                         <th>Vocabulary term</th>
                         <th>Description</th>
+                        <th>Assignment</th>
                         <th>Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Generate forms terms from the ontology-->
                     
-                    <tr>
-                        <td><code>profv:offset</code></td>
-                        <td>used for <code>object</code> type properties to identify the starting point within a byte stream payload that represent a property.</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-                       
-            
-                    <tr>
-                    
-            
-                    <tr>
-                        <td><code>profv:byte</code></td>
-                        <td>used for <code>object</code> type properties to identify the byte length of a proterty from the byte stream payload</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-                      
-            
-                    <tr>
-            
-                    <tr>
-                        <td><code>profv:bitMask</code></td>
-                        <td>used for <code>boolean</code> type properties to identify the <code>bit</code> position within a byte(s) of a proterty from the byte stream payload</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
-                        
-            
-                    <tr>
-            
-                    <tr>
-                        <td><code>profv:enumeratedValue</code></td>
-                        <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#array">Array</a> of <a href="#enumeratedValue">Enumerated Value</a></td>
-            
-                    <tr>
-                    
-                    <tr>
-                        <td><code>profv:type</code></td>
-                        <td>Specifies the data type contained in the request or response payload.</td>
-                        <td><a href="#payloaddatatype">PayloadDataType</a></td>
-            
-                    <tr>
-
-                </tbody>
-            </table>          
         
+        <tr>
+            <td><code>profv:offset</code></td>
+            <td>used for <code>object</code> type properties to identify the starting point within a byte stream payload that represent a property.</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>profv:byte</code></td>
+            <td>used for <code>object</code> type properties to identify the byte length of a proterty from the byte stream payload</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+
+        <tr>
+            <td><code>profv:Bit</code></td>
+            <td>used for <code>object</code> type properties to identify the byte length of a proterty from the byte stream payload</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+
+        <tr>
+            <td><code>profv:enumeratedValue</code></td>
+            <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#array">Array</a>of <a href="#enumeratedValue">EnumeratedValue</a></td>
+
+        <tr>
+
+        <tr>
+            <td><code>profv:type</code></td>
+            <td>Specifies the data type contained in the request or response payload.</td>
+            <td>optional</td>
+            <td><a href="#payloaddatatype">PayloadDataType</a></td>
+
+        <tr>
+        
+                </tbody>
+            </table>
+
         </section>
         <section id="enumeratedValue">
             <h3>Enumerated Value</h3>
             <p>
-                The <code>enumeratedValue</code> class within the PROFINET Binding Template provide an encoding and decoding context of Bit and BitArea types. 
-                This context is provided as array of enumeration objects that contains encoding and decoding values 
-                The table belows shows the terms defined in enumeratedValue object.
-
+                The enumeratedValue class within the PROFINET binding template helps provide context to encoded parameters in the payload. Bit payloads in PROFINET are sometimes
+                used as encoded payload to logical mean something aside from 1 and 0. Informaiton about how the encoding payload will be decoded is defined in this section. 
+                The table below defines the terms used in the enumeratedValue class.
             </p>
             <table class="def">
                 <thead>
                     <tr>
                         <th>Vocabulary term</th>
                         <th>Description</th>
+                        <th>Assignment</th>
                         <th>Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Generate forms terms from the ontology-->
-    
-                    <tr>
-                        <td><code>profv:encodedPayload</code></td>
-                        <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-                        
-            
-                    <tr>
-            
-                    <tr>
-                        <td><code>profv:decodedPayload</code></td>
-                        <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a> , <a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-            
-                    <tr>
 
-                </tbody>
-            </table>          
+        <tr>
+            <td><code>profv:encodedPayload</code></td>
+            <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
+
+        <tr>
+            <td><code>profv:decodedPayload</code></td>
+            <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the byte stream or byte payload</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a> , <a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
         
+        
+                </tbody>
+            </table>
+
         </section>
     </section>
     <section id="mappings">

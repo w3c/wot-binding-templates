@@ -273,20 +273,26 @@
             <h3>Polling Resources</h3>
             <p>
                 A CoAP client may need a current representation of a resource over a period of time.
-                In this case, the client may poll the CoAP server periodically for new content, taking advantage of caching to keep traffic to a minimum.
+                In this case, the client may poll the CoAP server periodically for new content, taking advantage of caching to
+                keep traffic to a minimum.
             </p>
             <p>
                 It is important to note that a response's Max-Age is independent of how often a client polls.
-                For example, if a response contains the current position of an aircraft, after less than a second it can no longer be assumed that the aircraft is still in the same position.
-                This means the server would set Max-Age to 0 in the response, indicating the response cannot be reused for a future request.
+                For example, if a response contains the current position of an aircraft, after less than a second it can no
+                longer be assumed that the aircraft is still in the same position.
+                This means the server would set Max-Age to 0 in the response, indicating the response cannot be reused for a
+                future request.
             </p>
             <p>
                 If a client polls too frequently, a server may send a 4.29 (Too Many Requests) response [[RFC8516]].
-                This error response is cacheable, with the Max-Age indicating after which time the client is allowed to try again.
+                This error response is cacheable, with the Max-Age indicating after which time the client is allowed to try
+                again.
             </p>
             <p>
-                In a form, the <code>cov:minPollingInterval</code> member can be used to provide a hint of what minimum polling interval the server is willing to accept.
-                (This doesn't mean that the client won't get a 4.29 response if it complies; just that the client will most likely get a 4.29 response if it doesn't.)
+                In a form, the <code>cov:minPollingInterval</code> member can be used to provide a hint of what minimum polling
+                interval the server is willing to accept.
+                (This doesn't mean that the client won't get a 4.29 response if it complies; just that the client will most
+                likely get a 4.29 response if it doesn't.)
             </p>
             <pre id="example-polling-interval" class="example" title="Minimum Allowed Polling Interval">
 {
@@ -304,7 +310,7 @@
         }
     }
 }
-</pre>
+        </pre>
         </section>
         <section>
             <h3>Observing Resources</h3>
@@ -319,6 +325,7 @@
             </p>
             <p>
                 Support for observing resources can be indicating by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
+                However, a consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not possible.
             </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
@@ -340,9 +347,12 @@
 }
 </pre>
             <p>
-                A consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not possible.
-                In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current representation, setting the Observe option each time.
-                As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing, the client polls again with the Observe option set.
+                A consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not
+                possible.
+                In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
+                representation, setting the Observe option each time.
+                As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing,
+                the client polls again with the Observe option set.
             </p>
         </section>
         <section>

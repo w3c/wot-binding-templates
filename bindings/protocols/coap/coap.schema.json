@@ -57,6 +57,9 @@
                     ],
                     "$comment": "Might be extended by additional CoAP RFCs in the future."
                 },
+                "cov:minPollingInterval":{
+                    "$ref": "#/definitions/unsignedInt"
+                },
                 "cov:blockwise": {
                     "$ref": "#/definitions/blockWiseTransferParameters"
                 },

@@ -47,10 +47,9 @@
                                 "$ref": "#/definitions/bacnetNamedMember"
                             },
                             "minItems": 1
-                        },
-                        "bacv:hasContextTags": {"type": "boolean"}
+                        }
                     },
-                    "required": ["@type", "bacv:hasNamedMember", "bacv:hasContextTags"]
+                    "required": ["@type", "bacv:hasNamedMember"]
                 },
                 {
                     "type": "object",
@@ -72,10 +71,9 @@
                                 "$ref": "#/definitions/bacnetNamedMember"
                             },
                             "minItems": 1
-                        },
-                        "bacv:hasContextTags": {"type": "boolean", "const": true}
+                        }
                     },
-                    "required": ["@type", "bacv:hasNamedMember", "bacv:hasContextTags"]
+                    "required": ["@type", "bacv:hasNamedMember"]
                 },
                 {
                     "type": "object",
@@ -212,6 +210,9 @@
                 },
                 "bacv:hasDataType": {
                     "$ref": "#/definitions/bacnetDataType"
+                },
+                "bacv:hasContextTag": {
+                    "type": "integer"
                 }
             },
             "required": ["bacv:hasFieldName", "bacv:hasDataType"]

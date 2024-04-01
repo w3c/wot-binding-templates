@@ -173,9 +173,9 @@ bacnet:hasFieldName rdf:type owl:DatatypeProperty ;
                     rdfs:domain bacnet:NamedMember ;
                     rdfs:range xsd:string .
 
-bacnet:hasContextTags rdf:type owl:DatatypeProperty ;
-                      rdfs:domain [owl:unionOf (bacnet:Sequence bacnet:Choice) ];
-                      rdfs:range xsd:boolean .
+bacnet:hasContextTag rdf:type owl:DatatypeProperty ;
+                     rdfs:domain bacnet:NamedMember ;
+                     rdfs:range xsd:integer .
 
 bacnet:ValueMap rdf:type owl:Class .
 

@@ -122,13 +122,13 @@
         moment.
         The following shows the typical structure of an URL of the Modbus TCP protocol:
         <pre>
-            modbus+tcp://{deviceAddress}:{port}/{unitID}/{address}?quantity={?quantity}
+            modbus+tcp://{address}:{port}/{unitID}/{address}?quantity={?quantity}
         </pre>
 
         <p>
             Where:
             <ul>
-                <li><code>{deviceAddress}</code> is the IP address of the Modbus device</li>
+                <li><code>{address}</code> is the IP address of the Modbus device</li>
                 <li><code>{port}</code> is the port of the Modbus device</li>
                 <li><code>{unitID}</code> is the unit ID of the Modbus device. See <a href="#vocabulary">vocabulary</a></li>
                 <li><code>{address}</code> is the address of the register/coil referenced in this URL. See <a href="#vocabulary">vocabulary</a></li>
@@ -652,7 +652,8 @@
                 "op": [
                     "readproperty"
                 ],
-                "modv:function": "readCoil"
+                "modv:function": "readCoil",
+                "modv:address": 1
             }
         </pre>
         To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
@@ -664,7 +665,7 @@
                             "readproperty",
                             "writeproperty"
                         ],
-                        "modv:entity": "Coil"
+                        "modv:entity": "Coil",
                     }
         </pre>
         A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
@@ -674,14 +675,14 @@
                                 "op": [
                                     "readproperty",
                                 ],
-                                "modv:function": "readCoil"
+                                "modv:function": "readCoil",
                             },
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "writeproperty",
                                 ],
-                                "modv:function": "writeCoil"
+                                "modv:function": "writeCoil",
                             }]
         </pre>
         Reducing effectively the verbosity of a TD. 
@@ -742,7 +743,7 @@
                     "observeproperty"
                 ],
                 "modv:entity": "Coil",
-                "modv:pollingTime": 1000
+                "modv:pollingTime": 1000,
             }
         </pre>
         Finally, [[[#full-td]]] shows a complete device described using Modbus ontology.

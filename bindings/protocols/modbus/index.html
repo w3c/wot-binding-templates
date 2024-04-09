@@ -158,8 +158,8 @@
                     
         
         <tr>
-            <td><code>modv:address</code></td>
-            <td>Specifies the starting address of the Modbus operations</td>
+            <td><code>modv:unitID</code></td>
+            <td>The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons it MUST be included</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -168,8 +168,8 @@
 
         
         <tr>
-            <td><code>modv:unitID</code></td>
-            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons still often included</td>
+            <td><code>modv:address</code></td>
+            <td>Specifies the starting address of the Modbus operations</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -203,24 +203,6 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
-            <td><code>modv:mostSignificantByte</code></td>
-            <td>When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-
-        <tr>
-        
-
-        <tr>
-            <td><code>modv:mostSignificantWord</code></td>
-            <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-
-        <tr>
-        
-
-        <tr>
             <td><code>modv:pollingTime</code></td>
             <td>Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
             <td>optional</td>
@@ -234,6 +216,24 @@
             <td>Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a reply from the device.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modv:mostSignificantByte</code></td>
+            <td>When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modv:mostSignificantWord</code></td>
+            <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
 
         <tr>
         
@@ -507,18 +507,6 @@
                     <!-- Generate mappings from the mapping ontology -->
                     
         <tr>
-            <td><code>writeallproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-        <tr>
-        
-
-        <tr>
-            <td><code>writemultipleproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-        <tr>
-        
-
-        <tr>
             <td><code>writeproperty</code></td>
             <td><code>"modv:function": "writeSingleCoil"</code></td>
         <tr>
@@ -539,6 +527,18 @@
         <tr>
             <td><code>readmultipleproperties</code></td>
             <td><code>"modv:function": "readHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeallproperties</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writemultipleproperties</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
                 </tbody>

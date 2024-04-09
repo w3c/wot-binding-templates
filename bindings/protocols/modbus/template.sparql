@@ -212,7 +212,7 @@ template :typesValues(?ns ?prefix){
         """
         <li><code>xsd:%s</code></li>
         """
-        lcase(strafter(?type,"#"))
+        strafter(?type,"#")
        
     }
 }where {

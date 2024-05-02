@@ -1,4 +1,5 @@
 @prefix : <https://www.w3.org/2019/wot/modbus#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -12,11 +13,14 @@
 @base <https://www.w3.org/2019/wot/modbus> .
 
 <https://www.w3.org/2019/wot/modbus> rdf:type owl:Ontology ;
-                                      dct:creator "Jakob Müller https://github.com/Drukob" ;
-                                      dct:contributor "Cristiano Aguzzi https://github.com/relu91" ,
-                                                      "Elisa Riforgiato https://github.com/elithkob" ,
-                                                      "Jakob Müller https://github.com/Drukob" ,
-                                                      "Luca Roffia https://github.com/lroffia" ;
+                                       dcterms:creator [ a dcterms:Agent ,
+                                            schema:Person ;
+                                            schema:name "Cristiano Aguzzi" ;
+                                            schema:affiliation [ a schema:Organization ;
+                                                                schema:name "Invited Expert" ;
+                                                                schema:url "https://github.com/relu91"
+                                                                ]
+                                        ] ;
                                       vann:preferredNamespacePrefix "modv" ;
                                       vann:preferredNamespaceUri : ;
                                       rdfs:comment "Vocabulary to represent Modbus messages in RDF."@en ;
@@ -183,7 +187,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasUnitID rdf:type owl:DatatypeProperty ;
            rdfs:domain :Request ;
            rdfs:range xsd:integer ;
-           rdfs:comment "The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons still often included" ;
+           rdfs:comment "The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons it MUST be included" ;
            rdfs:label "hasUnitID"@en .
 
 

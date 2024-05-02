@@ -471,13 +471,13 @@ lowercase = %x61-7A  ; "a" to "z"
                         </td>
                     </tr>
                     <tr>
-                        <td><code>bacv:hasContextTags</code></td>
-                        <td>Context Tage for a Sequence or Choice</td>
+                        <td><code>bacv:hasContextTag</code></td>
+                        <td>Context Tag for a Named Member of a Sequence or Choice</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>boolean</code></a>
                         </td>
                         <td>
-                            bacv:Sequence, bacv:Choice
+                            bacv:NamedMember
                         </td>
                     </tr>
                     <tr>
@@ -628,7 +628,6 @@ lowercase = %x61-7A  ; "a" to "z"
                                     "bacv:hasDataType": {
                                         "@type": "bacv:Sequence",
                                         "bacv:isISO8601": true,
-                                        "bacv:hasContextTags": false,
                                         "bacv:hasNamedMember": [
                                             {
                                                 "bacv:hasFieldName": "date",
@@ -684,12 +683,14 @@ lowercase = %x61-7A  ; "a" to "z"
                                         "bacv:hasNamedMember": [
                                             {
                                                 "bacv:hasFieldName": "...",
+                                                "bacv:hasContextTag": 1,
                                                 "bacv:hasDataType": {
                                                     "@type": "bacv:..."
                                                 }
                                             },
                                             {
                                                 "bacv:hasFieldName": "...",
+                                                "bacv:hasContextTag": 2,
                                                 "bacv:hasDataType": {
                                                     "@type": "bacv:..."
                                                 }

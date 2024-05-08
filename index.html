@@ -141,14 +141,8 @@
     </section>
 
     <section id="sotd">
-        <p class="ednote" title="The W3C WoT WG is asking for feedback">
-            Please contribute to this draft using the
-            <a href="https://github.com/w3c/wot-binding-templates/issues">GitHub Issue</a>
-            feature of the <a href="https://github.com/w3c/wot-binding-templates/">
-                WoT Binding Templates</a> repository.
-            For feedback on security and privacy considerations, please use the
-            <a href="https://github.com/w3c/wot-security/issues">WoT Security and Privacy</a>
-            Issues, as they are cross-cutting over all our documents.
+        <p class="note" title="Future Work">
+            The Working Group will work on the binding mechanism in the next version of the [[WOT-THING-DESCRIPTION]]. Please refer to the latest <a href="https://w3c.github.io/wot-thing-description/">Editor's Draft</a> for future work.
         </p>
     </section>
 
@@ -1354,17 +1348,8 @@
 
     </section>
 
-    <section id="sec-acknowledgements" class="appendix">
-        <h2>Acknowledgements</h2>
 
-        <p>
-            Special thanks to all active participants of the W3C Web of Things Interest Group and Working Group
-            for their technical input and suggestions that led to improvements to this document.
-        </p>
-
-    </section>
-
-    <section id="sec-payload-examples">
+    <section id="sec-payload-examples" class="appendix">
         <h2>Examples of Payloads and Data Schemas from IoT Platforms and Standards</h2>
 
         <p>
@@ -1383,68 +1368,68 @@
                 <tr>
                     <td style="vertical-align: top; width: 50%">
                         <pre class="example" title="SenML Payload Example">
-                        [
-                            {
-                                "bn": "/example/light/"
-                            },
-                            {
-                                "n": "level",
-                                "v": 50
-                            },
-                            {
-                                "n": "time",
-                                "v": 10
-                            }
-                        ]
-                        </pre>
+                            [
+                                {
+                                    "bn": "/example/light/"
+                                },
+                                {
+                                    "n": "level",
+                                    "v": 50
+                                },
+                                {
+                                    "n": "time",
+                                    "v": 10
+                                }
+                            ]
+                            </pre>
                     </td>
                     <td style="vertical-align: top; width: 50%">
                         <pre class="example" title="Data Schema for SenML Payload Example">
-                        {
-                            "type": "array",
-                            "items": [
                             {
-                                "type": "object",
-                                "properties": {
-                                    "bn": {
-                                        "type": "string",
-                                        "const": "example/light"
+                                "type": "array",
+                                "items": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "bn": {
+                                            "type": "string",
+                                            "const": "example/light"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "n": {
+                                            "type": "string",
+                                            "const": "level"
+                                        },
+                                        "v": {
+                                            "@type": ["iot:LevelData"],
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 255
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "n": {
+                                            "type": "string",
+                                            "const": "time"
+                                        },
+                                        "v": {
+                                            "@type": ["iot:TransitionTimeData"],
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 65535
+                                        }
                                     }
                                 }
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "n": {
-                                        "type": "string",
-                                        "const": "level"
-                                    },
-                                    "v": {
-                                        "@type": ["iot:LevelData"],
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "maximum": 255
-                                    }
-                                }
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "n": {
-                                        "type": "string",
-                                        "const": "time"
-                                    },
-                                    "v": {
-                                        "@type": ["iot:TransitionTimeData"],
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "maximum": 65535
-                                    }
-                                }
+                                ]
                             }
-                            ]
-                        }
-                        </pre>
+                            </pre>
                     </td>
                 </tr>
             </tbody>
@@ -1459,70 +1444,70 @@
                 <tr>
                     <td style="vertical-align: top; width: 50%">
                         <pre class="example" title="OCF Batch Example">
-                        [
-                        {
-                            "href": "/example/light/level",
-                            "rep": {
-                            "dimmingSetting": 50
+                            [
+                            {
+                                "href": "/example/light/level",
+                                "rep": {
+                                "dimmingSetting": 50
+                                }
+                            },
+                            {
+                                "href": "/example/light/time",
+                                "rep": {
+                                "rampTime": 10
+                                }
                             }
-                        },
-                        {
-                            "href": "/example/light/time",
-                            "rep": {
-                            "rampTime": 10
-                            }
-                        }
-                        ]
-                        </pre>
+                            ]
+                            </pre>
                     </td>
                     <td style="vertical-align: top; width: 50%">
                         <pre class="example" title="Data Schema for OCF Batch Payload Example">
-                        {
-                        "type": "array",
-                        "items": [
                             {
-                            "type": "object",
-                            "properties": {
-                                "href": {
-                                "type": "string",
-                                "const": "/example/light/level"
-                                },
-                                "rep": {
+                            "type": "array",
+                            "items": [
+                                {
                                 "type": "object",
                                 "properties": {
-                                    "dimmingSetting": {
-                                    "@type": ["iot:LevelData"],
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 255
+                                    "href": {
+                                    "type": "string",
+                                    "const": "/example/light/level"
+                                    },
+                                    "rep": {
+                                    "type": "object",
+                                    "properties": {
+                                        "dimmingSetting": {
+                                        "@type": ["iot:LevelData"],
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 255
+                                        }
+                                    }
+                                    }
+                                }
+                                },
+                                {
+                                "type": "object",
+                                "properties": {
+                                    "href": {
+                                    "type": "string",
+                                    "const": "/example/light/time"
+                                    },
+                                    "rep": {
+                                    "type": "object",
+                                    "properties": {
+                                        "rampTime": {
+                                        "@type": ["iot:TransitionTimeData"],
+                                        "type":"integer",
+                                        "minimum": 0,
+                                        "maximum": 65535
+                                        }
+                                    }
                                     }
                                 }
                                 }
+                            ]
                             }
-                            },
-                            {
-                            "type": "object",
-                            "properties": {
-                                "href": {
-                                "type": "string",
-                                "const": "/example/light/time"
-                                },
-                                "rep": {
-                                "type": "object",
-                                "properties": {
-                                    "rampTime": {
-                                    "@type": ["iot:TransitionTimeData"],
-                                    "type":"integer",
-                                    "minimum": 0,
-                                    "maximum": 65535
-                                    }
-                                }
-                                }
-                            }
-                            }
-                        ]
-                        }
-                        </pre>
+                            </pre>
                     </td>
                 </tr>
             </tbody>
@@ -1537,75 +1522,115 @@
                 <tr>
                     <td style="vertical-align: top; width: 50%">
                         <pre class="example" title="IPSO/LWM2M Payload Example">
-                        {
-                        "bn": "/3001/0/",
-                        "e": [
                             {
-                            "n": "5044",
-                            "v": 0.5
-                            },
-                            {
-                            "n": "5002",
-                            "v": 10.0
-                            }
-                        ]
-                        }
-                        </pre>
-                    </td>
-                    <td style="vertical-align: top; width: 50%">
-                        <pre class="example" title="Data Schema for IPSO/LWM2M Payload Example">
-                        {
-                        "type": "object",
-                        "properties": {
-                            "bn": {
-                            "type": "string",
-                            "const": "/3001/0/"
-                            },
-                            "e": {
-                            "type": "array",
-                            "items": [
+                            "bn": "/3001/0/",
+                            "e": [
                                 {
-                                "type": "object",
-                                "properties": {
-                                    "n": {
-                                    "type": "string",
-                                    "const": "5044"
-                                    },
-                                    "v": {
-                                    "@type": ["iot:LevelData"],
-                                    "type": "number",
-                                    "minimum": 0.0,
-                                    "maximum": 1.0
-                                    }
-                                }
+                                "n": "5044",
+                                "v": 0.5
                                 },
                                 {
-                                "type": "object",
-                                "Properties": {
-                                    "n": {
-                                    "type": "string",
-                                    "const": "5002"
-                                    },
-                                    "v": {
-                                    "@type": ["iot:TransitionTimeData"],
-                                    "type": "number",
-                                    "minimum": 0.0,
-                                    "maximum": 6553.5
-                                    }
-                                }
+                                "n": "5002",
+                                "v": 10.0
                                 }
                             ]
                             }
-                        }
-                        }
-                        </pre>
+                            </pre>
+                    </td>
+                    <td style="vertical-align: top; width: 50%">
+                        <pre class="example" title="Data Schema for IPSO/LWM2M Payload Example">
+                            {
+                            "type": "object",
+                            "properties": {
+                                "bn": {
+                                "type": "string",
+                                "const": "/3001/0/"
+                                },
+                                "e": {
+                                "type": "array",
+                                "items": [
+                                    {
+                                    "type": "object",
+                                    "properties": {
+                                        "n": {
+                                        "type": "string",
+                                        "const": "5044"
+                                        },
+                                        "v": {
+                                        "@type": ["iot:LevelData"],
+                                        "type": "number",
+                                        "minimum": 0.0,
+                                        "maximum": 1.0
+                                        }
+                                    }
+                                    },
+                                    {
+                                    "type": "object",
+                                    "Properties": {
+                                        "n": {
+                                        "type": "string",
+                                        "const": "5002"
+                                        },
+                                        "v": {
+                                        "@type": ["iot:TransitionTimeData"],
+                                        "type": "number",
+                                        "minimum": 0.0,
+                                        "maximum": 6553.5
+                                        }
+                                    }
+                                    }
+                                ]
+                                }
+                            }
+                            }
+                            </pre>
                     </td>
                 </tr>
             </tbody>
         </table>
 
     </section>
+        
+    <section id="changes" class="appendix">
+        <h2>Recent Specification Changes</h2>
+        <section>
+            <h3 id="changes-from-note-sept2023">Changes from the Group Note 28 September 2023</h3>
+            <ul>
+                <li>Adjusted Figure 1 to not mention commercial products</li>
+                <li>Added BACnet Binding Template to the list of Protocol Binding Templates in Table 2</li>
+                <li>Removed unnecessary heading hierarchies</li>
+                <li>Added mention that the work continues in the WoT Thing Description document</li>
+            </ul>
+        </section>
+        <section>
+            <h3 id="changes-from-note-jan2020">Changes from the Group Note 30 January 2020</h3>
+            <ul>
+                <li>Separated Binding concepts to separate sections</li>
+                <li>Created individual documents for each binding</li>
+                <li>Clarified the binding mechanism and separated the examples from the mechanism</li>
+                <li>Aligned with the WoT Thing Description 1.1 stable information model</li>
+            </ul>
+        </section>
+        <section>
+            <h3 id="changes-from-note-apr2018">Changes from the Group Note 5 April 2018</h3>
+            <ul>
+                <li>Restructured the document</li>
+                <li>Aligned with the recent TD specification changes</li>
+                <li>Aligned with the WoT Thing Description 1.1 stable information model</li>
+                <li>Added default vocabulary terms</li>
+            </ul>
+        </section>
+    </section>
 
+    <section id="sec-acknowledgements" class="appendix">
+        <h2>Acknowledgements</h2>
+    
+        <p>
+            Special thanks to all active participants of the W3C Web of Things Interest Group and Working Group
+            for their technical input and suggestions that led to improvements to this document.
+        </p>
+    
+    </section>
 
     <script id="dstimer">
         //<![CDATA[

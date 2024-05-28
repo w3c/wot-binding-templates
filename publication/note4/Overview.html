@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html lang="en">
 <head>
   <meta name="generator" content=
-  "HTML Tidy for HTML5 for Linux version 5.7.27" />
-  <meta charset="utf-8" />
-  <meta name="generator" content="ReSpec 35.0.2" />
+  "HTML Tidy for HTML5 for Linux version 5.7.27">
+  <meta charset="utf-8">
+  <meta name="generator" content="ReSpec 35.0.2">
   <meta name="viewport" content=
-  "width=device-width, initial-scale=1, shrink-to-fit=no" />
+  "width=device-width, initial-scale=1, shrink-to-fit=no">
   <style>
-  <![CDATA[
   span.example-title{text-transform:none}
   :is(aside,div).example,div.illegal-example{padding:.5em;margin:1em 0;position:relative;clear:both}
   div.illegal-example{color:red}
   div.illegal-example p{color:#000}
   aside.example div.example{border-left-width:.1em;border-color:#999;background:#fff}
-  ]]>
   </style>
   <style>
-  <![CDATA[
   .issue-label{text-transform:initial}
   .warning>p:first-child{margin-top:0}
   .warning{padding:.5em;border-left-width:.5em;border-left-style:solid}
@@ -29,10 +26,8 @@
   li.task-list-item{list-style:none}
   input.task-list-item-checkbox{margin:0 .35em .25em -1.6em;vertical-align:middle}
   .issue a.respec-gh-label{padding:5px;margin:0 2px 0 2px;font-size:10px;text-transform:none;text-decoration:none;font-weight:700;border-radius:4px;position:relative;bottom:2px;border:none;display:inline-block}
-  ]]>
   </style>
   <style>
-  <![CDATA[
   dfn{cursor:pointer}
   .dfn-panel{position:absolute;z-index:35;min-width:300px;max-width:500px;padding:.5em .75em;margin-top:.6em;font-family:"Helvetica Neue",sans-serif;font-size:small;background:#fff;background:var(--indextable-hover-bg,#fff);color:#000;color:var(--text,#000);box-shadow:0 1em 3em -.4em rgba(0,0,0,.3),0 0 1px 1px rgba(0,0,0,.05);box-shadow:0 1em 3em -.4em var(--tocsidebar-shadow,rgba(0,0,0,.3)),0 0 1px 1px var(--tocsidebar-shadow,rgba(0,0,0,.05));border-radius:2px}
   .dfn-panel:not(.docked)>.caret{position:absolute;top:-9px}
@@ -51,11 +46,9 @@
   .dfn-panel ul{padding:0}
   .dfn-panel li{margin-left:1em}
   .dfn-panel.docked{position:fixed;left:.5em;top:unset;bottom:2em;margin:0 auto;max-width:calc(100vw - .75em * 2 - .5em - .2em * 2);max-height:30vh;overflow:auto}
-  ]]>
   </style>
   <title>Web of Things (WoT) Binding Templates</title>
   <style id="respec-mainstyle">
-  <![CDATA[
   @keyframes pop{
   0%{transform:scale(1,1)}
   25%{transform:scale(1.25,1.25);opacity:.75}
@@ -98,15 +91,13 @@
   @media print{
   .removeOnSave{display:none}
   }
-  ]]>
   </style>
-  <meta name="color-scheme" content="light" />
+  <meta name="color-scheme" content="light">
   <meta name="description" content=
-  "W3C Web of Things enables applications to interact with and orchestrate connected Things at the Web scale. The standardized abstract interaction model exposed by the WoT Thing Description enables applications to scale and evolve independently of the individual Things." />
+  "W3C Web of Things enables applications to interact with and orchestrate connected Things at the Web scale. The standardized abstract interaction model exposed by the WoT Thing Description enables applications to scale and evolve independently of the individual Things.">
   <link rel="canonical" href=
-  "https://www.w3.org/TR/wot-binding-templates/" />
+  "https://www.w3.org/TR/wot-binding-templates/">
   <style>
-  <![CDATA[
   .hljs{--base:#fafafa;--mono-1:#383a42;--mono-2:#686b77;--mono-3:#717277;--hue-1:#0b76c5;--hue-2:#336ae3;--hue-3:#a626a4;--hue-4:#42803c;--hue-5:#ca4706;--hue-5-2:#c91243;--hue-6:#986801;--hue-6-2:#9a6a01}
   @media (prefers-color-scheme:dark){
   .hljs{--base:#282c34;--mono-1:#abb2bf;--mono-2:#818896;--mono-3:#5c6370;--hue-1:#56b6c2;--hue-2:#61aeee;--hue-3:#c678dd;--hue-4:#98c379;--hue-5:#e06c75;--hue-5-2:#be5046;--hue-6:#d19a66;--hue-6-2:#e6c07b}
@@ -123,19 +114,15 @@
   .hljs-emphasis{font-style:italic}
   .hljs-strong{font-weight:700}
   .hljs-link{text-decoration:underline}
-  ]]>
   </style>
   <style>
-  <![CDATA[
   var{position:relative;cursor:pointer}
   var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
   var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#222}
   var[data-type]::after{content:attr(data-type);transform:translateX(-50%) translateY(-100%);background:#222;text-align:center;font-family:"Dank Mono","Fira Code",monospace;font-style:normal;padding:6px;border-radius:3px;color:#daca88;text-indent:0;font-weight:400}
   var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
-  ]]>
   </style>
   <script id="initialUserConfig" type="application/json">
-  <![CDATA[
   {
   "specStatus": "NOTE",
   "publishDate": "2024-05-28",
@@ -256,17 +243,16 @@
   "publishISODate": "2024-05-28T00:00:00.000Z",
   "generatedSubtitle": "W3C Group Note 28 May 2024"
   }
-  ]]>
   </script>
   <link rel="stylesheet" href=
-  "https://www.w3.org/StyleSheets/TR/2021/W3C-NOTE" />
+  "https://www.w3.org/StyleSheets/TR/2021/W3C-NOTE">
 </head>
 <body class="h-entry toc-inline">
   <div class="head">
     <p class="logos"><a class="logo" href=
     "https://www.w3.org/"><img crossorigin="" alt="W3C" height="48"
     src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width=
-    "72" /></a></p>
+    "72"></a></p>
     <h1 id="title" class="title">Web of Things (WoT) Binding
     Templates</h1>
     <p id="w3c-state"><a href=
@@ -369,7 +355,7 @@
     "https://www.w3.org/copyright/software-license-2023/" title=
     "W3C Software and Document Notice and License">permissive
     document license</a> rules apply.</p>
-    <hr title="Separator for header" />
+    <hr title="Separator for header">
   </div>
   <div id="p1ukshqh" style="display: none;"></div>
   <section id="abstract" class="introductory">
@@ -681,7 +667,7 @@
     options.</p>
     <figure id="fig-building-block">
       <img src="images/binding-templates.svg" alt=
-      "Platforms, Protocols and Media Types as building blocks for binding templates and TD" />
+      "Platforms, Protocols and Media Types as building blocks for binding templates and TD">
       <figcaption>
         <a class="self-link" href="#fig-building-block">Figure
         <bdi class="figno">1</bdi></a> <span class=
@@ -708,7 +694,7 @@
     Mechanisms</a>.</p>
     <figure id="fig-mechanism">
       <img src="images/binding-mechanism.drawio.svg" alt=
-      "Binding Templates mechanism with a TD, Thing and Consumer" />
+      "Binding Templates mechanism with a TD, Thing and Consumer">
       <figcaption>
         <a class="self-link" href="#fig-mechanism">Figure
         <bdi class="figno">2</bdi></a> <span class=
@@ -905,7 +891,7 @@
     Templates</a>.</p>
     <figure id="fig-overview">
       <img src="images/binding-templates-overview.drawio.svg" alt=
-      "Binding Templates Overview and the relationships between each document type" />
+      "Binding Templates Overview and the relationships between each document type">
       <figcaption>
         <a class="self-link" href="#fig-overview">Figure
         <bdi class="figno">3</bdi></a> <span class=
@@ -3711,7 +3697,6 @@
     </ul>
   </div>
   <script id="respec-dfn-panel">
-  <![CDATA[
   (() => {
   // @ts-check
   if (document.respec) {
@@ -3935,7 +3920,6 @@
   panel.classList.remove("docked");
   }
   })()
-  ]]>
   </script>
   <script src=
   "https://www.w3.org/scripts/TR/2021/fixup.js"></script>

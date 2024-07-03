@@ -26,6 +26,31 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
             shortName: "wot-coap-binding",
             github: "https://github.com/w3c/wot-binding-templates",
+            localBiblio: {
+                "I.D.-coap-pubsub": {
+                    href: "https://tools.ietf.org/html/draft-ietf-core-coap-pubsub-14",
+                    title: "A publish-subscribe architecture for the Constrained Application Protocol (CoAP)",
+                    status: "Internet-Draft",
+                    publisher: "IETF",
+                    date: "18 April 2024",
+                    authors: [
+                        "Jaime Jimenez",
+                        "Michael Koster",
+                        "Ari Keranen",
+                    ]
+                },
+                "I.D.-stp": {
+                    href: "https://datatracker.ietf.org/doc/html/draft-bormann-t2trg-stp-03",
+                    title: "The Series Transfer Pattern (STP)",
+                    status: "Internet-Draft",
+                    publisher: "IETF",
+                    date: "8 April 2020",
+                    authors: [
+                        "Carsten Bormann",
+                        "Klaus Hartke",
+                    ]
+                },
+            },
             otherLinks: [
               {
                 key: "Core Binding Templates Specification",
@@ -362,6 +387,10 @@
             <p>
                 The same considerations apply to the operations `observemultipleproperties`, `observeallproperties`, `subscribemultipleevents`, `subscribeallevents`, and their respective `unobserve-` and `unsubscribe-` counterparts.
                 Note, however, that it is NOT RECOMMENDED to use the `observeallproperties` and `subscribeallevents` operations with constrained devices that provide many properties and/or events, as the observe notifications may become too large for constrained devices or their surrounding environments to handle.
+            </p>
+            <p class="note" title="Advanced Event Mechanisms">
+                In the case of Event Affordances, CoAP Observe only supports a simply event notification mechanism that corresponds with the `data` field of the `EventAffordance` class within a Thing Description.
+                More complex event mechanisms may be supported via the procedures defined in specifications such as [[?I.D.-coap-pubsub]] or [[?I.D.-stp]] in the future.
             </p>
         </section>
         <section>

@@ -324,9 +324,6 @@
                 The server will then respond with the current representation of the resource, as well as send notifications to the client.
                 A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
             </p>
-            <p>
-                Support for observing resources can be indicating by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
-            </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
@@ -347,7 +344,11 @@
 }
 </pre>
             <p>
-                A consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not
+                For the `observeproperty` and `subscribeevent` operations, a consumer SHOULD add an Observe option to GET or FETCH requests by default.
+                If the server's response does not contain an Observe option this indicates that the requested server does not support observe and that the consumer should fall back to polling instead (see section [[[#polling-resources]]]).
+            </p>
+            <p>
+                A consumer can also always fall back to polling a resource if observing a resource is permanently or temporarily not
                 possible.
                 In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
                 representation, setting the Observe option each time.

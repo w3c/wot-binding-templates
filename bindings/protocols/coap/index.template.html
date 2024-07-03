@@ -359,6 +359,10 @@
                 It is therefore RECOMMENDED to always include these operations in the same form as their counterparts when defining them for an affordance.
                 If no `unobserveproperty` or `unsubscribeevent` operation is defined for an observable property or an event, it SHOULD be assumed that the "passive" deregistration variant is supposed to be used with the respective affordance.
             </p>
+            <p>
+                The same considerations apply to the operations `observemultipleproperties`, `observeallproperties`, `subscribemultipleevents`, `subscribeallevents`, and their respective `unobserve-` and `unsubscribe-` counterparts.
+                Note, however, that it is NOT RECOMMENDED to use the `observeallproperties` and `subscribeallevents` operations with constrained devices that provide many properties and/or events, as the observe notifications may become too large for constrained devices or environments to handle.
+            </p>
         </section>
         <section>
             <h3>Block-wise Transfers</h3>

@@ -336,7 +336,7 @@
                 "cov:method": "GET",
                 "href": "coap://[2001:DB8::1]/status",
                 "contentType": "text/plain;charset=utf-8",
-                "op": ["observeproperty"]
+                "op": ["observeproperty", "unobserveproperty"]
             }]
         }
     }
@@ -351,6 +351,13 @@
                 representation, setting the Observe option each time.
                 As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing,
                 the client polls again with the Observe option set.
+            </p>
+            <p>
+                The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe need to be performed as specified in section 3.6 of [[RFC7641]].
+                Note that this operation can be either performed actively (i.e., by sending an explicit deregistration request) or passively (by "forgetting" the observe relation and sending a reset message after receiving the next notification response from the server).
+                Therefore, for these operations to work, they MUST refer to the same resource as the matching `observeproperty` and `unsubscribeproperty` operations.
+                It is therefore RECOMMENDED to always include these operations in the same form as their counterparts when defining them for an affordance.
+                If no `unobserveproperty` or `unsubscribeevent` operation is defined for an observable property or an event, it SHOULD be assumed that the "passive" deregistration variant is supposed to be used with the respective affordance.
             </p>
         </section>
         <section>

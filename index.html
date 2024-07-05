@@ -460,10 +460,8 @@
                     since different protocols can have different subprotocols.
                     Correspondingly, subprotocols are linked to the protocol they are extending and should be understood together with 
                     the protocol indicated in <code>href</code> of the forms (or the <code>base</code>).
-                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
-                    For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
-                    operations as defined by [[RFC6741]].
-                    The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
+                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used, for example.
+                    Subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
             </section>
 
@@ -1285,8 +1283,7 @@
                             "cov:method": "GET",
                             "href": "coap://example.com/sensor/gasconcentration",
                             "contentType": "application/json",
-                            "op": "subscribeevent",
-                            "subprotocol": "cov:observe"
+                            "op": ["subscribeevent", "ubsubscribeevent"],
                         }
                     ]
                 }

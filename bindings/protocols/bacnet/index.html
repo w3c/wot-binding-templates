@@ -171,6 +171,13 @@
         <p>
             The 'bacnet' URI Scheme used herein is based on the definition in Annex Q.8 of
             the BACnet Specification [[BACnet]].
+
+            The additions to Q.8 are as follows:
+
+            <ol>
+                <li>object-type and property-identifier are restricted to their numeric versions and not the registered alphanumeric identifiers, in order to reduce the maintenance overhead when new object-types and property-identifiers are introduced in the BACnet standard.</li>
+                <li>Query components (as per <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">RFC 3986 Section 3.4</a>) are added to cover specific needs not covered in Annex Q.8. Current examples are command priority and COV increment.</li>
+            </ol>
         </p>
         <section>
             <h3>URI Syntax</h3>

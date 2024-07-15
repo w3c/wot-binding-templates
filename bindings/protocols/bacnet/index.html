@@ -76,13 +76,17 @@
         <p>
             In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to
             implement a specific IoT protocol, data format, or IoT platform.
-            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
-            This document gives implementation guidelines regarding BACnet [[BACnet]], a building automation and control networking protocol.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to
+            follow.
+            This document gives implementation guidelines regarding BACnet [[BACnet]], a building automation and control
+            networking protocol.
         </p>
         <p>
-            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document,
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing
+            Description document,
             and associated rules that allow to describe WoT operations using BACnet over the network.
-            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated
+            behavior.
         </p>
     </section>
     <section id='sotd'>
@@ -103,7 +107,8 @@
             detection systems.
         </p>
         <p>
-            This document describes how the Web of Things Thing Description [[WOT-THING-DESCRIPTION]] (TD) can be used to represent devices that use BACnet. 
+            This document describes how the Web of Things Thing Description [[WOT-THING-DESCRIPTION]] (TD) can be used
+            to represent devices that use BACnet.
             In particular, the document explains how to create valid TD Forms for the
             different operations that BACnet can perform.
         </p>
@@ -126,14 +131,14 @@
         </p>
         <p>
             The following subset of BACnet features is supported by this binding:
-            <ul>
-                <li>
-                    Services: ReadProperty, WriteProperty, SubscribeCOV
-                </li>
-                <li>
-                    Data Model: Device, Object, Property, Index
-                </li>
-            </ul>
+        <ul>
+            <li>
+                Services: ReadProperty, WriteProperty, SubscribeCOV
+            </li>
+            <li>
+                Data Model: Device, Object, Property, Index
+            </li>
+        </ul>
         </p>
         <p>
             This protocol binding is intended to be used to enable web applications
@@ -174,10 +179,14 @@
 
             The additions to Q.8 are as follows:
 
-            <ol>
-                <li>object-type and property-identifier are restricted to their numeric versions and not the registered alphanumeric identifiers, in order to reduce the maintenance overhead when new object-types and property-identifiers are introduced in the BACnet standard.</li>
-                <li>Query components (as per <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">RFC 3986 Section 3.4</a>) are added to cover specific needs not covered in Annex Q.8. Current examples are command priority and COV increment.</li>
-            </ol>
+        <ol>
+            <li>object-type and property-identifier are restricted to their numeric versions and not the registered
+                alphanumeric identifiers, in order to reduce the maintenance overhead when new object-types and
+                property-identifiers are introduced in the BACnet standard.</li>
+            <li>Query components (as per <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">RFC 3986 Section
+                    3.4</a>) are added to cover specific needs not covered in Annex Q.8. Current examples are command
+                priority and COV increment.</li>
+        </ol>
         </p>
         <section>
             <h3>URI Syntax</h3>
@@ -338,7 +347,8 @@ lowercase = %x61-7A  ; "a" to "z"
             This vocabulary is fully defined in the BACnet ontology published together with this document.
         </p>
         <p class="ednote">
-            Until the JSON-LD context is published, this document will use the  example URI <code>"https://example.org/bacnet"</code>for the context with the prefix <code>"bacv"</code>.
+            Until the JSON-LD context is published, this document will use the example URI
+            <code>"https://example.org/bacnet"</code>for the context with the prefix <code>"bacv"</code>.
         </p>
         <section>
             <h3 id="vocabulary-uri-variables">URI Variables</h3>
@@ -362,7 +372,8 @@ lowercase = %x61-7A  ; "a" to "z"
                     </tr>
                     <tr>
                         <td><code>covIncrement</code></td>
-                        <td>Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a property ID)</td>
+                        <td>Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a
+                            property ID)</td>
                         <td>optional</td>
                         <td>
                             <a href="https://www.w3.org/2019/wot/json-schema#NumberSchema"><code>number</code></a>
@@ -371,25 +382,31 @@ lowercase = %x61-7A  ; "a" to "z"
                 </tbody>
             </table>
             <p>
-                URI Variables are included in the 'bacnet' URI Scheme and are included in the Protocol Binding to communicate PDU option settings for the BACnet driver to use when sending requests.
+                URI Variables are included in the 'bacnet' URI Scheme and are included in the Protocol Binding to
+                communicate PDU option settings for the BACnet driver to use when sending requests.
             </p>
             <p>
-                The following JSON example shows the usage of the BACnet vocabulary for URI Variables, specifically CommandPriority and CovIncrement. The semantic annotation is optional.
+                The following JSON example shows the usage of the BACnet vocabulary for URI Variables, specifically
+                CommandPriority and CovIncrement. The semantic annotation is optional.
             </p>
             <p>
-                This template could be used to construct the uriVariables element for TD interaction affordances, to enable the application to communicate URI variables to the BACnet driver, using a consistent format according to the schema constraints below.
+                This template could be used to construct the uriVariables element for TD interaction affordances, to
+                enable the application to communicate URI variables to the BACnet driver, using a consistent format
+                according to the schema constraints below.
             </p>
             <p>
-                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to use a constant value for this parameter.
+                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet
+                driver to use a constant value for this parameter.
             </p>
             <p>
-                Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes regarding URI variables:
-                <ol>
-                    <li>Showing the link of URI variables to exactly which operations they apply to.</li>
-                    <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
-                    <li>Providing a standardized set of parameters.</li>
-                    <li>Having the ability to use parameters also in other places than the href</li>
-                </ol>
+                Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes
+                regarding URI variables:
+            <ol>
+                <li>Showing the link of URI variables to exactly which operations they apply to.</li>
+                <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
+                <li>Providing a standardized set of parameters.</li>
+                <li>Having the ability to use parameters also in other places than the href</li>
+            </ol>
             </p>
             <pre id="example-uri-variables" class="example" title="URI Variables Usage in BACnet">
 {
@@ -429,8 +446,11 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td><code>bacv:usesService</code></td>
                         <td>Indicates the BACnet service to use</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOV"</code>)</p>
+                            <a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>,
+                                <code>"SubscribeCOV"</code>)
+                            </p>
                         </td>
                         <td>hctl:Form</td>
                     </tr>
@@ -438,7 +458,8 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td><code>bacv:isISO8601</code></td>
                         <td>This data uses ISO8601 format</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+                            <a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
                         </td>
                         <td>bacv:Sequence</td>
                     </tr>
@@ -446,7 +467,8 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td><code>bacv:hasBinaryRepresentation</code></td>
                         <td>Points to the binary representation of the resource</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            <a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
                             <p>(one of <code>"hex"</code>, <code>"dotted-decimal"</code>, <code>"base64"</code>)</p>
                         </td>
                         <td>bacv:OctetString</td>
@@ -471,7 +493,8 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td><code>bacv:hasFieldName</code></td>
                         <td>Name of a Named Member of a Sequence or Choice</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            <a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
                         </td>
                         <td>
                             bacv:NamedMember
@@ -481,7 +504,8 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td><code>bacv:hasContextTag</code></td>
                         <td>Context Tag for a Named Member of a Sequence or Choice</td>
                         <td>
-                            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>boolean</code></a>
+                            <a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>boolean</code></a>
                         </td>
                         <td>
                             bacv:NamedMember
@@ -500,7 +524,11 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>bacv:hasLogicalVal</code></td>
                         <td>Logical Value for a ValueMap</td>
-                        <td><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a> or <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean">boolean</a></td>
+                        <td><a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+                            or <a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                            or <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean">boolean</a></td>
                         <td>
                             bacv:ValueMapEntry
                         </td>
@@ -508,7 +536,9 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>bacv:hasProtocolVal</code></td>
                         <td>Protocol Value for a ValueMap</td>
-                        <td><a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a></td>
+                        <td><a
+                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+                        </td>
                         <td>
                             bacv:ValueMapEntry
                         </td>
@@ -582,7 +612,7 @@ lowercase = %x61-7A  ; "a" to "z"
             <p>
                 BACnet has its own data model, which cannot always be derived
                 from the data schema of the interaction affordances. Hence
-                the type information is amended in the Form (column 3) of the protocol binding while 
+                the type information is amended in the Form (column 3) of the protocol binding while
                 staying conceptually conformant to the WoT Data Schema (column 2).
                 The goal here is to abstract BACnet's data model into a Web-like JSON-based
                 data model, by still keeping the wire compatibility on the protocol.
@@ -619,7 +649,8 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td>
                             <code>{ "type": "object" }</code>
                             <br />
-                            For the special case where a DateTime object is modeled as a Sequence <code>"bacv:isISO8601": true</code>:
+                            For the special case where a DateTime object is modeled as a Sequence
+                            <code>"bacv:isISO8601": true</code>:
                             <br />
                             <code>
                                 {
@@ -993,7 +1024,7 @@ lowercase = %x61-7A  ; "a" to "z"
             property identifier <code>present-value</code> in the scope of a
             BACnet device with device instance number <code>5</code>.
         </p>
-<pre id="example-readproperty" class="example" title="A BACnet property">
+        <pre id="example-readproperty" class="example" title="A BACnet property">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1017,14 +1048,17 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<p>
-    [[[#example-uri-variables-with-forms]]] demonstrates how the <code>uriVariables</code> in the affordance-level can be 
-    used and how they need to be represented in a <code>forms</code> element.
-    The <code>"bacv:covIncrement"</code> indicates that the URI variable set by the Consumer application will be used to notify the 
-    Consumer only if the property value changes more than the set amount by the URI variable. 
-</p>
+        <p>
+            [[[#example-uri-variables-with-forms]]] demonstrates how the <code>uriVariables</code> in the
+            affordance-level can be
+            used and how they need to be represented in a <code>forms</code> element.
+            The <code>"bacv:covIncrement"</code> indicates that the URI variable set by the Consumer application will be
+            used to notify the
+            Consumer only if the property value changes more than the set amount by the URI variable.
+        </p>
 
-<pre id="example-uri-variables-with-forms" class="example" title="uriVariables in the Affordance Level with Associated forms">
+        <pre id="example-uri-variables-with-forms" class="example"
+            title="uriVariables in the Affordance Level with Associated forms">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1055,12 +1089,13 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
-<p>
-    [[[#example-enum-mapping]]] shows how an <code>enum</code> in the Data Schema is extended in the <code>forms</code> 
-    to make it understandable by BACnet drivers.
-</p>
+        <p>
+            [[[#example-enum-mapping]]] shows how an <code>enum</code> in the Data Schema is extended in the
+            <code>forms</code>
+            to make it understandable by BACnet drivers.
+        </p>
 
-<pre id="example-enum-mapping" class="example" title="Enum Mapping for BACnet Types">
+        <pre id="example-enum-mapping" class="example" title="Enum Mapping for BACnet Types">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {

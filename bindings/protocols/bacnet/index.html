@@ -1090,6 +1090,63 @@ lowercase = %x61-7A  ; "a" to "z"
 </pre>
 
         <p>
+            [[[#example-uri-variable-for-writing]]] demonstrates how the <code>uriVariable</code> in the
+            affordance-level can be used to model a writing priority in a <code>forms</code> element.
+            The <code>"bacv:commandPriority"</code> indicates that the URI variable set by the Consumer application will
+            used relayed as the priority argument in the WriteProperty request.
+            For other operations (readproperty, observeproperty, unobserveproperty) this URI variable is irrelevant, so the corresponding forms do not use the URI variable.
+            If the URI variable is also irrelevant for the writeproperty operation (e.g. in case the BACnet object doesn't have a priority array),
+            it can also be left out of the writeproperty form and the URI variable can be omitted completely.
+            The URI variable comes with a default, so in case the Consumer doesn't provide this URI variable, the default of 16 will be used.
+            Another possibility is to fix the writing priority in the TD by giving a fixed commandPriority in the href of the form, and not exposing its value via a URI variable.
+            These decisions belong to the TD author.
+        </p>
+
+        <pre id="example-uri-variable-for-writing" class="example"
+            title="uriVariables in the Affordance Level for writing">
+            {
+                "@context": ["https://www.w3.org/2022/wot/td/v1.1",
+                {
+                    "bacv": "https://example.org/bacnet"
+                }],
+                ...
+                "properties": {
+                    "analog1": {
+                        "type": "number",
+                        "readOnly": false,
+                        "writeOnly": false,
+                        "observable": true,
+                        "uriVariables": {
+                            "writePriority": {
+                                "@type": "bacv:commandPriority",
+                                "type": "integer",
+                                "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                                "default": 16
+                            }
+                        },
+                        "forms": [
+                            {
+                                "op": [ "readproperty", "observeproperty", "unobserveproperty" ],
+                                "href": "bacnet://5/2,1",
+                                "bacv:hasDataType": {
+                                    "@type": "bacv:Real"
+                                }
+                            },
+                            {
+                                "op": [ "writeproperty" ],
+                                "href": "bacnet://5/2,1?commandPriority={writePriority}",
+                                "bacv:usesService": "WriteProperty",
+                                "bacv:hasDataType": {
+                                    "@type": "bacv:Real"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+</pre>
+
+        <p>
             [[[#example-enum-mapping]]] shows how an <code>enum</code> in the Data Schema is extended in the
             <code>forms</code>
             to make it understandable by BACnet drivers.

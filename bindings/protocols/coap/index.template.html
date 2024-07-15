@@ -373,7 +373,7 @@
                 For the `subscribeevent` operation on the other hand, using FETCH is RECOMMENDED if the Event Affordance expects the consumer to provide data described by the `subscription` field.
             </p>
             <p>
-                If the server's response does not contain an Observe option this indicates that the requested server does not support observe and that the consumer should fall back to polling instead (see section [[[#polling-resources]]]).
+                If the server's response does not contain an Observe option this indicates that the requested server does not support observe and that the consumer SHOULD fall back to polling instead (see section [[[#polling-resources]]]).
                 Consequently, a consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not
                 possible.
                 In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current

@@ -369,8 +369,8 @@
 </pre>
             <p>
                 For the `observeproperty` and `subscribeevent` operations, a consumer SHOULD add an `Observe` option to `GET` or `FETCH` requests.
-                Note, however, that using FETCH for the `observeproperty` operation is NOT RECOMMENDED as FETCH requests must contain a Content-Format option which can imply that the request payload must not be empty.
-                For the `subscribeevent` operation on the other hand, using FETCH is RECOMMENDED if the Event Affordance expects the consumer to provide data described by the `subscription` field.
+                Note, however, that using `FETCH` for the `observeproperty` operation is NOT RECOMMENDED, as `FETCH` requests must contain a `Content-Format` option which can imply that the request payload must not be empty.
+                For the `subscribeevent` operation, on the other hand, using `FETCH` is RECOMMENDED if the Event Affordance expects the consumer to provide data described by the `subscription` field.
             </p>
             <p>
                 If the server's response does not contain an `Observe` option, this indicates that the requested server does not support observe, and that the consumer SHOULD fall back to polling instead (see section [[[#polling-resources]]]).

@@ -382,7 +382,7 @@
                 the client polls again with the Observe option set.
             </p>
             <p>
-                The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe need to be performed as specified in section 3.6 of [[RFC7641]].
+                The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe MUST be performed as specified in section 3.6 of [[RFC7641]].
                 Note that this operation can be either performed actively (i.e., by sending an explicit deregistration request) or passively (by "forgetting" the observe relation and sending a reset message after receiving the next notification response from the server).
                 Therefore, for the `unobserveproperty` and `unsubscribeevent` operations to work, they MUST refer to the same resource as the matching `observeproperty` and `subscribeevent` operations.
                 It is therefore RECOMMENDED to always include these operations in the same form as their counterparts when defining them for an affordance.

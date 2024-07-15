@@ -27,7 +27,7 @@
                                 # dcterms:rights "TODO" ;
                                 dcterms:title "BACnet Model" ;
                                 dcterms:source "http://www.w3.org/2022/bacnet" ;
-                                vann:preferredNamespacePrefix "bacnet" ;
+                                vann:preferredNamespacePrefix "bacv" ;
                                 vann:preferredNamespaceUri bacv: ;
                                 vaem:hasOwner "Dogan Fennibay" ;
                                 owl:versionInfo "0.1.1" ;

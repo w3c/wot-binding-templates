@@ -949,16 +949,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>bacv:Any</code></td>
                         <td>
-                            <code>
-                                { "anyOf": [
-                                    { "type": "object" },
-                                    { "type": "array" },
-                                    { "type": "number" },
-                                    { "type": "string" },
-                                    { "type": "boolean" },
-                                    { "type": "null" }
-                                ]}
-                            </code>
+                            The <code>type</code> field should be left out completely. This is allowed according to <a href="https://www.w3.org/TR/wot-thing-description/#sec-data-schema-vocabulary-definition">WoT Data Schema Vocabulary Definitions</a>.
                         </td>
                         <td>
                             <code>

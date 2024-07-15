@@ -345,9 +345,9 @@
                 This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.
             </p>
             <p>
-                A resource can be observed by sending a GET or FETCH [[RFC8132]] request with the Observe option set.
-                The server will then respond with the current representation of the resource, as well as send notifications to the client.
-                A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
+                A resource can be observed by sending a `GET` or `FETCH` [[RFC8132]] request with the `Observe` option set.
+                The server will respond with the current representation of the resource, as well as sending future notifications to the client.
+                A server is not required to support the `Observe` option for all resources; a resource without `Observe` support can still be observed by polling it at regular intervals.
             </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
@@ -377,9 +377,9 @@
                 Consequently, a consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not
                 possible.
                 In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
-                representation, setting the Observe option each time.
+                representation, setting the `Observe` option each time.
                 As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing,
-                the client polls again with the Observe option set.
+                the client polls again with the `Observe` option set.
             </p>
             <p>
                 The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe MUST be performed as specified in section 3.6 of [[RFC7641]].

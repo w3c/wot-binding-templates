@@ -23,7 +23,6 @@ It is unrealistic to incorporate a complete list of bindings into a REC document
 To choose a mechanism and the rules, we document our expectations below:
 
 - A binding SHOULD be written by people with a good understanding of the protocol, media type (or similar), and not necessarily the TD Editors. This includes people and organizations inside and outside of the WoT WG.
-  - TODO: Ask existing registry "managers" about their opinion on this proposal. This will be discussed in the breakout on March 12.
   - Reasons Behind the Requirement:
     - Instead of WG learning each new protocol and media type, it is more efficient for people with a good understanding of the protocol or media type to write a binding.
     - Engaging other communities.
@@ -44,15 +43,15 @@ To choose a mechanism and the rules, we document our expectations below:
     - It breaks interoperability otherwise
     - We should avoid confusing users, i.e. which binding should I use?
     - It would complicate implementations
-  - TODO: Clarify what happens when two ecosystems like OCF and LwM2M both use CoAP binding. The initial thinking is to register them as separate entries but clarify what they use from CoAP binding. A layered registry can be thought of as similar to language tags with `en` extending to `en-us` and `en-uk`, where the tags and entries are different but the association with `en` is expressed in the id. In our case, this would be `coap-ocf` and `coap-lwm2m`. A higher-level binding SHOULD NOT override or conflict with a lower-level binding, and this should be verified by the custodian, e.g., `cov:method` in CoAP binding should not be turned into `cov:operation` in the higher-level binding. The namespace (prefix and its values) defined in a binding CANNOT be redefined in any other binding.
-- In a TD, a binding SHOULD be identifiable by the elements in a form such as `href`, `contentType`, `subprotocol`, or other terms. Alternative: In a TD, a binding SHOULD be identifiable by the elements in a form or connection information (base etc.) (This alternative seems to have more consensus).
+  - DISCUSS: Clarify what happens when two ecosystems like OCF and LwM2M both use CoAP binding. The initial thinking is to register them as separate entries but clarify what they use from CoAP binding. A layered registry can be thought of as similar to language tags with `en` extending to `en-us` and `en-uk`, where the tags and entries are different but the association with `en` is expressed in the id. In our case, this would be `coap-ocf` and `coap-lwm2m`. A higher-level binding SHOULD NOT override or conflict with a lower-level binding, and this should be verified by the custodian, e.g., `cov:method` in CoAP binding should not be turned into `cov:operation` in the higher-level binding. The namespace (prefix and its values) defined in a binding CANNOT be redefined in any other binding.
+- In a TD, a binding SHOULD be identifiable by the terms in a form such as `href`, `contentType`, `subprotocol`, or connection information found in the root of the TD.
   - Reasons Behind the Requirement:
     - This avoids conflicts that are mentioned in the previous requirement
   - TODO: These terms should be refined based on the additions/changes to the TD 2.0 mechanism. E.g. introducing a `protocol` term, or restrictions on URI scheme and `subprotocol` combination, data mapping etc.
-  - TODO: We need to clarify whether the URI scheme and the media type MUST be registered in IANA first.
+  - DISCUSS: We need to clarify whether the URI scheme and the media type MUST be registered in IANA first.
     - Provisional registration could reduce the overhead. Any new conflicting ones would bring up a discussion but it can still result in "our" provisional getting demoted.
     - Pros: more stable. Cons: More overhead and work
-  - TODO: How to identify a higher-level binding in the form
+  - DISCUSS: How to identify a higher-level binding in the form
 - A binding that uses a protocol MUST map at least one WoT operation (`op` keyword values such as `readproperty`) to a protocol message and vice versa
   - Reasons Behind the Requirement:
     - Otherwise, it is not binding the protocol to WoT and cannot be useful.
@@ -60,8 +59,6 @@ To choose a mechanism and the rules, we document our expectations below:
   - Reasons Behind the Requirement:
     - Avoid submission of a binding like "XML Binding" that only says "Use `contentType:application/xml` and nothing more. That alone would not be enough to serialize correct messages based on the data schema.
   - TODO: We will need additional mechanisms (including vocabulary terms) to ensure that it is possible to use other media types.
-- TODO: Explain that there are no categories
-- TODO: Analyze <https://github.com/w3c/ttwg/tree/main/boilerplate/registry>
 
 ### Content of Registry Definition
 

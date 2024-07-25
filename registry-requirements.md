@@ -1,6 +1,7 @@
 # Binding Registry Requirements
 
 Until the editor's draft and the requirements here are ready, this document will contain the requirements for the binding registry.
+Please see <https://github.com/w3c/wot/blob/main/registry-analysis/Readme.md> to see the analysis of the registry mechanism.
 
 ## Use Case
 
@@ -11,10 +12,10 @@ From the charter:
 Our Story and Use Case:
 
 The goal of the W3C Web of Things is to support multiple protocols via the bindings mechanism.
-There are domains like smart cities, and infrastructure where multiple stakeholders bring different devices and systems with different protocols.
+There are domains like smart cities and infrastructure where multiple stakeholders bring different devices and systems with different protocols.
 This means existing systems should be made interoperable with a descriptive approach via Thing Descriptions.
 
-It is unrealistic to incorporate a complete list of bindings into a REC document before its publication, thus we need a more flexible mechanism.
+It is unrealistic to incorporate a complete list of bindings into a REC document before its publication; thus, we need a more flexible mechanism.
 
 ## Content of Registry Definition
 
@@ -22,7 +23,8 @@ A preliminary list of rules that is extending https://www.w3.org/2023/Process-20
 
 ### Entry format 
 
-This is what is put into the table and not what the binding should contain:
+This is what is put into the table and not what the binding should contain.
+At each submission, these information must be present in the submission.
 
 - Name of the binding
   - Examples: `HTTP Binding Template`, `CoAP Binding Template`, 
@@ -37,7 +39,7 @@ This is what is put into the table and not what the binding should contain:
 
 This is what the binding has to contain in order to go into the table
 
-  - To be clarified but the initial list for protocols at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
+- To be clarified but the initial list for protocols at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
 
 Aspects to clarify based on the analysis of other registries above:
 

@@ -2,9 +2,7 @@
 
 Until the editor's draft and the requirements here are ready, this document will contain the requirements for the binding registry.
 
-## WoT Requirements and Expectations for a Potential Binding Registry
-
-### Expectation and Use Case
+## Use Case
 
 From the charter:
 
@@ -18,7 +16,62 @@ This means existing systems should be made interoperable with a descriptive appr
 
 It is unrealistic to incorporate a complete list of bindings into a REC document before its publication, thus we need a more flexible mechanism.
 
-### Expectations
+## Content of Registry Definition
+
+A preliminary list of rules that is extending https://www.w3.org/2023/Process-20230612/#reg-def (needs more iteration):
+
+### Entry format 
+
+This is what is put into the table and not what the binding should contain:
+
+- Name of the binding
+  - Examples: `HTTP Binding Template`, `CoAP Binding Template`, 
+- Link to the binding: Stable and dated link
+  - Examples: `https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html`
+- Binding ontology prefix
+  - Examples: `modv`, `htv`, `cov`
+- Binding Identification in TD: URI Scheme or other TD terms that are reserved for this binding.
+  - Examples: `subprotocol:sse`, `href:"http://example.com"
+
+### Requirements on the Submitted Document:
+
+This is what the binding has to contain in order to go into the table
+
+  - To be clarified but the initial list for protocols at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
+
+Aspects to clarify based on the analysis of other registries above:
+
+- Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning) and versioning with respect to 
+- Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
+- Differentiating entry into the registry and update
+- Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
+- Whether we should have one or multiple registries
+
+### Registry Template
+
+Submission template vs. what lives in the registry entry
+
+A set of files and requirements for each file
+
+At the top level, markdown file similar to the use case template that describes the binding, YAML template for git workflow 
+
+- name of binding
+- maintainers
+- protocols
+
+Same content as existing binding
+- HTML specification file using respec
+- JSON Schema
+- Ontology files including JSON-LD context for TDs
+
+(Think about how to manage the set of semantic artifacts/ontologies)
+
+Create a repository template to make it easy for people to create new bindings
+
+## Entry Requirements
+
+
+## Basic Requirements
 
 To choose a mechanism and the rules, we document our expectations below:
 
@@ -59,63 +112,3 @@ To choose a mechanism and the rules, we document our expectations below:
   - Reasons Behind the Requirement:
     - Avoid submission of a binding like "XML Binding" that only says "Use `contentType:application/xml` and nothing more. That alone would not be enough to serialize correct messages based on the data schema.
   - TODO: We will need additional mechanisms (including vocabulary terms) to ensure that it is possible to use other media types.
-
-### Content of Registry Definition
-
-A preliminary list of rules that is extending https://www.w3.org/2023/Process-20230612/#reg-def :
-
-- Entry format (i.e. what is put into the TD document and not what the linked document should contain)
-  - Name of the binding
-  - Link to the binding: Stable link
-  - (possibly) The binding prefix
-- Requirements on the submitted document:
-  - To be clarified but the initial list for protocols at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
-
-Aspects to clarify based on the analysis of other registries above:
-
-- Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning) and versioning with respect to 
-- Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
-- Differentiating entry into the registry and update
-- Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
-- Whether we should have one or multiple registries
-
-
-### Rules of a Registry
-
-A preliminary list of rules (needs more iteration):
-
-- Entry format (i.e. what is put into the TD document and not what the linked document should contain)
-  - Name of the binding
-  - Link to the binding: Stable link
-  - (possibly) The binding prefix
-- Requirements on the submitted document:
-  - To be clarified but the initial list for protocols at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
-
-Aspects to clarify based on the analysis of other registries above:
-
-- Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning) and versioning with respect to 
-- Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
-- Differentiating entry into the registry and update
-- Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
-- Whether we should have one or multiple registries
-
-### Registry Template
-
-Submission template vs. what lives in the registry entry
-
-A set of files and requirements for each file
-
-At the top level, markdown file similar to the use case template that describes the binding, YAML template for git workflow 
-
-- name of binding
-- maintainers
-- protocols
-
-Same content as existing binding
-- HTML specification file using respec
-- JSON Schema
-- Ontology files including JSON-LD context for TDs
-
-(Think about how to manage the set of semantic artifacts/ontologies)
-
-Create a repository template to make it easy for people to create new bindings

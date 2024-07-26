@@ -77,7 +77,7 @@ Create a repository template to make it easy for people to create new bindings
 
 To choose a mechanism and the rules, we document our expectations below:
 
-- A binding SHOULD be written by people with a good understanding of the protocol, media type (or similar), and not necessarily the TD Editors. This includes people and organizations inside and outside of the WoT WG.
+- A binding SHOULD be written by people with a good understanding of the protocol and media type (or similar), who are not necessarily the TD Editors. This includes people and organizations inside and outside of the WoT WG.
   - Reasons Behind the Requirement:
     - Instead of WG learning each new protocol and media type, it is more efficient for people with a good understanding of the protocol or media type to write a binding.
     - Engaging other communities.

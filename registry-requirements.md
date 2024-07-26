@@ -33,7 +33,7 @@ At each submission, these information must be present in the submission.
 - Binding ontology prefix
   - Examples: `modv`, `htv`, `cov`
 - Binding Identification in TD: URI Scheme or other TD terms that are reserved for this binding.
-  - Examples: `subprotocol:sse`, `href:"http://example.com"
+  - Examples: `subprotocol:sse`, `href:"http://example.com"`
 
 ### Requirements on the Submitted Document:
 

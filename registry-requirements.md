@@ -39,7 +39,7 @@ At each submission, these information must be present in the submission.
 
 This is what the binding has to contain in order to go into the table
 
-- To be clarified but the initial list for protocols at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
+- To be clarified, but the initial list for protocols is at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
 
 Aspects to clarify based on the analysis of other registries above:
 

@@ -24,7 +24,7 @@ A preliminary list of rules that is extending https://www.w3.org/2023/Process-20
 ### Entry format 
 
 This is what is put into the table and not what the binding should contain.
-At each submission, these information MUST be present in the submission and MUST not conflict with existing bindings.
+At each submission, this information MUST be present in the submission and MUST not conflict with existing bindings.
 
 - Name of the binding
   - Examples: `HTTP Binding Template`, `CoAP Binding Template`, 

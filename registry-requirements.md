@@ -105,9 +105,11 @@ To choose a mechanism and the rules, we document our expectations below:
   - Reasons Behind the Requirement:
     - This avoids conflicts that are mentioned in the previous requirement
   - TODO: These terms should be refined based on the additions/changes to the TD 2.0 mechanism, e.g., introducing a `protocol` term, or putting restrictions on URI scheme and `subprotocol` combination, data mapping, etc.
-  - DISCUSS: We need to clarify whether the URI scheme and the media type MUST be registered in IANA first.
-    - Provisional registration could reduce the overhead. Any new conflicting ones would bring up a discussion but it can still result in "our" provisional getting demoted.
-    - Pros: more stable. Cons: More overhead and work
+  - DISCUSS: We need to clarify whether the URI scheme and the media type MUST be registered in IANA first. Opinions:
+    - Cris: Provisional registration could reduce the overhead. Any new conflicting ones would bring up a discussion but it can still result in "our" provisional getting demoted.
+      - Pros: more stable. Cons: More overhead and work
+    - Luca: We should require this. Otherwise, there can be conflicts (our registry shows one scheme and IANA another). We first get a binding submission, at that stage no registration is required. After a review by the TF, the submitter should trigger a submission process in IANA.
+    - Daniel: The merged entries should contain finalized registrations at IANA. We can get a first PR for submission without any registration in the first place but that PR will not be merged beforehand. 
   - DISCUSS: How to identify a higher-level binding in the form
 - A binding that uses a protocol MUST map at least one WoT operation (`op` keyword value such as `readproperty`) to a protocol message and vice versa
   - Reasons Behind the Requirement:

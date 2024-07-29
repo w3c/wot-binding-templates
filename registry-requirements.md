@@ -24,7 +24,7 @@ A preliminary list of rules that is extending https://www.w3.org/2023/Process-20
 ### Entry format 
 
 This is what is put into the table and not what the binding should contain.
-At each submission, these information must be present in the submission.
+At each submission, these information MUST be present in the submission and MUST not conflict with existing bindings.
 
 - Name of the binding
   - Examples: `HTTP Binding Template`, `CoAP Binding Template`, 
@@ -33,7 +33,8 @@ At each submission, these information must be present in the submission.
 - Binding ontology prefix
   - Examples: `modv`, `htv`, `cov`
 - Binding Identification in TD: URI Scheme or other TD terms that are reserved for this binding.
-  - Examples: `subprotocol:sse`, `href:"http://example.com"`
+  - Examples: `"subprotocol":"sse"`, `"href":"http://example.com"`, `"contentType":"application/json"`
+- Status: TBD but we may need a lifecycle aspect
 
 ### Requirements on the Submitted Document:
 
@@ -87,6 +88,7 @@ To choose a mechanism and the rules, we document our expectations below:
   - Reasons Behind the Requirement: It is easier to update in the long term.
 - Association of a binding with the TD specification (registry entry) SHOULD be confirmed by the WoT Working Group. In other words, a person needs some permission and/or confirmation to authoritatively say that a given binding can be used with TD version X. The custodian of this registry is the WoT WG.
   - Reasons Behind the Requirement: WoT WG is the manager of the registry.
+  - DISCUSS: What is the objective mechanism to confirm the association? Should we have a test suite?
 - If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian.
   - Reasons Behind the Requirement: It should be possible to maintain the registry without the WoT WG.
 - It SHOULD be possible to register, update, or remove a registry entry that associates a binding to a specific TD specification outside of the REC lifecycle of the given TD specification.

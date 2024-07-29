@@ -1326,9 +1326,9 @@ lowercase = %x61-7A  ; "a" to "z"
             The <code>"bacv:commandPriority"</code> indicates that the URI variable set by the Consumer application will
             be relayed as the priority argument in the WriteProperty request.
             For other operations (readproperty, observeproperty, unobserveproperty) this URI variable is irrelevant, so the corresponding forms do not use the URI variable.
-            If the URI variable is also irrelevant for the writeproperty operation (e.g. in case the BACnet object doesn't have a priority array),
+            If the URI variable is also irrelevant for the writeproperty operation (e.g., when the BACnet object doesn't have a priority array),
             it can also be left out of the writeproperty form and the URI variable can be omitted completely.
-            The URI variable comes with a default, so in case the Consumer doesn't provide this URI variable, the default of 16 will be used.
+            The URI variable comes with a default, so if the Consumer doesn't provide this URI variable, the default of 16 will be used.
             Another possibility is to fix the writing priority in the TD by giving a fixed commandPriority in the <code>href</code> of the form, and not exposing its value via a URI variable.
             These decisions belong to the TD author.
         </p>

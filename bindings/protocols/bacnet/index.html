@@ -995,6 +995,246 @@ lowercase = %x61-7A  ; "a" to "z"
                 </tbody>
             </table>
         </section>
+        <section id="event-mappings">
+            <h3>Mappings related to events</h3>
+            <p>
+                BACnet has an extensive event model, see [[BACnet]] Chapter 13. Alarm and Event Services for a complete description.
+                The fundamental aspects are:
+                <ol>
+                    <li>
+                        There are three event states: Normal (no event), OffNormal (e.g. operating temperature outside of the normal range)
+                        and Fault (e.g. defect sensor). Events are sent in case of transitions, including self-transitions and toNormal transitions.
+                    </li>
+                    <li>
+                        Objects can monitor themselves for event states (intrinsic reporting),
+                        or dedicated other objects can monitor other objects (algorithmic reporting)
+                    </li>
+                    <li>
+                        Alarms are always sent via Notification Class objects, which keep lists of alarm recipients, i.e. event subscriptions
+                        are always done to the Notification Classes, it is not possible to receive events only from some of the objects linked
+                        to the same Notification Class.
+                    </li>
+                </ol>
+                The picture below demonstrates these key aspects and how they are mapped to the WoT concepts.
+            </p>
+            <img src="../../../images/bacnet_events.drawio.svg" alt="BACnet Eventing Overview and its mapping to WoT" />
+            <p>
+                The key aspects of the mapping to WoT are:
+                <ol>
+                    <li>Each Notification Class is mapped to an EventAffordance. This maps to the subscription granularity directly.</li>
+                    <li>Event Enrollment objects used for algorithmic reporting are not mapped explicitly, they are per se not relevant to the WoT consumer.</li>
+                    <li>Special event-related actions are mapped to ActionAffordances: getting current events and acknowledging events.</li>
+                    <li>
+                        Thing is assumed to be mapped to the BACnet device. While this is simple, it is not a mandatory decision.
+                        In specific cases one BACnet device can correspond to multiple things and even vice-versa.
+                    </li>
+                </ol>
+            </p>
+            <p>
+                In contrast to PropertyAffordances, which are generically mapped to BACnet Properties (mostly the Present Value property),
+                interactions related to events come with a specific payload specified by the BACnet standard. The flexibility that would be for example possible
+                for an HTTP longpoll-based event notification with a custom HTTP body is not possible in the BACnet context.
+                Thus, it is necessary for the WoT consumer to work with a logical data schema that is influenced by the BACnet standard.
+                Still, this binding takes an approach to define the data schemas of the interaction affordances as independent as possible from BACnet, in
+                order to avoid a direct dependency of WoT consumers to a specific protocol.
+            </p>
+            <p>
+                With this background, this binding takes some simplifying design decisions:
+                <ol>
+                    <li>
+                        When the BACnet payload is fixed by the BACnet standard, e.g. for event subscription and alarm acknowledgement,
+                        the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
+                    </li>
+                    <li>
+                        Some features of the BACnet event model are abstracted away: filtering alarms based on day of week, time of day and event state;
+                        and using unconfirmed event notifications. If these become necessary, they can be added in a future version.
+                    </li>
+                    <li>
+                        Payloads containing three event states (Normal, OffNormal, Fault) are split into simpler payloads for each event state. For instance,
+                        GetEventInformation sends one array item for each BACnet object containing three flags, three timestamps, three acknowledge flags etc.
+                        for each possible event state. This binding splits that payload in the ActionAffordance's output into multiple payloads for each
+                        active event with one timestamp, acknowledge flag etc. Ths approach makes the output similar to EventAffordance data payload and removes
+                        the three-event state-based BACnet design from the WoT Consumer's view.
+                    </li>
+                </ol>
+            </p>
+            <p>
+                The resulting data payloads look like this:
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>WoT Model</th>
+                        <th>BACnet Model (with simplifications)</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>EventAffordance.subscription</td>
+                        <td>Not modeled, subscription is implicit</td>
+                        <td>
+                            <ul>
+                                <li>valid-days</li>
+                                <li>from-time</li>
+                                <li>to-time</li>
+                                <li>recipient</li>
+                                <li>process-identifier</li>
+                                <li>issue-confirmed</li>
+                                <li>transitions</li>
+                            </ul>
+                        </td>
+                        <td>
+                            The simplifications below allow to omit the WoT Data Model.
+                            <ul>
+                                <li>valid-days &#8592; all days</li>
+                                <li>from-time &#8592; all time</li>
+                                <li>to-time &#8592; all time</li>
+                                <li>recipient &#8592; BACnet address of the WoT Consumer</li>
+                                <li>process-identifier &#8592; BACnet process ID of the WoT consumer</li>
+                                <li>issue-confirmed-notifications &#8592; always true</li>
+                                <li>transitions &#8592; all transitions</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EventAffordance.cancellation</td>
+                        <td>Not modeled, cancellation is implicit</td>
+                        <td>Same as EventAffordance.subscription</td>
+                        <td>
+                            The same simplifications allow to omit the WoT Data Model.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EventAffordance.data</td>
+                        <td>
+                            <ul>
+                                <li>source: IRI of the BACnet object sending the event</li>
+                                <li>time: Timestamp of the event</li>
+                                <li>prio: Priority of the event</li>
+                                <li>ackReq (opt.): Flag indicating if acknowledge is required. Default is false.</li>
+                                <li>toState: The target state of the event transition</li>
+                                <li>origSource (opt.): In case of algorithmic reporting, the IRI of the object monitored by the event-sending object.</li>
+                                <li>eventType (opt.): If the event is a regular event transition, an acknowledge notification or a general sync-required event. Default is regular.</li>
+                                <li>values (opt.): Additional values associated with the event, e.g. high-limit in case the value exceeded an OffNormal limit.</li>
+                                <li>message (opt.): The message associated with the event.</li>
+                                <li>inactive (opt.): Flag if the event is not active anymore, default is false. This is needed for inactive, but not yet acknowledged events; they are there for symmetry with GetCurrentEvents action.</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>process-identifier</li>
+                                <li>initiating-device-identifier</li>
+                                <li>event-object-identifier</li>
+                                <li>time-stamp</li>
+                                <li>notification-class</li>
+                                <li>priority</li>
+                                <li>event-type</li>
+                                <li>message-text</li>
+                                <li>notify-type</li>
+                                <li>ack-required</li>
+                                <li>from-state</li>
+                                <li>to-state</li>
+                                <li>event-values</li>
+                            </ul>
+                        </td>
+                        <td>
+                            We focus only on ConfirmedEventNotification, unconfirmed event notifications are currently not supported.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GetCurrentEvents: ActionAffordance.input</td>
+                        <td>
+                            <ul>
+                                <li>lastReceivedSource (opt.): IRI of the last received object with event</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Last Received Object Identifier</li>
+                            </ul>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>GetCurrentEvents: ActionAffordance.output</td>
+                        <td>
+                            <ul>
+                                <li>
+                                    currentEvents: Array. Each array item is modeled exactly the same as EventAffordance.data:
+                                    <ul>
+                                        <li>source</li>
+                                        <li>time</li>
+                                        <li>prio</li>
+                                        <li>ackReq (opt.)</li>
+                                        <li>toState</li>
+                                        <li>origSource (opt.)</li>
+                                        <li>eventType (opt.)</li>
+                                        <li>values (opt.)</li>
+                                        <li>message (opt.)</li>
+                                        <li>inactive (opt.)</li>
+                                    </ul>
+                                </li>
+                                <li>moreEvents: Flag indicating if more events should be queried</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>
+                                    List of Event Summaries:
+                                    <ul>
+                                        <li>Object Identifier</li>
+                                        <li>Event State</li>
+                                        <li>Acknowledged Transitions</li>
+                                        <li>Event Timestamps</li>
+                                        <li>Notify Type</li>
+                                        <li>Event Enable</li>
+                                        <li>Event Priorities</li>
+                                    </ul>
+                                </li>
+                                <li>More Events</li>
+                            </ul>
+                        </td>
+                        <td>
+                            As indicated above, the BACnet payload and the ActionAffordance output differ especially around how events are grouped.
+                            In the BACnet payload one list item represents one object with its three possible events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps and Priorities.
+                            This is to be processed and split into one standalone event for every current event of this object, or past unacknowledged event, with corresponding timestamp, priority...
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>AcknowledgeEvent: ActionAffordance.input</td>
+                        <td>
+                            <ul>
+                                <li>eventSource: Source of the event to be acknowledged</li>
+                                <li>eventState: To-state of the event to be acknowledged</li>
+                                <li>eventTime: Timestamp of the event to be acknowledged</li>
+                                <li>eventTime: Timestamp of the event to be acknowledged</li>
+                                <li>ackSource: String describing the acknowledgement source</li>
+                                <li>ackTime: Timestamp of the acknowledge operation</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Process Identifier</li>
+                                <li>Object Identifier</li>
+                                <li>Event State</li>
+                                <li>Event Timestamp</li>
+                                <li>Acknowledgement Source</li>
+                                <li>Time of Acknowledgement</li>
+                            </ul>
+                        </td>
+                        <td>
+                            Process Identifier is to be set by WoT Consumer corresponding to what it has entered at subscription time.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                Detailed schemata of these payloads can be found in the JSON Schema linked in this file's header.
+                Examples below shall also be helpful in understanding the details.
+            </p>
+        </section>
         <!--
         <section id="possible-mappings">
             <h3>Possible mappings</h3>

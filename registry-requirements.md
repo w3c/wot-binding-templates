@@ -29,7 +29,7 @@ At each submission, these information must be present in the submission.
 - Name of the binding
   - Examples: `HTTP Binding Template`, `CoAP Binding Template`, 
 - Link to the binding: Stable and dated link
-  - Examples: `https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html`
+  - Examples: `https://www.w3.org/TR/wot/binding-templates/http-20240726/index.html`
 - Binding ontology prefix
   - Examples: `modv`, `htv`, `cov`
 - Binding Identification in TD: URI Scheme or other TD terms that are reserved for this binding.

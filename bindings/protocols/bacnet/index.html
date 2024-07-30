@@ -1426,6 +1426,305 @@ lowercase = %x61-7A  ; "a" to "z"
 }
 </pre>
 
+        <p>
+            [[[#example-event]]] shows the InteractionAffordances for using BACnet events:
+
+            <ol>
+                <li>One EventAffordance for every Notification Class object</li>
+                <li>One ActionAffordance for the Device Object for GetEventInfo, named as GetCurrentEvents</li>
+                <li>One ActionAffordance for the Device Object for AcknowledgeAlarm, named as AcknowledgeEvent</li>
+            </ol>
+        </p>
+
+        <pre id="example-event" class="example" title="InteractionAffordances for BACnet Event">
+        {
+        "@context": ["https://www.w3.org/2022/wot/td/v1.1",
+        {
+        "bacv": "https://example.org/bacnet"
+        }],
+        ...
+        "actions": {
+            "GetCurrentEvents": {
+                "input": {
+                  "type": "object",
+                  "properties": {
+                    "lastReceivedSource": {
+                      "type": "string",
+                      "format": "iri-reference"
+                    }
+                  }
+                },
+                "output": {
+                  "type": "object",
+                  "properties": {
+                    "currentEvents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "format": "iri-reference"
+                          },
+                          "time": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "prio": {
+                            "type": "integer"
+                          },
+                          "ackReq": {
+                            "type": "integer",
+                            "enum": [
+                              0,
+                              1
+                            ],
+                            "default": 0
+                          },
+                          "toState": {
+                            "type": "string",
+                            "enum": [
+                              "fault",
+                              "offnormal",
+                              "normal"
+                            ]
+                          },
+                          "eventType": {
+                            "type": "string",
+                            "enum": [
+                              "regular",
+                              "ack",
+                              "syncrequired"
+                            ],
+                            "default": "regular"
+                          },
+                          "origSource": {
+                            "type": "string",
+                            "format": "iri-reference"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "values": {
+                            "type": "object"
+                          },
+                          "inactive": {
+                            "type": "integer",
+                            "enum": [
+                              0,
+                              1
+                            ],
+                            "default": 0
+                          }
+                        },
+                        "required": [
+                          "source",
+                          "time",
+                          "prio",
+                          "toState"
+                        ]
+                      }
+                    }
+                  },
+                  "moreEvents": {
+                    "type": "boolean"
+                  },
+                  "required": [
+                    "currentEvents",
+                    "moreEvents"
+                  ]
+                },
+                "forms": [
+                  {
+                    "href": "bacnet://1/8,1",
+                    "op": [
+                      "invokeaction"
+                    ],
+                    "bacnet:usesService": [
+                      "GetEventInfo"
+                    ]
+                  }
+                ]
+            },
+            "AcknowledgeEvent": {
+                "input": {
+                    "type": "object",
+                    "properties": {
+                        "source": {
+                            "type": "string",
+                            "format": "iri-reference"
+                          },
+                          "toState": {
+                            "type": "string",
+                            "enum": [
+                              "fault",
+                              "offnormal",
+                              "normal"
+                            ]
+                          },
+                          "eventTime": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "ackSource": {
+                            "type": "string"
+                          },
+                          "ackTime": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "required": ["source", "ackState", "eventTime", "ackSource", "ackTime"]
+                    }
+                },
+                "forms": [
+                  {
+                    "href": "bacnet://1/8,1",
+                    "op": [
+                      "invokeaction"
+                    ],
+                    "bacnet:usesService": [
+                      "AcknowledgeAlarm"
+                    ]
+                  }
+                ]
+            }
+        },
+        "events": {
+            "NotifCl2": {
+                "title": "Highest priority notification with acknowledge",
+                "data": {
+                    "type": "object",
+                    "properties": {
+                      "source": {
+                        "type": "string",
+                        "format": "iri-reference"
+                      },
+                      "time": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "prio": {
+                        "type": "integer"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "ackReq": {
+                        "type": "integer",
+                        "enum": [0, 1],
+                        "default": 0
+                      },
+                      "toState": {
+                        "type": "string",
+                        "enum": [
+                          "fault",
+                          "offnormal",
+                          "normal"
+                        ]
+                      },
+                      "eventType": {
+                        "type": "string",
+                        "enum": ["regular", "ack", "syncrequired"],
+                        "default": "regular"
+                      },
+                      "origSource": {
+                        "type": "string",
+                        "format": "iri-reference"
+                      },
+                      "values": {
+                        "type": "object"
+                      },
+                      "inactive": {
+                        "type": "integer",
+                        "enum": [0, 1],
+                        "default": 0
+                      }
+                    },
+                    "required": [
+                      "source",
+                      "time",
+                      "prio",
+                      "toState"
+                    ]
+                },
+                "forms": [
+                    {
+                        "href": "bacnet://2/15,2/102",
+                        "op": [
+                            "subscribeevent",
+                            "unsubscribeevent"
+                        ]
+                    }
+                ],
+              },
+            }
+        }
+        </pre>
+
+        <p>
+            The resulting example payloads are available below. [[#example-event-data]] shows an incoming event notification.
+            [[#example-acknowledgeevent-input]] shows, what a WoT Consumer would send for acknowledging this event.
+            And [[#example-getcurrentevents-output]] shows the same alarm and another alarm that happened before in the
+            GetCurrentEvents action's output, note that in the second alarm <code>ackReq</code> value turned to 0,
+            because now this event was acknowledged.
+        </p>
+
+        <pre id="example-event-data" class="example" title="Example event data">
+            {
+                "source": "bacnet://5/0,20",
+                "time": "2024-07-30T12:33:00+00:00",
+                "prio": 150,
+                "message": "Equipment overheat",
+                "ackReq": 1,
+                "toState": "offnormal",
+                "values": {
+                    "deadband": 0.5,
+                    "exceedLim": 50,
+                    "exceedValue": 55,
+                    "statusFlags": [1, 0, 0, 0]
+                }
+            }
+        </pre>
+
+        <pre id="example-acknowledgeevent-input" class="example" title="Example AcknowledgeEvent input">
+            {
+                "source": "bacnet://5/0,20",
+                "toState": "offnormal",
+                "eventTime": "2024-07-30T12:33:00+00:00",
+                "ackSource": "Management Station Operator Acknowledge",
+                "ackTime": "2024-07-30T13:15:00+00:00"
+            }
+        </pre>
+
+        <pre id="example-getcurrentevents-output" class="example" title="Example GetCurrentEvents output">
+            {
+                "currentEvents": [
+                    {
+                        "source": "bacnet://5/0,12",
+                        "time": "2024-07-21T20:14:00+00:00",
+                        "prio": 200,
+                        "ackReq": 0,
+                        "toState": "fault"
+                    },
+                    {
+                        "source": "bacnet://5/0,20",
+                        "time": "2024-07-30T12:33:00+00:00",
+                        "prio": 150,
+                        "message": "Equipment overheat",
+                        "ackReq": 0,
+                        "toState": "offnormal",
+                        "values": {
+                            "deadband": 0.5,
+                            "exceedLim": 50,
+                            "exceedValue": 55,
+                            "statusFlags": [0, 0, 0, 0]
+                        }
+                    }
+                ],
+                "moreEvents": false
+            }
+        </pre>
+
     </section>
 </body>
 

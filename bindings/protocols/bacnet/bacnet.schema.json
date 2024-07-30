@@ -248,7 +248,62 @@
             "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             "default": 16
         },
-        "action_input_getEventInfoInput": {
+        "eventPayload": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "format": "iri-reference"
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "prio": {
+                "type": "integer"
+              },
+              "message": {
+                "type": "string"
+              },
+              "ackReq": {
+                "type": "integer",
+                "enum": [0, 1],
+                "default": 0
+              },
+              "toState": {
+                "type": "string",
+                "enum": [
+                  "fault",
+                  "offnormal",
+                  "normal"
+                ]
+              },
+              "eventType": {
+                "type": "string",
+                "enum": ["regular", "ack", "syncrequired"],
+                "default": "regular"
+              },
+              "origSource": {
+                "type": "string",
+                "format": "iri-reference"
+              },
+              "values": {
+                "type": "object"
+              },
+              "inactive": {
+                "type": "integer",
+                "enum": [0, 1],
+                "default": 0
+              }
+            },
+            "required": [
+              "source",
+              "time",
+              "prio",
+              "toState"
+            ]
+        },
+        "action_input_getCurrentEvents": {
             "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet GetEventInfo",
             "type": "object",
             "properties": {
@@ -258,66 +313,14 @@
               }
             }
         },
-        "action_output_getEventInfo": {
+        "action_output_getCurrentEvents": {
             "$comment": "This is not part of the form, but should be used in ActionAffordance.output BACnet GetEventInfo",
             "type": "object",
             "properties": {
               "currentEvents": {
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "source": {
-                      "type": "string",
-                      "format": "iri-reference"
-                    },
-                    "time": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "prio": {
-                      "type": "integer"
-                    },
-                    "ackReq": {
-                      "type": "integer",
-                      "enum": [0, 1],
-                      "default": 0
-                    },
-                    "toState": {
-                      "type": "string",
-                      "enum": [
-                        "fault",
-                        "offnormal",
-                        "normal"
-                      ]
-                    },
-                    "eventType": {
-                      "type": "string",
-                      "enum": ["regular", "ack", "syncrequired"],
-                      "default": "regular"
-                    },
-                    "origSource": {
-                      "type": "string",
-                      "format": "iri-reference"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "values": {
-                      "type": "object"
-                    },
-                    "inactive": {
-                      "type": "integer",
-                      "enum": [0, 1],
-                      "default": 0
-                    }
-                  },
-                  "required": [
-                    "source",
-                    "time",
-                    "prio",
-                    "toState"
-                  ]
+                  "$ref": "#/definitions/eventPayload"
                 }
               }
             },
@@ -329,7 +332,7 @@
               "moreEvents"
             ]
         },
-        "action_input_acknowledgeAlarm": {
+        "action_input_acknowledgeEvent": {
             "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet AcknowledgeAlarm",
             "type": "object",
             "properties": {
@@ -376,59 +379,7 @@
         },
         "event_data": {
             "$comment": "This is not part of the form, but should be used in EventAffordance.data for BACnet events",
-            "type": "object",
-            "properties": {
-              "source": {
-                "type": "string",
-                "format": "iri-reference"
-              },
-              "time": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "prio": {
-                "type": "integer"
-              },
-              "ackReq": {
-                "type": "integer",
-                "enum": [0, 1],
-                "default": 0
-              },
-              "toState": {
-                "type": "string",
-                "enum": [
-                  "fault",
-                  "offnormal",
-                  "normal"
-                ]
-              },
-              "eventType": {
-                "type": "string",
-                "enum": ["regular", "ack", "syncrequired"],
-                "default": "regular"
-              },
-              "origSource": {
-                "type": "string",
-                "format": "iri-reference"
-              },
-              "message": {
-                "type": "string"
-              },
-              "values": {
-                "type": "object"
-              },
-              "inactive": {
-                "type": "integer",
-                "enum": [0, 1],
-                "default": 0
-              }
-            },
-            "required": [
-              "source",
-              "time",
-              "prio",
-              "toState"
-            ]
+            "$ref": "#/definitions/eventPayload"
         }
     },
     "type": "object",

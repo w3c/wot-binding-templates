@@ -1012,7 +1012,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <li>
                         Alarms are always sent via Notification Class objects, which keep lists of alarm recipients, i.e. event subscriptions
                         are always done to the Notification Classes, it is not possible to receive events only from some of the objects linked
-                        to the same Notification Class.
+                        to the same Notification Class. In the typical case, a client will register to all Notification Classes of a BACnet Device.
                     </li>
                 </ol>
                 The picture below demonstrates these key aspects and how they are mapped to the WoT concepts.
@@ -1031,19 +1031,19 @@ lowercase = %x61-7A  ; "a" to "z"
                 </ol>
             </p>
             <p>
-                In contrast to PropertyAffordances, which are generically mapped to BACnet Properties (mostly the Present Value property),
+                In contrast to PropertyAffordances, which are generically mapped to BACnet,
                 interactions related to events come with a specific payload specified by the BACnet standard. The flexibility that would be for example possible
-                for an HTTP longpoll-based event notification with a custom HTTP body is not possible in the BACnet context.
-                Thus, it is necessary for the WoT consumer to work with a logical data schema that is influenced by the BACnet standard.
-                Still, this binding takes an approach to define the data schemas of the interaction affordances as independent as possible from BACnet, in
+                for an HTTP longpoll-based event notification with a custom HTTP body is not possible in BACnet context.
+                Thus, it is necessary for the WoT consumer to work with a given logical data schema that is influenced by the BACnet standard.
+                Still, this binding takes an approach to define the data schemata of the InteractionAffordances as independent as possible from BACnet, in
                 order to avoid a direct dependency of WoT consumers to a specific protocol.
             </p>
             <p>
                 With this background, this binding takes some simplifying design decisions:
                 <ol>
                     <li>
-                        When the BACnet payload is fixed by the BACnet standard, e.g. for event subscription and alarm acknowledgement,
-                        the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
+                        When the BACnet payload is fixed by the BACnet standard for a given service, e.g. for event subscription,
+                        data and alarm acknowledgement, the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
                     </li>
                     <li>
                         Some features of the BACnet event model are abstracted away: filtering alarms based on day of week, time of day and event state;
@@ -1053,8 +1053,8 @@ lowercase = %x61-7A  ; "a" to "z"
                         Payloads containing three event states (Normal, OffNormal, Fault) are split into simpler payloads for each event state. For instance,
                         GetEventInformation sends one array item for each BACnet object containing three flags, three timestamps, three acknowledge flags etc.
                         for each possible event state. This binding splits that payload in the ActionAffordance's output into multiple payloads for each
-                        active event with one timestamp, acknowledge flag etc. Ths approach makes the output similar to EventAffordance data payload and removes
-                        the three-event state-based BACnet design from the WoT Consumer's view.
+                        active event with one timestamp, acknowledge flag etc. This approach makes the output similar to EventAffordance data
+                        payload and removes the three-event state-based BACnet design from the WoT Consumer's view.
                     </li>
                 </ol>
             </p>
@@ -1066,7 +1066,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <th>Data</th>
                         <th>WoT Model</th>
-                        <th>BACnet Model (with simplifications)</th>
+                        <th>BACnet Model</th>
                         <th>Remarks</th>
                     </tr>
                 </thead>
@@ -1102,9 +1102,7 @@ lowercase = %x61-7A  ; "a" to "z"
                         <td>EventAffordance.cancellation</td>
                         <td>Not modeled, cancellation is implicit</td>
                         <td>Same as EventAffordance.subscription</td>
-                        <td>
-                            The same simplifications allow to omit the WoT Data Model.
-                        </td>
+                        <td>Same as EventAffordance.subscription</td>
                     </tr>
                     <tr>
                         <td>EventAffordance.data</td>
@@ -1198,7 +1196,7 @@ lowercase = %x61-7A  ; "a" to "z"
                         </td>
                         <td>
                             As indicated above, the BACnet payload and the ActionAffordance output differ especially around how events are grouped.
-                            In the BACnet payload one list item represents one object with its three possible events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps and Priorities.
+                            In the BACnet payload, one list item represents one object with its three possible events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps and Priorities.
                             This is to be processed and split into one standalone event for every current event of this object, or past unacknowledged event, with corresponding timestamp, priority...
                         </td>
                     </tr>
@@ -1430,9 +1428,9 @@ lowercase = %x61-7A  ; "a" to "z"
             [[[#example-event]]] shows the InteractionAffordances for using BACnet events:
 
             <ol>
-                <li>One EventAffordance for every Notification Class object</li>
                 <li>One ActionAffordance for the Device Object for GetEventInfo, named as GetCurrentEvents</li>
                 <li>One ActionAffordance for the Device Object for AcknowledgeAlarm, named as AcknowledgeEvent</li>
+                <li>One EventAffordance for every Notification Class object</li>
             </ol>
         </p>
 
@@ -1662,9 +1660,9 @@ lowercase = %x61-7A  ; "a" to "z"
         </pre>
 
         <p>
-            The resulting example payloads are available below. [[#example-event-data]] shows an incoming event notification.
-            [[#example-acknowledgeevent-input]] shows, what a WoT Consumer would send for acknowledging this event.
-            And [[#example-getcurrentevents-output]] shows the same alarm and another alarm that happened before in the
+            The resulting example payloads are available below. [[[#example-event-data]]] shows an event notification.
+            [[[#example-acknowledgeevent-input]]] shows what a WoT Consumer would send for acknowledging this event.
+            And [[[#example-getcurrentevents-output]]] shows the same alarm and another alarm that happened before in the
             GetCurrentEvents action's output, note that in the second alarm <code>ackReq</code> value turned to 0,
             because now this event was acknowledged.
         </p>

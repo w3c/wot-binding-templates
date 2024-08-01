@@ -55,6 +55,7 @@ Each entry MUST contain this information and all parts of the entry MUST not con
     - DISCUSS: We need to clarify whether the URI scheme and the media type MUST be registered in IANA first. Opinions:
       - Cris: Provisional registration could reduce the overhead. Any new conflicting ones would bring up a discussion but it can still result in "our" provisional getting demoted.
         - Pros: more stable. Cons: More overhead and work
+        - In the provisional state of an entry, we can ask for no registration to get reviews etc.
       - Luca: We should require this. Otherwise, there can be conflicts (our registry shows one scheme and IANA another). We first get a binding submission, at that stage no registration is required. After a review by the TF, the submitter should trigger a submission process in IANA.
       - Daniel: The merged entries should contain finalized registrations at IANA. We can get a first PR for submission without any registration in the first place but that PR will not be merged beforehand. 
 - Supported TD version (no uniqueness needed):
@@ -69,6 +70,9 @@ Each entry MUST contain this information and all parts of the entry MUST not con
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
 - Differentiating entry into the registry and update
 
+- Initial (provisional, draft) -> Final -> Deprecate
+- Merged initial entries trigger a "Call for Implementation"
+
 - If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian.
   - Reasons Behind the Requirement: It should be possible to maintain the registry without the WoT WG.
 
@@ -77,7 +81,15 @@ Each entry MUST contain this information and all parts of the entry MUST not con
 What the binding has to contain in order to go into the table
 
 - To be clarified, but the initial list for protocols is at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
-- DISCUSS: What is the objective mechanism to confirm the entry? Should we have a test suite? Plugfest experience?
+- An initial entry needs to fullfill document-level requirements (to be defined) but does not need to demonstrate implementation experience.
+- What is the objective mechanism to confirm the initial entry?
+  - Ege: Initial entry (provisional, draft) is checked for document correctness. 
+  - Cris: Merging the initial entry would trigger a "Call for Implementation". Where discussions on implementation experience should be collected?
+- DISCUSS: What is the implementation experience needed to transition from initial to final status? Should we have a test suite? Plugfest experience?
+  - Koster: We won't be able to do "lab test" for certification (e.g. Matter). The assertions to satisfy will be generic to all bindings.
+  - Cris: Testing the binding without being f2f should be possible.
+  - Jan: Should there be interop testing? How many Thing implementations from submitter? How many Consumer implementations from submitter? What kind of implementation from non-submitter?
+  - Ege: Going to the final, requires implementation experience (test suite, virtual or physical plugfest, etc.)
 - A binding that uses a protocol MUST map at least one WoT operation (`op` keyword value such as `readproperty`) to a protocol message and vice versa
   - Reasons Behind the Requirement:
     - Lacking this requirement, the protocol is not bound to WoT and cannot be useful.

@@ -346,8 +346,8 @@
             </p>
             <p>
                 A resource can be observed by sending a `GET` or `FETCH` [[RFC8132]] request with the `Observe` option set.
-                The server will respond with the current representation of the resource, as well as sending future notifications to the client.
-                A server is not required to support the `Observe` option for all resources; a resource without `Observe` support can still be observed by polling it at regular intervals.
+                The server will respond with the current representation of the resource, and will send notifications of future changes to the client.
+                A server is not required to support the `Observe` option for all resources; a resource without `Observe` support can still be manually observed by polling it at regular intervals.
             </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
@@ -374,7 +374,7 @@
             </p>
             <p>
                 If the server's response does not contain an `Observe` option, this indicates that the requested server does not support observe, and that the consumer SHOULD fall back to polling instead (see section [[[#polling-resources]]]).
-                Consequently, a consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not
+                Consequently, a consumer can always fall back to polling a resource if observing that resource is permanently or temporarily not
                 possible.
                 In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
                 representation, setting the `Observe` option each time.

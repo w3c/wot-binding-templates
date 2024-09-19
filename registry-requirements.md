@@ -38,7 +38,7 @@ A preliminary list of rules that is extending https://www.w3.org/2023/Process-20
 
 ### Entry format 
 
-Each entry MUST contain this information and all parts of the entry MUST not conflict with existing bindings.
+Each entry MUST contain this information, and all parts of the entry MUST not conflict with existing bindings.
 
 - Name of the binding
   - Examples: `HTTP Binding Template`, `CoAP Binding Template`, 
@@ -57,28 +57,36 @@ Each entry MUST contain this information and all parts of the entry MUST not con
         - Pros: more stable. Cons: More overhead and work
         - In the provisional state of an entry, we can ask for no registration to get reviews etc.
       - Luca: We should require this. Otherwise, there can be conflicts (our registry shows one scheme and IANA another). We first get a binding submission, at that stage no registration is required. After a review by the TF, the submitter should trigger a submission process in IANA.
-      - Daniel: The merged entries should contain finalized registrations at IANA. We can get a first PR for submission without any registration in the first place but that PR will not be merged beforehand. 
+      - Daniel: The merged entries should contain finalized registrations at IANA. We can get a first PR for submission without any registration in the first place but that PR will not be merged beforehand.
+      - Ege's Preliminary Consensus Idea: Until a custodian review, no registration is needed. A full IANA registration is required for the final and stable version of the binding. The submitter SHOULD trigger the registration at IANA. If needed, the custodian MAY trigger the IANA registration.
 - Supported TD version (no uniqueness needed):
   - A binding SHOULD correspond to specific TD specification version(s).
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, at the time of writing a binding, it needs to be associated with one or more known TD specification versions.
 - Status: DISCUSS with lifecycle
 
-### Ownership and Lifecycle 
+### Lifecycle 
 
 - Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
-- Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning) and versioning with respect to 
+  - Ege: We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue and the submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
+- Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
+  - Ege: We do not allow updates of a registry document content. A new version of a binding is a resubmission and optional deprecation of the old one. Only new features need new implementations though so it is not a completely new registration.
+  - DISCUSS: Do we allow two versions of a binding to stay in the registry?
+    - Ege: At least per TD version, it should be avoided but I think multiple initial entries should be allowed in case of diverging opinions to collect implementation feedback. If there is a drastically new binding of an existing one, two can be allowed to be kept but this should not be encouraged. This will causes issues with prefix, URI scheme based detection etc.
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
-- Differentiating entry into the registry and update
+  - Ege: No entry is ever deleted. Deprecated entries are moved to another table or to the bottom of the table and marked clearly deprecated and colored differently.
 
-- Initial (provisional, draft) -> Final -> Deprecate
-- Merged initial entries trigger a "Call for Implementation"
+- Status values: Initial (provisional, draft) -> Final -> Deprecated
+  - Merged initial entries trigger a "Call for Implementation"
+- What are the requirements to transition from one to the other value? See the next section as well.
+
+### Ownership
 
 - If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian.
-  - Reasons Behind the Requirement: It should be possible to maintain the registry without the WoT WG.
+  - Reasons Behind the Requirement: Maintaining the registry without the WoT WG should be possible.
 
 ### Requirements on the Submitted Document:
 
-What the binding has to contain in order to go into the table
+What does the binding have to contain to go into the table
 
 - To be clarified, but the initial list for protocols is at <https://w3c.github.io/wot-binding-templates/#creating-a-new-protocol-binding-template-subspecification> and <https://w3c.github.io/wot-binding-templates/#protocol-bindings-table>
 - An initial entry needs to fullfill document-level requirements (to be defined) but does not need to demonstrate implementation experience.

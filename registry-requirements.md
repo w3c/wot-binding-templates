@@ -52,26 +52,23 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
     - Reasons Behind the Requirement:
       - This avoids conflicts that are mentioned in the previous requirement
     - TODO: These terms should be refined based on the additions/changes to the TD 2.0 mechanism, e.g., introducing a `protocol` term, or putting restrictions on URI scheme and `subprotocol` combination, data mapping, etc.
-    - DISCUSS: We need to clarify whether the URI scheme and the media type MUST be registered in IANA first. Opinions:
-      - Cris: Provisional registration could reduce the overhead. Any new conflicting ones would bring up a discussion but it can still result in "our" provisional getting demoted.
-        - Pros: more stable. Cons: More overhead and work
-        - In the provisional state of an entry, we can ask for no registration to get reviews etc.
-      - Luca: We should require this. Otherwise, there can be conflicts (our registry shows one scheme and IANA another). We first get a binding submission, at that stage no registration is required. After a review by the TF, the submitter should trigger a submission process in IANA.
-      - Daniel: The merged entries should contain finalized registrations at IANA. We can get a first PR for submission without any registration in the first place but that PR will not be merged beforehand.
-      - Ege's Preliminary Consensus Idea: Until a custodian review, no registration is needed. A full IANA registration is required for the final and stable version of the binding. The submitter SHOULD trigger the registration at IANA. If needed, the custodian MAY trigger the IANA registration.
+    - Until a custodian review, no registration is needed. A full IANA registration is required for the final and stable version of the binding. The submitter SHOULD trigger the registration at IANA. If needed, the custodian MAY trigger the IANA registration. The submitter MAY do a provisional registration to simplify the process on the IANA side.
 - Supported TD version (no uniqueness needed):
   - A binding SHOULD correspond to specific TD specification version(s).
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, at the time of writing a binding, it needs to be associated with one or more known TD specification versions.
 - Status: DISCUSS with lifecycle
 
-### Lifecycle 
+### Lifecycle
 
 - Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
   - Ege: We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue and the submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates of a registry document content. A new version of a binding is a resubmission and optional deprecation of the old one. Only new features need new implementations though so it is not a completely new registration.
   - DISCUSS: Do we allow two versions of a binding to stay in the registry?
-    - Ege: At least per TD version, it should be avoided but I think multiple initial entries should be allowed in case of diverging opinions to collect implementation feedback. If there is a drastically new binding of an existing one, two can be allowed to be kept but this should not be encouraged. This will causes issues with prefix, URI scheme based detection etc.
+    - Ege: At least per TD version, it should be avoided but I think multiple initial entries should be allowed in case of diverging opinions to collect implementation feedback. If there is a drastically new binding of an existing one, two can be allowed to be kept but this should not be encouraged. This will cause issues with prefix, URI scheme based detection, or other form elements etc.
+    - Cris: Additional fields in the form can indicate the binding version. Also, the prefix can be changed, e.g., `cov1.2` vs `cov1.3`
+      - Luca: Prefix versioning would require calling a new binding driver inside the implementation. Not using the prefix versioning implies JSON-LD processing, which not all implementations use.
+    - We should provide an example and also look at RFC 6838
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
   - Ege: No entry is ever deleted. Deprecated entries are moved to another table or to the bottom of the table and marked clearly deprecated and colored differently.
 
@@ -83,8 +80,9 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 
 - If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian.
   - Reasons Behind the Requirement: Maintaining the registry without the WoT WG should be possible.
+- DISCUSS: Who is the reviewer? Same as custodian? Look into https://datatracker.ietf.org/doc/html/rfc6838 . How is the "separation of concerns"?
 
-### Requirements on the Submitted Document:
+### Requirements on the Submitted Document
 
 What does the binding have to contain to go into the table
 
@@ -105,7 +103,7 @@ What does the binding have to contain to go into the table
   - Reasons Behind the Requirement:
     - Avoid submission of a binding like "XML Binding" that says "Use `contentType:application/xml` and nothing more. That alone would not be enough to serialize correct messages based on the data schema.
   - TODO: We will need additional mechanisms (including vocabulary terms) to ensure that it is possible to use other media types.
- 
+ - DISCUSS: Should the binding document required to follow W3C copyright rules and must the document follow the exact template.
 
 ## Basic Requirements
 

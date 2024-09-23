@@ -65,7 +65,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates of a registry document content. A new version of a binding is a resubmission and optional deprecation of the old one. Only new features need new implementations though so it is not a completely new registration.
   - DISCUSS: Do we allow two versions of a binding to stay in the registry?
-    - Ege: At least per TD version, it should be avoided but I think multiple initial entries should be allowed in case of diverging opinions to collect implementation feedback. If there is a drastically new binding of an existing one, two can be allowed to be kept but this should not be encouraged. This will cause issues with prefix, URI scheme based detection, or other form elements etc.
+    - Ege: At least per TD version, it should be avoided, but I think multiple initial entries should be allowed in case of diverging opinions, to collect implementation feedback. If there is a drastically new binding of an existing one, two can be allowed to be kept, but this should not be encouraged. This will cause issues with prefix, URI scheme-based detection, other form elements, etc.
     - Cris: Additional fields in the form can indicate the binding version. Also, the prefix can be changed, e.g., `cov1.2` vs `cov1.3`
       - Luca: Prefix versioning would require calling a new binding driver inside the implementation. Not using the prefix versioning implies JSON-LD processing, which not all implementations use.
     - We should provide an example and also look at RFC 6838
@@ -80,7 +80,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 
 - If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian.
   - Reasons Behind the Requirement: Maintaining the registry without the WoT WG should be possible.
-- DISCUSS: Who is the reviewer? Same as custodian? Look into https://datatracker.ietf.org/doc/html/rfc6838 . How is the "separation of concerns"?
+- DISCUSS: Who is the reviewer? Same as custodian? Look into [RFC6838](https://datatracker.ietf.org/doc/html/rfc6838). How is the "separation of concerns"?
 
 ### Requirements on the Submitted Document
 

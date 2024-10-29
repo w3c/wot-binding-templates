@@ -655,8 +655,8 @@ lowercase = %x61-7A  ; "a" to "z"
                             <code>
                                 {
                                     "type": "string",
-                                    "pattern": "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",,
-                                    "$comment": "ISO8601 Date Time Format with optional wildcards"
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                                    "$comment": "ISO8601 Date Time Format, extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
                                 }
                             </code>
                         </td>
@@ -745,8 +745,8 @@ lowercase = %x61-7A  ; "a" to "z"
                             <code>
                                 {
                                     "type": "string",
-                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)$",
-                                    "$comment": "ISO8601 Date Format with optional wildcards"
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)(\\s*\\([1-7\\*]\\))?$",
+                                    "$comment": "ISO8601 Date Format, extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
                                 }
                             </code>
                         </td>

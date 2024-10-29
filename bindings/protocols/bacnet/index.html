@@ -1664,11 +1664,7 @@ lowercase = %x61-7A  ; "a" to "z"
         </pre>
 
         <p>
-            The resulting example payloads are available below. [[[#example-event-data]]] shows an event notification.
-            [[[#example-acknowledgeevent-input]]] shows what a WoT Consumer would send for acknowledging this event.
-            And [[[#example-getcurrentevents-output]]] shows the same alarm and another alarm that happened before in the
-            GetCurrentEvents action's output, note that in the second alarm <code>ackReq</code> value turned to 0,
-            because now this event was acknowledged.
+            The resulting example payloads are available below.
         </p>
 
         <pre id="example-event-data" class="example" title="Example event data">
@@ -1688,6 +1684,15 @@ lowercase = %x61-7A  ; "a" to "z"
             }
         </pre>
 
+        <p>
+            [[[#example-event-data]]] shows an event notification because of an overheating equipment. Event <code>message</code>
+            gives this as a useful hint, <code>prio</code> is set accordingly. <code>values</code> object gives additional details
+            about the event that the current value is 55 and the exceeded limit was 50. The unit of these values can be found at the
+            <code>source</code> object that triggered this event.
+            Because overheating events are important for the operator to notice, <code>ackReq</code> is set, so the operator definitely
+            will see the event, even after the overheating condition is over.
+        </p>
+
         <pre id="example-acknowledgeevent-input" class="example" title="Example AcknowledgeEvent input">
             {
                 "source": "bacnet://5/0,20",
@@ -1698,6 +1703,11 @@ lowercase = %x61-7A  ; "a" to "z"
             }
         </pre>
 
+        <p>
+            When the operator sees this event and decides to acnowledge it, management station will send the payload shown in
+            [[[#example-acknowledgeevent-input]]]. This can happen before or after the event is over.
+        </p>
+        
         <pre id="example-getcurrentevents-output" class="example" title="Example GetCurrentEvents output">
             {
                 "currentEvents": [
@@ -1726,6 +1736,14 @@ lowercase = %x61-7A  ; "a" to "z"
                 "moreEvents": false
             }
         </pre>
+
+        <p>
+            If the event client wants to get a list of all events of the device, it will invoke the GetCurrentEvents action, and will receive
+            te payload shown in [[[#example-getcurrentevents-output]]]. Here the event notification about the overheating and a past fault event can be
+            seen. This is useful for synchronizing the events known on the client to the events that are on the device, in case of temporary
+            disconnection, reboot of client or device etc. Please note that in the second alarm <code>ackReq</code> value turned to 0,
+            because this event was acknowledged by the operator in the meantime.
+        </p>
 
     </section>
 </body>

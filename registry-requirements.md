@@ -61,7 +61,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 ### Lifecycle
 
 - Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
-  - Ege: We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue and the submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
+   - We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue and the submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates of a registry document content. A new version of a binding is a resubmission and optional deprecation of the old one. Only new features need new implementations though so it is not a completely new registration.
   - DISCUSS: Do we allow two versions of a binding to stay in the registry?
@@ -70,17 +70,16 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
       - Luca: Prefix versioning would require calling a new binding driver inside the implementation. Not using the prefix versioning implies JSON-LD processing, which not all implementations use.
     - We should provide an example and also look at RFC 6838
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
-  - Ege: No entry is ever deleted. Deprecated entries are moved to another table or to the bottom of the table and marked clearly deprecated and colored differently.
-
-- Status values: Initial (provisional, draft) -> Final -> Deprecated
-  - Merged initial entries trigger a "Call for Implementation"
+  - No entry is ever deleted. Deprecated entries are moved to another table or to the bottom of the table and marked clearly deprecated and colored differently.
+- Status values: Initial (alternatives: provisional, draft) -> Current (alternatives: Stable) -> Deprecated
 - What are the requirements to transition from one to the other value? See the next section as well.
-
+  - Merged initial entries trigger a "Call for Implementation"
+    
 ### Ownership
 
-- If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian.
+- If the WoT WG no longer exists, the W3C Team or their delegated entity becomes the custodian. For example, a dedicated W3C community group can be created for the maintenance of the registry.
   - Reasons Behind the Requirement: Maintaining the registry without the WoT WG should be possible.
-- DISCUSS: Who is the reviewer? Same as custodian? Look into [RFC6838](https://datatracker.ietf.org/doc/html/rfc6838). How is the "separation of concerns"?
+- Reviwer: If there is an expert of the binding entry's specification and a WoT expert within the custodian entity, they CAN do the review on their own. If that is not the case, the custodian MUST choose an expert of that specification and a WoT expert, which can be the same person.
 
 ### Requirements on the Submitted Document
 
@@ -96,6 +95,8 @@ What does the binding have to contain to go into the table
   - Cris: Testing the binding without being f2f should be possible.
   - Jan: Should there be interop testing? How many Thing implementations from submitter? How many Consumer implementations from submitter? What kind of implementation from non-submitter?
   - Ege: Going to the final, requires implementation experience (test suite, virtual or physical plugfest, etc.)
+- Requirement for going to "Current"
+  - Jan: Enough Implementation
 - A binding that uses a protocol MUST map at least one WoT operation (`op` keyword value such as `readproperty`) to a protocol message and vice versa
   - Reasons Behind the Requirement:
     - Lacking this requirement, the protocol is not bound to WoT and cannot be useful.

@@ -61,7 +61,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 ### Lifecycle
 
 - Technical submission mechanism. How does a binding get submitted? Is it a PR, an issue linking to an existing document, or an email? See the submission mechanism fields above.
-   - We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue and the submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
+   - We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue. The submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates of a registry document content. A new version of a binding is a resubmission and optional deprecation of the old one. Only new features need new implementations though so it is not a completely new registration.
   - DISCUSS: Do we allow two versions of a binding to stay in the registry?
@@ -70,7 +70,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
       - Luca: Prefix versioning would require calling a new binding driver inside the implementation. Not using the prefix versioning implies JSON-LD processing, which not all implementations use.
     - We should provide an example and also look at RFC 6838
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
-  - No entry is ever deleted. Deprecated entries are moved to another table or to the bottom of the table and marked clearly deprecated and colored differently.
+  - No entry is ever deleted. Deprecated entries are moved to another table, or are clearly marked deprecated, colored differently, and moved to the bottom of the table.
 - Status values: Initial (alternatives: provisional, draft) -> Current (alternatives: Stable) -> Deprecated
 - What are the requirements to transition from one to the other value? See the next section as well.
   - Merged initial entries trigger a "Call for Implementation"

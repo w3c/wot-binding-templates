@@ -72,7 +72,7 @@ Default BACnet service by td:OperationType:
 - td:unsubscribeEvent -> RemoveListElement (will always be to the Recipient-List property of the Notification-Class object)
 TODO: Can we specify the defaults in a machine-readable, RDF-standard way?
 
-No defaults are specified for the following, TD must specify the service explicitly for them:
+No defaults are specified for the following; TD must specify the service explicitly for them:
 - td:invokeAction, td:queryAction, td:cancelAction
 - td:readAllProperties, td:writeAllProperties, td:readMultipleProperties, td:writeMultipleProperties, td:observeAllProperties, td:unobserveAllProperties
 - td:queryAllActions

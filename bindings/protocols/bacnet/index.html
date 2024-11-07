@@ -998,12 +998,14 @@ lowercase = %x61-7A  ; "a" to "z"
         <section id="event-mappings">
             <h3>Mappings related to events</h3>
             <p>
-                BACnet has an extensive alarm model, see [[BACnet]] Chapter 13. Alarm and Event Services for a complete description.
+                BACnet has an extensive alarm model; see [[BACnet]] Chapter 13. Alarm and Event Services for a complete description.
+
                 The fundamental aspects are:
                 <ol>
                     <li>
-                        There are three event states: Normal (no event), OffNormal (e.g. operating temperature outside of the normal range)
-                        and Fault (e.g. defect sensor). Events are sent in case of transitions, including self-transitions and toNormal transitions.
+                        There are three event states: Normal (no event); OffNormal (e.g., operating temperature outside of the normal range);
+                        and Fault (e.g., defective sensor). Events are sent for transitions, including self-transitions and toNormal transitions.
+
                     </li>
                     <li>
                         Objects can monitor themselves for event states (intrinsic reporting),
@@ -1030,7 +1032,8 @@ lowercase = %x61-7A  ; "a" to "z"
                     <li>Special event-related actions are mapped to ActionAffordances: getting current events and acknowledging events.</li>
                     <li>
                         Thing is assumed to be mapped to the BACnet device. While this is simple, it is not a mandatory decision.
-                        In specific cases one BACnet device can correspond to multiple things and even vice-versa.
+                        In specific cases, one BACnet device can correspond to multiple things, and even vice-versa.
+
                     </li>
                 </ol>
             </p>
@@ -1046,8 +1049,8 @@ lowercase = %x61-7A  ; "a" to "z"
                 With this background, this binding takes some simplifying design decisions:
                 <ol>
                     <li>
-                        When the BACnet payload is fixed by the BACnet standard for a given service, e.g. for event subscription,
-                        data and alarm acknowledgement, the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
+                        When the BACnet payload is fixed by the BACnet standard for a given service — e.g., event subscription, or
+                        data or alarm acknowledgement — the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
                     </li>
                     <li>
                         Some features of the BACnet alarm model are abstracted away: filtering alarms based on day of week, time of day and event state;
@@ -1055,9 +1058,9 @@ lowercase = %x61-7A  ; "a" to "z"
                     </li>
                     <li>
                         Payloads containing three event states (Normal, OffNormal, Fault) are split into simpler payloads for each event state. For instance,
-                        GetEventInformation sends one array item for each BACnet object containing three flags, three timestamps, three acknowledge flags etc.
+                        GetEventInformation sends one array item for each BACnet object containing three flags, three timestamps, three acknowledge flags, etc.,
                         for each possible event state. This binding splits that payload in the ActionAffordance's output into multiple payloads for each
-                        active event with one timestamp, acknowledge flag etc. This approach makes the output similar to EventAffordance data
+                        active event, with one timestamp, acknowledge flag, etc. This approach makes the output similar to the EventAffordance data
                         payload and removes the three-event state-based BACnet design from the WoT Consumer's view.
                     </li>
                 </ol>
@@ -1077,7 +1080,8 @@ lowercase = %x61-7A  ; "a" to "z"
                 <tbody>
                     <tr>
                         <td>EventAffordance.subscription</td>
-                        <td>Not modeled, subscription is implicit</td>
+                        <td>Not modeled; subscription is implicit</td>
+
                         <td>
                             <ul>
                                 <li>valid-days</li>
@@ -1142,7 +1146,8 @@ lowercase = %x61-7A  ; "a" to "z"
                             </ul>
                         </td>
                         <td>
-                            We focus only on ConfirmedEventNotification, unconfirmed event notifications are currently not supported.
+                            We focus only on ConfirmedEventNotification; unconfirmed event notifications are currently not supported.
+
                         </td>
                     </tr>
                     <tr>
@@ -1234,7 +1239,8 @@ lowercase = %x61-7A  ; "a" to "z"
             </table>
             <p>
                 Detailed schemata of these payloads can be found in the JSON Schema linked in this file's header.
-                Examples below shall also be helpful in understanding the details.
+                Examples below will be helpful in understanding the details.
+
             </p>
         </section>
         <!--
@@ -1685,9 +1691,9 @@ lowercase = %x61-7A  ; "a" to "z"
         </pre>
 
         <p>
-            [[[#example-event-data]]] shows an event notification because of an overheating equipment. Event <code>message</code>
-            gives this as a useful hint, <code>prio</code> is set accordingly. <code>values</code> object gives additional details
-            about the event that the current value is 55 and the exceeded limit was 50. The unit of these values can be found at the
+            [[[#example-event-data]]] shows an event notification because of an overheating piece of equipment. Event <code>message</code>
+            gives this as a useful hint; <code>prio</code> is set accordingly. <code>values</code> object gives additional details
+            about the event — that the current value is 55, and the exceeded limit was 50. The unit of these values can be found at the
             <code>source</code> object that triggered this event.
             Because overheating events are important for the operator to notice, <code>ackReq</code> is set, so the operator definitely
             will see the event, even after the overheating condition is over.
@@ -1741,7 +1747,7 @@ lowercase = %x61-7A  ; "a" to "z"
             If the event client wants to get a list of all events of the device, it will invoke the GetCurrentEvents action, and will receive
             te payload shown in [[[#example-getcurrentevents-output]]]. Here the event notification about the overheating and a past fault event can be
             seen. This is useful for synchronizing the events known on the client to the events that are on the device, in case of temporary
-            disconnection, reboot of client or device etc. Please note that in the second alarm <code>ackReq</code> value turned to 0,
+            disconnection, reboot of client or device, etc. Please note that in the second alarm, the <code>ackReq</code> value turned to 0,
             because this event was acknowledged by the operator in the meantime.
         </p>
 

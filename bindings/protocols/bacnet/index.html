@@ -1042,11 +1042,12 @@ lowercase = %x61-7A  ; "a" to "z"
             </p>
             <p>
                 In contrast to PropertyAffordances, which are generically mapped to BACnet,
-                interactions related to events come with a specific payload specified by the BACnet standard. The flexibility that would be for example possible
-                for an HTTP longpoll-based event notification with a custom HTTP body is not possible in BACnet context.
+                interactions related to events come with a specific payload specified by the BACnet standard. The flexibility that would be possible, for example,
+                for an HTTP longpoll-based event notification with a custom HTTP body, is not possible in BACnet context.
                 Thus, it is necessary for the WoT consumer to work with a given logical data schema that is influenced by the BACnet standard.
-                Still, this binding takes an approach to define the data schemata of the InteractionAffordances as independent as possible from BACnet, in
-                order to avoid a direct dependency of WoT consumers to a specific protocol.
+                Still, this binding takes an approach to define the data schemata of the InteractionAffordances as independently as possible from BACnet, in
+                order to avoid a direct dependency of WoT consumers on a specific protocol.
+
             </p>
             <p>
                 With this background, this binding takes some simplifying design decisions:

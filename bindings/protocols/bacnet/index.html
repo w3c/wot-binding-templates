@@ -655,11 +655,12 @@ lowercase = %x61-7A  ; "a" to "z"
                             <code>
                                 {
                                     "type": "string",
-                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E\\*)-((3[01]|0[1-9]|[12][0-9])|O|E\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
                                     "$comment": "ISO8601 Date Time Format, optionally extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
                                 }
                             </code>
-                            Please see <code>bacv:Date</code> and <code>bacv:Time</code> about the use of wildcards.
+                            <br />
+                            Please see <code>bacv:Date</code> and <code>bacv:Time</code> about the details of wildcards.
                         </td>
                         <td>
                             <code>
@@ -746,16 +747,30 @@ lowercase = %x61-7A  ; "a" to "z"
                             <code>
                                 {
                                     "type": "string",
-                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)(\\s*\\([1-7\\*]\\))?$",
-                                    "$comment": "ISO8601 Date Format, optionally extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E\\*)-((3[01]|0[1-9]|[12][0-9])|O|E\\*)(\\s*\\([1-7\\*]\\))?$",
+                                    "$comment": "ISO8601 Date Format, optionally extended with day of week (1: Mon, 7: Sun) and wildcards (O, E, *)"
                                 }
                             </code>
 
-                            The wildcards are used to indicate simple recurrences, e.g.
-                            <code>*-*-1</code> would indicate the first day of each month, and <code>*-6-* (1)</code> would indicate all Mondays in June.
-                            It is possible to indicate an empty set by giving an invalid day of week such as <code>2024-11-07 (1)</code>
-                            (actually it is a Thursday), the more straightforward way would be to just leave out this entry where this data would occur.
-                            All values may be set to wildcards <code>*-*-* (*)</code> to indicate any date.
+                            <ul>
+                                <li><code>O</code> and <code>E</code> can be used in the months field to indicate odd (1: Jan, 3: Mar...) and even (2: Feb, 4: Apr...) months.</li>
+                                <li><code>O</code> and <code>E</code> can be used in the day of week field to indicate odd and even days of the month.</li>
+                                <li><code>*</code> can be used for any year, month, day of month or day of week.</li>
+                                <li>Examples
+                                    <ul>
+                                        <li><code>*-*-1</code>, first day of each month</li>
+                                        <li><code>*-6-* (1)</code>, all Mondays in June.</li>
+                                        <li><code>*-E-1</code>, first day of all even months.</li>
+                                        <li>
+                                            <code>2024-11-07 (1)</code>, an empty set, because day of week is actually Thursday (4),
+                                            the more straightforward way would be to just leave out this entry where this data would occur.
+                                        </li>
+                                        <li><code>2024-11-07 (4)</code> / <code>2024-11-07</code>, an exact date with or without the day of week.</li>
+                                        <li><code>2024-11-07 (4)</code> / <code>2024-11-07</code>, an exact date with or without the day of week.</li>
+                                        <li><code>*-*-* (*)</code> / <code>*-*-*</code>, any date</li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </td>
                         <td>
                             <code>

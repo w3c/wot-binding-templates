@@ -1013,9 +1013,10 @@ lowercase = %x61-7A  ; "a" to "z"
                         or dedicated other objects can monitor other objects (algorithmic reporting)
                     </li>
                     <li>
-                        Alarms are always sent via Notification Class objects, which keep lists of alarm recipients, i.e. alarm subscriptions
-                        are always done to the Notification Classes, it is not possible to receive alarms only from some of the objects linked
-                        to the same Notification Class. In the typical case, a client will register to all Notification Classes of a BACnet Device.
+                        Alarms are always sent via Notification Class objects, which keep lists of alarm recipients, i.e., alarm subscriptions
+                        are always of the Notification Classes; it is not possible to receive alarms only from some of the objects linked
+                        to a given Notification Class. In the typical case, a client will register to all Notification Classes of a BACnet Device.
+
                     </li>
                     <li>
                         Some alarms can be configured as "acknowledgement required". Acknowledgement is defined by BACnet as a manual action
@@ -1113,7 +1114,8 @@ lowercase = %x61-7A  ; "a" to "z"
                     </tr>
                     <tr>
                         <td>EventAffordance.cancellation</td>
-                        <td>Not modeled, cancellation is implicit</td>
+                        <td>Not modeled; cancellation is implicit</td>
+
                         <td>Same as EventAffordance.subscription</td>
                         <td>Same as EventAffordance.subscription</td>
                     </tr>

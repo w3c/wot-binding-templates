@@ -656,9 +656,10 @@ lowercase = %x61-7A  ; "a" to "z"
                                 {
                                     "type": "string",
                                     "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
-                                    "$comment": "ISO8601 Date Time Format, extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
+                                    "$comment": "ISO8601 Date Time Format, optionally extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
                                 }
                             </code>
+                            Please see <code>bacv:Date</code> and <code>bacv:Time</code> about the use of wildcards.
                         </td>
                         <td>
                             <code>
@@ -746,9 +747,15 @@ lowercase = %x61-7A  ; "a" to "z"
                                 {
                                     "type": "string",
                                     "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)(\\s*\\([1-7\\*]\\))?$",
-                                    "$comment": "ISO8601 Date Format, extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
+                                    "$comment": "ISO8601 Date Format, optionally extended with day of week (1: Mon, 7: Sun) and with optional wildcards"
                                 }
                             </code>
+
+                            The wildcards are used to indicate simple recurrences, e.g.
+                            <code>*-*-1</code> would indicate the first day of each month, and <code>*-6-* (1)</code> would indicate all Mondays in June.
+                            It is possible to indicate an empty set by giving an invalid day of week such as <code>2024-11-07 (1)</code>
+                            (actually it is a Thursday), the more straightforward way would be to just leave out this entry where this data would occur.
+                            All values may be set to wildcards <code>*-*-* (*)</code> to indicate any date.
                         </td>
                         <td>
                             <code>
@@ -770,6 +777,10 @@ lowercase = %x61-7A  ; "a" to "z"
                                     "$comment": "ISO8601 Time Format with optional wildcards"
                                 }
                             </code>
+
+                            The wildcards are used to indicate occurrences,
+                            e.g. <code>*:00:00Z</code> to indicate all seconds of the first minute of the hour in UTC.
+                            <code>*:*:*</code> can be used to indicate any time.
                         </td>
                         <td>
                             <code>

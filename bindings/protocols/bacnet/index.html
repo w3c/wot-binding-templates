@@ -1057,8 +1057,9 @@ lowercase = %x61-7A  ; "a" to "z"
                         data or alarm acknowledgement — the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
                     </li>
                     <li>
-                        Some features of the BACnet alarm model are abstracted away: filtering alarms based on day of week, time of day and event state;
+                        Some features of the BACnet alarm model are abstracted away: filtering alarms based on day of week, time of day, and event state;
                         and using unconfirmed event notifications. If these become necessary, they can be added in a future version.
+
                     </li>
                     <li>
                         Payloads containing three event states (Normal, OffNormal, Fault) are split into simpler payloads for each event state. For instance,

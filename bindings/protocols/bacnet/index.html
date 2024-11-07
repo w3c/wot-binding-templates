@@ -1206,9 +1206,9 @@ lowercase = %x61-7A  ; "a" to "z"
                             </ul>
                         </td>
                         <td>
-                            As indicated above, the BACnet payload and the ActionAffordance output differ especially around how events are grouped.
-                            In the BACnet payload, one list item represents one object with its three possible events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps and Priorities.
-                            This is to be processed and split into one standalone event for every current event of this object, or past unacknowledged event, with corresponding timestamp, priority...
+                            As indicated above, the BACnet payload and the ActionAffordance output differ, especially around how events are grouped.
+                            In the BACnet payload, one list item represents one object with its three possible events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps, and Priorities.
+                            This is to be processed and split into one standalone event for every current event, or past unacknowledged event, of this object, with corresponding timestamp, priority, etc.
                         </td>
                     </tr>
                     <tr>

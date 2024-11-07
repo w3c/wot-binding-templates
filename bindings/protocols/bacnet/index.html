@@ -1029,9 +1029,10 @@ lowercase = %x61-7A  ; "a" to "z"
             <p>
                 The key aspects of the mapping to WoT are:
                 <ol>
-                    <li>Each Notification Class is mapped to an EventAffordance. This maps to the subscription granularity directly.</li>
-                    <li>Event Enrollment objects used for algorithmic reporting are not mapped explicitly, they are per se not relevant to the WoT consumer.</li>
-                    <li>Special event-related actions are mapped to ActionAffordances: getting current events and acknowledging events.</li>
+                    <li>Each Notification Class is mapped to an EventAffordance. This maps directly to the subscription granularity.</li>
+                    <li>Event Enrollment objects used for algorithmic reporting are not explicitly mapped; they are not relevant to the WoT consumer, per se.</li>
+                    <li>Special event-related actions (getting current events and acknowledging events) are mapped to ActionAffordances.</li>
+
                     <li>
                         Thing is assumed to be mapped to the BACnet device. While this is simple, it is not a mandatory decision.
                         In specific cases, one BACnet device can correspond to multiple things, and even vice-versa.

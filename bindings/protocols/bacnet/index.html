@@ -787,7 +787,7 @@ lowercase = %x61-7A  ; "a" to "z"
                                 {
                                     "type": "string",
                                     "pattern": "^((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
-                                    "$comment": "ISO8601 Time Format with optional wildcards"
+                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating times using hour, minute, and second. Supports the '*' wildcard for any valid value in each component."
                                 }
                             </code>
 

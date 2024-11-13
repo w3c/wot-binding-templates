@@ -1032,8 +1032,27 @@ lowercase = %x61-7A  ; "a" to "z"
                 <ol>
                     <li>Each Notification Class is mapped to an EventAffordance. This maps directly to the subscription granularity.</li>
                     <li>Event Enrollment objects used for algorithmic reporting are not explicitly mapped; they are not relevant to the WoT consumer, per se.</li>
-                    <li>Special event-related actions (getting current events and acknowledging events) are mapped to ActionAffordances.</li>
-
+                    <li>
+                        Special event-related actions (getting current events and acknowledging events) are mapped to ActionAffordances.
+                        <div class="note">
+                            <p>The WoT consumer does not need to know the details of BACnet alarming, it can simply interact with the InteractionAffordances of the Thing,
+                            as per their data schemata. However the consumer still needs to have an implicit understanding about the relations
+                            between the InteractionAffordances:</p>
+                            <ol>
+                                <li>
+                                    <code>GetCurrentEvents</code> action can be used to fetch all current events of the thing, which would not be received
+                                    just by subscribing to events. This action delivers the same payload as the EventAffordance's data.
+                                </li>
+                                <li>
+                                    <code>AcknowledgeEvent</code> action can be used for all events (including the ones received via <code>GetCurrentEvents</code>),
+                                    where the <code>ackReq</code> field is true. Here the <code>source</code> field of the event should match the <code>eventSource</code>
+                                    field of <code>AcknowledgeEvent.input</code>.
+                                </li>
+                            </ol>
+                            <p>Future work on <a href="https://github.com/w3c/wot-thing-description/blob/main/planning/work-items/new-features.md#manageable-affordances">Manageable Affordances</a>
+                            will improve this by modelling the relations between InteractionAffordances.</p>
+                        </div>
+                    </li>
                     <li>
                         Thing is assumed to be mapped to the BACnet device. While this is simple, it is not a mandatory decision.
                         In specific cases, one BACnet device can correspond to multiple things, and even vice-versa.
@@ -1048,7 +1067,6 @@ lowercase = %x61-7A  ; "a" to "z"
                 Thus, it is necessary for the WoT consumer to work with a given logical data schema that is influenced by the BACnet standard.
                 Still, this binding takes an approach to define the data schemata of the InteractionAffordances as independently as possible from BACnet, in
                 order to avoid a direct dependency of WoT consumers on a specific protocol.
-
             </p>
             <p>
                 With this background, this binding takes some simplifying design decisions:

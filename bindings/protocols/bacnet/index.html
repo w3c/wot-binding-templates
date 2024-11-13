@@ -1126,13 +1126,13 @@ lowercase = %x61-7A  ; "a" to "z"
                                 <li>source: IRI of the BACnet object sending the event</li>
                                 <li>time: Timestamp of the event</li>
                                 <li>prio: Priority of the event</li>
-                                <li>ackReq (optional): Flag indicating if acknowledge is required. Default is false.</li>
+                                <li>ackReq (optional): Flag indicating whether acknowledgement is required. Default is false.</li>
                                 <li>toState: The target state of the event transition</li>
                                 <li>origSource (optional): In case of algorithmic reporting, the IRI of the object monitored by the event-sending object.</li>
-                                <li>eventType (optional): If the event is a regular event transition, an acknowledge notification or a general sync-required event. Default is regular.</li>
+                                <li>eventType (optional): If the event is a regular event transition, an acknowledgement notification or a general sync-required event. Default is regular.</li>
                                 <li>values (optional): Additional values associated with the event, e.g. high-limit in case the value exceeded an OffNormal limit.</li>
                                 <li>message (optional): The message associated with the event.</li>
-                                <li>inactive (optional): Flag if the event is not active anymore, default is false. This is needed for inactive, but not yet acknowledged events; they are there for symmetry with GetCurrentEvents action.</li>
+                                <li>inactive (optional): Flag whether the event is not active anymore. Default is false. This is needed for inactive, but not yet acknowledged events; they are there for symmetry with GetCurrentEvents action.</li>
                             </ul>
                         </td>
                         <td>
@@ -1190,7 +1190,7 @@ lowercase = %x61-7A  ; "a" to "z"
                                         <li>inactive (optional)</li>
                                     </ul>
                                 </li>
-                                <li>moreEvents: Flag indicating if more events should be queried</li>
+                                <li>moreEvents: Flag indicating whether more events should be queried</li>
                             </ul>
                         </td>
                         <td>

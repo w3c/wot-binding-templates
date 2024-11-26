@@ -655,10 +655,12 @@ lowercase = %x61-7A  ; "a" to "z"
                             <code>
                                 {
                                     "type": "string",
-                                    "pattern": "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",,
-                                    "$comment": "ISO8601 Date Time Format with optional wildcards"
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E|\\*)-((3[01]|0[1-9]|[12][0-9])|O|E|\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating dates and times using year, month, day, hour, minute, second, and optionally day of week (1: Mon, 7: Sun). Supports wildcards: 'O' for odd values, 'E' for even values, and '*' for any valid value in each component."
                                 }
                             </code>
+                            <br />
+                            Please see <code>bacv:Date</code> and <code>bacv:Time</code> about the details of wildcards.
                         </td>
                         <td>
                             <code>
@@ -744,10 +746,28 @@ lowercase = %x61-7A  ; "a" to "z"
                             <code>
                                 {
                                     "type": "string",
-                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|\\*)-((3[01]|0[1-9]|[12][0-9])|\\*)$",
-                                    "$comment": "ISO8601 Date Format with optional wildcards"
+                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E|\\*)-((3[01]|0[1-9]|[12][0-9])|O|E|\\*)(\\s*\\([1-7\\*]\\))?$",
+                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating dates using year, month, day, and optionally day of week (1: Mon, 7: Sun). Supports wildcards: 'O' for odd days, 'E' for even days, and '*' for any valid value in each component."
                                 }
                             </code>
+
+                            <ul>
+                                <li><code>O</code> and <code>E</code> can be used in the months field to indicate odd (1: Jan, 3: Mar...) and even (2: Feb, 4: Apr...) months.</li>
+                                <li><code>O</code> and <code>E</code> can be used in the day of week field to indicate odd and even days of the month.</li>
+                                <li><code>*</code> can be used for any year, month, day of month or day of week.</li>
+                                <li>Examples
+                                    <ul>
+                                        <li><code>*-*-01</code>: Recurs on the 1st day of every month, regardless of year.</li>
+                                        <li><code>*-06-* (1)</code>: Recurs on every Monday in June, regardless of year.</li>
+                                        <li><code>*-E-01</code>: Recurs on the 1st day of every even month, regardless of year.</li>
+                                        <li>
+                                            <code>2024-11-07 (1)</code>: November 7, 2024, is not a Monday, resulting in no recurrences.
+                                        </li>
+                                        <li><code>2024-11-07 (4)</code> / <code>2024-11-07</code>: November 7, 2024, is a Thursday, resulting in a single recurrence.</li>
+                                        <li><code>*-*-* (*)</code> / <code>*-*-*</code>: Recurs every day, regardless of year, month, or day of the week.</li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </td>
                         <td>
                             <code>
@@ -766,9 +786,16 @@ lowercase = %x61-7A  ; "a" to "z"
                                 {
                                     "type": "string",
                                     "pattern": "^((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
-                                    "$comment": "ISO8601 Time Format with optional wildcards"
+                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating times using hour, minute, and second. Supports the '*' wildcard for any valid value in each component."
                                 }
                             </code>
+
+                            Examples:
+                            <ul>
+                                <li><code>*:00:00Z</code>: Recurs every hour on the hour (00 minutes, 00 seconds), using Coordinated Universal Time (UTC).</li>
+                                <li><code>*:*:*</code>: Recurs every second of every minute and every hour, essentially occurring continuously throughout the day.</li>
+                                <li><code>06:00:00Z</code>: Occurs at 6:00 AM UTC, with 0 minutes and 0 seconds past the hour.</li>
+                            </ul>
                         </td>
                         <td>
                             <code>

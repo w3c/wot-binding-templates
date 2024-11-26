@@ -15,14 +15,17 @@
                     "enum": [
                         "ReadProperty",
                         "WriteProperty",
-                        "SubscribeCOV"
+                        "SubscribeCOV",
+                        "GetEventInfo",
+                        "AcknowledgeAlarm",
+                        "AddListElement",
+                        "RemoveListElement"
                     ]
                 },
                 "bacv:hasDataType": {
                     "$ref": "#/definitions/bacnetDataType"
                 }
-            },
-            "required": ["bacv:hasDataType"]
+            }
         },
         "bacnetDataType": {
             "oneOf": [
@@ -245,6 +248,121 @@
             "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
             "default": 16
         },
+        "eventPayload": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "format": "iri-reference"
+              },
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "prio": {
+                "type": "integer"
+              },
+              "message": {
+                "type": "string"
+              },
+              "ackReq": {
+                "type": "integer",
+                "enum": [0, 1],
+                "default": 0
+              },
+              "toState": {
+                "type": "string",
+                "enum": [
+                  "fault",
+                  "offnormal",
+                  "normal"
+                ]
+              },
+              "eventType": {
+                "type": "string",
+                "enum": ["regular", "ack", "syncrequired"],
+                "default": "regular"
+              },
+              "origSource": {
+                "type": "string",
+                "format": "iri-reference"
+              },
+              "values": {
+                "type": "object"
+              },
+              "inactive": {
+                "type": "integer",
+                "enum": [0, 1],
+                "default": 0
+              }
+            },
+            "required": [
+              "source",
+              "time",
+              "prio",
+              "toState"
+            ]
+        },
+        "action_input_getCurrentEvents": {
+            "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet GetEventInfo",
+            "type": "object",
+            "properties": {
+              "lastReceivedSource": {
+                "type": "string",
+                "fomat": "iri-reference"
+              }
+            }
+        },
+        "action_output_getCurrentEvents": {
+            "$comment": "This is not part of the form, but should be used in ActionAffordance.output BACnet GetEventInfo",
+            "type": "object",
+            "properties": {
+              "currentEvents": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/eventPayload"
+                }
+              }
+            },
+            "moreEvents": {
+              "type": "boolean"
+            },
+            "required": [
+              "currentEvents",
+              "moreEvents"
+            ]
+        },
+        "action_input_acknowledgeEvent": {
+            "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet AcknowledgeAlarm",
+            "type": "object",
+            "properties": {
+                "source": {
+                    "type": "string",
+                    "format": "iri-reference"
+                  },
+                  "toState": {
+                    "$comment": "The state being acknowledged",
+                    "type": "string",
+                    "enum": [
+                      "fault",
+                      "offnormal",
+                      "normal"
+                    ]
+                  },
+                  "eventTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "ackSource": {
+                    "type": "string"
+                  },
+                  "ackTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "required": ["source", "ackState", "eventTime", "ackSource", "ackTime"]
+            }
+        },
         "affordance": {
             "type": "object",
             "additionalProperties": {
@@ -258,6 +376,10 @@
                     }
                 }
             }
+        },
+        "event_data": {
+            "$comment": "This is not part of the form, but should be used in EventAffordance.data for BACnet events",
+            "$ref": "#/definitions/eventPayload"
         }
     },
     "type": "object",

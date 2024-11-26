@@ -53,19 +53,27 @@ Additional parameters can be specified via URI variable syntax, e.g. ?commandPri
 
 bacv:usesService rdf:type owl:DatatypeProperty ;
                    rdfs:domain hctl:Form ;
-                   rdfs:range [owl:oneOf ("ReadProperty"^^xsd:string "WriteProperty"^^xsd:string "SubscribeCOV"^^xsd:string)] ;
+                   rdfs:range [owl:oneOf (
+                        "ReadProperty"^^xsd:string
+                        "WriteProperty"^^xsd:string
+                        "SubscribeCOV"^^xsd:string
+                        "GetEventInfo"^^xsd:string
+                        "AcknowledgeAlarm"^^xsd:string
+                        "AddListElement"^^xsd:string
+                        "RemoveListElement"^^xsd:string
+                    )] ;
                    rdfs:comment """
 Default BACnet service by td:OperationType:
 - td:readProperty -> ReadProperty
 - td:writeProperty -> WriteProperty
 - td:observeProperty -> SubscribeCOV, subscribe to object if no property ID is present in target, otherwise subscribe to property
 - td:unobserveProperty -> SubscribeCOV (will do an unsubscribe instead)
-
+- td:subscribeEvent -> AddListElement (will always be to the Recipient-List property of the Notification-Class object)
+- td:unsubscribeEvent -> RemoveListElement (will always be to the Recipient-List property of the Notification-Class object)
 TODO: Can we specify the defaults in a machine-readable, RDF-standard way?
 
-Not mapped yet:
+No defaults are specified for the following; TD must specify the service explicitly for them:
 - td:invokeAction, td:queryAction, td:cancelAction
-- td:subscribeEvent, td:unsubscribeEvent
 - td:readAllProperties, td:writeAllProperties, td:readMultipleProperties, td:writeMultipleProperties, td:observeAllProperties, td:unobserveAllProperties
 - td:queryAllActions
 - td:subscribeAllEvents, td:unsubscribeAllEvents

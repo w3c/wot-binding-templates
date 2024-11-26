@@ -197,7 +197,7 @@ bacv:hasLogicalVal rdf:type owl:DatatypeProperty ;
                      rdfs:domain bacv:ValueMapEntry ;
                      rdfs:range [owl:unionOf (xsd:integer xsd:string xsd:boolean)] .
 
-bacv:hasProtocolVal rdf:type rdf:type owl:DatatypeProperty ;
+bacv:hasProtocolVal rdf:type owl:DatatypeProperty ;
                       rdfs:domain bacv:ValueMapEntry ;
                       rdfs:range xsd:integer .
 

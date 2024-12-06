@@ -449,7 +449,8 @@ lowercase = %x61-7A  ; "a" to "z"
                             <a
                                 href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
                             <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>,
-                                <code>"SubscribeCOV"</code>)
+                                <code>"SubscribeCOV"</code>, <code>"GetEventInfo"</code>, <code>"AcknowledgeAlarm"</code>,
+                                <code>"AddListElement"</code>, <code>"RemoveListElement"</code>)
                             </p>
                         </td>
                         <td>hctl:Form</td>
@@ -1100,7 +1101,7 @@ lowercase = %x61-7A  ; "a" to "z"
                 <ol>
                     <li>
                         When the BACnet payload is fixed by the BACnet standard for a given service — e.g., event subscription, or
-                        data or alarm acknowledgement — the binding doesn't model the BACnet data with <code>bacnet:hasDataType</code>.
+                        data or alarm acknowledgement — the binding doesn't model the BACnet data with <code>bacv:hasDataType</code>.
                     </li>
                     <li>
                         Some features of the BACnet alarm model are abstracted away: filtering alarms based on day of week, time of day, and event state;
@@ -1601,8 +1602,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     "op": [
                       "invokeaction"
                     ],
-                    "bacnet:usesService": [
-                      "GetEventInfo"
+                    "bacv:usesService": "GetEventInfo"
                     ]
                   }
                 ]
@@ -1643,9 +1643,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     "op": [
                       "invokeaction"
                     ],
-                    "bacnet:usesService": [
-                      "AcknowledgeAlarm"
-                    ]
+                    "bacv:usesService": "AcknowledgeAlarm"
                   }
                 ]
             }

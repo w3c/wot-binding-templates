@@ -42,7 +42,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 
 1. Name of the binding
   - Examples: `HTTP Binding Template`, `CoAP Binding Template`
-2. Link to the binding: Stable and dated link
+2. Link to the binding document: Stable link whose content cannot change (e.g. a date, version number etc)
   - Examples: `https://www.w3.org/TR/wot/binding-templates/http-20240726/index.html`
 3. Binding ontology prefix
   - Examples: `htv`, `modv`, `cov`
@@ -94,9 +94,14 @@ What does the binding have to contain to go into the table
 3. DISCUSS: What is the objective mechanism to confirm the initial entry, i.e., status equals "initial"?
   - Ege: Initial entry (provisional, draft) is checked for document correctness, i.e., mapping at least one protocol, URI scheme, examples of each mapped operation, "casual" introduction, and abstract. However, we do not check if someone tries to map `readproperty` to a non-existent HTTP method.
   - Cris: Merging the initial entry would trigger a "Call for Implementation". Where discussions on implementation experience should be collected?
-  - DISCUSS: Should the binding document be required to follow W3C copyright rules, and must the document follow the exact template.
+  - DISCUSS: Should the binding document be required to follow W3C copyright rules, and should the document follow the exact template and look and feel.
     - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
-    - Cris: Do we allow the WoT binding to be just one section of the document? -> Group seems to be fine but pointing to the specific location will be needed.
+    - Cris: Do we allow the WoT binding to be just one section of the document? -> Group seems to be fine but pointing to the specific location will be needed. (PDF or similar document types submission will require a text pointing to the section)
+    - Jan: Should the binding document be publically available and for free? What about the license, e.g. can I write a binding driver without any fees etc.?
+      - Ege: At least the custodian and the reviewers should be able to access it for free.
+      - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, and building a commercial product with it.
+      - DISCUSS MAIN CALL
+    - Cris: We should strongly recommend linking HTML documents.
 4. DISCUSS: What is the objective mechanism to confirm the status change to "current"? Should we have a test suite? Plugfest experience?
   - Koster: We won't be able to do a "lab test" for certification (e.g., Matter). The assertions to satisfy will be generic to all bindings.
   - Cris: Testing the binding without a F2F event should be possible.

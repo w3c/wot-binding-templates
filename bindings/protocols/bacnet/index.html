@@ -1022,6 +1022,15 @@ lowercase = %x61-7A  ; "a" to "z"
                 </tbody>
             </table>
         </section>
+        <section id="contenttype">
+            <h3>BACnet <code>contentType</code></h3>
+            <p>
+                BACnet has only one encoding format based on <a href="https://en.wikipedia.org/wiki/ASN.1">ASN.1</a>
+                for transporting data. Since there is no other option and to avoid falling back to the
+                <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+                of <code>application/json</code>, <code>contentType</code> shall always be set to <code>application/octet-stream</code>.
+            </p>
+        </section>
         <section id="event-mappings">
             <h3>Mappings related to events</h3>
             <p>
@@ -1331,6 +1340,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "readproperty" ],
                 "href": "bacnet://5/0,1/85",
+                "contentType": "application/octet-stream",
                 "bacv:usesService": "ReadProperty",
                 "bacv:hasDataType": {
                     "@type": "bacv:Real"
@@ -1372,6 +1382,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "observeproperty" ],
                 "href": "bacnet://5/0,1/85?covIncrement={observeIncrement}",
+                "contentType": "application/octet-stream",
                 "bacv:usesService": "SubscribeCOV",
                 "bacv:hasDataType": {
                     "@type": "bacv:Real"
@@ -1421,6 +1432,7 @@ lowercase = %x61-7A  ; "a" to "z"
                             {
                                 "op": [ "readproperty", "observeproperty", "unobserveproperty" ],
                                 "href": "bacnet://5/2,1",
+                                "contentType": "application/octet-stream",
                                 "bacv:hasDataType": {
                                     "@type": "bacv:Real"
                                 }
@@ -1428,6 +1440,7 @@ lowercase = %x61-7A  ; "a" to "z"
                             {
                                 "op": [ "writeproperty" ],
                                 "href": "bacnet://5/2,1?commandPriority={writePriority}",
+                                "contentType": "application/octet-stream",
                                 "bacv:usesService": "WriteProperty",
                                 "bacv:hasDataType": {
                                     "@type": "bacv:Real"
@@ -1460,6 +1473,7 @@ lowercase = %x61-7A  ; "a" to "z"
             "forms": [{
                 "op": [ "readproperty" ],
                 "href": "bacnet://5/14,1/85",
+                "contentType": "application/octet-stream",
                 "bacv:usesService": "ReadProperty",
                 "bacv:hasDataType": {
                     "@type": "bacv:Enumerated",
@@ -1599,6 +1613,7 @@ lowercase = %x61-7A  ; "a" to "z"
                 "forms": [
                   {
                     "href": "bacnet://1/8,1",
+                    "contentType": "application/octet-stream",
                     "op": [
                       "invokeaction"
                     ],
@@ -1640,6 +1655,7 @@ lowercase = %x61-7A  ; "a" to "z"
                 "forms": [
                   {
                     "href": "bacnet://1/8,1",
+                    "contentType": "application/octet-stream",
                     "op": [
                       "invokeaction"
                     ],
@@ -1709,6 +1725,7 @@ lowercase = %x61-7A  ; "a" to "z"
                 "forms": [
                     {
                         "href": "bacnet://2/15,2/102",
+                        "contentType": "application/octet-stream",
                         "op": [
                             "subscribeevent",
                             "unsubscribeevent"

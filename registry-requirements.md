@@ -98,8 +98,10 @@ What does the binding have to contain to go into the table
     - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
     - Cris: Do we allow the WoT binding to be just one section of the document? -> Group seems to be fine but pointing to the specific location will be needed. (PDF or similar document type submission will require a text pointing to the section.)
     - Jan: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
-      - Ege: At least the custodian and the reviewers should be able to access it for free.
-      - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, and building a commercial product with it.
+      - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding.
+      - Koster: Requiring everything to be free to use would limit the amount of bindings. At the very least, the entry should contain a freely available summary document that explains the protocol and how WoT is used there, ideally with an example. The reader should know to what extent the binding goes (e.g. reading device data or device management).
+        - Content of Summary Document: What is the minimum we expect in such a summary document?
+      - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, and building a commercial product with it, making a statement about your product's supporting that binding.
       - DISCUSS MAIN CALL
     - Cris: We should strongly recommend linking HTML documents.
 4. DISCUSS: What is the objective mechanism to confirm the status change to "current"? Should we have a test suite? Plugfest experience?

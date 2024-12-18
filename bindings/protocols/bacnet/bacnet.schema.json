@@ -24,6 +24,10 @@
                 },
                 "bacv:hasDataType": {
                     "$ref": "#/definitions/bacnetDataType"
+                },
+                "contentType": {
+                    "const": "application/octet-stream",
+                    "default": "application/octet-stream"
                 }
             }
         },

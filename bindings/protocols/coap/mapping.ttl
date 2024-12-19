@@ -47,36 +47,42 @@
     ] ;
     sh:property [
         sh:order 2 ;
+        sh:path cov:confirmable ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:order 3 ;
         sh:path cov:minPollingInterval ;
         sh:datatype xsd:unsignedInt ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:order 3 ;
+        sh:order 4 ;
         sh:path cov:blockwise ;
         sh:class cov:BlockWiseTransferParameters ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:order 4 ;
+        sh:order 5 ;
         sh:path cov:qblockwise ;
         sh:class cov:BlockWiseTransferParameters ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:order 5 ;
+        sh:order 6 ;
         sh:path cov:hopLimit ;
         sh:datatype xsd:unsignedByte ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:order 6 ;
+        sh:order 7 ;
         sh:path cov:contentFormat ;
         sh:datatype xsd:unsignedShort ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:order 7 ;
+        sh:order 8 ;
         sh:path cov:accept ;
         sh:datatype xsd:unsignedShort ;
         sh:maxCount 1 ;

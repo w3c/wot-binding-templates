@@ -44,6 +44,12 @@ cov:minPollingInterval a rdf:Property, owl:DatatypeProperty ;
              rdfs:isDefinedBy <> ;
              rdfs:label "minPollingInterval"@en .
 
+cov:confirmable a rdf:Property, owl:DatatypeProperty ;
+             rdfs:range xsd:boolean ;
+             rdfs:comment "Provides a hint for Consumers to use confirmable (`true`) or non-confirmable (`false`) requests with a particular resource. Only applicable to CoAP over UDP/DTLS [[RFC7252]]."@en ;
+             rdfs:isDefinedBy <> ;
+             rdfs:label "confirmable"@en .
+
 cov:blockwise a rdf:Property, owl:ObjectProperty ;
               rdfs:range cov:BlockWiseTransferParameters ;
               rdfs:comment "Indicates that block-wise transfer [[RFC7959]] is supported."@en ;

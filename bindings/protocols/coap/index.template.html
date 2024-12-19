@@ -211,6 +211,55 @@
 }
 </pre>
             <p>
+                In CoAP over UDP or DTLS [[RFC7252]], requests and responses can either be confirmable (CON) or non-confirmable (NON).
+                In contrast to non-confirmable messages, confirmable messages are required to be acknowledged by the receiving endpoint and are otherwise retransmitted until an acknowledgement has been received.
+            </p>
+            <p>
+                To provide a hint whether CON or NON requests should be used for accessing a CoAP resource associated with a form, the vocabulary term `cov:confirmable` can be used.
+                A value of `true` indicates that a CON request SHOULD be used by the Consumer, while a value of `false` indicates that a NON request SHOULD be used instead (for potential usages of the vocabulary term see [[[#example-request-con-non]]]).
+                However, as the vocabulary term is just a hint, the consumer is not bound to this recommendation.
+                When `cov:confirmable` is absent from a CoAP form, the consumer can choose freely between CON and NON requests as there is no default value defined.
+            </p>
+            <p>
+                When using reliable transport protocols (such as TCP) that ensure that messages are delivered, the distinction between confirmable and non-confirmable messages is not being made at the protocol level.
+                Therefore, when using one of these CoAP variants, the vocabulary term `cov:confirmable` is simply ignored by a WoT consumer.
+            </p>
+            <pre id="example-request-con-non" class="example" title="A Thing Description containing CoAP forms with hints for confirmable and non-confirmable requests.">
+                {
+                    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+                    ...
+                    "properties": {
+                        "currentTemperature": {
+                            "title": "Latest temperature value",
+                            "description": "Returns the latest temperature value recorded.",
+                            "type": "number",
+                            "forms": [
+                                {
+                                    "href": "coap://[2001:DB8::1]/currentTemperature",
+                                    "cov:confirmable": true,
+                                    "op": "readproperty"
+                                }
+                            ]
+                        }
+                    },
+                    "action": {
+                        "recordTemperature": {
+                            "title": "Record temperature value",
+                            "description": "Record a temperature value (e.g., from a sensor node).",
+                            "input": {
+                                "type": "number"
+                            },
+                            "forms": [
+                                {
+                                    "href": "coap://[2001:DB8::1]/recordTemperature",
+                                    "cov:confirmable": false
+                                }
+                            ]
+                        }
+                    }
+                }
+            </pre>
+            <p>
                 The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format of the request and/or response.
                 In <abbr title="Constrained Application Protocol">CoAP</abbr>, combinations of content type and content coding are encoded using standardized values listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
                 Therefore, not every combination of content type and content coding can be used with CoAP.

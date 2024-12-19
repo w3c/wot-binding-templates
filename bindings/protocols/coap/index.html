@@ -213,6 +213,7 @@
             <p>
                 In CoAP over UDP or DTLS [[RFC7252]], requests and responses can either be confirmable (CON) or non-confirmable (NON).
                 In contrast to non-confirmable messages, confirmable messages are required to be acknowledged by the receiving endpoint and are otherwise retransmitted until an acknowledgement has been received.
+                Using non-confirmable requests can be useful for sensor data (that gets sent repeatedly and therefore does not need to be transmitted reliably), while confirmable requests provide a certain reliability that is useful for retrieving values or invoking actions that should not fail.
             </p>
             <p>
                 To provide a hint whether CON or NON requests should be used for accessing a CoAP resource associated with a form, the vocabulary term `cov:confirmable` can be used.

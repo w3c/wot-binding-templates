@@ -94,10 +94,10 @@ What does the binding have to contain to go into the table
 3. DISCUSS: What is the objective mechanism to confirm the initial entry, i.e., status equals "initial"?
   - Ege: Initial entry (provisional, draft) is checked for document correctness, i.e., mapping at least one protocol, URI scheme, examples of each mapped operation, "casual" introduction, and abstract. However, we do not check if someone tries to map `readproperty` to a non-existent HTTP method.
   - Cris: Merging the initial entry would trigger a "Call for Implementation". Where discussions on implementation experience should be collected?
-  - DISCUSS: Should the binding document be required to follow W3C copyright rules, and should the document follow the exact template and look and feel?
-    - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
-    - Cris: Do we allow the WoT binding to be just one section of the document? -> Group seems to be fine but pointing to the specific location will be needed. (PDF or similar document type submission will require a text pointing to the section.)
-    - Cris: We should strongly recommend linking HTML documents.
+  - Compliance to the point 5 is checked here.
+4. DISCUSS: The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
+5. DISCUSS: Should the binding document be required to follow W3C copyright rules, and should the document follow the exact template and look and feel?
+     - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
     - Jan: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
       - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
       - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding.
@@ -108,8 +108,11 @@ What does the binding have to contain to go into the table
         - Reviewer Access: MUST have access to the binding document and to the protocol or media type (what the binding specifies)
         - Binding Availability and Licensing for the Public: No requirement (can be behind a paywall, have complicated licensing, etc.)
         - Summary Document: What is the minimum we expect in such a summary document?
-4. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
+6. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
+  - Ege: We are checking basic implementability, not conformance or certification. This requires implementation experience (test suite, virtual or physical plugfest, etc.)
   - Koster: We won't be able to do a "lab test" for certification (e.g., Matter). The assertions to satisfy will be generic to all bindings.
   - Cris: Testing the binding without a F2F event should be possible.
   - Jan: Should there be interop testing? How many Thing implementations from the submitter? How many Consumer implementations from the submitter? What kind of implementation from non-submitter?
-  - Ege: Going to the final, requires implementation experience (test suite, virtual or physical plugfest, etc.)
+  - Implementation Experience:
+    - Ege, Koster: In an event (not necessarily a W3C event), each operation of the binding executed automatically (testing the protocol driver), an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain two separate entities where 1 Thing and 1 Consumer in total are present, e.g. entity A providing the Thing and entity B providing the Consumer application.
+      - Ideally, we would collaborate in a Plugfest on the implementation and collect experience.

@@ -97,7 +97,7 @@ What does the binding have to contain to go into the table
   - Compliance to the point 5 is checked here.
 4. DISCUSS: The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 5. DISCUSS: Should the binding document be required to follow W3C copyright rules, and should the document follow the exact template and look and feel?
-     - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
+    - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
     - Jan: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
       - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
       - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding.
@@ -114,5 +114,5 @@ What does the binding have to contain to go into the table
   - Cris: Testing the binding without a F2F event should be possible.
   - Jan: Should there be interop testing? How many Thing implementations from the submitter? How many Consumer implementations from the submitter? What kind of implementation from non-submitter?
   - Implementation Experience:
-    - Ege, Koster: In an event (not necessarily a W3C event), each operation of the binding executed automatically (testing the protocol driver), an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain two separate entities where 1 Thing and 1 Consumer in total are present, e.g. entity A providing the Thing and entity B providing the Consumer application.
+    - Ege, Koster: In an event (not necessarily a W3C event), each operation of the binding is executed automatically (testing the protocol driver), and an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain two separate entities where one Thing and one Consumer in total are present, e.g., entity A providing the Thing and entity B providing the Consumer application.
       - Ideally, we would collaborate in a Plugfest on the implementation and collect experience.

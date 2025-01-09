@@ -132,3 +132,4 @@ What does the binding have to contain to go into the table
       - Ideally, the custodian, reviewers and submitters would collaborate in a Plugfest on the implementation and collect experience together.
       - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
       - DISCUSS: Should we enforce two separate entities?
+        - We can require one Thing and Consumer but collect the amount of implementations and show it in the registry table. More implementations would show more maturity of the binding.

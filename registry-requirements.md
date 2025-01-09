@@ -56,7 +56,9 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 5. Supported TD version (no uniqueness needed):
   - A binding SHOULD correspond to specific TD specification version(s).
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, when writing a binding, it must be associated with one or more known TD specification versions.
-6. Status: DISCUSS with lifecycle
+6. Status: One of Initial, Current, Superseded or Obsolete
+7. Version: A string that denotes the version of the binding that is linked.
+  - DISCUSS: What is the versioning scheme we use
 
 DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP binding. The initial thinking is to register them as separate entries and clarify what they use from the CoAP binding. A layered registry can be considered similar to language tags with `en` extending to `en-us` and `en-uk`, where the tags and entries are different but the association with `en` is expressed in the ID. In our case, this would be `coap-ocf` and `coap-lwm2m`. A higher-level binding SHOULD NOT override or conflict with a lower-level binding, and the custodian should verify this, e.g., `cov:method` in CoAP binding should not be turned into `cov:operation` in the higher-level binding. The namespace (prefix and its values) defined in a binding CANNOT be redefined in any other binding.
 
@@ -64,8 +66,19 @@ DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP b
 
 - Technical submission mechanism. How does a binding get submitted?
    - We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue. The submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
-   - DISCUSS: How is the review decision communicated?
-- Status values: Initial (alternatives: provisional, draft, in development) -> Current (alternatives: Stable) -> Deprecated (not preferred since it is still usable. Alternatives: Old, Outdated, Previous)
+   - A purpose built GitHub project for tracking submissions is used. When a submission comes in form an issue, it is automatically added to column "Binding Submitted". When the custodian and reviewers start looking at it, it goes to the "Under Review" column. If the review is in favour, the custodian makes the PR to add it to the registry and the issue goes to column "Accepted". If the review is not in favour, it goes to the column "Rejected". All these changes are reflected as comments in the original issue.
+- Technical Lifecycle Change Mechanism: 
+- Status values: Initial -> Current -> Superseded or Obsolete
+  - Definitions:
+    - Initial: Document is correctly written but no implementation experience has been necessarily documented.
+    - Current: Custodian recommends it for new implementations and it has enough implementation experience
+    - Superseded: A previously "current" entry that is now superseded with a newer one
+    - Obsolete: Custodian does not recommend the usage of this binding
+  - This is inspired by the TTWG Boilerplate
+  - Alternatives that can be reconsidered if needed:
+    - Initial: provisional, draft, in development
+    - Current: Final, Stable
+    - Outdated: Old, Deprecated (not preferred since it is still usable), Previous, Obsolete. Also see <https://www.w3.org/policies/process/#RecsObs>
 - What are the requirements for transitioning from one value to another? See the "Requirements on the Submitted Document" section as well.
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates to a registry document's content. A new version of a binding is a resubmission and optional deprecation of the old one. However, new features need new implementations, so it is not a completely new registration.
@@ -92,11 +105,12 @@ What does the binding have to contain to go into the table
 2. A binding that uses a serialization format via the `contentType` keyword MUST mention how the Data Schema terms should be used to describe the messages. This avoids submission of a binding like "XML Binding" that says "Use `contentType:application/xml` and nothing more. That alone would not be enough to serialize correct messages based on the data schema.
   - TODO: We will need additional mechanisms (including vocabulary terms) to ensure that it is possible to use other media types.
 3. DISCUSS: What is the objective mechanism to confirm the initial entry, i.e., status equals "initial"?
-  - Ege: Initial entry (provisional, draft) is checked for document correctness, i.e., mapping at least one protocol, URI scheme, examples of each mapped operation, "casual" introduction, and abstract. However, we do not check if someone tries to map `readproperty` to a non-existent HTTP method.
+  - Ege: Initial entry is checked for document correctness, i.e., mapping at least one protocol, URI scheme, examples of each mapped operation, "casual" introduction, and abstract. However, we do not check if someone tries to map `readproperty` to a non-existent HTTP method.
   - Cris: Merging the initial entry would trigger a "Call for Implementation". Where discussions on implementation experience should be collected?
   - Compliance to the point 5 is checked here.
-4. DISCUSS: The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
+4. The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 5. DISCUSS: Should the binding document be required to follow W3C copyright rules, and should the document follow the exact template and look and feel?
+    - https://github.com/w3c/wot-binding-templates/issues/393
     - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
     - Jan: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
       - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
@@ -114,5 +128,7 @@ What does the binding have to contain to go into the table
   - Cris: Testing the binding without a F2F event should be possible.
   - Jan: Should there be interop testing? How many Thing implementations from the submitter? How many Consumer implementations from the submitter? What kind of implementation from non-submitter?
   - Implementation Experience:
-    - Ege, Koster: In an event (not necessarily a W3C event), each operation of the binding is executed automatically (testing the protocol driver), and an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain two separate entities where one Thing and one Consumer in total are present, e.g., entity A providing the Thing and entity B providing the Consumer application.
-      - Ideally, we would collaborate in a Plugfest on the implementation and collect experience.
+    - Ege, Koster: The submitters do the following: In an event (not necessarily a W3C event), each operation of the binding is executed automatically (testing the protocol driver and TD parsing), and an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain at least two separate entities where one Thing and one Consumer in total are present, e.g., entity A providing the Thing and entity B providing the Consumer application.
+      - Ideally, the custodian, reviewers and submitters would collaborate in a Plugfest on the implementation and collect experience together.
+      - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
+      - DISCUSS: Should we enforce two separate entities?

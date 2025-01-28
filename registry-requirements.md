@@ -27,6 +27,7 @@ It is unrealistic to incorporate a complete list of bindings into a REC document
   - Reasons Behind the Requirement: It is easier to update in the long term.
 - Association of a binding with the TD specification (registry entry) SHOULD be confirmed by the WoT Working Group or its custodian. In other words, a person needs some permission and/or confirmation to authoritatively say that a given binding can be used with TD version X. The custodian of this registry is the WoT WG in the beginning.
   - Reasons Behind the Requirement: WoT WG is the manager of the registry.
+- The binding document (registry entry) CAN be hosted by another entity than the custodian.
   
 ## Content of Registry Definition
 
@@ -107,22 +108,18 @@ What does the binding have to contain to go into the table
 3. DISCUSS: What is the objective mechanism to confirm the initial entry, i.e., status equals "initial"?
   - Ege: Initial entry is checked for document correctness, i.e., mapping at least one protocol, URI scheme, examples of each mapped operation, "casual" introduction, and abstract. However, we do not check if someone tries to map `readproperty` to a non-existent HTTP method.
   - Cris: Merging the initial entry would trigger a "Call for Implementation". Where discussions on implementation experience should be collected?
-  - Compliance to the point 5 is checked here.
+  - Compliance to the point 6 is checked here.
 4. The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
-5. DISCUSS: Should the binding document be required to follow W3C copyright rules, and should the document follow the exact template and look and feel?
-    - https://github.com/w3c/wot-binding-templates/issues/393
-    - Ege: No as we want other organizations to also submit bindings. -> Group seems to be fine with this requirement.
-    - Jan: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
-      - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
-      - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding.
-      - Koster: Requiring everything to be free to use would limit the amount of bindings. At the very least, the entry should contain a freely available summary document that explains the protocol and how WoT is used there, ideally with an example. The reader should know to what extent the binding goes (e.g. reading device data or device management).
-      - DISCUSS MAIN CALL
-        - W3C Copyright rules: No requirement
-        - W3C Look and Feel: No requirement
-        - Reviewer Access: MUST have access to the binding document and to the protocol or media type (what the binding specifies)
-        - Binding Availability and Licensing for the Public: No requirement (can be behind a paywall, have complicated licensing, etc.)
-        - Summary Document: What is the minimum we expect in such a summary document?
-6. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
+5. The WoT binding document DOES NOT have to follow the W3C copyright. The submitter is free to choose based on the process they or their organization follows.
+6. Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
+  - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
+  - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding. We should have the correct wording to motivate making everything freely available but not enforce it.
+  - Koster: Requiring everything to be free to use would limit the amount of bindings. At the very least, the entry should contain a freely available summary document that explains the protocol and how WoT is used there, ideally with an example. The reader should know to what extent the binding goes (e.g. reading device data or device management).
+  - DISCUSS MAIN CALL
+    - Reviewer Access: MUST have access to the binding document and to the protocol or media type (what the binding specifies)
+    - Binding Availability and Licensing for the Public: No requirement (can be behind a paywall, have complicated licensing, etc.)
+    - Summary Document: What is the minimum we expect in such a summary document?
+7. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
   - Ege: We are checking basic implementability, not conformance or certification. This requires implementation experience (test suite, virtual or physical plugfest, etc.)
   - Koster: We won't be able to do a "lab test" for certification (e.g., Matter). The assertions to satisfy will be generic to all bindings.
   - Cris: Testing the binding without a F2F event should be possible.
@@ -133,3 +130,7 @@ What does the binding have to contain to go into the table
       - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
       - DISCUSS: Should we enforce two separate entities?
         - We can require one Thing and Consumer but collect the amount of implementations and show it in the registry table. More implementations would show more maturity of the binding.
+8. DISCUSS: What are the required sections/content? Is there an order that we require?
+  - Ege: Require an ordering of: Introduction, Binding Content (URL Format, Form Vocabulary Definition as Table, Default and possible mappings to operations as a Table/Template), Examples. The tables should be provided as a template that can be used across different tools (html, word etc.)
+9. DISCUSS: What are the required (machine-readable) documents provided on the side?
+  - Ege: JSON Schema, Ontology File (RDF and HTML) not mandatory?, test report or documentation of implementation experience

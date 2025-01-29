@@ -58,7 +58,9 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
   - A binding SHOULD correspond to specific TD specification version(s).
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, when writing a binding, it must be associated with one or more known TD specification versions.
 6. Status: One of Initial, Current, Superseded or Obsolete
-7. Version: A string that denotes the version of the binding that is linked.
+7. DISCUSS: Access and Usage Rights: This indicates whether the binding can be read, implemented and commercialized for free.
+  - To be discussed with PLH to use correct terminology
+8. Version: A string that denotes the version of the binding that is linked.
   - DISCUSS: What is the versioning scheme we use
 
 DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP binding. The initial thinking is to register them as separate entries and clarify what they use from the CoAP binding. A layered registry can be considered similar to language tags with `en` extending to `en-us` and `en-uk`, where the tags and entries are different but the association with `en` is expressed in the ID. In our case, this would be `coap-ocf` and `coap-lwm2m`. A higher-level binding SHOULD NOT override or conflict with a lower-level binding, and the custodian should verify this, e.g., `cov:method` in CoAP binding should not be turned into `cov:operation` in the higher-level binding. The namespace (prefix and its values) defined in a binding CANNOT be redefined in any other binding.
@@ -111,15 +113,18 @@ What does the binding have to contain to go into the table
   - Compliance with point 6 is checked here.
 4. The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 5. The WoT binding document DOES NOT have to follow the W3C copyright. The submitter is free to choose based on the process they or their organization follows.
-6. Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
+6. The binding document linked in the registry entry DOES NOT have to be open to read, use, implement.
+  - Question: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
   - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
   - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding. We should have the correct wording to motivate making everything freely available but not enforce it.
   - Koster: Requiring everything to be free to use would limit the amount of bindings. At the very least, the entry should contain a freely available summary document that explains the protocol and how WoT is used there, ideally with an example. The reader should know to what extent the binding goes (e.g. reading device data or device management).
-  - DISCUSS MAIN CALL
-    - Reviewer Access: MUST have access to the binding document and to the protocol or media type (what the binding specifies)
+  - Cris: Encourage open/free bindings but accept others as well and clearly indicate. It should be at least reviewable.
+7. Reviewer MUST have access to the binding document and to the protocol or media type (what the binding specifies)
     - Binding Availability and Licensing for the Public: No requirement (can be behind a paywall, have complicated licensing, etc.)
-    - Summary Document: What is the minimum we expect in such a summary document?
-7. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
+    - Sebastian: Even if the binding cannot be reviewed, it can be accepted. However, this should be indicated in the registry link. Similar to IANA media type registry.
+    - Ege, Cris, Jan: At least the reviewer should have access to the document(s).
+8. DISCUSS: Should we have a summary document: What is the minimum we expect in such a summary document?
+9. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
   - Ege: We are checking basic implementability, not conformance or certification. This requires implementation experience (test suite, virtual or physical plugfest, etc.)
   - Koster: We won't be able to do a "lab test" for certification (e.g., Matter). The assertions to satisfy will be generic to all bindings.
   - Cris: Testing the binding without a F2F event should be possible.
@@ -130,7 +135,7 @@ What does the binding have to contain to go into the table
       - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
       - DISCUSS: Should we enforce two separate entities?
         - We can require one Thing and Consumer but collect the number of independent implementations and show it in the registry table. More implementations would show more maturity of the binding.
-8. DISCUSS: What are the required sections/content? Is there an order that we require?
+10. DISCUSS: What are the required sections/content? Is there an order that we require?
   - Ege: Require an ordering of: Introduction, Binding Content (URL Format, Form Vocabulary Definition as Table, Default and possible mappings to operations as a Table/Template), Examples. The tables should be provided as a template that can be used across different tools (html, word etc.)
-9. DISCUSS: What are the required (machine-readable) documents provided on the side?
+11. DISCUSS: What are the required (machine-readable) documents provided on the side?
   - Ege: JSON Schema, Ontology File (RDF and HTML) not mandatory?, test report or documentation of implementation experience

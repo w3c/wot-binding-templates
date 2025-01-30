@@ -107,7 +107,7 @@ What does the binding have to contain to go into the table
 1. A binding that uses a protocol MUST map at least one WoT operation (`op` keyword value such as `readproperty`) to a protocol message and vice versa
 2. A binding that uses a serialization format via the `contentType` keyword MUST mention how the Data Schema terms should be used to describe the messages. This avoids submission of a binding like "XML Binding" that says "Use `contentType:application/xml` and nothing more. That alone would not be enough to serialize correct messages based on the data schema.
   - TODO: We will need additional mechanisms (including vocabulary terms) to ensure that it is possible to use other media types.
-3. Initial entry MUST be a correct document which complies with point 10 (document content). The reviewer MUST NOT check if the binding tries to map `readproperty` to a non-existent HTTP method. A succesful initial document triggers a "Call for Implementation".
+3. Initial entry MUST be a correct document which complies with point 10 (document content). The reviewer MUST NOT check whether the binding tries to map `readproperty` to a non-existent HTTP method. A successful initial document triggers a "Call for Implementation".
 4. The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 5. The WoT binding document DOES NOT have to follow the W3C copyright. The submitter is free to choose based on the process they or their organization follows.
 6. The binding document linked in the registry entry DOES NOT have to be open to read, use, implement.
@@ -132,15 +132,15 @@ What does the binding have to contain to go into the table
       - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
       - DISCUSS: Should we enforce two separate entities?
         - We can require one Thing and Consumer but collect the number of independent implementations and show it in the registry table. More implementations would show more maturity of the binding.
-10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary terms. The submitter SHOULD use the table template provided for the form vocabulary tables in the document.
+10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.
   - Introduction
   - Binding Content:
     - URL Format
-    - Form Vocabulary Definition as Table,
+    - Form Vocabulary Definition as Table
     - Default and possible mappings to operations as a Table
   - Examples
 Opinions:
-  - Cris: Fine maybe more sections make sense. To be decided later.
+  - Cris: Fine. Maybe more sections make sense. To be decided later.
   - Kaz: mention the example bindings as a way how the submitter can write a binding.
 11. DISCUSS: What are the required (machine-readable) documents provided on the side?
   - Ege: JSON Schema, Ontology File (RDF and HTML) not mandatory?, test report or documentation of implementation experience

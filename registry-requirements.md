@@ -1,4 +1,4 @@
-# Binding Registry Requirements
+# DRAFT - Binding Registry Requirements
 
 Until the editor's draft and the requirements here are ready, this document will contain the requirements for the binding registry.
 Please see <https://github.com/w3c/wot/blob/main/registry-analysis/Readme.md> to see the analysis of the registry mechanism.
@@ -130,6 +130,7 @@ What does the binding have to contain to go into the table
     - Ege, Koster: The submitters do the following: In an event (not necessarily a W3C event), each operation of the binding is executed automatically (testing the protocol driver and TD parsing), and an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain at least two separate entities where one Thing and one Consumer in total are present, e.g., entity A providing the Thing and entity B providing the Consumer application.
       - Ideally, the custodian, reviewers and submitters would collaborate in a Plugfest on the implementation and collect experience together.
       - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
+      - Daniel: The kind of testing that happened should be documented and can happen over time.
       - DISCUSS: Should we enforce two separate entities?
         - We can require one Thing and Consumer but collect the number of independent implementations and show it in the registry table. More implementations would show more maturity of the binding.
 10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.

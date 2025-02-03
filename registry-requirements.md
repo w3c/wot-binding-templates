@@ -111,15 +111,7 @@ What does the binding have to contain to go into the table
 4. The WoT binding CAN be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types CAN be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 5. The WoT binding document DOES NOT have to follow the W3C copyright. The submitter is free to choose based on the process they or their organization follows.
 6. The binding document linked in the registry entry DOES NOT have to be open to read, use, implement.
-  - Question: Should the binding document be publicly available and for free? What about the license, e.g., can I write a binding driver without any fees, etc?
-  - Dimensions: Reading the binding document, reading the protocol specification, implementing a device/Thing, implementing a Consumer application/driver, building a commercial product with the binding, making a statement about your product's supporting that binding.
-  - Ege: At least the custodian and the reviewers should be able to access it for free. This is either with a liaison so that the WG can read it, or the reviewer has access to the binding. We should have the correct wording to motivate making everything freely available but not enforce it.
-  - Koster: Requiring everything to be free to use would limit the amount of bindings. At the very least, the entry should contain a freely available summary document that explains the protocol and how WoT is used there, ideally with an example. The reader should know to what extent the binding goes (e.g. reading device data or device management).
-  - Cris: Encourage open/free bindings but accept others as well and clearly indicate. It should be at least reviewable.
-7. Reviewer MUST have access to the binding document and to the protocol or media type (what the binding specifies)
-    - Binding Availability and Licensing for the Public: No requirement (can be behind a paywall, have complicated licensing, etc.)
-    - Sebastian: Even if the binding cannot be reviewed, it can be accepted. However, this should be indicated in the registry link. Similar to IANA media type registry.
-    - Ege, Cris, Jan: At least the reviewer should have access to the document(s).
+7. Reviewer MUST have access to the binding document and to the protocol or media type specification (what the binding specifies)
 8. DISCUSS Async: Should we have a summary document that is hosted by the custodian: What is the minimum we expect in such a summary document?
 9. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
   - Ege: We are checking basic implementability, not conformance or certification. This requires implementation experience (test suite, virtual or physical plugfest, etc.)
@@ -146,3 +138,4 @@ Opinions:
 11. DISCUSS: What are the required (machine-readable) documents provided on the side?
   - Ege: JSON Schema, Ontology File (RDF and HTML) not mandatory?, test report or documentation of implementation experience
 12. DISCUSS: Where should discussions on implementation experience be collected?
+13. DISCUSS: How to handle overlaps between two bindings in the review process?

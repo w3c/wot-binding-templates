@@ -132,6 +132,7 @@ What does the binding have to contain to go into the table
     - Form Vocabulary Definition as Table
     - Default and possible mappings to operations as a Table
   - Examples
+
 Opinions:
   - Cris: Fine. Maybe more sections make sense. To be decided later.
   - Kaz: mention the example bindings as a way how the submitter can write a binding.

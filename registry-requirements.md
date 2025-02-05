@@ -59,11 +59,12 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, when writing a binding, it must be associated with one or more known TD specification versions.
 6. Status: One of Initial, Current, Superseded or Obsolete
 7. DISCUSS: Access and Usage Rights: This indicates whether the binding can be read, implemented and commercialized for free.
-  - To be discussed with PLH to use correct terminology
-8. Version: A string that denotes the version of the binding that is linked.
-  - DISCUSS: What is the versioning scheme we use
+  - See https://github.com/w3c/wot-binding-templates/issues/399
+8. DISCUSS: Version: A string that denotes the version of the binding that is linked.
+  - What is the versioning scheme we use. See https://github.com/w3c/wot-binding-templates/issues/400
 
 DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP binding. The initial thinking is to register them as separate entries and clarify what they use from the CoAP binding. A layered registry can be considered similar to language tags with `en` extending to `en-us` and `en-uk`, where the tags and entries are different but the association with `en` is expressed in the ID. In our case, this would be `coap-ocf` and `coap-lwm2m`. A higher-level binding SHOULD NOT override or conflict with a lower-level binding, and the custodian should verify this, e.g., `cov:method` in CoAP binding should not be turned into `cov:operation` in the higher-level binding. The namespace (prefix and its values) defined in a binding CANNOT be redefined in any other binding.
+- See https://github.com/w3c/wot-binding-templates/issues/401
 
 ### Lifecycle
 
@@ -86,11 +87,7 @@ DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP b
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates to a registry document's content. A new version of a binding is a resubmission and optional deprecation of the old one. However, new features need new implementations, so it is not a completely new registration.
   - DISCUSS: Do we allow two versions of a binding to stay in the registry?
-    - Ege: At least per TD version, it should be avoided, but multiple initial entries should be allowed in case of diverging opinions to collect implementation feedback. If there is a drastically new binding of an existing one, two can be kept, but this should not be encouraged. This will cause issues with prefixes, URI scheme-based detection, other form elements, etc.
-    - Cris: Additional fields in the form can indicate the binding version. Also, the prefix can be changed, e.g., `cov1.2` vs `cov1.3`
-      - Luca: Prefix versioning would require calling a new binding driver inside the implementation. Not using the prefix versioning implies JSON-LD processing, which not all implementations use.
-    - We should provide an example and also look at RFC 6838.
-      - Ege: I could not find anything relevant in there.
+    - See https://github.com/w3c/wot-binding-templates/issues/398
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
   - No entry is ever deleted. Deprecated entries are moved to another table or are clearly marked deprecated, colored differently, and moved to the bottom.
     
@@ -113,18 +110,9 @@ What does the binding have to contain to go into the table
 6. The binding document linked in the registry entry SHOULD be open to read, use, and implement, but that is not required for the document be added to the registry.
 7. Reviewer MUST have access to the binding document and to the protocol or media type specification (what the binding specifies)
 8. DISCUSS Async: Should we have a summary document that is hosted by the custodian: What is the minimum we expect in such a summary document?
+  - See https://github.com/w3c/wot-binding-templates/issues/402
 9. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
-  - Ege: We are checking basic implementability, not conformance or certification. This requires implementation experience (test suite, virtual or physical plugfest, etc.)
-  - Koster: We won't be able to do a "lab test" for certification (e.g., Matter). The assertions to satisfy will be generic to all bindings.
-  - Cris: Testing the binding without a F2F event should be possible.
-  - Jan: Should there be interop testing? How many Thing implementations from the submitter? How many Consumer implementations from the submitter? What kind of implementation from non-submitter?
-  - Implementation Experience:
-    - Ege, Koster: The submitters do the following: In an event (not necessarily a W3C event), each operation of the binding is executed automatically (testing the protocol driver and TD parsing), and an example logic execution (not necessarily code) is provided together with information of the testing environment (devices, Consumer application). This event CAN be VPN-based. It MUST contain at least two separate entities where one Thing and one Consumer in total are present, e.g., entity A providing the Thing and entity B providing the Consumer application.
-      - Ideally, the custodian, reviewers and submitters would collaborate in a Plugfest on the implementation and collect experience together.
-      - Cris: This testing event can continue to collect more inputs on the binding and we showcase these results in a dashboard/report dynamically.
-      - Daniel: The kind of testing that happened should be documented and can happen over time.
-      - DISCUSS: Should we enforce two separate entities?
-        - We can require one Thing and Consumer but collect the number of independent implementations and show it in the registry table. More implementations would show more maturity of the binding.
+  - See https://github.com/w3c/wot-binding-templates/issues/403
 10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.
   - Introduction
   - Binding Content:
@@ -137,6 +125,8 @@ Opinions:
   - Cris: Fine. Maybe more sections make sense. To be decided later.
   - Kaz: mention the example bindings as a way how the submitter can write a binding.
 11. DISCUSS: What are the required (machine-readable) documents provided on the side?
-  - Ege: JSON Schema, Ontology File (RDF and HTML) not mandatory?, test report or documentation of implementation experience
+  - See https://github.com/w3c/wot-binding-templates/issues/404
 12. DISCUSS: Where should discussions on implementation experience be collected?
+  - See https://github.com/w3c/wot-binding-templates/issues/403
 13. DISCUSS: How to handle overlaps between two bindings in the review process?
+  - See https://github.com/w3c/wot-binding-templates/issues/398 and https://github.com/w3c/wot-binding-templates/issues/401

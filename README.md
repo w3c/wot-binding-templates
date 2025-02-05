@@ -78,7 +78,6 @@ If you do not wish to use EditorConfig, please set the following settings in you
 
 - Indentation Style: space
 - Indentation Size: 4
-- End of Line: lf
 - Charset: utf-8
 
 ## Labeling Conventions

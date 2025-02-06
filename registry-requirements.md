@@ -108,6 +108,7 @@ What does the binding have to contain to go into the table
 4. The WoT binding MAY be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types MAY be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 5. The WoT binding document DOES NOT have to follow the W3C copyright. The submitter is free to choose based on the process they or their organization follows.
 6. The binding document linked in the registry entry SHOULD be open to read, use, and implement, but that is not required for the document be added to the registry.
+  - See also https://github.com/w3c/wot-binding-templates/issues/393
 7. Reviewer MUST have access to the binding document and to the protocol or media type specification (what the binding specifies)
 8. DISCUSS Async: Should we have a summary document that is hosted by the custodian: What is the minimum we expect in such a summary document?
   - See https://github.com/w3c/wot-binding-templates/issues/402

@@ -58,8 +58,7 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
   - A binding SHOULD correspond to specific TD specification version(s).
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, when writing a binding, it must be associated with one or more known TD specification versions.
 6. Status: One of Initial, Current, Superseded or Obsolete
-7. DISCUSS: Access and Usage Rights: This indicates whether the binding can be read, implemented and commercialized for free.
-  - See https://github.com/w3c/wot-binding-templates/issues/399
+7. Summary Document: Link to the summary document
 8. DISCUSS: Version: A string that denotes the version of the binding that is linked.
   - What is the versioning scheme we use. See https://github.com/w3c/wot-binding-templates/issues/400
 
@@ -110,8 +109,19 @@ What does the binding have to contain to go into the table
 6. The binding document linked in the registry entry SHOULD be open to read, use, and implement, but that is not required for the document be added to the registry.
   - See also https://github.com/w3c/wot-binding-templates/issues/393
 7. Reviewer MUST have access to the binding document and to the protocol or media type specification (what the binding specifies)
-8. DISCUSS Async: Should we have a summary document that is hosted by the custodian: What is the minimum we expect in such a summary document?
-  - See https://github.com/w3c/wot-binding-templates/issues/402
+8. The submitter MUST fill the GitHub form provided by the custodian for the custodian to generate the summary document, which is hosted by the custodian together with the registry. This form contains the following:
+  - Abstract - It MUST contain an abstract with the following information:
+    - What the binding's content is about, e.g. what this protocol is.
+    - Who should use it
+    - For which purpose should it be used, e.g. monitoring, process control. This SHOULD use terminology of the submitter, i.e. the custodian does not provide definitions for this.
+  -  Examples - It SHOULD contain examples (can be one) TDs or TMs demonstrating the use of the binding
+  -  It MUST contain Access/Usage restrictions about the binding, protocol, implementation etc. using the terminology and/or documents of the submitter. A non-exhaustive list of examples of restrictions: 
+    - Reading the binding document
+    - Reading the protocol specification
+    - Implementing a non-commercial device/Thing
+    - Implementing a non-commercial Consumer application/driver
+    - Conditions for commercial use: E.g. building a commercial product with the binding
+    - Making a statement about your product's supporting that binding
 9. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
   - See https://github.com/w3c/wot-binding-templates/issues/403
 10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.

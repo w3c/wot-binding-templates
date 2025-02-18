@@ -71,7 +71,7 @@ DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP b
 - Technical submission mechanism. How does a binding get submitted?
    - We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue. The submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
    - A purpose built GitHub project for tracking submissions is used. When a submission comes in form an issue, it is automatically added to column "Binding Submitted". When the custodian and reviewers start looking at it, it goes to the "Under Review" column. If the review is in favour, the custodian makes the PR to add it to the registry and the issue goes to column "Accepted". If the review is not in favour, it goes to the column "Rejected". All these changes are reflected as comments in the original issue.
-- Technical Lifecycle Change Mechanism: 
+   - In case of potential conflict with another entry, the reviewer MUST mark the new submission accordingly. As two bindings that do the same are not allowed, either the old one MUST be deprecated or the new one MUST be rejected. See also point 13 under "Requirements on the Submitted Document".
 - Status values: Initial -> Current -> Superseded or Obsolete
   - Definitions:
     - Initial: Document is correctly written but no implementation experience has been necessarily documented.
@@ -86,8 +86,6 @@ DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP b
 - What are the requirements for transitioning from one value to another? See the "Requirements on the Submitted Document" section as well.
 - Versioning of registry entries (see https://github.com/w3c/wot/tree/main/registry-analysis#versioning)
   - Ege: We do not allow updates to a registry document's content. A new version of a binding is a resubmission and optional deprecation of the old one. However, new features need new implementations, so it is not a completely new registration.
-  - DISCUSS: Do we allow two versions of a binding to stay in the registry?
-    - See https://github.com/w3c/wot-binding-templates/issues/398
 - Deletion and deprecation (see https://github.com/w3c/wot/tree/main/registry-analysis#deletion-and-deprecation-of-registry-entries)
   - No entry is ever deleted. Deprecated entries are moved to another table or are clearly marked deprecated, colored differently, and moved to the bottom.
     
@@ -125,5 +123,5 @@ What does the binding have to contain to go into the table
   - See https://github.com/w3c/wot-binding-templates/issues/404
 12. DISCUSS: Where should discussions on implementation experience be collected?
   - See https://github.com/w3c/wot-binding-templates/issues/403
-13. DISCUSS: How to handle overlaps between two bindings in the review process?
-  - See https://github.com/w3c/wot-binding-templates/issues/398 and https://github.com/w3c/wot-binding-templates/issues/401
+13. The binding entry SHOULD NOT conflict with other entries in the registry by redefining the same concepts such as redefining the URI Scheme, the vocabulary terms or the default assignments. If the previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
+

@@ -109,7 +109,7 @@ What does the binding have to contain to go into the table
 6. The binding document linked in the registry entry SHOULD be open to read, use, and implement, but that is not required for the document be added to the registry.
   - See also https://github.com/w3c/wot-binding-templates/issues/393
 7. Reviewer MUST have access to the binding document and to the protocol or media type specification (what the binding specifies)
-8. The submitter MUST fill the GitHub form provided by the custodian for the custodian to generate the summary document, which is hosted by the custodian together with the registry. This form contains the following:
+8. The submitter MUST fill the GitHub form provided by the custodian to generate the summary document, which is hosted by the custodian together with the registry. This form contains the following:
   - Abstract - It MUST contain an abstract with the following information:
     - What the binding's content is about, e.g. what this protocol is.
     - Who should use it

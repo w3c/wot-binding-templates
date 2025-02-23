@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "anyOf": [
         {
             "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
@@ -10,9 +10,9 @@
             "type": "object",
             "properties": {
                 "bindingPrefix:bindingVocabularyItem1": {"type": "string"},
-                "bindingPrefix:bindingVocabularyItem2": {"type": "number"},
-                "required": ["bindingPrefix:bindingVocabularyItem1"]
-            }
+                "bindingPrefix:bindingVocabularyItem2": {"type": "number"}
+            },
+            "required": ["bindingPrefix:bindingVocabularyItem1"]
         },
         "affordance": {
             "type": "object",

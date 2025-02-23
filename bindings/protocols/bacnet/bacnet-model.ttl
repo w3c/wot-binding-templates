@@ -10,7 +10,7 @@
 @prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
 @prefix td: <https://www.w3.org/2019/wot/td#> .
 @prefix jsonschema: <https://www.w3.org/2019/wot/json-schema#> .
-@prefix bacnet: <http://www.w3.org/2022/bacnet#> .
+@prefix bacv: <http://www.w3.org/2022/bacnet#> .
 
 @base <http://www.w3.org/2022/bacnet> .
 
@@ -27,8 +27,8 @@
                                 # dcterms:rights "TODO" ;
                                 dcterms:title "BACnet Model" ;
                                 dcterms:source "http://www.w3.org/2022/bacnet" ;
-                                vann:preferredNamespacePrefix "bacnet" ;
-                                vann:preferredNamespaceUri bacnet: ;
+                                vann:preferredNamespacePrefix "bacv" ;
+                                vann:preferredNamespaceUri bacv: ;
                                 vaem:hasOwner "Dogan Fennibay" ;
                                 owl:versionInfo "0.1.1" ;
                                 rdfs:comment """
@@ -51,27 +51,35 @@ Additional parameters can be specified via URI variable syntax, e.g. ?commandPri
 #    Communication properties
 #################################################################
 
-bacnet:usesService rdf:type owl:DatatypeProperty ;
+bacv:usesService rdf:type owl:DatatypeProperty ;
                    rdfs:domain hctl:Form ;
-                   rdfs:range [owl:oneOf ("ReadProperty"^^xsd:string "WriteProperty"^^xsd:string "SubscribeCOV"^^xsd:string)] ;
+                   rdfs:range [owl:oneOf (
+                        "ReadProperty"^^xsd:string
+                        "WriteProperty"^^xsd:string
+                        "SubscribeCOV"^^xsd:string
+                        "GetEventInfo"^^xsd:string
+                        "AcknowledgeAlarm"^^xsd:string
+                        "AddListElement"^^xsd:string
+                        "RemoveListElement"^^xsd:string
+                    )] ;
                    rdfs:comment """
 Default BACnet service by td:OperationType:
 - td:readProperty -> ReadProperty
 - td:writeProperty -> WriteProperty
 - td:observeProperty -> SubscribeCOV, subscribe to object if no property ID is present in target, otherwise subscribe to property
 - td:unobserveProperty -> SubscribeCOV (will do an unsubscribe instead)
-
+- td:subscribeEvent -> AddListElement (will always be to the Recipient-List property of the Notification-Class object)
+- td:unsubscribeEvent -> RemoveListElement (will always be to the Recipient-List property of the Notification-Class object)
 TODO: Can we specify the defaults in a machine-readable, RDF-standard way?
 
-Not mapped yet:
+No defaults are specified for the following; TD must specify the service explicitly for them:
 - td:invokeAction, td:queryAction, td:cancelAction
-- td:subscribeEvent, td:unsubscribeEvent
 - td:readAllProperties, td:writeAllProperties, td:readMultipleProperties, td:writeMultipleProperties, td:observeAllProperties, td:unobserveAllProperties
 - td:queryAllActions
 - td:subscribeAllEvents, td:unsubscribeAllEvents
 """@en .
 
-bacnet:CovIncrement rdf:type owl:Class ;
+bacv:CovIncrement rdf:type owl:Class ;
                     rdfs:subClassOf jsonschema:NumberSchema ;
                     rdfs:subClassOf [
                         a owl:Restriction ;
@@ -81,7 +89,7 @@ bacnet:CovIncrement rdf:type owl:Class ;
                     rdfs:comment "Specifies the minimum change for numeric values in that will cause a COV notification to be issued to subscribers. Only applies when SubscribeCOVProperty is used. If missing for the present-value, the default value on the object will be used instead."@en ;
                     rdfs:seeAlso "ASHRAE 135-2020 BACnet 13.1 Change of Value Reporting" .
 
-bacnet:CommandPriority rdf:type owl:Class ;
+bacv:CommandPriority rdf:type owl:Class ;
                        rdfs:subClassOf jsonschema:IntegerSchema ;
                        rdfs:subClassOf [
                            a owl:Restriction ;
@@ -105,95 +113,95 @@ bacnet:CommandPriority rdf:type owl:Class ;
 # the type information has to be amended in the protocol binding.
 #################################################################
 
-bacnet:hasDataType rdf:type owl:ObjectProperty ;
-                   rdfs:domain [ owl:unionOf (hctl:Form bacnet:NamedMember) ] ;
-                   rdfs:range bacnet:DataType .
+bacv:hasDataType rdf:type owl:ObjectProperty ;
+                   rdfs:domain [ owl:unionOf (hctl:Form bacv:NamedMember) ] ;
+                   rdfs:range bacv:DataType .
 
-bacnet:DataType rdf:type owl:Class ;
+bacv:DataType rdf:type owl:Class ;
                 rdfs:comment "Base for all BACnet data types" .
 
-bacnet:SequenceOf rdfs:subClassOf bacnet:DataType .
+bacv:SequenceOf rdfs:subClassOf bacv:DataType .
 
-bacnet:Sequence rdfs:subClassOf bacnet:DataType .
+bacv:Sequence rdfs:subClassOf bacv:DataType .
 
-bacnet:List rdfs:subClassOf bacnet:DataType .
+bacv:List rdfs:subClassOf bacv:DataType .
 
-bacnet:Choice rdfs:subClassOf bacnet:DataType .
+bacv:Choice rdfs:subClassOf bacv:DataType .
 
-bacnet:Date rdfs:subClassOf bacnet:DataType .
+bacv:Date rdfs:subClassOf bacv:DataType .
 
-bacnet:Time rdfs:subClassOf bacnet:DataType .
+bacv:Time rdfs:subClassOf bacv:DataType .
 
-bacnet:WeekNDay rdfs:subClassOf bacnet:DataType .
+bacv:WeekNDay rdfs:subClassOf bacv:DataType .
 
-bacnet:Unsigned rdfs:subClassOf bacnet:DataType .
+bacv:Unsigned rdfs:subClassOf bacv:DataType .
 
-bacnet:Signed rdfs:subClassOf bacnet:DataType .
+bacv:Signed rdfs:subClassOf bacv:DataType .
 
-bacnet:Real rdfs:subClassOf bacnet:DataType .
+bacv:Real rdfs:subClassOf bacv:DataType .
 
-bacnet:Double rdfs:subClassOf bacnet:DataType .
+bacv:Double rdfs:subClassOf bacv:DataType .
 
-bacnet:Boolean rdfs:subClassOf bacnet:DataType .
+bacv:Boolean rdfs:subClassOf bacv:DataType .
 
-bacnet:Enumerated rdfs:subClassOf bacnet:DataType .
+bacv:Enumerated rdfs:subClassOf bacv:DataType .
 
-bacnet:String rdfs:subClassOf bacnet:DataType .
+bacv:String rdfs:subClassOf bacv:DataType .
 
-bacnet:OctetString rdfs:subClassOf bacnet:DataType .
+bacv:OctetString rdfs:subClassOf bacv:DataType .
 
-bacnet:BitString rdfs:subClassOf bacnet:DataType .
+bacv:BitString rdfs:subClassOf bacv:DataType .
 
-bacnet:Any rdfs:subClassOf bacnet:DataType .
+bacv:Any rdfs:subClassOf bacv:DataType .
 
-bacnet:Null rdfs:subClassOf bacnet:DataType .
+bacv:Null rdfs:subClassOf bacv:DataType .
 
-bacnet:ObjectIdentifier rdfs:subClassOf bacnet:DataType .
+bacv:ObjectIdentifier rdfs:subClassOf bacv:DataType .
 
-bacnet:isIso8601 rdf:type owl:DatatypeProperty ;
-                 rdfs:domain bacnet:Sequence ;
+bacv:isIso8601 rdf:type owl:DatatypeProperty ;
+                 rdfs:domain bacv:Sequence ;
                  rdfs:range xsd:boolean ;
                  rdfs:comment "This field indicates that the Sequence has a date and a time field, and should be collectively represented in the ISO 8601 (aka. RFC 3339, section 5.6) format"@en .
 
-bacnet:hasBinaryRepresentation rdf:type owl:DatatypeProperty ;
-                               rdfs:domain bacnet:OctetString ;
+bacv:hasBinaryRepresentation rdf:type owl:DatatypeProperty ;
+                               rdfs:domain bacv:OctetString ;
                                rdfs:range [owl:oneOf ("hex"^^xsd:string "dotted-decimal"^^xsd:string "base64"^^xsd:string)] .
 
-bacnet:hasMember rdf:type owl:ObjectProperty ;
-                 rdfs:domain [owl:unionOf (bacnet:SequenceOf bacnet:List ) ];
-                 rdfs:range bacnet:DataType .
+bacv:hasMember rdf:type owl:ObjectProperty ;
+                 rdfs:domain [owl:unionOf (bacv:SequenceOf bacv:List ) ];
+                 rdfs:range bacv:DataType .
 
-bacnet:hasNamedMember rdf:type owl:ObjectProperty ;
-                 rdfs:domain [owl:unionOf (bacnet:Sequence bacnet:Choice ) ];
-                 rdfs:range bacnet:NamedMember .
+bacv:hasNamedMember rdf:type owl:ObjectProperty ;
+                 rdfs:domain [owl:unionOf (bacv:Sequence bacv:Choice ) ];
+                 rdfs:range bacv:NamedMember .
 
-bacnet:NamedMember rdf:type owl:Class .
+bacv:NamedMember rdf:type owl:Class .
 
-bacnet:hasFieldName rdf:type owl:DatatypeProperty ;
-                    rdfs:domain bacnet:NamedMember ;
+bacv:hasFieldName rdf:type owl:DatatypeProperty ;
+                    rdfs:domain bacv:NamedMember ;
                     rdfs:range xsd:string .
 
-bacnet:hasContextTags rdf:type owl:DatatypeProperty ;
-                      rdfs:domain [owl:unionOf (bacnet:Sequence bacnet:Choice) ];
-                      rdfs:range xsd:boolean .
+bacv:hasContextTag rdf:type owl:DatatypeProperty ;
+                     rdfs:domain bacv:NamedMember ;
+                     rdfs:range xsd:integer .
 
-bacnet:ValueMap rdf:type owl:Class .
+bacv:ValueMap rdf:type owl:Class .
 
-bacnet:ValueMapEntry rdf:type owl:Class .
+bacv:ValueMapEntry rdf:type owl:Class .
 
-bacnet:hasMapEntry rdf:type owl:ObjectProperty ;
-                   rdfs:domain bacnet:ValueMap ;
-                   rdfs:range bacnet:ValueMapEntry .
+bacv:hasMapEntry rdf:type owl:ObjectProperty ;
+                   rdfs:domain bacv:ValueMap ;
+                   rdfs:range bacv:ValueMapEntry .
 
-bacnet:hasLogicalVal rdf:type owl:DatatypeProperty ;
-                     rdfs:domain bacnet:ValueMapEntry ;
+bacv:hasLogicalVal rdf:type owl:DatatypeProperty ;
+                     rdfs:domain bacv:ValueMapEntry ;
                      rdfs:range [owl:unionOf (xsd:integer xsd:string xsd:boolean)] .
 
-bacnet:hasProtocolVal rdf:type rdf:type owl:DatatypeProperty ;
-                      rdfs:domain bacnet:ValueMapEntry ;
+bacv:hasProtocolVal rdf:type owl:DatatypeProperty ;
+                      rdfs:domain bacv:ValueMapEntry ;
                       rdfs:range xsd:integer .
 
 
-bacnet:hasValueMap rdf:type owl:ObjectProperty ;
-                   rdfs:domain [owl:unionOf (bacnet:Boolean bacnet:Enumerated bacnet:Unsigned bacnet:BitString)] ;
-                   rdfs:range bacnet:ValueMap .
+bacv:hasValueMap rdf:type owl:ObjectProperty ;
+                   rdfs:domain [owl:unionOf (bacv:Boolean bacv:Enumerated bacv:Unsigned bacv:BitString)] ;
+                   rdfs:range bacv:ValueMap .

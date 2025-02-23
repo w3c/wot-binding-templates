@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
+    <meta name='color-scheme' content='light dark'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
     <script class='remove'>
         var respecConfig = {
@@ -122,13 +123,13 @@
         moment.
         The following shows the typical structure of an URL of the Modbus TCP protocol:
         <pre>
-            modbus+tcp://{address}:{port}/{unitID}/{address}?quantity={?quantity}
+            modbus+tcp://{deviceAddress}:{port}/{unitID}/{address}?quantity={?quantity}
         </pre>
 
         <p>
             Where:
             <ul>
-                <li><code>{address}</code> is the IP address of the Modbus device</li>
+                <li><code>{deviceAddress}</code> is the IP address of the Modbus device</li>
                 <li><code>{port}</code> is the port of the Modbus device</li>
                 <li><code>{unitID}</code> is the unit ID of the Modbus device. See <a href="#vocabulary">vocabulary</a></li>
                 <li><code>{address}</code> is the address of the register/coil referenced in this URL. See <a href="#vocabulary">vocabulary</a></li>
@@ -158,8 +159,8 @@
                     
         
         <tr>
-            <td><code>modv:address</code></td>
-            <td>Specifies the starting address of the Modbus operations</td>
+            <td><code>modv:unitID</code></td>
+            <td>The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons it MUST be included</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -168,8 +169,8 @@
 
         
         <tr>
-            <td><code>modv:unitID</code></td>
-            <td>The Unit ID is usually not needed for ModbusTCP, since the IP-address works as unique identifier, but for compatibility reasons still often included</td>
+            <td><code>modv:address</code></td>
+            <td>Specifies the starting address of the Modbus operations</td>
             <td>required</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
 
@@ -203,24 +204,6 @@
                     <!-- Generate forms terms from the ontology-->
                     
         <tr>
-            <td><code>modv:mostSignificantByte</code></td>
-            <td>When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-
-        <tr>
-        
-
-        <tr>
-            <td><code>modv:mostSignificantWord</code></td>
-            <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)</td>
-            <td>optional</td>
-            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
-
-        <tr>
-        
-
-        <tr>
             <td><code>modv:pollingTime</code></td>
             <td>Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed polling rate, however specific implementations might introduce such limits. Defined as integer of milliseconds.</td>
             <td>optional</td>
@@ -234,6 +217,24 @@
             <td>Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a reply from the device.</td>
             <td>optional</td>
             <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modv:mostSignificantByte</code></td>
+            <td>When <code>true</code>, it describes that the byte order of the data in the Modbus message is the most significant byte first (i.e., Big-Endian). When <code>false</code>, it describes the least significant byte first (i.e., Little-Endian).</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+        <tr>
+        
+
+        <tr>
+            <td><code>modv:mostSignificantWord</code></td>
+            <td>When <code>true</code>, it describes that the word order of the data in the Modbus message is the most significant word first (i.e., no word swapping). When <code>false</code>, it describes the least significant word first (i.e. word swapping)</td>
+            <td>optional</td>
+            <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
 
         <tr>
         
@@ -466,22 +467,22 @@
         <li><code>xsd:long</code></li>
         
 
-        <li><code>xsd:unsignedbyte</code></li>
+        <li><code>xsd:unsignedByte</code></li>
         
 
-        <li><code>xsd:unsignedshort</code></li>
+        <li><code>xsd:unsignedShort</code></li>
         
 
-        <li><code>xsd:unsignedint</code></li>
+        <li><code>xsd:unsignedInt</code></li>
         
 
-        <li><code>xsd:unsignedlong</code></li>
+        <li><code>xsd:unsignedLong</code></li>
         
 
         <li><code>xsd:double</code></li>
         
 
-        <li><code>xsd:hexbinary</code></li>
+        <li><code>xsd:hexBinary</code></li>
         
             </ul>
         </section>
@@ -507,18 +508,6 @@
                     <!-- Generate mappings from the mapping ontology -->
                     
         <tr>
-            <td><code>writeallproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-        <tr>
-        
-
-        <tr>
-            <td><code>writemultipleproperties</code></td>
-            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-        <tr>
-        
-
-        <tr>
             <td><code>writeproperty</code></td>
             <td><code>"modv:function": "writeSingleCoil"</code></td>
         <tr>
@@ -539,6 +528,18 @@
         <tr>
             <td><code>readmultipleproperties</code></td>
             <td><code>"modv:function": "readHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writeallproperties</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
+        <tr>
+        
+
+        <tr>
+            <td><code>writemultipleproperties</code></td>
+            <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
         <tr>
         
                 </tbody>
@@ -652,8 +653,7 @@
                 "op": [
                     "readproperty"
                 ],
-                "modv:function": "readCoil",
-                "modv:address": 1
+                "modv:function": "readCoil"
             }
         </pre>
         To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
@@ -665,7 +665,7 @@
                             "readproperty",
                             "writeproperty"
                         ],
-                        "modv:entity": "Coil",
+                        "modv:entity": "Coil"
                     }
         </pre>
         A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
@@ -675,14 +675,14 @@
                                 "op": [
                                     "readproperty",
                                 ],
-                                "modv:function": "readCoil",
+                                "modv:function": "readCoil"
                             },
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
                                     "writeproperty",
                                 ],
-                                "modv:function": "writeCoil",
+                                "modv:function": "writeCoil"
                             }]
         </pre>
         Reducing effectively the verbosity of a TD. 
@@ -743,7 +743,7 @@
                     "observeproperty"
                 ],
                 "modv:entity": "Coil",
-                "modv:pollingTime": 1000,
+                "modv:pollingTime": 1000
             }
         </pre>
         Finally, [[[#full-td]]] shows a complete device described using Modbus ontology.

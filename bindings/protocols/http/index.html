@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
+    <meta name='color-scheme' content='light dark'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
     <script class='remove'>
         var respecConfig = {
@@ -54,6 +55,88 @@
             ]
         };
     </script>
+    <style>
+        a[href].internalDFN {
+            color: inherit;
+            border-bottom: 1px solid #99c;
+            text-decoration: none;
+        }
+    
+        .example {
+            border-color: #ea1252;
+            background: #fef11e;
+            counter-increment: example;
+            overflow: auto;
+            clear: both;
+        }
+    
+        .with-default .with-default-control {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+    
+        .with-default pre.selected {
+            margin-top: 0;
+            margin-bottom: 1em;
+            height: auto;
+        }
+    
+        .with-default pre {
+            margin-top: 0;
+            margin-bottom: 0;
+            height: 0;
+        }
+    
+        /* Print parts that might be hidden */
+        @media print {
+            .with-default pre {
+                margin-top: 0;
+                margin-bottom: 1em;
+                height: auto;
+            }
+        }
+    </style>
+    <script>
+        function defaultCheckboxListener() {
+            document.querySelectorAll(".with-default").forEach((n) => {
+                let wo = n.querySelector("pre:nth-of-type(1)");
+                let w = n.querySelector("pre:nth-of-type(2)");
+                let cbox = n.querySelector('.with-default-control input[type="checkbox"]');
+
+                w.classList.add("selected");
+                cbox.checked = true;
+
+                cbox.addEventListener("change", (e) => {
+                    if (e.target.checked) {
+                        // with default
+                        w.classList.add("selected");
+                        wo.classList.remove("selected");
+                    } else {
+                        // without
+                        w.classList.remove("selected");
+                        wo.classList.add("selected");
+                    }
+                });
+            });
+        }
+
+        if (document.respec) {
+            // ReSpec mode
+            document.addEventListener("DOMContentLoaded", () => {
+                // let ReSpec do syntax highlighting first
+                document.respec.ready.then(() => {
+                    defaultCheckboxListener();
+                });
+            });
+        } else {
+            // W3C specs on the W3C server don't use ReSpec
+            document.addEventListener("readystatechange", () => {
+                if (document.readyState === "complete") {
+                    defaultCheckboxListener();
+                }
+            });
+        }
+    </script>
     <title>Web of Things (WoT) HTTP Binding Template</title>
 </head>
 
@@ -73,26 +156,58 @@
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
     </section>
+
     <section id='introduction'>
         <h2>Introduction</h2>
         <p class="ednote">the following is a draft introduction</p>
         <p>
             This document describes how to map the HTTP protocol to the W3C Web of Things.
             At the current state of the WoT specifications, this document mirrors the vocabulary terms and defaults that 
-            are defined in the [[WOT-THING-DESCRIPTION]] (see <a href="https://www.w3.org/TR/wot-thing-description11/#http-binding-assertions">Section on Protocol Binding based on HTTP</a>).
+            are defined in the [[WOT-THING-DESCRIPTION11]] (see <a href="https://www.w3.org/TR/wot-thing-description11/#http-binding-assertions">Section on Protocol Binding based on HTTP</a>).
         </p>
     </section>
+
     <section id='sotd'>
         <p>
             <em>This document is a work in progress</em>
         </p>
     </section>
-        
+
+    <section id="conformance">
+    </section>
+
+    <section id="terminology" class="informative">
+        <h2>Terminology</h2>
+        <p>
+            The fundamental WoT terminology such as <dfn class="lint-ignore">Thing</dfn>, <dfn class="lint-ignore">Consumer</dfn>, <dfn class="lint-ignore">Producer</dfn>,
+            <dfn class="lint-ignore">Thing Description</dfn> (<dfn class="lint-ignore">TD</dfn>), <dfn class="lint-ignore">Partial TD</dfn>,
+            <dfn class="lint-ignore">Thing Model</dfn> (<dfn class="lint-ignore">TM</dfn>), <dfn class="lint-ignore">Interaction Model</dfn>,
+            <dfn class="lint-ignore">Interaction Affordance</dfn>, <dfn class="lint-ignore">IoT Platform</dfn>, <dfn class="lint-ignore">Property</dfn>,
+            <dfn class="lint-ignore">Action</dfn>, <dfn class="lint-ignore">Event</dfn>, <dfn class="lint-ignore">Data Schema</dfn>,
+            <dfn class="lint-ignore">Content Type</dfn>, <dfn class="lint-ignore">Protocol Binding</dfn>, <dfn class="lint-ignore">Servient</dfn>,
+            <dfn class="lint-ignore">Vocabulary</dfn>, <dfn class="lint-ignore">Term</dfn>, <dfn id="dfn-vocab-term" class="lint-ignore">Vocabulary Term</dfn>,
+            <dfn class="lint-ignore">WoT Interface</dfn>, and <dfn class="lint-ignore">WoT Runtime</dfn>
+            are defined in <a href="https://www.w3.org/TR/wot-architecture/#terminology">Section 3</a>
+            of the WoT Architecture specification [[wot-architecture11]].
+        </p>
+    </section>
+    
     <section>
 
       <h3>HTTP Vocabulary</h3>
+
       <section>
       <h4>HTTP Vocabulary Terms</h4>
+
+    <p>
+        Per default, the [[WOT-THING-DESCRIPTION11]] supports the <a>Protocol Binding</a> based on HTTP by including the
+        HTTP
+        RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This vocabulary can
+        be directly used within TD instances by the usage of the prefix <code>htv</code>, which points to
+        <code>http://www.w3.org/2011/http#</code>.
+        Here, the relevant vocabulary terms are provided for convenience.
+    </p>
+
       <table class="def">
         <thead>
           <tr>
@@ -143,68 +258,236 @@
     </section>
     <section>
       <h4>HTTP Default Vocabulary Terms</h4>
-      <table class="def">
+
+
+    <p>
+        To interact with a <a>Thing</a> that implements the <a>Protocol Binding</a> based on HTTP, a <a>Consumer</a>
+        needs to know what HTTP method to use when performing a WoT operation. In the general case, a Thing Description can
+        explicitly include a term indicating the method, i.e.,
+        <code>htv:methodName</code>. For the sake of conciseness, the <a>Protocol Binding</a> based on HTTP defines
+        Default Values for the operation types listed below, which also aims at convergence of the methods
+        expected by <a>Things</a> (e.g., GET to read, PUT to write).
+    </p>
+    
+    <!-- TODO: This was an assertion in the TD spec -->
+    <p class="note">
+        When no method is indicated in a form representing an <a>Protocol Binding</a> based on HTTP, a
+        Default Value MUST be assumed as shown in the following table.
+    </p>
+
+    <table class="def">
         <thead>
-          <tr>
-            <th><code>op</code> value</th>
-            <th>Default Binding</th>
-          </tr>
+            <tr>
+                <th><code>op</code> value</th>
+                <th>Default Binding</th>
+            </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><code>readproperty</code></td>
-            <td><code>"htv:methodName": "GET"</code></td>
-          </tr>
-          <tr>
-            <td><code>writeproperty</code></td>
-            <td><code>"htv:methodName": "PUT"</code></td>
-          </tr>
-          <!-- <tr>
-            <td><code>observeproperty</code></td>
-            <td> <code>
-              "htv:methodName": "GET", <br>
-              "subprotocol":"longpoll"
-            </code>
-            </td>
-          </tr>
-          <tr>
-            <td><code>unobserveproperty</code></td>
-            <td> Cancel pending HTTP GET request</td>
-          </tr> -->
-          <tr>
-            <td><code>invokeaction</code></td>
-            <td> <code>"htv:methodName": "POST" </code></td>
-          </tr>
-          <!-- <tr>
-            <td><code>subscribeevent</code></td>
-            <td> <code>
-                "htv:methodName": "GET", <br>
-                "subprotocol":"longpoll"
-              </code>
-          </tr>
-          <tr>
-            <td><code>unsubscribeevent</code></td>
-            <td> Cancel pending HTTP GET request</td>
-          </tr>
-        -->
-          <tr>
-            <td><code>readallproperties</code></td>
-            <td> <code>"htv:methodName": "GET"</code></td>
-          </tr>
-          <tr>
-            <td><code>writeallproperties</code></td>
-            <td> <code>"htv:methodName": "PUT"</code></td>
-          </tr>
-          <tr>
-            <td><code>readmultipleproperties</code></td>
-            <td> <code>"htv:methodName": "GET"</code></td>
-          </tr>
-          <tr>
-            <td><code>writemultipleproperties</code></td>
-            <td> <code>"htv:methodName": "PUT"</code></td>
-          </tr>
+            <tr>
+                <td><code>readproperty</code></td>
+                <td><code>"htv:methodName": "GET"</code></td>
+            </tr>
+            <tr>
+                <td><code>writeproperty</code></td>
+                <td><code>"htv:methodName": "PUT"</code></td>
+            </tr>
+            <tr>
+                <td><code>invokeaction</code></td>
+                <td> <code>"htv:methodName": "POST" </code></td>
+            </tr>
+            <tr>
+                <td><code>readallproperties</code></td>
+                <td> <code>"htv:methodName": "GET"</code></td>
+            </tr>
+            <tr>
+                <td><code>writeallproperties</code></td>
+                <td> <code>"htv:methodName": "PUT"</code></td>
+            </tr>
+            <tr>
+                <td><code>readmultipleproperties</code></td>
+                <td> <code>"htv:methodName": "GET"</code></td>
+            </tr>
+            <tr>
+                <td><code>writemultipleproperties</code></td>
+                <td> <code>"htv:methodName": "PUT"</code></td>
+            </tr>
         </tbody>
-      </table>
+    </table>
+</p>
+
+
+<p>
+    The following Thing Description shows the insertion of default values for the values of <code>htv:methodName</code> 
+    based on the table above:
+</p>
+
+<aside class="example with-default">
+    <div class="with-default-control">
+        <input type="checkbox" />
+        <span><i>with default values for HTTP Protocol Binding</i></span>
+    </div>
+    <pre class="json">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:3a559b69-cbec-4e7b-b543-bd8e6e41fd8b",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "op": "invokeaction",
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    }
+}
+    </pre>
+    <pre class="json">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "href": "https://mylamp.example.com/status",
+                    "htv:methodName": "GET"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "op": "invokeaction",
+                    "href": "https://mylamp.example.com/toggle",
+                    "htv:methodName": "POST"
+                }
+            ]
+        }
+    }
+}</pre>
+</aside>
+
+<p>
+    In the case of a <code>form</code> with multiple <code>op</code> values,
+    <code>htv:methodName</code> SHOULD NOT be used. A <a>Consumer</a> will extend the multiple
+    <code>op</code> values to separate <code>forms</code> entries and associates a single operation with the
+    default assumption. The address information (e.g. <code>href</code>) and other metadata are taken over in
+    the extended version. If the form does not use the default values, multiple forms SHOULD be created with 
+    an <code>htv:methodName</code> associated to a single <code>op</code> value.
+</p>
+
+<p>
+    The following TD example shows how a single form can be extended to two forms to explicitly include 
+    the <code>htv:methodName</code> values.
+</p>
+
+<aside class="example with-default">
+    <div class="with-default-control">
+        <input type="checkbox" />
+        <span><i>extended <code>forms</code> in case of multiple values in <code>op</code></i></span>
+    </div>
+    <pre class="json">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:43e2081d-3fd9-41bf-803d-baaefb79c70f",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [
+                {
+                    "op" : ["readproperty", "writeproperty"],
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    }
+}
+    </pre>
+    <pre class="json">
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "href": "https://mylamp.example.com/status",
+                    "htv:methodName": "GET"
+                },
+                {
+                    "op": "writeproperty",
+                    "href": "https://mylamp.example.com/status",
+                    "htv:methodName": "PUT"
+                }
+            ]
+        }
+    }
+}
+    </pre>
+</aside>
+
+
+      
     </section>
   </section>
 

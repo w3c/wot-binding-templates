@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <meta name="color-scheme" content="light dark" />
     <title>Web of Things (WoT) Binding Templates</title>
     <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
     <script class="remove">
         var respecConfig = {
-            specStatus: "ED",
-            processVersion: 2017,
+            specStatus: "NOTE",
+            publishDate: "2024-05-28",
+            processVersion: 2023,
             shortName: "wot-binding-templates",
             copyrightStart: 2017,
             group: "wg/wot",
@@ -20,7 +20,7 @@
             issueBase: "https://www.github.com/w3c/wot-binding-templates/issues",
             editors: [{
                 name: "Michael Koster",
-                w3cid: "110658",
+                w3cid: "57485",
                 company: "Invited Expert",
                 companyURL: "https://github.com/mjkoster/"
             },
@@ -460,8 +460,10 @@
                     since different protocols can have different subprotocols.
                     Correspondingly, subprotocols are linked to the protocol they are extending and should be understood together with 
                     the protocol indicated in <code>href</code> of the forms (or the <code>base</code>).
-                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used, for example.
-                    Subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
+                    For WebSockets, the IANA-registered Websocket Subprotocols [[iana-web-socket-registry]] may be used.
+                    For CoAP, <code>"subprotocol":"cov:observe"</code> can be used to describe asynchronous observation
+                    operations as defined by [[RFC6741]].
+                    The subprotocols can be defined and explained as a part of a protocol or platform binding subspecification.
                 </p>
             </section>
 
@@ -1283,7 +1285,8 @@
                             "cov:method": "GET",
                             "href": "coap://example.com/sensor/gasconcentration",
                             "contentType": "application/json",
-                            "op": ["subscribeevent", "unsubscribeevent"],
+                            "op": "subscribeevent",
+                            "subprotocol": "cov:observe"
                         }
                     ]
                 }

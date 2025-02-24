@@ -68,14 +68,17 @@
                 "profv:mostSignificantByte" : { "type" : "boolean"},
                 "profv:mostSignificantWord" : { "type" : "boolean"},
                 "profv:timeout" : { "type": "number", "minimum": 0},
-                "profv:byte" : {"type" : "integer", "minimum" : 1},
-                "profv:bitMask" : {"type" : "integer", "minimum" : 0},
+                "profv:byteOffset" : {"type" : "integer", "minimum" : 0},    
+                "profv:byteLength" : {"type" : "integer", "minimum" : 1},
+                "profv:bitOffset" : {"type" : "integer", "minimum" : 0},
+                "profv:bitLength" : {"type" : "integer", "minimum" : 1},
                 "profv:payloadMapping" : {
                     "type" : "object", 
                     "properties" :{
-                        "profv:byte" : {"type" : "integer", "minimum" : 1},
-                        "profv:bitMask" : {"type" : "integer", "minimum" : 0},
-                        "profv:offset" : {"type" : "integer", "minimum" : 0},
+                        "profv:byteOffset" : {"type" : "integer", "minimum" : 0},    
+                        "profv:byteLength" : {"type" : "integer", "minimum" : 1},
+                        "profv:bitOffset" : {"type" : "integer", "minimum" : 0},
+                        "profv:bitLength" : {"type" : "integer", "minimum" : 1},
                         "profv:type": {
                             "type": "string",
                             "enum": [

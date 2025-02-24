@@ -18,6 +18,24 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/",
             shortName: "wot-profinet-binding",
             github: "https://github.com/w3c/wot-binding-templates",
+            localBiblio: {
+                "IEC CD 61158-6-10": {
+                    title: "Application Layer protocol for decentralized periphery",
+                    publisher: "PROFIBUS Nutzerorganisation e.V.",
+                    date: "2022"
+                },
+                "IEC CD 61158-5-10": {
+                    title: "Application Layer services for decentralized periphery",
+                    publisher: "PROFIBUS Nutzerorganisation e.V.",
+                    date: "2022"
+                },
+                "Profinet Uni": {
+                    title: "Profinet University",
+                    href: "https://profinetuniversity.com/",
+                    publisher: "PROFINET University",
+                    date: "2024"
+                }
+            },
             otherLinks: [
               {
                 key: "Core Binding Templates Specification",
@@ -63,7 +81,7 @@
             high-speed industrial ethernet protocol for communication between industrial control and automation devices. 
         </p>
         <p>
-            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document, 
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description [[WOT-THING-DESCRIPTION]] (TD)document, 
             and associated rules which allow to describe WoT operations using the PROFINET protocol over the network.
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
         </p>
@@ -87,16 +105,16 @@
             PROFINET IO network consist of three main actors which are IO controller, IO supervisor and IO device. 
             The IO controllers are PLCs and DCS, they are most used for profinet cyclic communications like IO data exchange. 
             The IO supervisor is a standalone application that is mostly used for acyclic communications like diagnostics and parameterization. 
-            The IO device is general field devices that are controlled by both IO controller and IO supervisor.
+            The IO device is general field devices that are controlled by both IO controller and IO supervisor [[IEC CD 61158-5-10]].
         </p>
         <p>
             Due to the different requirements by different industrial automation applications, PROFINET IO provides three different communications channels to exchange data between IO controllers and IO device or IO supervisor and IO devices. 
             The Real-Time (RT) and Isochronous Real Time (IRT) channels are used for cyclic data transfer and high-speed cyclic data transfer for motion control application respectively,
             the Non-Real-Time channel which is based on User Data Protocol (UDP) is mostly used by IO supervisor for parameterization, diagnostic and acyclic communications. The RT channel can also be used for acyclic real time messages like alarm
-            The addressing in PROFINET slot/sublsot/index mechanism where the slot identifies a module and subslot identifies submodules that exist within a module. The index identifies datapoint of interest in the submodule.
+            The addressing in PROFINET slot/sublsot/index mechanism where the slot identifies a module and subslot identifies submodules that exist within a module. The index identifies datapoint of interest in the submodule [[IEC CD 61158-5-10]].
         </p>
         <p>
-            Concretely, this document describes how WoT TDs can be used to describe devices that use the PROFINET acyclic non-real time communication (IO supervisor). 
+            Concretely, this document describes how WoT TDs can be used to describe devices that use the PROFINET acyclic non-real time communication (IO supervisor) [[Profinet Uni]]. 
             The IO controller operations that use cyclic communication is beyond the scope of this document. This document explains how to create valid URLs and Forms for read or write operation from or to an IO device respectively. 
             Developers are encouraged to use this document as an implementation guideline and as a reference for the creation of their own binding implementations. The following sections will cover the URL format, the vocabulary and a list of Form examples.
         </p>
@@ -335,7 +353,7 @@
                 cover the most common data types used in PROFINET messages. Note that the <code>PayloadDataType</code> 
                 entity is designed to describe established conventions in the PROFINET ecosystem; further development might remove this 
                 functionality or add new terms.
-                Currently, the <code>PayloadDataType</code> class includes the following data types:
+                Currently, the <code>PayloadDataType</code> class includes the following data types[[IEC CD 61158-6-10]]:
             </p>
             <table class="def">
                 <thead>

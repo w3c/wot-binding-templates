@@ -129,7 +129,7 @@ What does the binding have to contain to go into the table
       - MUST explain where discussions on implementation experience should be collected
       - SHOULD provide the history of all the past events (or explain how to retrieve the history of the results gathered during those events)
       - SHOULD contain a reference to possible implementations of Cosumers or Exposers. 
-  - For the binding to transition to the Current state, the test report MUST contain at least one implementation of a Consumer (capable of understanding and performing all the operations described in the binding) and one Exposer (capable of creating TDs with all the operations and features described in the binding). Additional implementations can be added even after the transition to the Current
+  - For the binding to transition to the "Current" state, the test report MUST contain at least one implementation of a Consumer (capable of understanding and performing all the operations described in the binding) and one Exposer (capable of creating TDs with all the operations and features described in the binding). Additional implementations can be added even after the transition to the Current
   - Submitters can call for transition but the custodian can also automatically trigger the process once it is verified that the condition above is reached.
   - *Test Report*s and the related resources SHOULD be published in a git repository. The repository SHOLD be public and it MUST be accessible to the reviewers and the custodian.  
   - Collaboration between the custodian, reviewers, and submitters is highly encouraged, ideally through a Plugfest or another structured testing session where different implementations can be evaluated collectively.

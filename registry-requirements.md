@@ -131,7 +131,7 @@ What does the binding have to contain to go into the table
       - SHOULD contain a reference to possible implementations of Consumers or Exposers. 
   - For the binding to transition to the "Current" state, the test report MUST contain at least one implementation of a Consumer (capable of understanding and performing all the operations described in the binding) and one Exposer (capable of creating TDs with all the operations and features described in the binding). Additional implementations can be added even after the transition to the Current
   - Submitters can call for transition but the custodian can also automatically trigger the process once it is verified that the condition above is reached.
-  - *Test Report*s and the related resources SHOULD be published in a git repository. The repository SHOLD be public and it MUST be accessible to the reviewers and the custodian.  
+  - *Test Report*s and the related resources SHOULD be published in a git repository. The repository SHOULD be public and it MUST be accessible to the reviewers and the custodian.  
   - Collaboration between the custodian, reviewers, and submitters is highly encouraged, ideally through a Plugfest or another structured testing session where different implementations can be evaluated collectively.
   - See https://github.com/w3c/wot-binding-templates/issues/403
 10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.

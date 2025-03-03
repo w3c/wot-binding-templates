@@ -9,7 +9,10 @@
         "profinetForm": {
             "type": "object",
             "properties": {
-                "profv:pollingTime": {"type": "number", "minimum": 0},
+                "profv:pollingTime": {
+                    "type": "number",
+                    "minimum": 0
+                },
                 "profv:method": {
                     "type": "string",
                     "enum": [
@@ -61,24 +64,53 @@
                         "X2",
                         "X4",
                         "Unipolar2.16"
-
-                       
                     ]
                 },
-                "profv:mostSignificantByte" : { "type" : "boolean"},
-                "profv:mostSignificantWord" : { "type" : "boolean"},
-                "profv:timeout" : { "type": "number", "minimum": 0},
-                "profv:byteOffset" : {"type" : "integer", "minimum" : 0},    
-                "profv:byteLength" : {"type" : "integer", "minimum" : 1},
-                "profv:bitOffset" : {"type" : "integer", "minimum" : 0},
-                "profv:bitLength" : {"type" : "integer", "minimum" : 1},
-                "profv:payloadMapping" : {
-                    "type" : "object", 
-                    "properties" :{
-                        "profv:byteOffset" : {"type" : "integer", "minimum" : 0},    
-                        "profv:byteLength" : {"type" : "integer", "minimum" : 1},
-                        "profv:bitOffset" : {"type" : "integer", "minimum" : 0},
-                        "profv:bitLength" : {"type" : "integer", "minimum" : 1},
+                "profv:mostSignificantByte": {
+                    "type": "boolean"
+                },
+                "profv:mostSignificantWord": {
+                    "type": "boolean"
+                },
+                "profv:timeout": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "profv:byteOffset": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "profv:byteLength": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "profv:bitOffset": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "profv:bitLength": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "profv:payloadMapping": {
+                    "type": "object",
+                    "properties": {
+                        "profv:byteOffset": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "profv:byteLength": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "profv:bitOffset": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "profv:bitLength": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
                         "profv:type": {
                             "type": "string",
                             "enum": [
@@ -121,30 +153,38 @@
                                 "X2",
                                 "X4",
                                 "Unipolar2.16"
-        
-                               
                             ]
                         },
-                        "profv:enumeratedValue" : {
-                            "type" : "array",
-                            "allOf" : {
-                                "profv:encodedPayload" : {
-                                    "anyOf" :[
-                                        {"type" : "boolean"}, {"type" : "number"}
+                        "profv:enumeratedValue": {
+                            "type": "array",
+                            "allOf": {
+                                "profv:encodedPayload": {
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
                                     ]
                                 },
-                                "profv:decodedPayload" : {
-                                    "anyOf" :[
-                                        {"type" : "string"}, {"type" : "boolean"}, {"type" : "number"}
+                                "profv:decodedPayload": {
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
                                     ]
                                 }
                             }
                         }
-
-
                     }
                 }
-
             }
         },
         "affordance": {
@@ -178,8 +218,14 @@
                 }
             }
         },
-        "profv:deviceId" : {"type" : "integer", "minimum" : 0},
-        "profv:vendorId" : {"type" : "integer", "minimum" : 0},
+        "profv:deviceId": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "profv:vendorId": {
+            "type": "integer",
+            "minimum": 0
+        },
         "properties": {
             "$ref": "#/definitions/affordance"
         },

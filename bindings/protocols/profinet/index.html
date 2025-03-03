@@ -913,7 +913,6 @@
                 "id": "{{ID}}",
                 "profv:deviceId" : 12,
                 "profv:vendorId" : 268,
-                "base": "profinet://192.168.0.100",
                 "securityDefinitions": {
                     "nosec_sc": {
                     "scheme": "nosec"
@@ -922,23 +921,24 @@
                 "security": "nosec_sc",
                 "properties": {
                     "Buffer time": {
-                    "title": "Buffer time",
-                    "type": "integer",
-                    "minimum" : 1,
-                    "maximum" : 60000,
-                    "default" : 3000,
-                    "unit" : "s",
-                    "forms": [
-                        {
-                        "op": [
-                            "writeproperty",
-                            "readproperty"
-                        ],
-                        "href": "profinet://127.0.0.1/0/1?api=0&index=268&datalength=2",
-                        "profv:type": "Unsigned16",
-                        "profv:pollingTime": 200
-                        }
-                        ]
+                        "title": "Buffer time",
+                        "type": "integer",
+                        "minimum" : 1,
+                        "maximum" : 60000,
+                        "default" : 3000,
+                        "unit" : "s",
+                        "forms": [
+                            {
+                            "op": [
+                                "writeproperty",
+                                "readproperty"
+                            ],
+                            "href": "profinet://127.0.0.1/0/1?api=0&index=268&datalength=2",
+                            "contentType": "application/octet-stream",
+                            "profv:type": "Unsigned16",
+                            "profv:pollingTime": 200
+                            }
+                            ]
                     }
                 }
             }
@@ -958,7 +958,6 @@
                 "id": "{{ID}}",
                 "profv:deviceId" : 12,
                 "profv:vendorId" : 268,
-                "base": "profinet://192.168.0.100",
                 "securityDefinitions": {
                   "nosec_sc": {
                     "scheme": "nosec"
@@ -971,52 +970,50 @@
                   "type": "object",
                   "properties" : {
                     "Buffer time": {
-                      "type" :  "integer",
-                      "unit" : "s",
-                      "minimum" : 1,
-                      "maximum" : 32767,
-                      "default" : 600
-                      },
+                        "type" :  "integer",
+                        "unit" : "s",
+                        "minimum" : 1,
+                        "maximum" : 32767,
+                        "default" : 600
+                        },
                     "Buffer time 2": {
-                      "type" :  "integer",
-                      "unit" : "s" 
-                      "minimum" : 1,
-                      "maximum" : 300,
-                      "default" : 60,  
-                      },
+                        "type" :  "integer",
+                        "unit" : "s" 
+                        "minimum" : 1,
+                        "maximum" : 300,
+                        "default" : 60,  
+                        },
                     "Buffer threshold voltage": {
-                      "type" :  "integer",
-                      "unit" : "V",
-                      "minimum" : 2100,
-                      "maximum" : 2500,
-                      "default" : 2150
-                      },
+                        "type" :  "integer",
+                        "unit" : "V",
+                        "minimum" : 2100,
+                        "maximum" : 2500,
+                        "default" : 2150
+                        },
                     "Stop buffering threshold voltage": {
-                      "type" :  "integer",
-                      "minimum" : 1800,
-                      "maximum" : 2300,
-                      "default" : 1850,
-                      },
+                        "type" :  "integer",
+                        "minimum" : 1800,
+                        "maximum" : 2300,
+                        "default" : 1850,
+                        },
                     "Input voltage OK time": {
-                      "type" :  "integer",
-                      "unit" : "ms",
-                      "minimum" : 5,
-                      "maximum" : 65000,
-                      "default" : 1000,
-                      },
+                        "type" :  "integer",
+                        "unit" : "ms",
+                        "minimum" : 5,
+                        "maximum" : 65000,
+                        "default" : 1000,
+                        },
               
                     "Downtime alarm": {
-                      "type" :  "integer",
-                      "unit" : "ms",
-                      "minimum" : 0,
-                      "maximum" : 20000,
-                      "default" : 100,
-                      },
+                        "type" :  "integer",
+                        "unit" : "ms",
+                        "minimum" : 0,
+                        "maximum" : 20000,
+                        "default" : 100,
+                        },
                     "Buffering allowed": {
-                      "type" :  "Boolean",
-            
-                      },
-              
+                        "type" :  "Boolean",
+                        },
                     "Enable reset after buffering": {
                       "type" :  "Boolean",
                       }
@@ -1028,70 +1025,68 @@
                         "readproperty"
                       ],
                       "href": "profinet://127.0.0.1/0/1?api=0&index=1&datalength=14",
+                      "contentType": "application/octet-stream",
                       "profv:type": "object",
                       "profv:pollingTime": 200,
                       "profv:payloadMapping" : {
                         "Buffer time 2": {
-                          "profv:type": "Unsigned16",
-                          "profv:byteOffset": 2,
-                          "profv:byteLength" : 2
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 2,
+                            "profv:byteLength" : 2
                         },
                         "Buffer threshold voltage": {
-                          "profv:type": "Unsigned16",
-                          "profv:byteOffset": 4,
-                          "profv:byteLength" : 2
-                          },
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 4,
+                            "profv:byteLength" : 2
+                        },
                         "Stop buffering threshold voltage": {
-                          "profv:type": "Unsigned16",
-                          "profv:byteOffset": 6,
-                          "profv:byteLength" : 2
-                          },
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 6,
+                            "profv:byteLength" : 2
+                        },
                         "Input voltage OK time": {
-                          "profv:type": "Unsigned16",
-                          "profv:byteOffset": 8,
-                          "profv:byteLength" : 2
-                          },
-                  
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 8,
+                            "profv:byteLength" : 2
+                        },
                         "Downtime alarm": {
-                          "profv:type": "Unsigned16",
-                          "profv:byteOffset": 10,
-                          "profv:byteLength" : 2
-                          },
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 10,
+                            "profv:byteLength" : 2
+                        },
                         "Buffering allowed": {
-                          "profv:type": "boolean",
-                          "profv:byteOffset": 12,
-                          "profv:byteLength" : 1,
-                          "profv:bitOffset" : 0,
-                          "profv:enumeratedValue":[
-                            
-                              {
+                            "profv:type": "boolean",
+                            "profv:byteOffset": 12,
+                            "profv:byteLength" : 1,
+                            "profv:bitOffset" : 0,
+                            "profv:enumeratedValue":[
+                            {
                                 "profv:encondedPayload" : 0,
                                 "profv:decodedPayload" : false
-                              },
+                            },
               
-                              {
+                            {
                                 "profv:encondedPayload" : 1,
                                 "profv:decodedPayload" : true
-                              }
+                            }
                             ]
                           },
                   
                         "Enable reset after buffering": {
-                          "profv:type": "boolean",
-                          "profv:byteOffset": 13,
-                          "profv:byteLength" : 1,
-                          "profv:bitOffset" : 0,
-                          "profv:enumeratedValue":[
-                            
-                              {
+                            "profv:type": "boolean",
+                            "profv:byteOffset": 13,
+                            "profv:byteLength" : 1,
+                            "profv:bitOffset" : 0,
+                            "profv:enumeratedValue":[
+                            {
                                 "profv:encondedPayload" : 0,
                                 "profv:decodedPayload" : false
-                              },
+                            },
               
-                              {
+                            {
                                 "profv:encondedPayload" : 1,
                                 "profv:decodedPayload" : true
-                              }
+                            }
                             ]
                           }
                       }

@@ -49,6 +49,11 @@ For convenience purposes, the currently available Editor's Draft of subspecifica
             <td>Building Automation and Control Networks</td>
             <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html">Link</a></td>
         </tr>
+        <tr>
+            <td>PROFINET</td>
+            <td>Process Field Network</td>
+            <td><a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html">Link</a></td>
+        </tr>
     </tbody>
 </table>
 

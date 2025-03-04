@@ -1,0 +1,239 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "anyOf": [
+        {
+            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+        }
+    ],
+    "definitions": {
+        "profinetForm": {
+            "type": "object",
+            "properties": {
+                "profv:pollingTime": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "profv:method": {
+                    "type": "string",
+                    "enum": [
+                        "READ",
+                        "WRITE"
+                    ]
+                },
+                "profv:type": {
+                    "type": "string",
+                    "enum": [
+                        "Integer8",
+                        "Integer16",
+                        "Integer32",
+                        "Integer64",
+                        "Unsigned8",
+                        "Unsigned16",
+                        "Unsigned32",
+                        "Unsigned64",
+                        "Float32",
+                        "Float64",
+                        "VisibleString",
+                        "OctetString",
+                        "Unsigned8+Unsigned8",
+                        "Float32+Unsigned8",
+                        "Boolean",
+                        "Bit",
+                        "BitArea",
+                        "UnicodeString8",
+                        "61131_STRING",
+                        "61131_WSTRING",
+                        "TimeStamp",
+                        "TimeStampDifference",
+                        "TimeStampDifferenceShort",
+                        "OctetString2+Unsigned8",
+                        "Unsigned16_S",
+                        "Integer16_S",
+                        "Unsigned8_S",
+                        "OctetString_S",
+                        "N2",
+                        "N4",
+                        "V2",
+                        "L2",
+                        "R2",
+                        "T2",
+                        "T4",
+                        "D2",
+                        "E2",
+                        "C4",
+                        "X2",
+                        "X4",
+                        "Unipolar2.16"
+                    ]
+                },
+                "profv:mostSignificantByte": {
+                    "type": "boolean"
+                },
+                "profv:mostSignificantWord": {
+                    "type": "boolean"
+                },
+                "profv:timeout": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "profv:byteOffset": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "profv:byteLength": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "profv:bitOffset": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "profv:bitLength": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "profv:payloadMapping": {
+                    "type": "object",
+                    "properties": {
+                        "profv:byteOffset": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "profv:byteLength": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "profv:bitOffset": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "profv:bitLength": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "profv:type": {
+                            "type": "string",
+                            "enum": [
+                                "Integer8",
+                                "Integer16",
+                                "Integer32",
+                                "Integer64",
+                                "Unsigned8",
+                                "Unsigned16",
+                                "Unsigned32",
+                                "Unsigned64",
+                                "Float32",
+                                "Float64",
+                                "VisibleString",
+                                "OctetString",
+                                "Unsigned8+Unsigned8",
+                                "Float32+Unsigned8",
+                                "Boolean",
+                                "UnicodeString8",
+                                "61131_STRING",
+                                "61131_WSTRING",
+                                "TimeStamp",
+                                "TimeStampDifference",
+                                "TimeStampDifferenceShort",
+                                "OctetString2+Unsigned8",
+                                "Unsigned16_S",
+                                "Integer16_S",
+                                "Unsigned8_S",
+                                "OctetString_S",
+                                "N2",
+                                "N4",
+                                "V2",
+                                "L2",
+                                "R2",
+                                "T2",
+                                "T4",
+                                "D2",
+                                "E2",
+                                "C4",
+                                "X2",
+                                "X4",
+                                "Unipolar2.16"
+                            ]
+                        },
+                        "profv:enumeratedValue": {
+                            "type": "array",
+                            "allOf": {
+                                "profv:encodedPayload": {
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                },
+                                "profv:decodedPayload": {
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "affordance": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/profinetForm"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "array",
+            "contains": {
+                "type": "object",
+                "properties": {
+                    "profv": {
+                        "type": "string",
+                        "enum": [
+                            "https://profinet_vocabulary_context"
+                        ]
+                    }
+                }
+            }
+        },
+        "profv:deviceId": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "profv:vendorId": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "properties": {
+            "$ref": "#/definitions/affordance"
+        },
+        "actions": {
+            "$ref": "#/definitions/affordance"
+        },
+        "events": {
+            "$ref": "#/definitions/affordance"
+        }
+    }
+}

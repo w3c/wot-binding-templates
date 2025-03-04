@@ -3,6 +3,7 @@
 
 <head>
     <meta charset='utf-8'>
+    <meta name='color-scheme' content='light dark'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
     <script class='remove'>
         var respecConfig = {
@@ -25,6 +26,31 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
             shortName: "wot-coap-binding",
             github: "https://github.com/w3c/wot-binding-templates",
+            localBiblio: {
+                "I.D.-coap-pubsub": {
+                    href: "https://tools.ietf.org/html/draft-ietf-core-coap-pubsub-14",
+                    title: "A publish-subscribe architecture for the Constrained Application Protocol (CoAP)",
+                    status: "Internet-Draft",
+                    publisher: "IETF",
+                    date: "18 April 2024",
+                    authors: [
+                        "Jaime Jimenez",
+                        "Michael Koster",
+                        "Ari Keranen",
+                    ]
+                },
+                "I.D.-stp": {
+                    href: "https://datatracker.ietf.org/doc/html/draft-bormann-t2trg-stp-03",
+                    title: "The Series Transfer Pattern (STP)",
+                    status: "Internet-Draft",
+                    publisher: "IETF",
+                    date: "8 April 2020",
+                    authors: [
+                        "Carsten Bormann",
+                        "Klaus Hartke",
+                    ]
+                },
+            },
             otherLinks: [
               {
                 key: "Core Binding Templates Specification",
@@ -269,7 +295,7 @@
                 Consumers are generally expected to make use of both mechanisms to minimize the number of required CoAP transmissions.
             </p>
         </section>
-        <section>
+        <section id="polling-resources">
             <h3>Polling Resources</h3>
             <p>
                 A CoAP client may need a current representation of a resource over a period of time.
@@ -319,12 +345,9 @@
                 This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.
             </p>
             <p>
-                A resource can be observed by sending a GET request with the Observe option set.
-                The server will then respond with the current representation of the resource, as well as send notifications to the client.
-                A server is not required to support the Observe option for all resources; in this case, a resource can still be observed by polling it at regular intervals.
-            </p>
-            <p>
-                Support for observing resources can be indicating by including a <code>subprotocol</code> value of <code>cov:observe</code> in a form.
+                A resource can be observed by sending a `GET` or `FETCH` [[RFC8132]] request with the `Observe` option set.
+                The server will respond with the current representation of the resource, and will send notifications of future changes to the client.
+                A server is not required to support the `Observe` option for all resources; a resource without `Observe` support can still be manually observed by polling it at regular intervals.
             </p>
             <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
@@ -338,21 +361,12 @@
                 "cov:method": "GET",
                 "href": "coap://[2001:DB8::1]/status",
                 "contentType": "text/plain;charset=utf-8",
-                "subprotocol": "cov:observe",
-                "op": ["observeproperty"]
+                "op": ["observeproperty", "unobserveproperty"]
             }]
         }
     }
 }
 </pre>
-            <p>
-                A consumer can always fall back to polling a resource if observing a resource is permanently or temporarily not
-                possible.
-                In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
-                representation, setting the Observe option each time.
-                As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing,
-                the client polls again with the Observe option set.
-            </p>
         </section>
         <section>
             <h3>Block-wise Transfers</h3>
@@ -472,6 +486,60 @@
             <h3>EDHOC</h3>
         </section>
         -->
+        <section>
+            <h3>Message Transmission</h3>
+            <p>
+                In CoAP over UDP or DTLS [[RFC7252]], requests and responses can be transmitted reliably using confirmable (CON) messages or without reliability using non-confirmable (NON) messages.
+                The difference is that confirmable messages are retransmitted multiple times until an acknowledgement (ACK) message is received, while non-confirmable requests are not.
+            </p>
+            <p>
+                The vocabulary term `cov:confirmable` can be used in a form to provide a hint whether a Consumer should send requests in confirmable or non-confirmable messages.
+                A value of `true` encourages the Consumer to use confirmable messages, while a value of `false` encourages the Consumer to use non-confirmable messages.
+                Note that, as the vocabulary term is just a hint, the Consumer is not bound to this recommendation.
+                When `cov:confirmable` is absent from a form, the Consumer can choose freely between confirmable and non-confirmable messages.
+            </p>
+            <pre id="example-request-con-non" class="example" title="A Thing Description containing CoAP forms with hints for confirmable and non-confirmable requests.">
+                {
+                    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+                    ...
+                    "properties": {
+                        "currentTemperature": {
+                            "title": "Latest temperature value",
+                            "description": "Returns the latest temperature value recorded.",
+                            "type": "number",
+                            "forms": [
+                                {
+                                    "href": "coap://[2001:DB8::1]/currentTemperature",
+                                    "cov:confirmable": true,
+                                    "op": "readproperty"
+                                }
+                            ]
+                        }
+                    },
+                    "action": {
+                        "recordTemperature": {
+                            "title": "Record temperature value",
+                            "description": "Record a temperature value (e.g., from a sensor node).",
+                            "input": {
+                                "type": "number"
+                            },
+                            "forms": [
+                                {
+                                    "href": "coap://[2001:DB8::1]/recordTemperature",
+                                    "cov:confirmable": false
+                                }
+                            ]
+                        }
+                    }
+                }
+            </pre>
+            <p>
+                The choice of whether responses are sent as CON, NON or piggyback as ACK message is up to the CoAP server and cannot be influenced by a Consumer.
+            </p>
+            <p>
+                For those cases where the underlying transport protocol provides reliability (such as in CoAP over TCP, TLS, and WebSockets [[RFC8323]]), the vocabulary term `cov:confirmable` is not applicable and can be ignored by a Consumer.
+            </p>
+        </section>
     </section>
     <section id="url">
         <h2>URI Schemes</h2>
@@ -547,6 +615,16 @@
                         <td>optional</td>
                         <td>
                             <a href="http://www.w3.org/2001/XMLSchema#string">string</a> (e.g., <code>GET</code>, <code>PUT</code>, <code>POST</code>, <code>DELETE</code>, <code>FETCH</code>, <code>iPATCH</code>, or <code>PATCH</code>)<p>(See the <a href="https://www.iana.org/assignments/core-parameters/#method-codes">CoAP Method Codes</a> registry for the set of possible values.)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>cov:confirmable</code></td>
+                        <td>
+                            Provides a hint for Consumers to use confirmable (`true`) or non-confirmable (`false`) requests with a particular resource. Only applicable to CoAP over UDP/DTLS [[RFC7252]].
+                        </td>
+                        <td>optional</td>
+                        <td>
+                            <a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a>
                         </td>
                     </tr>
                     <tr>
@@ -656,10 +734,10 @@
                     <!-- Blockwise terms from the ontology-->
                     <tr>
                         <td>
-                            <code>cov:block2Size</code>
+                            <code>cov:block1Size</code>
                         </td>
                         <td>
-                            Indicates the largest block size that may be used in a Block2 or Q-Block2 Option
+                            Indicates the largest block size that may be used in a Block1 or Q-Block1 Option
                         </td>
                         <td>optional</td>
                         <td>
@@ -668,10 +746,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <code>cov:block1Size</code>
+                            <code>cov:block2Size</code>
                         </td>
                         <td>
-                            Indicates the largest block size that may be used in a Block1 or Q-Block1 Option
+                            Indicates the largest block size that may be used in a Block2 or Q-Block2 Option
                         </td>
                         <td>optional</td>
                         <td>
@@ -709,11 +787,11 @@
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveproperty</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>readmultipleproperties</code></td>
@@ -733,11 +811,11 @@
                     </tr>
                     <tr>
                         <td><code>observeallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unobserveallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>invokeaction</code></td>
@@ -757,22 +835,51 @@
                     </tr>
                     <tr>
                         <td><code>subscribeevent</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeevent</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>subscribeallevents</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                     <tr>
                         <td><code>unsubscribeallevents</code></td>
-                        <td><code>"cov:method": "GET"</code>, <code>"subprotocol": "cov:observe"</code></td>
+                        <td><code>"cov:method": "GET"</code></td>
                     </tr>
                 </tbody>
             </table>
+            <p>
+                For the `observeproperty` and `subscribeevent` operations, a consumer SHOULD add an `Observe` option to `GET` or `FETCH` requests.
+                Note, however, that using `FETCH` for the `observeproperty` operation is NOT RECOMMENDED, as `FETCH` requests must contain a `Content-Format` option which can imply that the request payload must not be empty.
+                For the `subscribeevent` operation, on the other hand, using `FETCH` is RECOMMENDED if the Event Affordance expects the consumer to provide data described by the `subscription` field.
+            </p>
+            <p>
+                If the server's response does not contain an `Observe` option, this indicates that the requested server does not support observe, and that the consumer SHOULD fall back to polling instead (see section [[[#polling-resources]]]).
+                Consequently, a consumer can always fall back to polling a resource if observing that resource is permanently or temporarily not
+                possible.
+                In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
+                representation, setting the `Observe` option each time.
+                As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing,
+                the client polls again with the `Observe` option set.
+            </p>
+            <p>
+                The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe MUST be performed as specified in section 3.6 of [[RFC7641]].
+                Note that this operation can be performed either actively (i.e., by sending an explicit deregistration request) or passively (by "forgetting" the observe relation and sending a reset message after receiving the next notification response from the server).
+                For the `unobserveproperty` and `unsubscribeevent` operations to work, they MUST refer to the same resource as the matching `observeproperty` and `subscribeevent` operations.
+                It is therefore RECOMMENDED to always include these operations in the same form as their counterparts when defining them for an affordance.
+                If no `unobserveproperty` or `unsubscribeevent` operation is defined for an observable property or an event, it SHOULD be assumed that the "passive" deregistration variant is meant to be used with the respective affordance.
+            </p>
+            <p>
+                The same considerations apply to the operations `observemultipleproperties`, `observeallproperties`, `subscribemultipleevents`, `subscribeallevents`, and their respective `unobserve-` and `unsubscribe-` counterparts.
+                Note, however, that it is NOT RECOMMENDED to use the `observeallproperties` and `subscribeallevents` operations with constrained devices that provide many properties and/or events, as the observe notifications may become too large for constrained devices or their surrounding environments to handle.
+            </p>
+            <p class="note" title="Advanced Event Mechanisms">
+                In the case of Event Affordances, CoAP Observe only supports a simply event notification mechanism that corresponds with the `data` field of the `EventAffordance` class within a Thing Description.
+                More complex event mechanisms may be supported via the procedures defined in specifications such as [[?I.D.-coap-pubsub]] or [[?I.D.-stp]] in the future.
+            </p>
         </section>
         <section id="possible-mappings">
             <h3>Possible mappings</h3>

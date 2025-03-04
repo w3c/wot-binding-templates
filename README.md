@@ -39,12 +39,13 @@ This is done through additional descriptive vocabularies, Thing Models and examp
 
 - [Latest Editor's Draft](https://w3c.github.io/wot-binding-templates/) (syncs to this repository's main branch)
 - [Latest Working Draft](https://www.w3.org/TR/wot-binding-templates/)
-- Other deliverables: (Examples are bindings)
+- Other deliverables:
   - [HTTP Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html)
   - [CoAP Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/index.html)
   - [MQTT Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/index.html)
   - [Modbus Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/index.html)
-  - [BACnet Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html) 
+  - [BACnet Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html)
+  - [PROFINET Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html)
   - [XML Binding Template](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
 
 ---

@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
+    <script class='remove'>
+        var respecConfig = {
+            specStatus: "ED",
+            group: "wg/wot",
+            editors: [
+                {
+                    name: "Kazeem Oladipupo",
+                    w3cid: "144721",
+                    company: "Siemens AG",
+                    companyURL: "www.siemens.com"
+                }
+            ],
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/",
+            shortName: "wot-profinet-binding",
+            github: "https://github.com/w3c/wot-binding-templates",
+            localBiblio: {
+                "IEC CD 61158-6-10": {
+                    title: "Application Layer protocol for decentralized periphery",
+                    publisher: "PROFIBUS Nutzerorganisation e.V.",
+                    date: "2022"
+                },
+                "IEC CD 61158-5-10": {
+                    title: "Application Layer services for decentralized periphery",
+                    publisher: "PROFIBUS Nutzerorganisation e.V.",
+                    date: "2022"
+                },
+                "Profinet Uni": {
+                    title: "Profinet University",
+                    href: "https://profinetuniversity.com/",
+                    publisher: "PROFINET University",
+                    date: "2024"
+                }
+            },
+            otherLinks: [
+                {
+                    key: "Core Binding Templates Specification",
+                    data: [
+                        {
+                            value: "Web of Things (WoT) Binding Templates",
+                            href: "../../../index.html"
+                        }
+                    ]
+                },
+                {
+                    key: "Ontology",
+                    data: [
+                        {
+                            value: "PROFINET in RDF",
+                            href: ""
+                        }
+                    ]
+                },
+                {
+                    key: "JSON Schema",
+                    data: [
+                        {
+                            value: "PROFINET JSON Schema",
+                            href: "profinet.schema.json"
+                        }
+                    ]
+                }
+            ]
+        };
+    </script>
+    <title>Web of Things (WoT) PROFINET Binding Template</title>
+</head>
+
+
+<body>
+    <section id='abstract'>
+        <p>
+            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to
+            implement a specific IoT protocol, data format or IoT platform.
+            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to
+            follow.
+            This document gives implementation guidelines regarding the PROFINET protocol, which is a well-known
+            high-speed industrial ethernet protocol for communication between industrial control and automation devices.
+        </p>
+        <p>
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing
+            Description [[WOT-THING-DESCRIPTION]] (TD)document,
+            and associated rules which allow to describe WoT operations using the PROFINET protocol over the network.
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated
+            behavior.
+        </p>
+    </section>
+    <section id='sotd'>
+        <p>
+            <em>This document is a work in progress</em>
+        </p>
+    </section>
+    <section id='introduction'>
+        <h2>Introduction</h2>
+        <p>
+            PROFINET is an open standard communication protocol developed and published by PROFIBUS Nutzerorganisation
+            (PNO) for Industrial Ethernet.
+            PROFINET which is an Ethernet version of PROFIBUS is designed to satisfy requirements of most industrial
+            automation processes by providing a
+            high-speed data transfer for time critical applications like motion control and drive.
+            It can also have a safety (PROFIsafe) implementation onboard for safety related application.
+        </p>
+        <p>
+            Generally, profinet is classified into PROFINET IO (Input Output) which is used for distributed input/output
+            processes of field devices (sensors and actuators)
+            data and PROFINET CBA (Component Based Automation) which is used for distributed automation. The scope of
+            this document focuses on the PROFINET IO.
+            PROFINET IO network consist of three main actors which are IO controller, IO supervisor and IO device.
+            The IO controllers are PLCs and DCS, they are most used for profinet cyclic communications like IO data
+            exchange.
+            The IO supervisor is a standalone application that is mostly used for acyclic communications like
+            diagnostics and parameterization.
+            The IO device is general field devices that are controlled by both IO controller and IO supervisor [[IEC CD
+            61158-5-10]].
+        </p>
+        <p>
+            Due to the different requirements by different industrial automation applications, PROFINET IO provides
+            three different communications channels to exchange data between IO controllers and IO device or IO
+            supervisor and IO devices.
+            The Real-Time (RT) and Isochronous Real Time (IRT) channels are used for cyclic data transfer and high-speed
+            cyclic data transfer for motion control application respectively,
+            the Non-Real-Time channel which is based on User Data Protocol (UDP) is mostly used by IO supervisor for
+            parameterization, diagnostic and acyclic communications. The RT channel can also be used for acyclic real
+            time messages like alarm
+            The addressing in PROFINET slot/sublsot/index mechanism where the slot identifies a module and subslot
+            identifies submodules that exist within a module. The index identifies datapoint of interest in the
+            submodule [[IEC CD 61158-5-10]].
+        </p>
+        <p>
+            Concretely, this document describes how WoT TDs can be used to describe devices that use the PROFINET
+            acyclic non-real time communication (IO supervisor) [[Profinet Uni]].
+            The IO controller operations that use cyclic communication is beyond the scope of this document. This
+            document explains how to create valid URLs and Forms for read or write operation from or to an IO device
+            respectively.
+            Developers are encouraged to use this document as an implementation guideline and as a reference for the
+            creation of their own binding implementations. The following sections will cover the URL format, the
+            vocabulary and a list of Form examples.
+        </p>
+    </section>
+    <section id="conformance">
+        <p>
+            A Thing Description instance with PROFINET Binding complies with this specification if it follows
+            the normative statements in <a href="#vocabulary"></a> and <a href="#mappings"></a>.
+        </p>
+        <p>
+            A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
+            containing PROFINET Binding is provided in the <a href="profinet.schema.json">GitHub repository</a>.
+        </p>
+    </section>
+    <section id="url">
+        <h2>URL format</h2>
+        <p>
+            In conformance with the structure of other bindings provided in the WoT TD, the URL form defines a resource
+            endpoint's information, and it
+            follows a standard URL scheme common to the web. For PROFINET, the URL scheme will begin with
+            <code>profinet://</code> and that will be
+            the only valid scheme to consider.
+        </p>
+
+        <p>The following shows the typical structure of an URL of the PROFINET protocol:</p>
+        <pre>
+            profinet://{address}/{slot}/{subslot}/?api={api}&index={index}&datalength={datalength}
+        </pre>
+
+        <p>
+            Where:
+        <ul>
+            <li><code>{address}</code> is the IP address of the PROFINET IO device</li>
+            <li><code>{slot}</code> is the module where the PROFINET IO module is plugged into. See <a
+                    href="#vocabulary">vocabulary</a></li>
+            <li><code>{subslot}</code> is the is the logical submodule where the PROFINET IO device parameter is
+                located. See <a href="#vocabulary">vocabulary</a></li>
+            <li><code>{api}</code> known as Application Process Identifier, for distinguishing profiles parameter. See
+                <a href="#vocabulary">vocabulary</a></li>
+            <li><code>{index}</code> identifies a parameter within slot/subslot address. See <a
+                    href="#vocabulary">vocabulary</a></li>
+            <li><code>{datalength}</code> defines the length of byte resource payload is expected to be. See <a
+                    href="#vocabulary">vocabulary</a></li>
+
+        </ul>
+        For the full syntax, see [[[#abnf]]]
+        </p>
+    </section>
+    <section id="vocabulary">
+        <h2>PROFINET Vocabulary</h2>
+        <p>
+            This section describes the vocabulary used in the PROFINET protocol.
+            An implementation of a protocol binding template should use the vocabulary defined in this section to
+            describe the different configurations that Things can use to exchange data on the Web of Things.
+        </p>
+        <section>
+            <h3>URL terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+
+
+                    <tr>
+                        <td><code>profv:slot</code></td>
+                        <td>Specifies the location where the IO device is plugged in to.</td>
+                        <td>required</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+
+                    <tr>
+                        <td><code>profv:subslot</code></td>
+                        <td>Provides the interface for the parameter to read/write. A slot can contain one or more
+                            subslots</td>
+                        <td>required</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+
+                    <tr>
+                        <td><code>profv:index</code></td>
+                        <td>An identifier that uniquely points to a resource within slot/subslot combination of a
+                            PROFINET IO device</td>
+                        <td>required</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:api</code></td>
+                        <td>Used to provide additional addressing to differentiate profile parameters. If the term is
+                            not provided, the TD processor treats it as the default of <code>zero</code>.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:datalength</code></td>
+                        <td>used in application and network optimization to appropriately define the specific data
+                            length of resource payload.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h3>Form terms</h3>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+
+                    <tr>
+                        <td><code>profv:mostSignificantByte</code></td>
+                        <td>When <code>true</code>, it indicates that the byte order of the data in the PROFINET message
+                            is most-significant byte (i.e., Big-Endian). When <code>false</code>, it indicates
+                            least-significant-byte (i.e., Little-Endian).If the term is not provided, the TD processor
+                            defaults it to <code>true</code></td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:mostSignificantWord</code></td>
+                        <td>When <code>true</code>, it indicates that the word order of the data in the PROFINET message
+                            is most-significant-word (i.e., no word swapping). When <code>false</code>, it indicates
+                            least-significant-word (i.e., word swapping). If the term is not provided, the TD processor
+                            treats it as the default of <code>true</code>.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:method</code></td>
+                        <td>Indicates operation to perform on defined affordance.</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a>
+                            <p>(one of "READ", "WRITE")</p>
+                        </td>
+
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:pollingTime</code></td>
+                        <td>IO supervisor polling rate in milliseconds. To ensure that the cyclic communication will not
+                            be interrupted, it is recommended to keep this polling rate above the IO device's send clock
+                            time.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:timeout</code></td>
+                        <td>PROFINET response maximum waiting time. Defines how long the runtime should wait to receive
+                            a reply from the device.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:byteOffset</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the starting point within a byte
+                            stream payload that represents a property.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:byteLength</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the byte length of a property from
+                            the byte stream payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:bitOffset</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the starting point within a bit
+                            stream payload that represents a property.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+
+                    <tr>
+                        <td><code>profv:bitlength</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the bit length of a property from
+                            the bit stream payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:payloadMapping</code></td>
+                        <td>used for <code>object</code> to provides logical mapping information of a complex payload
+                            from a PROFINET device</td>
+                        <td>optional</td>
+                        <td> Map of <a href="#payloadMapping">PayloadMapping</a></td>
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:type</code></td>
+                        <td>Specifies the data type contained in the request or response payload.</td>
+                        <td>optional</td>
+                        <td><a href="#payloaddatatype">PayloadDataType</a></td>
+
+                    <tr>
+                </tbody>
+            </table>
+            <p>
+                The <code>profv:mostSignificantByte</code> and <code>profv:mostSignificantWord</code> properties within
+                the PROFINET
+                binding template define the byte and word order of data within a PROFINET payload. In PROFINET
+                communications, the arrangement of bytes and words can vary between systems, and these properties
+                provide a declarative way to capture such configurations.
+                For instance, in Big-Endian byte order (e.g., <code>AABBCC</code>), the most significant byte comes
+                first, and setting <code>profv:mostSignificantByte</code> to <code>true</code> ensures the correct
+                interpretation of the data as <code>AABBCC</code>. Conversely, in Little-Endian byte order (e.g.,
+                <code>CCBBAA</code>), the least significant
+                byte comes first; therefore. <code>profv:mostSignificantByte</code> has to be set to <code>false</code>.
+                Similarly, the <code>profv:mostSignificantWord</code> property extends this functionality to message
+                payloads
+                composed by more than two bytes. For example, given a message payload composed by four bytess (e.g.,
+                <code>AABBCCDD</code>),
+                with <code>profv:mostSignificantWord</code> set to <code>true</code>, the client will interpret the data
+                as <code>AABBCCDD</code>,
+                while setting the property to <code>false</code> will result in the client interpreting the data as
+                <code>CCDDAABB</code>.
+                Although almost all implementations provided by vendors are Big-Endian, the PROFINET specification does
+                not specify Big-Endianness.
+                This means that some off-the-shelf or user-specific implementations might adopt Little-Endianness.
+                Therefore, when creating a Thing Description (TD), users are advised to account for such potential
+                deviations by setting the
+                <code>profv:mostSignificantWord</code> and <code>profv:mostSignificantByte</code> properties
+                accordingly.
+            </p>
+
+        </section>
+        <section id="payloaddatatype">
+            <h3>Payload DataType</h3>
+            <p>
+                The <code>PayloadDataType</code> class within the PROFINET Binding Template defines values for the
+                <code>profv:type</code> property, which is used to specify
+                the expected data types of payload content in PROFINET messages. It offers a set of terms taken from the
+                PROFINET specification (chapter 5 of IEC 61158-5-10)[ref] to
+                cover the most common data types used in PROFINET messages. Note that the <code>PayloadDataType</code>
+                entity is designed to describe established conventions in the PROFINET ecosystem; further development
+                might remove this
+                functionality or add new terms.
+                Currently, the <code>PayloadDataType</code> class includes the following data types[[IEC CD
+                61158-6-10]]:
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Value</th>
+                        <th>Byte Length</th>
+                        <th>Code</th>
+                        <th>JSON Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+
+                    <tr>
+                        <td>Boolean</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>Boolean</td>
+                    <tr>
+
+                    <tr>
+                        <td>Integer8</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Integer16</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Integer32</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned8</td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned16</td>
+                        <td>2</td>
+                        <td>6</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned32</td>
+                        <td>4</td>
+                        <td>7</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned64</td>
+                        <td>8</td>
+                        <td>56</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Float32</td>
+                        <td>4</td>
+                        <td>8</td>
+                        <td>Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Float64</td>
+                        <td>8</td>
+                        <td>15</td>
+                        <td>Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>VisibleString</td>
+                        <td>profv:datalength</td>
+                        <td>9</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>OctetString</td>
+                        <td>profv:datalength</td>
+                        <td>10</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>UnicodeString8</td>
+                        <td>profv:datalegth</td>
+                        <td>40</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>61131_STRING</td>
+                        <td>profv:datalegth</td>
+                        <td>41</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>61131_WSTRING</td>
+                        <td>profv:datalegth</td>
+                        <td>42</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>TimeStamp</td>
+                        <td>12</td>
+                        <td>60</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>TimeStampDifference</td>
+                        <td>12</td>
+                        <td>61</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>TimeStampDifferenceShort</td>
+                        <td>8</td>
+                        <td>62</td>
+                        <td>Integer</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned8+Unsigned8</td>
+                        <td>2</td>
+                        <td>102</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Float32+Unsigned8</td>
+                        <td>5</td>
+                        <td>101</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>OctetString2+Unsigned8</td>
+                        <td>3</td>
+                        <td>103</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned8_S</td>
+                        <td>1</td>
+                        <td>106</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unsigned16_S</td>
+                        <td>2</td>
+                        <td>104</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Integer16_S</td>
+                        <td>2</td>
+                        <td>105</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>OctetString_S</td>
+                        <td>profv:datalegth</td>
+                        <td>107</td>
+                        <td>String</td>
+                    <tr>
+
+                    <tr>
+                        <td>N2</td>
+                        <td>2</td>
+                        <td>113</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>N4</td>
+                        <td>4</td>
+                        <td>114</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>V2</td>
+                        <td>2</td>
+                        <td>115</td>
+                        <td>Object</td>
+                    <tr>
+
+                    <tr>
+                        <td>L2</td>
+                        <td>2</td>
+                        <td>116</td>
+                        <td>Object</td>
+                    <tr>
+
+                    <tr>
+                        <td>R2</td>
+                        <td>2</td>
+                        <td>117</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>T2</td>
+                        <td>2</td>
+                        <td>118</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>T4</td>
+                        <td>4</td>
+                        <td>119</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>D2</td>
+                        <td>2</td>
+                        <td>120</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>E2</td>
+                        <td>2</td>
+                        <td>121</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>C4</td>
+                        <td>4</td>
+                        <td>122</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>X2</td>
+                        <td>2</td>
+                        <td>123</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>X4</td>
+                        <td>4</td>
+                        <td>124</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Unipolat2.16</td>
+                        <td>2</td>
+                        <td>125</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                    <tr>
+                        <td>Float64</td>
+                        <td>8</td>
+                        <td>15</td>
+                        <td>Integer or Number</td>
+                    <tr>
+
+                </tbody>
+            </table>
+
+        </section>
+        <section id="payloadMapping">
+            <h3>Payload Mapping</h3>
+            <p>
+                The <code>payloadMapping</code> class within the PROFINET binding template helps map the nested
+                properties of object types.
+                It is common that the payload of a PROFINET device response is provided in a complex/object form. This
+                payload requires mapping the individual parameters to object definitions provided by the Thing
+                Description <code>dataSchema</code> class.
+                The table below shows the terms provided by the <code>payloadMapping</code> class.
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+                    <tr>
+                        <td><code>profv:byteOffset</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the starting point within a byte
+                            stream payload that represents a property.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:byteLength</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the byte length of a property from
+                            the byte stream payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+                    <tr>
+                        <td><code>profv:bitOffset</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the starting point within a bit
+                            stream payload that represents a property.</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+
+
+                    <tr>
+                        <td><code>profv:bitlength</code></td>
+                        <td>For <code>object</code> type properties. Used to identify the bit length of a property from
+                            the bit stream payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:enumeratedValue</code></td>
+                        <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the
+                            byte stream or byte payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#array">Array</a>of <a
+                                href="#enumeratedValue">EnumeratedValue</a></td>
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:type</code></td>
+                        <td>Specifies the data type contained in the request or response payload.</td>
+                        <td>optional</td>
+                        <td><a href="#payloaddatatype">PayloadDataType</a></td>
+
+                    <tr>
+
+                </tbody>
+            </table>
+
+        </section>
+        <section id="enumeratedValue">
+            <h3>Enumerated Value</h3>
+            <p>
+                The enumeratedValue class within the PROFINET binding template helps provide context to encoded
+                parameters in the payload. Bit payloads in PROFINET are sometimes
+                used as encoded payload to logical mean something aside from 1 and 0. Information about how the encoding
+                payload will be decoded is defined in this section.
+                The table below defines the terms used in the enumeratedValue class.
+            </p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Vocabulary term</th>
+                        <th>Description</th>
+                        <th>Assignment</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate forms terms from the ontology-->
+
+                    <tr>
+                        <td><code>profv:encodedPayload</code></td>
+                        <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the
+                            byte stream or byte payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a
+                                href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+                    <tr>
+
+                    <tr>
+                        <td><code>profv:decodedPayload</code></td>
+                        <td>used for <code>object</code> type properties to identify the bit mask of a proterty from the
+                            byte stream or byte payload</td>
+                        <td>optional</td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a> , <a
+                                href="http://www.w3.org/2001/XMLSchema#number">number</a> or <a
+                                href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+
+                    <tr>
+
+
+                </tbody>
+            </table>
+
+        </section>
+    </section>
+    <section id="mappings">
+        <h2>Mappings</h2>
+        <p>This section describes strategies and default values to employ protocol specific concepts within the <a
+                href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction
+                model</a>. </p>
+        <section id="default-mappings">
+            <h3>Default mappings</h3>
+            <p>
+                The following table lists the default mappings between the protocol specific concepts and the WoT
+                concepts. Please note that operations that are not
+                listed in the table are not supported by this binding template. For example, since the scope of this
+                binding focuses on acyclic communication of the PROFINET protocol, the
+                <code>subscribeevent</code> operation is not supported.
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default Binding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generate mappings from the mapping ontology -->
+
+                    <tr>
+                        <td><code>readproperty</code></td>
+                        <td><code>"profv:method": "READ"</code></td>
+                    <tr>
+
+
+                    <tr>
+                        <td><code>writeproperty</code></td>
+                        <td><code>"profv:method": "WRITE"</code></td>
+                    <tr>
+
+
+                    <tr>
+                        <td><code>readallproperties</code></td>
+                        <td><code>"profv:method": "READ"</code></td>
+                    <tr>
+
+                    <tr>
+                        <td><code>writeallproperties</code></td>
+                        <td><code>"profv:method": "WRITE"</code></td>
+                    <tr>
+
+                    <tr>
+                        <td><code>readmultipleproperties</code></td>
+                        <td><code>"profv:method": "READ"</code></td>
+                    <tr>
+
+                    <tr>
+                        <td><code>writemultipleproperties</code></td>
+                        <td><code>"profv:method": "WRITE"</code></td>
+                    <tr>
+
+                </tbody>
+            </table>
+            The next table defines default values for other terms, regardless of their use in combination with one of
+            the operations listed in the table above.
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Default</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>profv:api</code></td>
+                        <td>
+                            <code>0</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>profv:mostSignificantByte</code></td>
+                        <td>
+                            <code>true</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>profv:mostSignificantWord</code></td>
+                        <td>
+                            <code>true</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><code>profv:timeout</code></td>
+                        <td>
+                            <code>infinite</code>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </section>
+    <section>
+        <h2>Examples</h2>
+        This section will present a set of examples about how the terms defined in this document can be used
+        to describe and configure a <a>Form</a>. [[[#example-thing-class-definition]]] shows the minimal set of terms
+        to define some identifications that uniquely destinct a device in a network.
+        <pre id="example-thing-class-definition" class="example" title="PROFINET device ids">
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        {
+            "profv": "https://profinet_vocabulary_context"
+        }
+    ],
+    "@type": "tm:ThingModel",
+    "title": "ET200SP",
+    "id": "{{ID}}",
+    "profv:deviceId": 12,
+    "profv:vendorId": 268,
+    "base": "profinet://192.168.0.100",
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {},
+    "actions": {},
+    "events": {}
+}
+        </pre>
+        [[[#example-device-property]]] shows the minimal set of terms to read or write to a PROFINET device.
+        Notice that the slot, subslot is contained in the href as the first and second elements of the URL path
+        respectively.
+        Also, as part of the PROFINET vocabulary is a polling mechanism (<code>profv:pollingTime</code>) can be used to
+        set intervals
+        for reading a PROFINET device parameter.
+        <pre id="example-device-property" class="example" title="Read and write a PROFINET property primitive type">
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        {
+            "profv": "https://profinet_vocabulary_context"
+        }
+    ],
+    "@type": "tm:ThingModel",
+    "title": "ET200SP",
+    "id": "{{ID}}",
+    "profv:deviceId": 12,
+    "profv:vendorId": 268,
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "Buffer time": {
+            "title": "Buffer time",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60000,
+            "default": 3000,
+            "unit": "s",
+            "forms": [
+                {
+                    "op": [
+                        "writeproperty",
+                        "readproperty"
+                    ],
+                    "href": "profinet://127.0.0.1/0/1?api=0&index=268&datalength=2",
+                    "contentType": "application/octet-stream",
+                    "profv:type": "Unsigned16",
+                    "profv:pollingTime": 200
+                }
+            ]
+        }
+    }
+}
+        </pre>
+        [[[#example-complex-datatype]]] shows how object type property is defined in TM form and its mappings.
+        It also show how bit payload encodings and decodings are defined as enumeration.
+        <pre id="example-complex-datatype" class="example" title="Read and write a PROFINET property object type">
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        {
+            "profv": "https://profinet_vocabulary_context"
+        }
+    ],
+    "@type": "tm:ThingModel",
+    "title": "ET200SP",
+    "id": "{{ID}}",
+    "profv:deviceId": 12,
+    "profv:vendorId": 268,
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "Buffering parameters": {
+            "title": "Buffering parameters",
+            "type": "object",
+            "properties": {
+                "Buffer time": {
+                    "type": "integer",
+                    "unit": "s",
+                    "minimum": 1,
+                    "maximum": 32767,
+                    "default": 600
+                },
+                "Buffer time 2": {
+                    "type": "integer",
+                    "unit": "s",
+                    "minimum": 1,
+                    "maximum": 300,
+                    "default": 60
+                },
+                "Buffer threshold voltage": {
+                    "type": "integer",
+                    "unit": "V",
+                    "minimum": 2100,
+                    "maximum": 2500,
+                    "default": 2150
+                },
+                "Stop buffering threshold voltage": {
+                    "type": "integer",
+                    "minimum": 1800,
+                    "maximum": 2300,
+                    "default": 1850
+                },
+                "Input voltage OK time": {
+                    "type": "integer",
+                    "unit": "ms",
+                    "minimum": 5,
+                    "maximum": 65000,
+                    "default": 1000
+                },
+                "Downtime alarm": {
+                    "type": "integer",
+                    "unit": "ms",
+                    "minimum": 0,
+                    "maximum": 20000,
+                    "default": 100
+                },
+                "Buffering allowed": {
+                    "type": "boolean"
+                },
+                "Enable reset after buffering": {
+                    "type": "boolean"
+                }
+            },
+            "forms": [
+                {
+                    "op": [
+                        "writeproperty",
+                        "readproperty"
+                    ],
+                    "href": "profinet://127.0.0.1/0/1?api=0&index=1&datalength=14",
+                    "contentType": "application/octet-stream",
+                    "profv:type": "object",
+                    "profv:pollingTime": 200,
+                    "profv:payloadMapping": {
+                        "Buffer time 2": {
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 2,
+                            "profv:byteLength": 2
+                        },
+                        "Buffer threshold voltage": {
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 4,
+                            "profv:byteLength": 2
+                        },
+                        "Stop buffering threshold voltage": {
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 6,
+                            "profv:byteLength": 2
+                        },
+                        "Input voltage OK time": {
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 8,
+                            "profv:byteLength": 2
+                        },
+                        "Downtime alarm": {
+                            "profv:type": "Unsigned16",
+                            "profv:byteOffset": 10,
+                            "profv:byteLength": 2
+                        },
+                        "Buffering allowed": {
+                            "profv:type": "boolean",
+                            "profv:byteOffset": 12,
+                            "profv:byteLength": 1,
+                            "profv:bitOffset": 0,
+                            "profv:enumeratedValue": [
+                                {
+                                    "profv:encondedPayload": 0,
+                                    "profv:decodedPayload": false
+                                },
+                                {
+                                    "profv:encondedPayload": 1,
+                                    "profv:decodedPayload": true
+                                }
+                            ]
+                        },
+                        "Enable reset after buffering": {
+                            "profv:type": "boolean",
+                            "profv:byteOffset": 13,
+                            "profv:byteLength": 1,
+                            "profv:bitOffset": 0,
+                            "profv:enumeratedValue": [
+                                {
+                                    "profv:encondedPayload": 0,
+                                    "profv:decodedPayload": false
+                                },
+                                {
+                                    "profv:encondedPayload": 1,
+                                    "profv:decodedPayload": true
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+        </pre>
+    </section>
+    <section class="appendix" id="abnf">
+        <h2>PROFINET URL ABNF syntax</h2>
+        <p>The following describe the [[[#url]]] using [[[RFC2234]]] with the reference to [[[uri]]] specification. </p>
+        <pre class="syntax">
+            PROFINET-URI = "profinet://" authority path-profinet [ "?api=" api, "?index=" index, "?datalength=" datalength ]
+            path-profinet = "/" slot "/" subslot
+            slot=1*DIGIT
+            subslot=1*DIGIT
+            api=1*DIGIT
+            index=1*DIGIT
+            datalength=4*DIGIT
+        </pre>
+    </section>
+</body>
+
+</html>

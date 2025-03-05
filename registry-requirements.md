@@ -121,15 +121,15 @@ What does the binding have to contain to go into the table
     - Conditions for commercial use: E.g. building a commercial product with the binding
     - Making a statement about your product's supporting that binding
 9. Transition from "Initial" to "Current"
-  - Starting from the initial submission each binding has to demonstrate a certain level of concrete development maturity. This process involves real-world testing, which can take place in Plugfests, independent testing events, or even informal collaboration between developers. These testing events do not have to be organized by W3C and can be conducted remotely, including over VPN. The goal is to demonstrate that the binding correctly maps protocol operations and is well understood by at least two parties.
-  - At each testing event every operation defined in the binding MUST be validated automatically (e.g., scripts, test suites, etc.) and the results SHOULD be published in a dedicated document (README, or other human-readable documents) called *Test Report*.
+  - Starting from the initial submission, each binding has to demonstrate a certain level of concrete development maturity. This process involves real-world testing, which can take place in Plugfests, independent testing events, or even informal collaboration between developers. These testing events do not have to be organized by W3C and can be conducted remotely, including over VPN. The goal is to demonstrate that the binding correctly maps protocol operations and is well understood by at least two parties.
+  - At each testing event, every operation defined in the binding MUST be validated automatically (e.g., scripts, test suites, etc.) and the results SHOULD be published in a dedicated document (README, or other human-readable documents) called *Test Report*.
   - A *Test Report*
       - MUST contain information on the testing environment
       - MUST provide an example of the logical process (not necessarily code) about how a TD can be processed to establish a communication between consumer and exposer.
       - MUST explain where discussions on implementation experience should be collected
-      - SHOULD provide the history of all the past events (or explain how to retrieve the history of the results gathered during those events)
+      - SHOULD provide the history of all the past testing events (or explain how to retrieve the history of the results gathered during those events)
       - SHOULD contain a reference to the implementations of Consumers or Exposers. 
-  - For the binding to transition to the "Current" state, the test report MUST contain at least one implementation of a Consumer (capable of understanding and performing all the operations described in the binding) and one Exposer (capable of creating TDs with all the operations and features described in the binding). Additional implementations can be added even after the transition to the Current
+  - For the binding to transition to the "Current" state, a *Test Report* MUST exists and MUST contain at least one implementation of a Consumer (capable of understanding and performing all the operations described in the binding) and one Exposer (capable of handling all the operations and features described in the binding and optionally be able to create a valid TD). Additional implementations can be added even after the transition to the Current
   - Submitters MAY call for transition but the custodian can also automatically trigger the process once it is verified that the condition above is reached.
   - *Test Reports* and related resources SHOULD be published in a git repository. The repository SHOULD be public and it MUST be accessible to the reviewers and the custodian.  
   - Collaboration between the custodian, reviewers, and submitters is highly encouraged, ideally through a Plugfest or another structured testing session where different implementations can be evaluated collectively.

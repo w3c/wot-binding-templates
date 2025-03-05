@@ -118,9 +118,22 @@ What does the binding have to contain to go into the table
     - Reading the protocol specification
     - Implementing a non-commercial device/Thing
     - Implementing a non-commercial Consumer application/driver
-    - Conditions for commercial use, e.g., building a commercial product with the binding
-    - Making a statement about a product's support for that binding
-9. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
+    - Conditions for commercial use: E.g. building a commercial product with the binding
+    - Making a statement about your product's supporting that binding
+9. Transition from "Initial" to "Current"
+  - Starting from the initial submission, each binding has to demonstrate a certain level of concrete development maturity. This process involves real-world testing, which can take place in Plugfests, independent testing events, or even informal collaboration between developers. These testing events do not have to be organized by W3C and can be conducted remotely, including over VPN. The goal is to demonstrate that the binding correctly maps protocol operations and is well understood by at least two parties.
+  - At each testing event, every operation defined in the binding MUST be validated automatically (e.g., scripts, test suites, etc.) and the results SHOULD be published in a dedicated document (README, or other human-readable documents) called *Test Report*.
+  - A *Test Report*
+      - MUST contain information on the testing environment
+      - MUST provide an example of the logical process (not necessarily code) about how a TD can be processed to establish a communication between consumer and exposer.
+      - MUST contain information about the scenario that was tested, e.g. controlling the room temperature by measuring temperature and adjusting the heater.
+      - MUST explain where discussions on implementation experience should be collected
+      - SHOULD provide the history of all the past testing events (or explain how to retrieve the history of the results gathered during those events)
+      - SHOULD contain a reference to the implementations of Consumers or Exposers. 
+  - For the binding to transition to the "Current" state, a *Test Report* MUST exist. The *Test Report* MUST contain at least one implementation of a Consumer (capable of understanding and performing all the operations described in the binding) and one Exposer (capable of handling all the operations and features described in the binding and optionally be able to create a valid TD). Additional implementations can be added even after the transition to the Current
+  - Submitters MAY call for transition but the custodian can also automatically trigger the process once it is verified that the condition above is reached.
+  - *Test Reports* and related resources SHOULD be published in a git repository. The repository SHOULD be public and it MUST be accessible to the reviewers and the custodian.  
+  - Collaboration between the custodian, reviewers, and submitters is highly encouraged, ideally through a Plugfest or another structured testing session where different implementations can be evaluated collectively.
   - See https://github.com/w3c/wot-binding-templates/issues/403
 10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.
   - Introduction
@@ -132,6 +145,8 @@ What does the binding have to contain to go into the table
 11. DISCUSS: What are the required (machine-readable) documents provided on the side?
   - See https://github.com/w3c/wot-binding-templates/issues/404
 12. DISCUSS: Where should discussions on implementation experience be collected?
+  - See point 9
+  - If the *Test Report* is published on Github or Gitlab the discussions should be collected as Issues.
   - See https://github.com/w3c/wot-binding-templates/issues/403
 13. The binding entry SHOULD NOT conflict with other entries in the registry by redefining concepts, such as the URI Scheme, the vocabulary terms, or the default assignments. If a previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
 

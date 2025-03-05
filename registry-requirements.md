@@ -70,7 +70,7 @@ DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP b
 - Technical submission mechanism. How does a binding get submitted?
    - We work with issues only. The information for the entry format is submitted as a list. This way, non-W3C members can submit a binding. Reviews from the custodian happen on the issue. The submitter is expected to answer until the custodian makes a PR to add the binding to the registry or change its status.
    - A purpose built GitHub project for tracking submissions is used. When a submission comes in form an issue, it is automatically added to column "Binding Submitted". When the custodian and reviewers start looking at it, it goes to the "Under Review" column. If the review is in favour, the custodian makes the PR to add it to the registry and the issue goes to column "Accepted". If the review is not in favour, it goes to the column "Rejected". All these changes are reflected as comments in the original issue.
-   - In case of potential conflict with another entry, the reviewer MUST mark the new submission accordingly. As two bindings that do the same are not allowed, either the old one MUST be deprecated or the new one MUST be rejected. See also point 13 under "Requirements on the Submitted Document".
+   - If a new entry conflicts with another entry, the reviewer MUST mark the new submission accordingly. As two bindings that do the same are not allowed, either the old one MUST be deprecated or the new one MUST be rejected. See also point 13 under "Requirements on the Submitted Document".
 - Status values: Initial -> Current -> Superseded or Obsolete
   - Definitions:
     - Initial: Document is correctly written but no implementation experience has been necessarily documented.
@@ -109,17 +109,17 @@ What does the binding have to contain to go into the table
 7. Reviewer MUST have access to the binding document and to the protocol or media type specification (what the binding specifies)
 8. The submitter MUST fill the GitHub form provided by the custodian to generate the summary document, which is hosted by the custodian together with the registry. This form contains the following:
   - Abstract - It MUST contain an abstract with the following information:
-    - What the binding's content is about, e.g. what this protocol is.
-    - Who should use it
-    - For which purpose should it be used, e.g. monitoring, process control. This SHOULD use terminology of the submitter, i.e. the custodian does not provide definitions for this.
+    - What is the content of the binding about, e.g., what is this protocol?
+    - Who should use it?
+    - For what purpose(s) should it be used, e.g., monitoring, process control? This SHOULD use terminology of the submitter, i.e., the custodian does not provide definitions for this.
   -  Examples - It SHOULD contain examples (can be one) TDs or TMs demonstrating the use of the binding
-  -  It MUST contain Access/Usage restrictions about the binding, protocol, implementation etc. using the terminology and/or documents of the submitter. A non-exhaustive list of examples of restrictions: 
+  -  It MUST contain Access/Usage restrictions about the binding, protocol, implementation, etc., using the terminology and/or documents of the submitter. A non-exhaustive list of examples of restrictions: 
     - Reading the binding document
     - Reading the protocol specification
     - Implementing a non-commercial device/Thing
     - Implementing a non-commercial Consumer application/driver
-    - Conditions for commercial use: E.g. building a commercial product with the binding
-    - Making a statement about your product's supporting that binding
+    - Conditions for commercial use, e.g., building a commercial product with the binding
+    - Making a statement about a product's support for that binding
 9. DISCUSS: What is the objective mechanism to confirm the status change from "initial" to "current"? Should we have a test suite? Plugfest experience?
   - See https://github.com/w3c/wot-binding-templates/issues/403
 10. The binding MUST contain the following sections in the order presented below. The binding CAN contain other sections anywhere, including between the required ones. The submitters are encouraged to look at the existing submissions. There MUST be at least one operation mapped to a protocol message/vocabulary term. The submitter SHOULD use the table template provided in the document for the vocabulary.
@@ -133,5 +133,5 @@ What does the binding have to contain to go into the table
   - See https://github.com/w3c/wot-binding-templates/issues/404
 12. DISCUSS: Where should discussions on implementation experience be collected?
   - See https://github.com/w3c/wot-binding-templates/issues/403
-13. The binding entry SHOULD NOT conflict with other entries in the registry by redefining the same concepts such as redefining the URI Scheme, the vocabulary terms or the default assignments. If the previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
+13. The binding entry SHOULD NOT conflict with other entries in the registry by redefining concepts, such as the URI Scheme, the vocabulary terms, or the default assignments. If a previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
 

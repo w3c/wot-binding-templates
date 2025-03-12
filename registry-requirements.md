@@ -17,6 +17,11 @@ This means existing systems should be made interoperable with a descriptive appr
 
 It is unrealistic to incorporate a complete list of bindings into a REC document before its publication; thus, we need a more flexible mechanism.
 
+## Terminology
+
+- <a name="def-dependency">Dependency</a>: An entry that is used or referenced to from another entry
+- <a name="def-dependent">Dependent</a>: An entry that uses or references another entry
+
 ## Intro Section of the Document
 
 - <a name="int-exp">Int-Exp</a>: A binding SHOULD be written by people with a good understanding of the protocol and media type (or similar), who are not necessarily the TD Editors. This includes people and organizations inside and outside of the WoT WG.
@@ -61,9 +66,6 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
 - <a name="form-summ">Form-Summ</a>: Summary Document: Link to the summary document
 - <a name="form-ver">Form-Ver</a>: DISCUSS: Version: A string that denotes the version of the binding that is linked.
   - What is the versioning scheme we use. See https://github.com/w3c/wot-binding-templates/issues/400
-
-DISCUSS: Clarify what happens when two ecosystems, OCF and LwM2M, use the CoAP binding. The initial thinking is to register them as separate entries and clarify what they use from the CoAP binding. A layered registry can be considered similar to language tags with `en` extending to `en-us` and `en-uk`, where the tags and entries are different but the association with `en` is expressed in the ID. In our case, this would be `coap-ocf` and `coap-lwm2m`. A higher-level binding SHOULD NOT override or conflict with a lower-level binding, and the custodian should verify this, e.g., `cov:method` in CoAP binding should not be turned into `cov:operation` in the higher-level binding. The namespace (prefix and its values) defined in a binding CANNOT be redefined in any other binding.
-- See https://github.com/w3c/wot-binding-templates/issues/401
 
 ### Lifecycle
 
@@ -120,6 +122,7 @@ What does the binding have to contain to go into the table
     - Implementing a non-commercial Consumer application/driver
     - Conditions for commercial use: E.g. building a commercial product with the binding
     - Making a statement about your product's supporting that binding
+  - If the entry depends on another one, it MUST specify the exact version of the dependency upon which it depends at the time of submission.
 - <a name="req-trancurr">Req-TranCurr</a>: Transition from "Initial" to "Current"
   - Starting from the initial submission, each binding has to demonstrate a certain level of concrete development maturity. This process involves real-world testing, which can take place in Plugfests, independent testing events, or even informal collaboration between developers. These testing events do not have to be organized by W3C and can be conducted remotely, including over VPN. The goal is to demonstrate that the binding correctly maps protocol operations and is well understood by at least two parties.
   - At each testing event, every operation defined in the binding MUST be validated automatically (e.g., scripts, test suites, etc.) and the results SHOULD be published in a dedicated document (README, or other human-readable documents) called *Test Report*.
@@ -144,4 +147,6 @@ What does the binding have to contain to go into the table
   - Examples
 - <a name="req-docs">Req-Docs</a>: DISCUSS: What are the required (machine-readable) documents provided on the side?
   - See https://github.com/w3c/wot-binding-templates/issues/404
-- <a name="req-confl">Req-Confl</a>: The binding entry SHOULD NOT conflict with other entries in the registry by redefining the same concepts such as redefining the URI Scheme, the vocabulary terms or the default assignments. If the previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
+- <a name="req-confl">Req-Confl</a>: The binding entry SHOULD NOT conflict with other entries in the registry, such as its other versions or its dependents, by redefining the same concepts, such as redefining the URI Scheme, the vocabulary terms, or the default assignments. If a previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
+- <a name="req-redef">Req-Redef</a>: The namespace (prefix and its values) defined in a binding SHALL NOT be redefined or extended in any other binding, e.g., `cov:method` values shall not be extended in LWM2M and `cov:newTerm` shall not be added in LWM2M binding.
+- <a name="req-deps">Req-Deps</a>: If parts of the entry require the existence of another binding, i.e., has dependencies, the dependency MUST first be submitted as a separate entry. For example, before LWM2M can be submitted, the CoAP Binding must exist.

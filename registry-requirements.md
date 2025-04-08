@@ -121,7 +121,7 @@ What does the binding have to contain to go into the table
     - Reading the protocol specification
     - Implementing a non-commercial device/Thing
     - Implementing a non-commercial Consumer application/driver
-    - Conditions for commercial use: E.g. building a commercial product with the binding
+    - Conditions for commercial use, e.g., building a commercial product with the binding
     - Making a statement about your product's supporting that binding
   - If the entry depends on another one, it MUST specify the exact version of the dependency upon which it depends at the time of submission.
   - All the previous versions of the entry MUST be listed as links.

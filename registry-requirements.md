@@ -146,13 +146,13 @@ What does the binding have to contain to go into the table
     - Form Vocabulary Definition as Table
     - Default and possible mappings to operations as a Table
   - Examples
-- <a name="req-docs">Req-Docs</a>: The requirement for the machine-readable documents are as follows:
+- <a name="req-docs">Req-Docs</a>: The requirements for the machine-readable documents are as follows:
   - There MUST be a JSON Schema (version to be defined) that allows validating the elements added by the entry.
   - There SHOULD be a JSON-LD Context and an ontology for the entry.
-  - There MAY be other documents such as code, diagrams, standalone examples, which are helpful for the implementers.
+  - There MAY be other documents which are helpful to implementers, such as code, diagrams, and/or standalone examples.
   - These documents MUST be available to the reviewer.
   - The reviewer MUST include these documents in their review.
-  - All documents associated to the registry entry MUST have the same version string, i.e. all documents should update their version when there is a change.
+  - All documents associated with the registry entry MUST have the same version string, i.e., the versions of all associated documents MUST be updated when there is a change to any of them.
   - The version MUST be a string that is visible in all the documents.
 - <a name="req-confl">Req-Confl</a>: The binding entry SHOULD NOT conflict with other entries in the registry, such as its other versions or its dependents, by redefining the same concepts, such as redefining the URI Scheme, the vocabulary terms, or the default assignments. If a previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
 - <a name="req-redef">Req-Redef</a>: The namespace (prefix and its values) defined in a binding SHALL NOT be redefined or extended in any other binding, e.g., `cov:method` values shall not be extended in LWM2M and `cov:newTerm` shall not be added in LWM2M binding.

@@ -64,8 +64,8 @@ Each entry MUST contain this information, and all parts of the entry MUST not co
     - Reason Behind the Requirement: A binding may not fit newer or older versions of a TD specification (e.g., `readproperty` can become `readprop`, or a new operation can arrive). Thus, when writing a binding, it must be associated with one or more known TD specification versions.
 - <a name="form-stat">Form-Stat</a>: Status: One of Initial, Current, Superseded or Obsolete
 - <a name="form-summ">Form-Summ</a>: Summary Document: Link to the summary document
-- <a name="form-ver">Form-Ver</a>: DISCUSS: Version: A string that denotes the version of the binding that is linked.
-  - What is the versioning scheme we use. See https://github.com/w3c/wot-binding-templates/issues/400
+- <a name="form-ver">Form-Ver</a>: Version: A unique string for that entry's history that denotes the version of the entry that is linked. The version string SHOULD contain a UTC-based date in ISO 8601 format in the form of `YYYY-MM-DD`.
+  
 
 ### Lifecycle
 
@@ -104,6 +104,7 @@ What does the binding have to contain to go into the table
 - <a name="req-contmap">Req-contmap</a>: A binding that uses a serialization format via the `contentType` keyword MUST mention how the Data Schema terms should be used to describe the messages. This avoids submission of a binding like "XML Binding" that says "Use `contentType:application/xml` and nothing more. That alone would not be enough to serialize correct messages based on the data schema.
   - TODO: We will need additional mechanisms (including vocabulary terms) to ensure that it is possible to use other media types.
 - <a name="req-traninit">Req-TranInit</a>: Initial entry MUST be a correct document which complies with [Req-content](#req-content). The reviewer MUST NOT check whether the binding tries to map `readproperty` to a non-existent HTTP method. A successful initial document triggers a "Call for Implementation".
+- <a name="req-changelog">Req-Changelog</a>: Each versioned entry MUST contain a changelog in the entry itself.
 - <a name="req-docsec">Req-DocSec</a>: The WoT binding MAY be just one section of the document. In that case, the "Link to the binding document" in the registry entry MUST point to the specific location. PDF or similar document types MAY be submitted if the "Link to the binding document" in the registry entry contains a text pointing to the section. However, HTML and Webpages SHOULD be favoured.
 - <a name="req-copy">Req-Copy</a>: The WoT binding document DOES NOT have to follow the W3C copyright. The submitter is free to choose based on the process they or their organization follows.
 - <a name="req-openread">Req-OpenRead</a>: The binding document linked in the registry entry SHOULD be open to read, use, and implement, but that is not required for the document be added to the registry.
@@ -120,9 +121,11 @@ What does the binding have to contain to go into the table
     - Reading the protocol specification
     - Implementing a non-commercial device/Thing
     - Implementing a non-commercial Consumer application/driver
-    - Conditions for commercial use: E.g. building a commercial product with the binding
+    - Conditions for commercial use, e.g., building a commercial product with the binding
     - Making a statement about your product's supporting that binding
   - If the entry depends on another one, it MUST specify the exact version of the dependency upon which it depends at the time of submission.
+  - The previous version of the summary document MUST be listed as a link.
+  - If the chronological ordering of the entries is not clear from the version string, the summary document MUST explain the ordering mechanism.
 - <a name="req-trancurr">Req-TranCurr</a>: Transition from "Initial" to "Current"
   - Starting from the initial submission, each binding has to demonstrate a certain level of concrete development maturity. This process involves real-world testing, which can take place in Plugfests, independent testing events, or even informal collaboration between developers. These testing events do not have to be organized by W3C and can be conducted remotely, including over VPN. The goal is to demonstrate that the binding correctly maps protocol operations and is well understood by at least two parties.
   - At each testing event, every operation defined in the binding MUST be validated automatically (e.g., scripts, test suites, etc.) and the results SHOULD be published in a dedicated document (README, or other human-readable documents) called *Test Report*.

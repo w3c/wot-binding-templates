@@ -124,7 +124,8 @@ What does the binding have to contain to go into the table
     - Conditions for commercial use, e.g., building a commercial product with the binding
     - Making a statement about your product's supporting that binding
   - If the entry depends on another one, it MUST specify the exact version of the dependency upon which it depends at the time of submission.
-  - All the previous versions of the entry MUST be listed as links.
+  - The previous version of the summary document MUST be listed as a link.
+  - If the chronological ordering of the entries is not clear from the version string, the summary document MUST explain the ordering mechanism.
 - <a name="req-trancurr">Req-TranCurr</a>: Transition from "Initial" to "Current"
   - Starting from the initial submission, each binding has to demonstrate a certain level of concrete development maturity. This process involves real-world testing, which can take place in Plugfests, independent testing events, or even informal collaboration between developers. These testing events do not have to be organized by W3C and can be conducted remotely, including over VPN. The goal is to demonstrate that the binding correctly maps protocol operations and is well understood by at least two parties.
   - At each testing event, every operation defined in the binding MUST be validated automatically (e.g., scripts, test suites, etc.) and the results SHOULD be published in a dedicated document (README, or other human-readable documents) called *Test Report*.

@@ -148,7 +148,8 @@ What does the binding have to contain to go into the table
   - Examples
 - <a name="req-docs">Req-Docs</a>: The requirements for the machine-readable documents are as follows:
   - There MUST be a JSON Schema (version to be defined) that allows validating the elements added by the entry.
-  - There SHOULD be a JSON-LD Context and an ontology for the entry.
+  - There SHOULD be a JSON-LD Context and an ontology for the entry. Note that the lack of JSON-LD Context creates an RDF representation that will probably cause issues in RDF databases.
+
   - There MAY be other documents which are helpful to implementers, such as code, diagrams, and/or standalone examples.
   - These documents MUST be available to the reviewer.
   - The reviewer MUST include these documents in their review.

@@ -124,6 +124,7 @@ What does the binding have to contain to go into the table
     - Conditions for commercial use, e.g., building a commercial product with the binding
     - Making a statement about your product's supporting that binding
   - If the entry depends on another one, it MUST specify the exact version of the dependency upon which it depends at the time of submission.
+  - The availability of the machine-readable documents MUST be indicated in the summary document using the submission mechanism. Also see [Req-Docs](#req-docs).
   - The previous version of the summary document MUST be listed as a link.
   - If the chronological ordering of the entries is not clear from the version string, the summary document MUST explain the ordering mechanism.
 - <a name="req-trancurr">Req-TranCurr</a>: Transition from "Initial" to "Current"
@@ -148,8 +149,15 @@ What does the binding have to contain to go into the table
     - Form Vocabulary Definition as Table
     - Default and possible mappings to operations as a Table
   - Examples
-- <a name="req-docs">Req-Docs</a>: DISCUSS: What are the required (machine-readable) documents provided on the side?
-  - See https://github.com/w3c/wot-binding-templates/issues/404
+- <a name="req-docs">Req-Docs</a>: The requirements for the machine-readable documents are as follows:
+  - There MUST be a JSON Schema (version to be defined) that allows validating the elements added by the entry.
+  - There SHOULD be a JSON-LD Context and an ontology for the entry. Note that the lack of JSON-LD Context creates an RDF representation that will probably cause issues in RDF databases.
+
+  - There MAY be other documents which are helpful to implementers, such as code, diagrams, and/or standalone examples.
+  - These documents MUST be available to the reviewer.
+  - The reviewer MUST include these documents in their review.
+  - All documents associated with the registry entry MUST have the same version string, i.e., the versions of all associated documents MUST be updated when there is a change to any of them.
+  - The version MUST be a string that is visible in all the documents.
 - <a name="req-confl">Req-Confl</a>: The binding entry SHOULD NOT conflict with other entries in the registry, such as its other versions or its dependents, by redefining the same concepts, such as redefining the URI Scheme, the vocabulary terms, or the default assignments. If a previously stable binding is being improved upon by the same organization, that previous binding MUST be deprecated once the new one reaches the **stable** status.
 - <a name="req-redef">Req-Redef</a>: The namespace (prefix and its values) defined in a binding SHALL NOT be redefined or extended in any other binding, e.g., `cov:method` values shall not be extended in LWM2M and `cov:newTerm` shall not be added in LWM2M binding.
 - <a name="req-deps">Req-Deps</a>: If parts of the entry require the existence of another binding, i.e., has dependencies, the dependency MUST first be submitted as a separate entry. For example, before LWM2M can be submitted, the CoAP Binding must exist.

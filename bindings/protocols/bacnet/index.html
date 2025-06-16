@@ -371,6 +371,14 @@ lowercase = %x61-7A  ; "a" to "z"
                         </td>
                     </tr>
                     <tr>
+                        <td><code>relinquish</code></td>
+                        <td>Indicates that the value at this priority should be deleted/relinquished</td>
+                        <td>optional</td>
+                        <td>
+                            <a href="https://www.w3.org/2019/wot/json-schema#BooleanSchema"><code>boolean</code></a>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><code>covIncrement</code></td>
                         <td>Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a
                             property ID)</td>
@@ -387,7 +395,7 @@ lowercase = %x61-7A  ; "a" to "z"
             </p>
             <p>
                 The following JSON example shows the usage of the BACnet vocabulary for URI Variables, specifically
-                CommandPriority and CovIncrement. The semantic annotation is optional.
+                commandPriority, relinquish and covIncrement. The semantic annotation is optional.
             </p>
             <p>
                 This template could be used to construct the uriVariables element for TD interaction affordances, to
@@ -425,6 +433,11 @@ lowercase = %x61-7A  ; "a" to "z"
             "@type": "bacv:CovIncrement",
             "type": "number",
             "minimum": 0
+        },
+        "relinquish": {
+            "@type": "bacv:Relinquish",
+            "type": "boolean",
+            "default": false
         }
     }  
 }
@@ -449,7 +462,8 @@ lowercase = %x61-7A  ; "a" to "z"
                             <a
                                 href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
                             <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>,
-                                <code>"SubscribeCOV"</code>, <code>"GetEventInfo"</code>, <code>"AcknowledgeAlarm"</code>,
+                                <code>"SubscribeCOV"</code>, <code>"GetEventInfo"</code>,
+                                <code>"AcknowledgeAlarm"</code>,
                                 <code>"AddListElement"</code>, <code>"RemoveListElement"</code>)
                             </p>
                         </td>
@@ -583,7 +597,7 @@ lowercase = %x61-7A  ; "a" to "z"
                     <tr>
                         <td><code>writeproperty</code></td>
                         <td><code>"bacv:usesService": "WriteProperty"</code></td>
-                        <td>CommandPriority</td>
+                        <td>commandPriority, relinquish</td>
                     </tr>
                     <tr>
                         <td><code>observeproperty</code></td>
@@ -1396,15 +1410,22 @@ lowercase = %x61-7A  ; "a" to "z"
         <p>
             [[[#example-uri-variable-for-writing]]] demonstrates how the <code>uriVariable</code> in the
             affordance-level can be used to model a writing priority in a <code>forms</code> element.
-            The <code>"bacv:commandPriority"</code> indicates that the URI variable set by the Consumer application will
-            be relayed as the priority argument in the WriteProperty request.
-            For other operations (readproperty, observeproperty, unobserveproperty) this URI variable is irrelevant, so the corresponding forms do not use the URI variable.
-            If the URI variable is also irrelevant for the writeproperty operation (e.g., when the BACnet object doesn't have a priority array),
-            it can also be left out of the writeproperty form and the URI variable can be omitted completely.
-            The URI variable comes with a default, so if the Consumer doesn't provide this URI variable, the default of 16 will be used.
+            The <code>"bacv:CommandPriority"</code> indicates that the URI variable set by the Consumer application will
+            be relayed as the priority argument in the WriteProperty request. And <code>"bacv:Relinquish"</code> indicates if the user wants to relinquish the property value at the given command priority.
+            For other operations (readproperty, observeproperty, unobserveproperty) these URI variables are irrelevant, so the corresponding forms do not use them.
+            If the URI variables are also irrelevant for the writeproperty operation (e.g., when the BACnet object doesn't have a priority array),
+            they can also be left out of the writeproperty form and the URI variables can be omitted completely.
+            The URI variables come with defaults, so if the Consumer doesn't provide them, the defaults of writePriority=16 and relinquish=false will be used.
             Another possibility is to fix the writing priority in the TD by giving a fixed commandPriority in the <code>href</code> of the form, and not exposing its value via a URI variable.
             These decisions belong to the TD author.
         </p>
+
+        <div class="note">
+            <p>
+                When relinquish is set to true, WoT consumer will ignore the value given to the writeproperty operation and write NULL instead. This clears the value at the specified priority,
+                and is the only way of allowing a lower priority to take effect.
+            </p>
+        </div>
 
         <pre id="example-uri-variable-for-writing" class="example"
             title="uriVariables in the Affordance Level for writing">
@@ -1422,10 +1443,15 @@ lowercase = %x61-7A  ; "a" to "z"
                         "observable": true,
                         "uriVariables": {
                             "writePriority": {
-                                "@type": "bacv:commandPriority",
+                                "@type": "bacv:CommandPriority",
                                 "type": "integer",
                                 "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
                                 "default": 16
+                            },
+                            "relinquish": {
+                                "@type": "bacv:Relinquish",
+                                "type": "boolean",
+                                "default": false
                             }
                         },
                         "forms": [
@@ -1439,7 +1465,7 @@ lowercase = %x61-7A  ; "a" to "z"
                             },
                             {
                                 "op": [ "writeproperty" ],
-                                "href": "bacnet://5/2,1?commandPriority={writePriority}",
+                                "href": "bacnet://5/2,1?commandPriority={writePriority}{&relinquish}",
                                 "contentType": "application/octet-stream",
                                 "bacv:usesService": "WriteProperty",
                                 "bacv:hasDataType": {

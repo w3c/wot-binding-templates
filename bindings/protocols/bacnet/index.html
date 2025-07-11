@@ -1412,12 +1412,12 @@ lowercase = %x61-7A  ; "a" to "z"
             affordance-level can be used to model a writing priority in a <code>forms</code> element.
             The <code>"bacv:CommandPriority"</code> indicates that the URI variable set by the Consumer application will
             be relayed as the priority argument in the WriteProperty request. <code>"bacv:Relinquish"</code> indicates whether the user wants to relinquish the property value at the given command priority.
-            For other operations (e.g., `readproperty`, `observeproperty`, `unobserveproperty`) these URI variables are irrelevant, so the corresponding forms do not use them.
-            If the URI variables are also irrelevant for the `writeproperty` operation (e.g., when the BACnet object doesn't have a priority array),
-            they can also be left out of the `writeproperty` form, and the URI variables can be omitted completely.
+            For other operations (e.g., <code>readproperty</code>, <code>observeproperty</code>, <code>unobserveproperty</code>) these URI variables are irrelevant, so the corresponding forms do not use them.
+            If the URI variables are also irrelevant for the <code>writeproperty</code> operation (e.g., when the BACnet object doesn't have a priority array),
+            they can also be left out of the <code>writeproperty</code> form, and the URI variables can be omitted completely.
             The URI variables come with defaults,
-            so if the Consumer doesn't provide them, the defaults of `writePriority=16` and `relinquish=false` will be used.
-            Another possibility is to fix the writing priority in the TD by giving a fixed `commandPriority` in the <code>href</code> of the form, and not exposing its value via a URI variable.
+            so if the Consumer doesn't provide them, the defaults of <code>writePriority=16</code> and <code>relinquish=false</code> will be used.
+            Another possibility is to fix the writing priority in the TD by giving a fixed <code>commandPriority</code> in the <code>href</code> of the form, and not exposing its value via a URI variable.
             These decisions belong to the TD author.
         </p>
 

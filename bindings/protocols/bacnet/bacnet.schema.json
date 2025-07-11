@@ -330,10 +330,10 @@
                 "items": {
                   "$ref": "#/definitions/eventPayload"
                 }
+              },
+              "moreEvents": {
+                "type": "boolean"
               }
-            },
-            "moreEvents": {
-              "type": "boolean"
             },
             "required": [
               "currentEvents",
@@ -367,9 +367,9 @@
                   "ackTime": {
                     "type": "string",
                     "format": "date-time"
-                  },
-                  "required": ["source", "ackState", "eventTime", "ackSource", "ackTime"]
-            }
+                  }
+            },
+            "required": ["source", "ackState", "eventTime", "ackSource", "ackTime"]
         },
         "affordance": {
             "type": "object",

@@ -43,7 +43,7 @@ Wherever possible, this model refers to ANSI/ASHRAE Standard 135-2020 for BACnet
 
 hctl:hasTarget rdfs:comment """
 Should be of form bacnet://<device>/<objecttypenr>,<objectinsttr>[/<property>[/<index>]]
-Additional parameters can be specified via URI variable syntax, e.g. ?commandPriority=13 for command priority or ?covIncrement=0.5 for COV increment
+Additional parameters can be specified via URI variable syntax, e.g., `?commandPriority=13` to change command priority, `?relinquish` to relinquish a priority, or `?covIncrement=0.5` to increment COV.
 """@en ;
                rdfs:seeAlso "ASHRAE 135-2020 BACnet Q.8 BACnet URI Scheme" .
 
@@ -103,8 +103,18 @@ bacv:CommandPriority rdf:type owl:Class ;
                            # Default priority for writing is 16, ref. ASHRAE 135-2020 BACnet 15.9.1.1.5 Priority
                            owl:hasValue 16
                        ] ;
-                       rdfs:comment "Specifies the writing priority for BACnet objects with commanding, i.e. priority array."@en ;
+                       rdfs:comment "Specifies the writing priority for BACnet objects with commanding, i.e., priority array."@en ;
                        rdfs:seeAlso "ASHRAE 135-2020 BACnet 19.2 Command Prioritization" .
+
+bacv:Relinquish rdf:type owl:Class ;
+                rdfs:subClassOf jsonschema:BooleanSchema ;
+                rdfs:subClassOf [
+                    a owl:Restriction ;
+                    owl:onProperty jsonschema:default ;
+                    owl:hasValue false
+                ] ;
+                rdfs:comment "Specifies that the value at this priority should be deleted/relinquished by writing NULL to this priority."@en ;
+                rdfs:seeAlso "ASHRAE 135-2020 BACnet 19.2 Command Prioritization" .
 
 #################################################################
 #    Type information properties

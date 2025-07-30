@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "anyOf": [
     {
-      "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/tm-json-schema-validation.json"
+      "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
     }
   ],
   "definitions": {

@@ -19,15 +19,23 @@
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/",
             shortName: "wot-modbus-binding",
             github: "https://github.com/w3c/wot-binding-templates",
-            otherLinks: [
+            otherLinks: [{
+              key: "WoT Bindings Registry",
+              data: [
+                  {
+                      value: "Web of Things (WoT) Bindings Registry",
+                      href: "https://w3c.github.io/wot-bindings-registry/"
+                  }
+              ]
+              },
               {
-                key: "Core Binding Templates Specification",
-                data: [
-                    {
-                    value: "Web of Things (WoT) Binding Templates",
-                    href: "../../../index.html"
-                    }
-                ]
+                  key: "Bindings Section of the TD Specification",
+                  data: [
+                      {
+                          value: "Explanation of the binding mechanism",
+                          href: " https://w3c.github.io/wot-thing-description/#bindings"
+                      }
+                  ]
               },
               {
                   key: "Ontology",
@@ -47,19 +55,29 @@
                       }
                   ]
               }
-            ]
+            ],
+            localBiblio: {
+                "WOT-BINDINGS-REGISTRY": {
+                    title: "Web of Things (WoT) Bindings Registry",
+                    //, href: "https://www.w3.org/TR/wot-bindings-registry/"
+                    href: "https://w3c.github.io/wot-bindings-registry/",
+                    authors: ["TODO"], //TODO: sync authors
+                    publisher: "W3C",
+                    date: "TODO" //TODO: Add publication date
+                }
+            }
         };
     </script>
-    <title>Web of Things (WoT) Modbus Binding Template</title>
+    <title>Web of Things (WoT) Modbus Binding</title>
 </head>
 
 <body>
     <section id='abstract'>
         <p>
-            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to 
+            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to 
             implement a specific IoT protocol, data format or IoT platform.
-            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to follow.
-            This document gives implementation guidelines regarding the Modbus protocol, which is a well-known 
+            The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
+            This document is a binding for the Modbus protocol, which is a well-known 
             cost-effective IoT protocol for communication between industrial control and automation devices. 
         </p>
         <p>
@@ -141,7 +159,7 @@
     <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
         This section describes the vocabulary used in the Modbus protocol. 
-        A protocol binding template implementation should use the vocabulary defined in this section to
+        A Modbus binding implementation should use the vocabulary defined in this section to
         describe the different configuration that can be used to exchanged data between Web of Things.
         <section>
             <h3>URL terms</h3>
@@ -178,7 +196,7 @@
             </table>
             <p>
                 The <code>modv:mostSignificantByte</code> and <code>modv:mostSignificantWord</code> properties within the Modbus
-                binding template define the byte and word order of data within Modbus messages. In Modbus
+                binding define the byte and word order of data within Modbus messages. In Modbus
                 communication, the arrangement of bytes and words may vary between systems, and these properties provide a
                 declarative way to capture such configurations. For instance, in Big-Endian byte order (e.g., AABBCC), the most
                 significant byte comes first, and setting <code>modv:mostSignificantByte</code> to true ensures the correct
@@ -237,7 +255,7 @@
         <section id="payloaddatatype">
             <h3>Payload DataType</h3>
             <p>
-                The <code>PayloadDataType</code> class within the Modbus Binding Template serves as value for the <code>modv:type</code> property to specify
+                The <code>PayloadDataType</code> class within a Modbus binding instance serves as value for the <code>modv:type</code> property to specify
                 the expected data types of payload content in Modbus messages. It offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to
                 cover the most common data types used in Modbus messages. Note that the <code>PayloadDataType</code> 
                 entity is designed for describing established conventions in the Modbus ecosystem, further development might remove this 
@@ -257,7 +275,7 @@
             <h3>Default mappings</h3>
             <p>
                 The following table lists the default mappings between the protocol specific concepts and the WoT concepts. Please note that operations that are not
-                listed in the table are not supported by this binding template. For example, since the Modbus protocol is a request-response based protocol, the
+                listed in the table are not supported by this binding. For example, since the Modbus protocol is a request-response based protocol, the
                 <code>subscribeevent</code> operation is not supported.
             <table class="def">
                 <thead>

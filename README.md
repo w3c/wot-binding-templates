@@ -47,7 +47,7 @@ This is done through additional descriptive vocabularies, Thing Models and examp
   - [PROFINET Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html)
   - [XML Binding Template](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
 
-You can find other related document below:
+You can find other related documents below:
 
 - [WoT Bindings Registry](https://w3c.github.io/wot-bindings-registry/)
 - [Explanation of the Binding Mechanism](https://w3c.github.io/wot-thing-description/#bindings)

@@ -3,14 +3,83 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
     <title>Web of Things (WoT) Binding Templates</title>
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove" defer></script>
+    <script class="remove">
+        var respecConfig = {
+            specStatus: "ED",
+            processVersion: 2017,
+            shortName: "wot-binding-templates",
+            copyrightStart: 2017,
+            group: "wg/wot",
+            noRecTrack: true,
+            wgPublicList: "public-wot-wg",
+            edDraftURI: "https://w3c.github.io/wot-binding-templates/",
+            github: "https://github.com/w3c/wot-binding-templates",
+            issueBase: "https://www.github.com/w3c/wot-binding-templates/issues",
+            editors: [{
+                name: "Michael Koster",
+                w3cid: "110658",
+                company: "Invited Expert",
+                companyURL: "https://github.com/mjkoster/"
+            },
+            {
+                name: "Ege Korkan",
+                w3cid: "110131",
+                company: "Siemens AG",
+                companyURL: "https://www.siemens.com/"
+            }
+            ],
+            otherLinks: [{
+                key: "Contributors",
+                data: [{
+                    value: "In the GitHub repository",
+                    href: "https://github.com/w3c/wot-binding-templates/graphs/contributors"
+                }]
+            }, {
+                key: "Repository",
+                data: [{
+                    value: "We are on GitHub",
+                    href: "https://github.com/w3c/wot-binding-templates/"
+                }, {
+                    value: "File a bug",
+                    href: "https://github.com/w3c/wot-binding-templates/issues"
+                }]
+            }]
+        };
+    </script>
 </head>
 
 <body>
-    <h1>WoT Binding Templates</h1>
-
-    <section id="pointers">
-        <h2>Note</h2>
+    
+    <section id="abstract">
+        <p>
+            W3C Web of Things enables applications to interact with and orchestrate connected Things at the Web scale.
+            The standardized abstract interaction model exposed by the WoT Thing Description enables applications to
+            scale and evolve independently of the individual Things.
+        </p>
+        <p>
+            Many network-level protocols, standards and platforms for connected Things have already been developed, and
+            have millions of devices deployed in the field today. These standards are converging on a common set of
+            transport
+            protocols and transfer layers, but each has peculiar content formats, payload schemas, and data types.
+        </p>
+        <p>
+            Despite using unique formats and data models, the high-level interactions exposed by most connected things
+            can be modeled using the Property, Action, and Event interaction affordances of the WoT Thing Description.
+        </p>
+        <p>
+            Binding Templates (now called just Bindings) enable a Thing Description to be adapted to a specific protocol, data payload formats or
+            platforms that combine both in specific ways.
+            This is done through additional descriptive vocabularies, Thing Models and examples that aim to guide the
+            implementors of Things and Consumers alike.
+        </p>
+        <p>
+            This retired document used to provide information about these bindings. Please read the Status of this Document section to learn more.
+        </p>
+    </section>
+    <section id="sotd">
 
         <p>
             The contents of this document will continue to live in other ways in the future. 
@@ -33,6 +102,9 @@
             </li>
         </ul>
 
+    </section>
+
+    <section id="conformance">
     </section>
 
 </body>

@@ -26,7 +26,7 @@ General information about the Web of Things can be found on https://www.w3.org/W
   
 ---
 
-Bindings enable a Thing Description to be adapted to a specific protocol and/or data payload formats.
+Bindings enable a Thing Description to be adapted to a specific protocol and/or data payload format.
 This is done through additional descriptive vocabularies, Thing Models and examples that aim to guide the implementors of Things and Consumers alike.
 
 ## Logistics

@@ -24,7 +24,7 @@
     vann:preferredNamespacePrefix "mqv" ;
     vann:preferredNamespaceUri : ;
     rdfs:comment "Vocabulary to map and validate MQTT concepts to the standard Thing Interaction model."@en ;
-    rdfs:label "MQTT protocol binding template"@en .
+    rdfs:label "MQTT protocol binding"@en .
 
 :MQTTFormShape a sh:NodeShape ;
     sh:targetClass hctl:Form ;

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+        <script class="remove">
+            var respecConfig = {
+                specStatus: "ED",
+                editors: [
+                    {
+                        name: "Etienne Rossignon (Sterfive)",
+                        // w3cid: "1232",
+                    },
+                ],
+                edDraftURI: "https://w3c.github.io/wot-binding-templates/opcua",
+                shortName: "opcua",
+            };
+        </script>
+        <title>OPCUA binding</title>
+    </head>
+
+    <body>
+        <section id="abstract">
+            <p>This document describes how to map the OPCUA protocol to the W3C Web of Things.</p>
+        </section>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p class="ednote"></p>
+        </section>
+        <section id="sotd">
+            <p>
+                <!-- This section describes the status of this document at the time of its publication.-->
+                <em>This document is a work in progress</em>
+            </p>
+        </section>
+        <section id="url">
+            <h2>URL format</h2>
+            <!--TODO: Describe the URL format of the protocol binding. Provide syntax and examples.-->
+            <p>
+                The URL format use the same syntax as per the endpoint in OPCUA. A endpoint physical address available on a network
+                that allows Clients to access one or more Services provided by a Server.
+            </p>
+
+            <pre>opc.tcp://hostname:2655/OPC/Service</pre>
+
+            <p>The supported protocols are "opc.tcp" and "opcua+uacp"</p>
+            <table class="def">
+                <thead>
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Description</th>
+                        <th>Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>opc.tcp</td>
+                        <td>
+                            <p>
+                                <em>OPC UA over TCP</em>
+                            </p>
+                        </td>
+                        <td><a href="https://reference.opcfoundation.org/Core/docs/Part6/7.2/">OPC UA over TCP</a></td>
+                    </tr>
+                    <tr>
+                        <td>opcua+uacp</td>
+                        <td>OPC UA over WebSocket with binary encoding</td>
+                        <td>
+                            <a href="https://reference.opcfoundation.org/v104/Core/docs/Part6/7.5.2/">OPC UA over WebSockets</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>opcua+uajson</td>
+                        <td>OPC UA over WebSocket with JSON encoding</td>
+                        <td>
+                            <a href="https://reference.opcfoundation.org/v104/Core/docs/Part6/7.5.2/">OPC UA over WebSockets</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="vocabulary">
+            <h2>OPCUA Vocabulary</h2>
+            <p class="ednote">TODO: Introduce briefly the vocabulary</p>
+            <section>
+                <h3>Form terms</h3>
+                <p class="ednote">
+                    TODO: Describe the allowed terms in a form that use this binding. Provide the terms using the table structure
+                </p>
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Vocabulary term</th>
+                            <th>Description</th>
+                            <th>Assignment</th>
+                            <th>Type</th>
+                        </tr>
+                        <tr>
+                            <td><code>opcua:nodeId</code></td>
+                            <td>refers to a node in the server address space to read write or subscribe to</td>
+                            <td>mandatory</td>
+                            <td>string</td>
+                        </tr>
+                        <tr>
+                            <td><code>opcua:method</code></td>
+                            <td>refers to a node in the server address space that indicates the method to call during an action</td>
+                            <td>mandatory</td>
+                            <td>string</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <section id="additional">
+                <h2>Additional terms</h2>
+                <!-
+                    Bindings may introduce domain specific concepts or data types. Add a dedicated section for each domain specific
+                    term. If the term can have a finite set of values fill the table below to describe the possibilities.
+            -->
+                <h3>opcua:nodeId</h3>
+                <p>A opcua:nodeId could be provided using different format: string, nodeId, or browse path.</p>
+                <section>
+                    <h5>string form</h5>
+                    <p><code>ns=&lt;namespaceIndex&gt;;&lt;type&gt;=&lt;value&gt;</code></p>
+                    <p>where:</p>
+                    <ul>
+                        <li>
+                            <code>&lt;namespaceIndex&gt</code> is a numeric value representing the index of the corresponding
+                            namespace in the namespace array of the server.
+                        </li>
+                        <li>
+                            the <code>ns=&lt;namespaceIndex&gt;;</code> can be omitted if the namespace is the default namespace.
+                        </li>
+                        <li>
+                            <code>&lt;type&gt;</code> is either i,s,g, or b
+                            <ul>
+                                <li>i : NUMERIC (UInt32)</li>
+                                <li>s : STRING (string)</li>
+                                <li>g : GUID (Guid)</li>
+                                <li>b : OPAQUE (ByteString)</li>
+                            </ul>
+                        </li>
+                        <li><code>&lt;value&gt;</code> depends on <code>&lt;type&gt;</code></li>
+                    </ul>
+                    <table class="def" title="Entity values">
+                        <thead>
+                            <tr>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>"ns=1;s=Temperature"<br /></td>
+                            </tr>
+                            <tr>
+                                <td>"i=2258"<br /></td>
+                            </tr>
+                            <tr>
+                                <td>"ns=10;i=1234"<br /></td>
+                            </tr>
+                            <tr>
+                                <td>"ns=10;s=Hello:World"<br /></td>
+                            </tr>
+                            <tr>
+                                <td>"g=09087e75-8e5e-499b-954f-f2a9603db28a"</td>
+                            </tr>
+                            <tr>
+                                <td>"ns=1;b=M/RbKBsRVkePCePcx24oRA=="</td>
+                            </tr>
+                            <tr>
+                                <td>"ns=1;s=\"QuotedString\""</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    The exact syntax is defined in
+                    <a href="https://reference.opcfoundation.org/Core/docs/Part6/5.3.1/">NodeId as string</a> section of the OPC UA
+                    Reference.
+
+                    <p class="note">
+                        see reference to NodeId definition in the opcua reference
+                        <a href="https://reference.opcfoundation.org/v104/Core/docs/Part6/5.2.2/#Table5<">
+                            https://reference.opcfoundation.org/v104/Core/docs/Part6/5.2.2/#Table5</a
+                        >
+                    </p>
+                </section>
+                <section>
+                    <h5>browse path</h5>
+                    <p>
+                        A browse path is constructed of a starting node and a path. The specified starting Node identifies the node
+                        from which the relative path is based. the path contains a sequence of
+                    </p>
+                    <p class="example">
+                        <code> { root: "i=84", path: "/Objects/1:MySensor/2:ParameterSet/1:Temperature"} </code>
+                    </p>
+                    <p>the client will use the TranslateBrowsePathsToNodeIds service to translate the browse path to a nodeId.</p>
+                    <p>
+                        The path string following the description the text format for a RelativePath specified in
+                        <a href="https://reference.opcfoundation.org/v104/Core/docs/Part4/A.1/"
+                            >BNF representation of a RelativePath</a
+                        >
+                    </p>
+
+                    The table <em>RelativePath Examples Browse Path Description</em> from the OPC UA Reference is reproduced below for convenience.
+
+                    <table class="def" >
+                        <thead>
+                            <tr>
+                                <th>Browse Path</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>“/2:Block&.Output”</code></td>
+                                <td>Follows any forward hierarchical Reference with target BrowseName = “2:Block.Output”.</td>
+                            </tr>
+                            <tr>
+                                <td><code>“/3:Truck.0:NodeVersion”</code></td>
+                                <td> Follows any forward hierarchical Reference with target BrowseName =
+                                “3:Truck” and from there a forward Aggregates Reference to a target with BrowseName “0:NodeVersion”.</td>
+                            </tr>
+                            <tr>    
+                                <td><code>“&lt;1:ConnectedTo&gt;1:Boiler/1:HeatSensor”</code>
+                                    </td>
+                               <td>Follows any forward Reference with a BrowseName =
+                                ‘1:ConnectedTo’ and finds targets with BrowseName = ‘1:Boiler’. From there follows any hierarchical
+                                Reference and find targets with BrowseName = ‘1:HeatSensor’. 
+                                </td> 
+                            </tr>
+                            <tr>
+                                <td><code>“&lt;1:ConnectedTo&gt;1:Boiler/”</code></td> 
+                                <td>Follows any
+                                forward Reference with a BrowseName = ‘1:ConnectedTo’ and finds targets with BrowseName =
+                                ‘1:Boiler’. From there it finds all targets of hierarchical References. 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>“&lt;0:HasChild&gt;2:Wheel”</code></td>
+                                <td>
+                                Follows any forward Reference with a BrowseName = ‘HasChild’ and qualified with the default OPC UA
+                                namespace. Then find targets with BrowseName = ‘Wheel’ qualified with namespace index ‘2’. 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>“&lt;!HasChild&gt;Truck”</code></td>
+                                <td>
+                                Follows any inverse Reference with a BrowseName = ‘HasChild’. Then find targets with BrowseName =
+                                ‘Truck’. In both cases, the namespace component of the BrowseName is assumed to be 0. “&lt;0:HasChild&gt;”
+                                Finds all targets of forward References with a BrowseName = ‘HasChild’ and qualified with the
+                                default OPC UA namespace.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <table class="def" title="Entity values">
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </section>
+        <section id="mapppings">
+            <h2>Mappings</h2>
+            This section describes the strategies and default values to use protocol specific concepts within the
+            <a>WoT Interaction model</a>.
+
+            <section id="defautl-mappings">
+                <h3>Default mappings</h3>
+                <p class="ednote">Map WoT Interaction model verbs to default values if any</p>
+                <table class="def">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Default Biding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>readproperty</code></td>
+                            <td>
+                                <code>
+                                    <a href="https://reference.opcfoundation.org/v104/Core/DataTypes/ReadRequest/">Read</a>
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>writeproperty</code></td>
+                            <td>
+                                <code
+                                    ><a href="https://reference.opcfoundation.org/v104/Core/DataTypes/WriteRequest/">Write</a>
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>subscribe</code></td>
+                            <td>
+                                <code>
+                                    <a href="https://reference.opcfoundation.org/v104/Core/DataTypes/CreateMonitoredItemsRequest/"
+                                        >CreateMonitoredItems</a
+                                    >
+                                </code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section id="possible-mappings">
+                <h3>Possible mappings</h3>
+                <p class="ednote">
+                    TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
+                    informative but it provides guidelines for implementers.
+                </p>
+            </section>
+        </section>
+        <section>
+            <h2>Codec</h2>
+            <p>
+                the OPCUA-JSON codec payload format follow the OPCUA JSON data encoding format defined in
+                <a hr="https://reference.opcfoundation.org/Core/docs/Part6/5.4.1/"
+                    >reference.opcfoundation.org/Core/docs/Part6/5.4.1</a
+                >
+            </p>
+            <p></p>
+        </section>
+
+        <section>
+            <h2>Examples</h2>
+            <!--
+                TODO: Provide a compressive list of examples about how this binding template can be used within forms or Thing
+                Descriptions
+        -->
+            <pre>
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "@type": ["Thing"],
+
+    securityDefinitions: { nosec_sc: { scheme: "nosec" } },
+    security: "nosec_sc",
+
+    title: "servient",
+    description: "node-wot CLI Servient",
+
+    opcua: {
+        namespace: [
+            "http://opcfoundation.org/UA", 
+            "own", 
+            "http://opcfoundation.org/UA/DI/"
+        ]
+    },
+    base: "opc.tcp://localhost:26543",
+    properties: {
+        Temperature: {
+            description: "the temperature in the room",
+            observable: true,
+            readOnly: true,
+            unit: "°C",
+            "opcua:nodeId": { root: "i=84", path: "/Objects/1:MySensor/2:ParameterSet/1:Temperature" },
+            forms: [
+                {
+                    type: "object",
+                    href: "", // endpoint,
+                    op: ["readproperty", "observeproperty"],
+                },
+                {
+                    type: "number",
+                    href: "", // endpoint,
+                    op: ["writeproperty"],
+                },
+            ],
+        },
+        TemperatureSetPoint: {
+            description: "the temperature set point",
+            observable: true,
+            readOnly: false,
+            unit: "°C",
+            forms: [
+                {
+                    type: "object",
+                    href: endpoint,
+                    op: ["readproperty", "observeproperty", "writeproperty"],
+                    "opcua:nodeId": { root: "i=84", path: "/Objects/1:MySensor/2:ParameterSet/1:TemperatureSetPoint" },
+                },
+            ],
+        },
+    }
+}
+        </pre
+            >
+        </section>
+    </body>
+</html>

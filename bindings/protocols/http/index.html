@@ -264,15 +264,13 @@
         To interact with a <a>Thing</a> that implements the <a>Protocol Binding</a> based on HTTP, a <a>Consumer</a>
         needs to know what HTTP method to use when performing a WoT operation. In the general case, a Thing Description can
         explicitly include a term indicating the method, i.e.,
-        <code>htv:methodName</code>. For the sake of conciseness, the <a>Protocol Binding</a> based on HTTP defines
+        <code>htv:methodName</code>. For the sake of conciseness, the HTTP <a>Protocol Binding</a> defines
         Default Values for the operation types listed below, which also aims at convergence of the methods
         expected by <a>Things</a> (e.g., GET to read, PUT to write).
     </p>
-    
-    <!-- TODO: This was an assertion in the TD spec -->
-    <p class="note">
-        When no method is indicated in a form representing an <a>Protocol Binding</a> based on HTTP, a
-        Default Value MUST be assumed as shown in the following table.
+
+    <p>
+        As required by the [[WOT-THING-DESCRIPTION]], when the terms are not present in a form of a TD Affordance, containing an HTTP URI Scheme, the defaults in the following table apply.
     </p>
 
     <table class="def">
@@ -406,17 +404,8 @@
 </aside>
 
 <p>
-    In the case of a <code>form</code> with multiple <code>op</code> values,
-    <code>htv:methodName</code> SHOULD NOT be used. A <a>Consumer</a> will extend the multiple
-    <code>op</code> values to separate <code>forms</code> entries and associates a single operation with the
-    default assumption. The address information (e.g. <code>href</code>) and other metadata are taken over in
-    the extended version. If the form does not use the default values, multiple forms SHOULD be created with 
-    an <code>htv:methodName</code> associated to a single <code>op</code> value.
-</p>
-
-<p>
-    The following TD example shows how a single form can be extended to two forms to explicitly include 
-    the <code>htv:methodName</code> values.
+    As required by the [[WOT-THING-DESCRIPTION]], when there multiple <code>op</code> values, the form is extended by the Consumer.
+    The following TD example shows how a single form can be extended to two forms to explicitly include the <code>htv:methodName</code> values.
 </p>
 
 <aside class="example with-default">

@@ -202,10 +202,15 @@
         RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This vocabulary can
         be directly used within TD instances by the usage of the prefix <code>htv</code>, which points to
         <code>http://www.w3.org/2011/http#</code>.
-        Here, the relevant vocabulary terms are provided for convenience.
     </p>
 
-      <table class="def">
+    <p>
+        On the other hand, going forward, the new version of Thing Description specification does not include the HTTP vocabulary by default.
+        Thus, newer TDs need to explicitly include the HTTP vocabulary in the <code>@context</code> field of the TD.
+        Examples after the table illustrate how to include the HTTP vocabulary in the TD.
+    </p>
+
+      <table class="def" id="table-http-vocab-terms">
         <thead>
           <tr>
             <th>Vocabulary term</th>
@@ -252,7 +257,94 @@
           </tr>
         </tbody>
       </table>
+      
+      <p>
+        In the example below, the usage of the HTTP vocabulary terms is illustrated.
+        Note that the HTTP vocabulary is explicitly included in the <code>@context</code> field of the TD.
+        Furthermore, the <code>humidity</code> property shows how to use multiple forms to express different content types, where the Consumer needs to include the right content type in the <code>Accept</code> header.
+      </p>
+
+        <pre class="example" id="binding-http-usage-1" title="TD with HTTP vocabulary included in @context">
+{
+  "@context": ["http://w3.org/ns/td", 
+    {"htv":"http://www.w3.org/2011/http#"}
+  ],
+  "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
+  "title": "MyLampThing",
+  ...
+  "properties": {
+    "temperature": {
+      "type": "string",
+      "forms": [
+        {
+          "href": "http://example.com/properties/temperature",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        }
+      ]
+    },
+    "humidity": {
+      "type": "string",
+      "forms": [
+        {
+          "href": "http://example.com/properties/humidity",
+          "op": "readproperty",
+          "htv:methodName": "GET",
+          "contentType": "application/json",
+          "htv:headers": [
+            {
+              "@type": "htv:RequestHeader",
+              "htv:fieldValue": "application/json",
+              "htv:fieldName": "Accept"
+            }
+          ]
+        },
+        {
+          "href": "http://example.com/properties/humidity",
+          "op": "readproperty",
+          "htv:methodName": "GET",
+          "contentType": "application/cbor",
+          "htv:headers": [
+            {
+              "@type": "htv:RequestHeader",
+              "htv:fieldValue": "application/cbor",
+              "htv:fieldName": "Accept"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "actions": {
+    "toggle": {
+      "forms": [
+        {
+          "op": "invokeaction",
+          "href": "https://mylamp.example.com/actions/toggle",
+          "htv:methodName": "POST"
+        }
+      ]
+    }
+  },
+  "events": {
+    "error": {
+      "data": {
+        "type": "string"
+      },
+      "forms": [
+        {
+          "op": "subscribeevent",
+          "href": "https://mylamp.example.com/events/error",
+          "subprotocol": "longpoll"
+        }
+      ]
+    }
+  }
+}
+        </pre>
+
     </section>
+
     <section>
       <h4>HTTP Default Vocabulary Terms</h4>
 
@@ -316,7 +408,7 @@
     based on the table above:
 </p>
 
-<aside class="example with-default">
+<aside class="example with-default" id="example-http-defaults" title="TD with and without default HTTP method names">
     <div class="with-default-control">
         <input type="checkbox" />
         <span><i>with default values for HTTP Protocol Binding</i></span>
@@ -405,7 +497,7 @@
     The following TD example shows how a single form can be extended to two forms to explicitly include the <code>htv:methodName</code> values.
 </p>
 
-<aside class="example with-default" id="example-http-multiform-op">
+<aside class="example with-default" id="example-http-multiform-op" title="TD with and without extended forms for multiple operations">
     <div class="with-default-control">
         <input type="checkbox" />
         <span><i>extended <code>forms</code> in case of multiple values in <code>op</code></i></span>

@@ -9,11 +9,11 @@
             specStatus: "ED",
             group: "wg/wot",
             editors: [
-                { 
-                    name: "Cristiano Aguzzi", 
-                    w3cid: "105495", 
-                    company: "Invited Expert", 
-                    companyURL: "https://github.com/relu91" 
+                {
+                    name: "Cristiano Aguzzi",
+                    w3cid: "105495",
+                    company: "Invited Expert",
+                    companyURL: "https://github.com/relu91"
                 }
             ],
             edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/",
@@ -74,16 +74,16 @@
 <body>
     <section id='abstract'>
         <p>
-            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to 
+            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to
             implement a specific IoT protocol, data format or IoT platform.
             The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
-            This document is a binding for the Modbus protocol, which is a well-known 
-            cost-effective IoT protocol for communication between industrial control and automation devices. 
+            This document is a binding for the Modbus protocol, which is a well-known
+            cost-effective IoT protocol for communication between industrial control and automation devices.
         </p>
         <p>
-            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document, 
+            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document,
             and associated rules which allow to describe WoT operations using the Modbus protocol over the network.
-            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
+            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
         </p>
     </section>
     <section id='sotd'>
@@ -109,18 +109,18 @@
         <p>
             The physical layer can be RS485 differential bus which has less susceptibility to the EMC interference.
             This limits the usability of the protocol in short distance networks, typically within a kilometer.
-            However, when Internet access is needed, it is encapsulated in TCP (called Modbus TCP) with Ethernet as the physical layer. 
-            Thanks to this encapsulation strategy, the Modbus protocol can reach remote nodes deployed in distant facilities over the Internet. 
-            Moreover, over the years, due to its simplicity and cost-effectiveness the Modbus protocol became a standard all over the world. 
+            However, when Internet access is needed, it is encapsulated in TCP (called Modbus TCP) with Ethernet as the physical layer.
+            Thanks to this encapsulation strategy, the Modbus protocol can reach remote nodes deployed in distant facilities over the Internet.
+            Moreover, over the years, due to its simplicity and cost-effectiveness the Modbus protocol became a standard all over the world.
             This popularity, together with the advancement of the microcontroller/microprocessor, has led to a shift on how applications pack the information.
             Today it is usual to store and read any type of data in the Holdings Registers like bits, bytes, strings, floats etc.
         </p>
         <p>
             Concretely, this document describes how WoT TDs can be used to describe devices that use the Modbus TCP protocol.
             Other versions of Modbus can be incorporated into this document in the future.
-            In particular, the document explain how to create valid URLs and Forms for the different operations that the Modbus TCP protocol can perform. 
-            Developers are encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations. 
-            The following sections will cover the URL format, the vocabulary and a list of Form examples. 
+            In particular, the document explain how to create valid URLs and Forms for the different operations that the Modbus TCP protocol can perform.
+            Developers are encouraged to use this document as an implementation guidelines and as a reference for the creation of their own binding implementations.
+            The following sections will cover the URL format, the vocabulary and a list of Form examples.
         </p>
     </section>
     <section id="conformance">
@@ -158,7 +158,7 @@
     </section>
     <section id="vocabulary">
         <h2>Modbus Vocabulary</h2>
-        This section describes the vocabulary used in the Modbus protocol. 
+        This section describes the vocabulary used in the Modbus protocol.
         A Modbus binding implementation should use the vocabulary defined in this section to
         describe the different configuration that can be used to exchanged data between Web of Things.
         <section>
@@ -204,10 +204,10 @@
                 byte comes first, therefore <code>modv:mostSignificantByte</code> has to be set to false.
                 On the other hand, the <code>modv:mostSignificantWord</code> property extends this functionality to message payloads
                 composed by more than two registers. For example, given a message payload composed by four registers (e.g., AABBCCDD),
-                with <code>modv:mostSignificantWord</code> set to true let the client to correctly interpretate the data as AABBCCDD, 
+                with <code>modv:mostSignificantWord</code> set to true let the client to correctly interpretate the data as AABBCCDD,
                 while setting the property to false will result in the interpretation of the data as CCDDAABB. For further examples, see
                 [[[#example-read-holding-32bit]]].
-                Note that while word swapping is not part of the Modbus specification, it is a practice observed in off-the-shelf devices. 
+                Note that while word swapping is not part of the Modbus specification, it is a practice observed in off-the-shelf devices.
                 Therefore, when creating a Thing Description (TD), users may need to account for such deviations by configuring the
                 <code>hasMostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties accordingly.
             </p>
@@ -235,7 +235,7 @@
         </section>
         <section id="function">
             <h3>Function</h3>
-            Function Code class represent the value of the function field in a Modbus frame. The 
+            Function Code class represent the value of the function field in a Modbus frame. The
             following table list the supported codes and their description:
             <table class="def" title="Function values">
                 <thead>
@@ -257,8 +257,8 @@
             <p>
                 The <code>PayloadDataType</code> class within a Modbus binding instance serves as value for the <code>modv:type</code> property to specify
                 the expected data types of payload content in Modbus messages. It offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to
-                cover the most common data types used in Modbus messages. Note that the <code>PayloadDataType</code> 
-                entity is designed for describing established conventions in the Modbus ecosystem, further development might remove this 
+                cover the most common data types used in Modbus messages. Note that the <code>PayloadDataType</code>
+                entity is designed for describing established conventions in the Modbus ecosystem, further development might remove this
                 functionality or add new terms.
                 Currently, the <code>PayloadDataType</code> class contains the following data types:
             </p>
@@ -307,7 +307,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td><code>modv:zeroBaseAddressing</code></td>
+                        <td><code>modv:zeroBasedAddressing</code></td>
                         <td>
                             <code>false</code>
                         </td>
@@ -389,9 +389,9 @@
     <section>
         <h2>Examples</h2>
         This section will present a set of examples about how the terms defined in this document can be used
-        to describe and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimal set of terms 
-        to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the 
-        first element of the path. 
+        to describe and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimal set of terms
+        to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the
+        first element of the path.
         <pre id="example-read-coil" class="example" title="Read a single coil">
             {
                 "href": "modbus+tcp://127.0.0.1:60000/1",
@@ -401,7 +401,7 @@
                 "modv:function": "readCoil"
             }
         </pre>
-        To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create 
+        To describe forms with multiple operations types, the [[[#entity]]] keyword can be used to create
         a short description of the modbus endpoint.
         <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
                     {
@@ -430,11 +430,11 @@
                                 "modv:function": "writeCoil"
                             }]
         </pre>
-        Reducing effectively the verbosity of a TD. 
+        Reducing effectively the verbosity of a TD.
 
-        Thanks to the expressiveness of the Modbus ontology users can describe also the total 
-        number of registries read or wrote in a WoT operation. [[[#example-read-holding]]] shows how to read or write 
-        8 HoldingRegisters. 
+        Thanks to the expressiveness of the Modbus ontology users can describe also the total
+        number of registries read or wrote in a WoT operation. [[[#example-read-holding]]] shows how to read or write
+        8 HoldingRegisters.
         <pre id="example-read-holding" class="example" title="Read 8 holding registers">
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/40001?quantity=8",
@@ -447,8 +447,8 @@
                 </pre>
         When possible WoT consumers will use Modbus features to read the desired amount of data with a single
         protocol request. However, it may be possible to still specify a total length for Modbus operations
-        that do not support reading or writing on a range of registers (see [[[#example-read-coil-range]]]). 
-        In these circumstances consumers will perform different requests to satisfy the configuration requirements. 
+        that do not support reading or writing on a range of registers (see [[[#example-read-coil-range]]]).
+        In these circumstances consumers will perform different requests to satisfy the configuration requirements.
         <pre id="example-read-coil-range" class="example" title="Read and write 8 single coils with one form">
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1?quantity=8",
@@ -477,10 +477,10 @@
 
         Another notable configuration of a form using the Modbus vocabulary is the polling mechanism. Thanks
         to the keyword <code>pollingTime</code> the user can indicate the intervals for observing a particular
-        set of registers. Supposing that the device knows that the value of coil register 1 does change every 
-        1000 ms, in [[[#example-polling]]], it suggest that the polling time should not be faster than 10 ms. WoT 
+        set of registers. Supposing that the device knows that the value of coil register 1 does change every
+        1000 ms, in [[[#example-polling]]], it suggest that the polling time should not be faster than 10 ms. WoT
         consumers may still create requests faster than the specified time but it should be taken as a reasonable
-        default for observing a property. 
+        default for observing a property.
         <pre  id="example-polling" class="example" title="Polling">
             {
                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
@@ -509,7 +509,6 @@
                       }
                   },
                   "security": "nosec_sc",
-              
                   "base": "modbus+tcp://192.168.178.32:502/1/",
                   "properties": {
                       "limitSwitch1": {
@@ -580,7 +579,7 @@
     </section>
     <section class="appendix" id="abnf">
         <h2>Modbus URL ABNF syntax</h2>
-        <p>The following describe the [[[#url]]] using [[[RFC2234]]] with the reference to [[[uri]]] specification. </p>
+        <p>The following describe the [[[#url]]] using [[[RFC2234]]] with the reference to [[[uri]]] specification.</p>
         <pre class="syntax">
             MODBUS-URI = "modbus+tcp://" authority path-modbus [ "?quantity=" quantity ]
             path-modbus = "/" unitID "/" address

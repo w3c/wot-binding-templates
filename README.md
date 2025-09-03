@@ -49,7 +49,7 @@ This is done through additional descriptive vocabularies, Thing Models and examp
 
 You can find other related documents below:
 
-- [WoT Bindings Registry](https://w3c.github.io/wot-bindings-registry/)
+- [WoT Bindings Registry](https://w3c.github.io/wot-binding-registry/)
 - [Explanation of the Binding Mechanism](https://w3c.github.io/wot-thing-description/#bindings)
 
 ---

@@ -26,7 +26,7 @@ General information about the Web of Things can be found on https://www.w3.org/W
   
 ---
 
-Binding Templates enable a Thing Description to be adapted to a specific protocol, data payload formats or platforms that combine both in specific ways. 
+Bindings enable a Thing Description to be adapted to a specific protocol and/or data payload format.
 This is done through additional descriptive vocabularies, Thing Models and examples that aim to guide the implementors of Things and Consumers alike.
 
 ## Logistics
@@ -37,7 +37,6 @@ This is done through additional descriptive vocabularies, Thing Models and examp
 
 ## Publications
 
-- [Latest Editor's Draft](https://w3c.github.io/wot-binding-templates/) (syncs to this repository's main branch)
 - [Latest Working Draft](https://www.w3.org/TR/wot-binding-templates/)
 - Other deliverables:
   - [HTTP Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html)
@@ -47,6 +46,11 @@ This is done through additional descriptive vocabularies, Thing Models and examp
   - [BACnet Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html)
   - [PROFINET Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html)
   - [XML Binding Template](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
+
+You can find other related documents below:
+
+- [WoT Bindings Registry](https://w3c.github.io/wot-binding-registry/)
+- [Explanation of the Binding Mechanism](https://w3c.github.io/wot-thing-description/#bindings)
 
 ---
 

@@ -266,7 +266,7 @@
 
         <pre class="example" id="binding-http-usage-1" title="TD with HTTP vocabulary included in @context">
 {
-  "@context": ["http://w3.org/ns/td", 
+  "@context": ["https://www.w3.org/ns/wot-next/td", 
     {"htv":"http://www.w3.org/2011/http#"}
   ],
   "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
@@ -415,7 +415,7 @@
     </div>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/ns/wot-next/td",
     "id": "urn:uuid:3a559b69-cbec-4e7b-b543-bd8e6e41fd8b",
     "title": "MyLampThing",
     "securityDefinitions": {
@@ -453,7 +453,9 @@
     </pre>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": ["https://www.w3.org/ns/wot-next/td", {
+        "htv": "http://www.w3.org/2011/http#"
+    }],
     "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
     "title": "MyLampThing",
     "securityDefinitions": {
@@ -504,7 +506,7 @@
     </div>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/ns/wot-next/td",
     "id": "urn:uuid:43e2081d-3fd9-41bf-803d-baaefb79c70f",
     "title": "MyLampThing",
     "securityDefinitions": {
@@ -531,7 +533,9 @@
     </pre>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": ["https://www.w3.org/ns/wot-next/td", {
+        "htv": "http://www.w3.org/2011/http#"
+    }],
     "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
     "title": "MyLampThing",
     "securityDefinitions": {

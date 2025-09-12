@@ -37,16 +37,24 @@
                     date: "2024"
                 }
             },
-            otherLinks: [
-                {
-                    key: "Core Binding Templates Specification",
-                    data: [
-                        {
-                            value: "Web of Things (WoT) Binding Templates",
-                            href: "../../../index.html"
-                        }
-                    ]
-                },
+            otherLinks: [{
+                key: "WoT Bindings Registry",
+                data: [
+                    {
+                        value: "Web of Things (WoT) Bindings Registry",
+                        href: "https://w3c.github.io/wot-bindings-registry/"
+                    }
+                ]
+            },
+            {
+                key: "Bindings Section of the TD Specification",
+                data: [
+                    {
+                        value: "Explanation of the binding mechanism",
+                        href: " https://w3c.github.io/wot-thing-description/#bindings"
+                    }
+                ]
+            },
                 {
                     key: "Ontology",
                     data: [
@@ -65,26 +73,35 @@
                         }
                     ]
                 }
-            ]
+            ],
+            localBiblio: {
+                "WOT-BINDINGS-REGISTRY": {
+                    title: "Web of Things (WoT) Bindings Registry",
+                    //, href: "https://www.w3.org/TR/wot-bindings-registry/"
+                    href: "https://w3c.github.io/wot-bindings-registry/",
+                    authors: ["TODO"], //TODO: sync authors
+                    publisher: "W3C",
+                    date: "TODO" //TODO: Add publication date
+                }
+            }
         };
     </script>
-    <title>Web of Things (WoT) PROFINET Binding Template</title>
+    <title>Web of Things (WoT) PROFINET Binding</title>
 </head>
 
 
 <body>
     <section id='abstract'>
         <p>
-            In the context of the Web of Things (WoT), a Binding Template is a blueprint that gives guidance on how to
+            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to
             implement a specific IoT protocol, data format or IoT platform.
-            The Core Binding Templates specification explains the overall mechanism and requirements for any binding to
-            follow.
-            This document gives implementation guidelines regarding the PROFINET protocol, which is a well-known
+            The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
+            This document gives is a binding document for the PROFINET protocol, which is a well-known
             high-speed industrial ethernet protocol for communication between industrial control and automation devices.
         </p>
         <p>
             More specifically, this document defines a set of vocabulary terms that can be used inside a Thing
-            Description [[WOT-THING-DESCRIPTION]] (TD)document,
+            Description [[WOT-THING-DESCRIPTION]] (TD) document,
             and associated rules which allow to describe WoT operations using the PROFINET protocol over the network.
             Additionally, relevant examples are provided to showcase different vocabulary terms and the associated
             behavior.
@@ -190,7 +207,7 @@
         <h2>PROFINET Vocabulary</h2>
         <p>
             This section describes the vocabulary used in the PROFINET protocol.
-            An implementation of a protocol binding template should use the vocabulary defined in this section to
+            An implementation of this binding should use the vocabulary defined in this section to
             describe the different configurations that Things can use to exchange data on the Web of Things.
         </p>
         <section>
@@ -390,8 +407,8 @@
             </table>
             <p>
                 The <code>profv:mostSignificantByte</code> and <code>profv:mostSignificantWord</code> properties within
-                the PROFINET
-                binding template define the byte and word order of data within a PROFINET payload. In PROFINET
+                a PROFINET
+                binding instance define the byte and word order of data within a PROFINET payload. In PROFINET
                 communications, the arrangement of bytes and words can vary between systems, and these properties
                 provide a declarative way to capture such configurations.
                 For instance, in Big-Endian byte order (e.g., <code>AABBCC</code>), the most significant byte comes
@@ -420,7 +437,7 @@
         <section id="payloaddatatype">
             <h3>Payload DataType</h3>
             <p>
-                The <code>PayloadDataType</code> class within the PROFINET Binding Template defines values for the
+                The <code>PayloadDataType</code> class within a PROFINET binding instance defines values for the
                 <code>profv:type</code> property, which is used to specify
                 the expected data types of payload content in PROFINET messages. It offers a set of terms taken from the
                 PROFINET specification (chapter 5 of IEC 61158-5-10)[ref] to
@@ -723,7 +740,7 @@
         <section id="payloadMapping">
             <h3>Payload Mapping</h3>
             <p>
-                The <code>payloadMapping</code> class within the PROFINET binding template helps map the nested
+                The <code>payloadMapping</code> class within a PROFINET binding instance helps map the nested
                 properties of object types.
                 It is common that the payload of a PROFINET device response is provided in a complex/object form. This
                 payload requires mapping the individual parameters to object definitions provided by the Thing
@@ -806,7 +823,7 @@
         <section id="enumeratedValue">
             <h3>Enumerated Value</h3>
             <p>
-                The enumeratedValue class within the PROFINET binding template helps provide context to encoded
+                The enumeratedValue class within the PROFINET binding  helps provide context to encoded
                 parameters in the payload. Bit payloads in PROFINET are sometimes
                 used as encoded payload to logical mean something aside from 1 and 0. Information about how the encoding
                 payload will be decoded is defined in this section.
@@ -861,7 +878,7 @@
             <p>
                 The following table lists the default mappings between the protocol specific concepts and the WoT
                 concepts. Please note that operations that are not
-                listed in the table are not supported by this binding template. For example, since the scope of this
+                listed in the table are not supported by this binding. For example, since the scope of this
                 binding focuses on acyclic communication of the PROFINET protocol, the
                 <code>subscribeevent</code> operation is not supported.
             <table class="def">

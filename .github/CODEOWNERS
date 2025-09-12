@@ -5,4 +5,5 @@
 /bindings/protocols/http/ @egekorkan @mjkoster
 /bindings/protocols/modbus/ @relu91
 /bindings/protocols/mqtt/ @egekorkan @mjkoster @relu91
+/bindings/protocols/profinet/ @Kaz040
 /index.html @egekorkan @mjkoster

@@ -62,11 +62,11 @@
               }
             ],
             localBiblio: {
-                "WOT-BINDINGS-REGISTRY": {
-                    title: "Web of Things (WoT) Bindings Registry",
-                    //, href: "https://www.w3.org/TR/wot-bindings-registry/"
-                    href: "https://w3c.github.io/wot-bindings-registry/",
-                    authors: ["TODO"], //TODO: sync authors
+                "WOT-BINDING-REGISTRY": {
+                    title: "Web of Things (WoT) Binding Registry",
+                    //, href: "https://www.w3.org/TR/wot-binding-registry/"
+                    href: "https://w3c.github.io/wot-binding-registry/",
+                    authors: ["Ege Korkan"],
                     publisher: "W3C",
                     date: "TODO" //TODO: Add publication date
                 }
@@ -186,9 +186,6 @@
     </section>
 
     <section id='sotd'>
-        <p>
-            <em>This document is a work in progress</em>
-        </p>
     </section>
 
     <section id="conformance">
@@ -221,12 +218,17 @@
         Per default, the [[WOT-THING-DESCRIPTION11]] supports the <a>Protocol Binding</a> based on HTTP by including the
         HTTP
         RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This vocabulary can
-        be directly used within TD instances by the usage of the prefix <code>htv</code>, which points to
+        be directly used within TD instances by the use of the prefix <code>htv</code>, which points to
         <code>http://www.w3.org/2011/http#</code>.
-        Here, the relevant vocabulary terms are provided for convenience.
     </p>
 
-      <table class="def">
+    <p>
+        On the other hand, going forward, the new version of Thing Description specification does not include the HTTP vocabulary by default.
+        Thus, newer TDs need to explicitly include the HTTP vocabulary in the <code>@context</code> field of the TD.
+        Examples after the table illustrate how to include the HTTP vocabulary in the TD.
+    </p>
+
+      <table class="def" id="table-http-vocab-terms">
         <thead>
           <tr>
             <th>Vocabulary term</th>
@@ -273,7 +275,94 @@
           </tr>
         </tbody>
       </table>
+      
+      <p>
+        In the example below, the use of the HTTP vocabulary terms is illustrated.
+        Note that the HTTP vocabulary is explicitly included in the <code>@context</code> field of the TD.
+        Furthermore, the <code>humidity</code> property shows how to use multiple forms to express different content types, where the Consumer needs to include the right content type in the <code>Accept</code> header.
+      </p>
+
+        <pre class="example" id="binding-http-usage-1" title="TD with HTTP vocabulary included in @context">
+{
+  "@context": ["https://www.w3.org/ns/wot-next/td", 
+    {"htv":"http://www.w3.org/2011/http#"}
+  ],
+  "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
+  "title": "MyLampThing",
+  ...
+  "properties": {
+    "temperature": {
+      "type": "string",
+      "forms": [
+        {
+          "href": "http://example.com/properties/temperature",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        }
+      ]
+    },
+    "humidity": {
+      "type": "string",
+      "forms": [
+        {
+          "href": "http://example.com/properties/humidity",
+          "op": "readproperty",
+          "htv:methodName": "GET",
+          "contentType": "application/json",
+          "htv:headers": [
+            {
+              "@type": "htv:RequestHeader",
+              "htv:fieldValue": "application/json",
+              "htv:fieldName": "Accept"
+            }
+          ]
+        },
+        {
+          "href": "http://example.com/properties/humidity",
+          "op": "readproperty",
+          "htv:methodName": "GET",
+          "contentType": "application/cbor",
+          "htv:headers": [
+            {
+              "@type": "htv:RequestHeader",
+              "htv:fieldValue": "application/cbor",
+              "htv:fieldName": "Accept"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "actions": {
+    "toggle": {
+      "forms": [
+        {
+          "op": "invokeaction",
+          "href": "https://mylamp.example.com/actions/toggle",
+          "htv:methodName": "POST"
+        }
+      ]
+    }
+  },
+  "events": {
+    "error": {
+      "data": {
+        "type": "string"
+      },
+      "forms": [
+        {
+          "op": "subscribeevent",
+          "href": "https://mylamp.example.com/events/error",
+          "subprotocol": "longpoll"
+        }
+      ]
+    }
+  }
+}
+        </pre>
+
     </section>
+
     <section>
       <h4>HTTP Default Vocabulary Terms</h4>
 
@@ -282,15 +371,13 @@
         To interact with a <a>Thing</a> that implements the <a>Protocol Binding</a> based on HTTP, a <a>Consumer</a>
         needs to know what HTTP method to use when performing a WoT operation. In the general case, a Thing Description can
         explicitly include a term indicating the method, i.e.,
-        <code>htv:methodName</code>. For the sake of conciseness, the <a>Protocol Binding</a> based on HTTP defines
+        <code>htv:methodName</code>. For the sake of conciseness, the HTTP <a>Protocol Binding</a> defines
         Default Values for the operation types listed below, which also aims at convergence of the methods
         expected by <a>Things</a> (e.g., GET to read, PUT to write).
     </p>
-    
-    <!-- TODO: This was an assertion in the TD spec -->
-    <p class="note">
-        When no method is indicated in a form representing an <a>Protocol Binding</a> based on HTTP, a
-        Default Value MUST be assumed as shown in the following table.
+
+    <p>
+        As required by the [[WOT-THING-DESCRIPTION11]], when the terms are not present in a form of a TD Affordance containing an HTTP URI Scheme, the defaults in the following table apply.
     </p>
 
     <table class="def">
@@ -339,14 +426,14 @@
     based on the table above:
 </p>
 
-<aside class="example with-default">
+<aside class="example with-default" id="example-http-defaults" title="TD with and without default HTTP method names">
     <div class="with-default-control">
         <input type="checkbox" />
         <span><i>with default values for HTTP Protocol Binding</i></span>
     </div>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/ns/wot-next/td",
     "id": "urn:uuid:3a559b69-cbec-4e7b-b543-bd8e6e41fd8b",
     "title": "MyLampThing",
     "securityDefinitions": {
@@ -384,7 +471,9 @@
     </pre>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": ["https://www.w3.org/ns/wot-next/td", {
+        "htv": "http://www.w3.org/2011/http#"
+    }],
     "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
     "title": "MyLampThing",
     "securityDefinitions": {
@@ -424,27 +513,18 @@
 </aside>
 
 <p>
-    In the case of a <code>form</code> with multiple <code>op</code> values,
-    <code>htv:methodName</code> SHOULD NOT be used. A <a>Consumer</a> will extend the multiple
-    <code>op</code> values to separate <code>forms</code> entries and associates a single operation with the
-    default assumption. The address information (e.g. <code>href</code>) and other metadata are taken over in
-    the extended version. If the form does not use the default values, multiple forms SHOULD be created with 
-    an <code>htv:methodName</code> associated to a single <code>op</code> value.
+    As required by the [[WOT-THING-DESCRIPTION11]], when there multiple <code>op</code> values, the form is extended by the Consumer.
+    The following TD example shows how a single form can be extended to two forms to explicitly include the <code>htv:methodName</code> values.
 </p>
 
-<p>
-    The following TD example shows how a single form can be extended to two forms to explicitly include 
-    the <code>htv:methodName</code> values.
-</p>
-
-<aside class="example with-default">
+<aside class="example with-default" id="example-http-multiform-op" title="TD with and without extended forms for multiple operations">
     <div class="with-default-control">
         <input type="checkbox" />
         <span><i>extended <code>forms</code> in case of multiple values in <code>op</code></i></span>
     </div>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/ns/wot-next/td",
     "id": "urn:uuid:43e2081d-3fd9-41bf-803d-baaefb79c70f",
     "title": "MyLampThing",
     "securityDefinitions": {
@@ -471,7 +551,9 @@
     </pre>
     <pre class="json">
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": ["https://www.w3.org/ns/wot-next/td", {
+        "htv": "http://www.w3.org/2011/http#"
+    }],
     "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
     "title": "MyLampThing",
     "securityDefinitions": {

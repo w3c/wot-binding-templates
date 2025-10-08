@@ -31,10 +31,12 @@ This section should be removed in the final survey sent to people.
 ## Questions
 
 - Do you usually produce (write or generate) TDs or do you mostly consume them in order to interact with devices? (Allow multiple answers)
+
   - Produce
   - Consume
 
 - Are you primarily interested in some of the current bindings? (A better question can be thought but we should do an interest check)
+
   - Interested in general
   - Interested in the following ones (allow checkboxes for each)
     - HTTP
@@ -45,6 +47,7 @@ This section should be removed in the final survey sent to people.
     - (?) JSON
 
 - We want to know if the overall binding mechanism clear. The following three questions address this.
+
   - Do we provide enough information for you to start writing your own binding document?
     - Yes
     - No. Please provide details.
@@ -57,6 +60,7 @@ This section should be removed in the final survey sent to people.
     - (Empty Field)
 
 - Do the current bindings provide enough information to write TDs on your own, using the binding in question? Please provide details if the choice is "No" for a binding. (How the answers look like depend on the survey tool)
+
   - HTTP: (Empty Field)
   - CoAP: (Empty Field)
   - MQTT: (Empty Field)
@@ -65,6 +69,7 @@ This section should be removed in the final survey sent to people.
   - (?) JSON: (Empty Field)
 
 - What new bindings do you want to see developed by the WoT Working Group?
+
   - (Empty Field)
 
 - Can we contact you regarding your answers?

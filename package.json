@@ -19,7 +19,7 @@
     "format": "prettier . --write"
   },
   "dependencies": {
-    "prettier": "^3.2.5",
+    "prettier": "3.0.0",
     "sttl": "github:vcharpenay/STTL.js",
     "urdf": "github:vcharpenay/uRDF.js"
   },

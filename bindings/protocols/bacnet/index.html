@@ -1,218 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-    <meta charset='utf-8'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
-    <script class='remove'>
-        var respecConfig = {
-            specStatus: "ED",
-            group: "wg/wot",
-            editors: [{
-                name: "Klaus Hartke",
-                w3cid: "107859",
-                company: "Siemens AG",
-                companyURL: "https://www.siemens.com/"
-            },
-            {
-                name: "Michael Koster",
-                w3cid: "110658",
-                company: "Invited Expert",
-                companyURL: "https://github.com/mjkoster"
-            },
-            {
-                name: "Dogan Fennibay",
-                w3cid: "147431",
-                company: "Siemens AG",
-                companyURL: "https://www.siemens.com/"
-            }],
-            edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/",
-            shortName: "wot-bacnet-binding",
-            github: "https://github.com/w3c/wot-binding-templates",
-            localBiblio: {
-                BACnet: {
-                    title: "ANSI/ASHRAE Standard 135-2020: BACnet – A Data Communication Protocol for Building Automation Networks",
-                    href: "https://www.ashrae.org/technical-resources/bookstore/bacnet",
-                    publisher: "ASHRAE",
-                    date: "2020"
-                },
-                "X.680": {
-                    title: "ITU-T X.680: Information technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation",
-                    href: "https://www.itu.int/rec/T-REC-X.680/en",
-                    publisher: "ITU-T",
-                    date: "2021"
-                },
-                "WOT-BINDINGS-REGISTRY": {
-                    title: "Web of Things (WoT) Bindings Registry",
-                    //, href: "https://www.w3.org/TR/wot-bindings-registry/"
-                    href: "https://w3c.github.io/wot-bindings-registry/",
-                    authors: ["TODO"], //TODO: sync authors
-                    publisher: "W3C",
-                    date: "TODO" //TODO: Add publication date
-                }
-            },
-            otherLinks: [{
-                key: "WoT Bindings Registry",
-                data: [
-                    {
-                        value: "Web of Things (WoT) Bindings Registry",
-                        href: "https://w3c.github.io/wot-bindings-registry/"
-                    }
-                ]
-            },
-            {
-                key: "Bindings Section of the TD Specification",
-                data: [
-                    {
-                        value: "Explanation of the binding mechanism",
-                        href: " https://w3c.github.io/wot-thing-description/#bindings"
-                    }
-                ]
-            },
-            {
-                key: "Ontology",
-                data: [{
-                    value: "BACnet Vocabulary for the Web of Things",
-                    href: "bacnet-model.ttl",
-                }]
-            },
-            {
-                key: "JSON Schema",
-                data: [
-                    {
-                        value: "BACnet JSON Schema",
-                        href: "bacnet.schema.json"
-                    }
-                ]
-            }]
-        };
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Klaus Hartke",
+            w3cid: "107859",
+            company: "Siemens AG",
+            companyURL: "https://www.siemens.com/"
+          },
+          {
+            name: "Michael Koster",
+            w3cid: "110658",
+            company: "Invited Expert",
+            companyURL: "https://github.com/mjkoster"
+          },
+          {
+            name: "Dogan Fennibay",
+            w3cid: "147431",
+            company: "Siemens AG",
+            companyURL: "https://www.siemens.com/"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/",
+        shortName: "wot-bacnet-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          BACnet: {
+            title:
+              "ANSI/ASHRAE Standard 135-2020: BACnet – A Data Communication Protocol for Building Automation Networks",
+            href: "https://www.ashrae.org/technical-resources/bookstore/bacnet",
+            publisher: "ASHRAE",
+            date: "2020"
+          },
+          "X.680": {
+            title:
+              "ITU-T X.680: Information technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation",
+            href: "https://www.itu.int/rec/T-REC-X.680/en",
+            publisher: "ITU-T",
+            date: "2021"
+          },
+          "WOT-BINDINGS-REGISTRY": {
+            title: "Web of Things (WoT) Bindings Registry",
+            //, href: "https://www.w3.org/TR/wot-bindings-registry/"
+            href: "https://w3c.github.io/wot-bindings-registry/",
+            authors: ["TODO"], //TODO: sync authors
+            publisher: "W3C",
+            date: "TODO" //TODO: Add publication date
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Bindings Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Bindings Registry",
+                href: "https://w3c.github.io/wot-bindings-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: " https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "Ontology",
+            data: [
+              {
+                value: "BACnet Vocabulary for the Web of Things",
+                href: "bacnet-model.ttl"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "BACnet JSON Schema",
+                href: "bacnet.schema.json"
+              }
+            ]
+          }
+        ]
+      };
     </script>
     <title>Web of Things (WoT) BACnet Binding</title>
-</head>
+  </head>
 
-<body>
-    <section id='abstract'>
-        <p>
-            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to
-            implement a specific IoT protocol, data format, or IoT platform.
-            The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
-            This document is a binding for BACnet [[BACnet]], a building automation and control
-            networking protocol.
-        </p>
-        <p>
-            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing
-            Description document,
-            and associated rules that allow to describe WoT operations using BACnet over the network.
-            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated
-            behavior.
-        </p>
+  <body>
+    <section id="abstract">
+      <p>
+        In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to implement a
+        specific IoT protocol, data format, or IoT platform. The WoT Thing Description specification explains the
+        overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow. This
+        document is a binding for BACnet [[BACnet]], a building automation and control networking protocol.
+      </p>
+      <p>
+        More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
+        document, and associated rules that allow to describe WoT operations using BACnet over the network.
+        Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
+      </p>
     </section>
-    <section id='sotd'>
-        <p>
-            <em>This document is a work in progress</em>
-        </p>
-        <p>
-            BACnet&reg; is a registered trademark of ASHRAE.
-            This document has not been reviewed for publication by ASHRAE, and no endorsement by ASHRAE is implied.
-        </p>
+    <section id="sotd">
+      <p>
+        <em>This document is a work in progress</em>
+      </p>
+      <p>
+        BACnet&reg; is a registered trademark of ASHRAE. This document has not been reviewed for publication by ASHRAE,
+        and no endorsement by ASHRAE is implied.
+      </p>
     </section>
-    <section id='introduction'>
-        <h2>Introduction</h2>
-        <p>
-            BACnet [[BACnet]] is a building automation and control networking
-            protocol for applications such as heating, ventilating, and air
-            conditioning control, lighting control, access control, and fire
-            detection systems.
-        </p>
-        <p>
-            This document describes how the Web of Things Thing Description [[WOT-THING-DESCRIPTION]] (TD) can be used
-            to represent devices that use BACnet.
-            In particular, the document explains how to create valid TD Forms for the
-            different operations that BACnet can perform.
-        </p>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        BACnet [[BACnet]] is a building automation and control networking protocol for applications such as heating,
+        ventilating, and air conditioning control, lighting control, access control, and fire detection systems.
+      </p>
+      <p>
+        This document describes how the Web of Things Thing Description [[WOT-THING-DESCRIPTION]] (TD) can be used to
+        represent devices that use BACnet. In particular, the document explains how to create valid TD Forms for the
+        different operations that BACnet can perform.
+      </p>
     </section>
     <section id="conformance">
-        <p>
-            Forms of a Thing Description instance with BACnet Binding complies with this specification if it follows
-            the normative statements in [[[#vocabulary]]] and [[[#mappings]]].
-        </p>
-        <p>
-            A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
-            containing BACnet Binding is provided in the <a href="bacnet.schema.json">GitHub repository</a>.
-        </p>
+      <p>
+        Forms of a Thing Description instance with BACnet Binding complies with this specification if it follows the
+        normative statements in [[[#vocabulary]]] and [[[#mappings]]].
+      </p>
+      <p>
+        A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances containing BACnet Binding is provided in
+        the <a href="bacnet.schema.json">GitHub repository</a>.
+      </p>
     </section>
     <section id="scope">
-        <h2>Binding Scope</h2>
-        <p>
-            It is assumed the reader of this document is familiar with the basic
-            principles and mechanisms of the BACnet standard [[BACnet]].
-        </p>
-        <p>
-            The following subset of BACnet features is supported by this binding:
-        <ul>
-            <li>
-                Services: ReadProperty, WriteProperty, SubscribeCOV
-            </li>
-            <li>
-                Data Model: Device, Object, Property, Index
-            </li>
-        </ul>
-        </p>
-        <p>
-            This protocol binding is intended to be used to enable web applications
-            to interact with data and control affordances exposed by BACnet devices.
-            It is not intended that this binding be used for device commissioning,
-            onboarding, or device management.
-        </p>
-        <p>
-            WoT Interaction Affordances are mapped to BACnet Properties. If the BACnet
-            property-identifier is not present in the URI element of the form, the
-            object-identifier is used to interact with the BACnet Object, exposing
-            the present-value Property.
-        </p>
-        <p>
-            When it is necessary to expose properties other than the present-value
-            property, the property-identifier must be included in the URI element of
-            the form.
-        </p>
-        <p>
-            Selected BACnet Service parameters are exposed as URI Variables to enable
-            WoT consumers access to BACnet features, for example, Command Priority.
-        </p>
-
+      <h2>Binding Scope</h2>
+      <p>
+        It is assumed the reader of this document is familiar with the basic principles and mechanisms of the BACnet
+        standard [[BACnet]].
+      </p>
+      <p>The following subset of BACnet features is supported by this binding:</p>
+      <ul>
+        <li>Services: ReadProperty, WriteProperty, SubscribeCOV</li>
+        <li>Data Model: Device, Object, Property, Index</li>
+      </ul>
+      <p>
+        This protocol binding is intended to be used to enable web applications to interact with data and control
+        affordances exposed by BACnet devices. It is not intended that this binding be used for device commissioning,
+        onboarding, or device management.
+      </p>
+      <p>
+        WoT Interaction Affordances are mapped to BACnet Properties. If the BACnet property-identifier is not present in
+        the URI element of the form, the object-identifier is used to interact with the BACnet Object, exposing the
+        present-value Property.
+      </p>
+      <p>
+        When it is necessary to expose properties other than the present-value property, the property-identifier must be
+        included in the URI element of the form.
+      </p>
+      <p>
+        Selected BACnet Service parameters are exposed as URI Variables to enable WoT consumers access to BACnet
+        features, for example, Command Priority.
+      </p>
     </section>
     <section id="url">
-        <h2>URI Scheme</h2>
-        <p>
-            In cases where a URI is needed to refer to data that is accessible
-            using BACnet services, the 'bacnet' URI scheme provides a means to
-            identify a property of an object in the scope of a BACnet device.
-            The 'bacnet' URI scheme does not provide means to identify the
-            BACnet network on which a device resides, or the network access
-            method, physical media, or protocol service to use.
-        </p>
-        <p>
-            The 'bacnet' URI Scheme used herein is based on the definition in Annex Q.8 of
-            the BACnet Specification [[BACnet]].
+      <h2>URI Scheme</h2>
+      <p>
+        In cases where a URI is needed to refer to data that is accessible using BACnet services, the 'bacnet' URI
+        scheme provides a means to identify a property of an object in the scope of a BACnet device. The 'bacnet' URI
+        scheme does not provide means to identify the BACnet network on which a device resides, or the network access
+        method, physical media, or protocol service to use.
+      </p>
+      <p>
+        The 'bacnet' URI Scheme used herein is based on the definition in Annex Q.8 of the BACnet Specification
+        [[BACnet]]. The additions to Q.8 are as follows:
+      </p>
+      <ol>
+        <li>
+          object-type and property-identifier are restricted to their numeric versions and not the registered
+          alphanumeric identifiers, in order to reduce the maintenance overhead when new object-types and
+          property-identifiers are introduced in the BACnet standard.
+        </li>
+        <li>
+          Query components (as per
+          <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">RFC 3986 Section 3.4</a>) are added to cover
+          specific needs not covered in Annex Q.8. Current examples are command priority and COV increment.
+        </li>
+      </ol>
 
-            The additions to Q.8 are as follows:
-
-        <ol>
-            <li>object-type and property-identifier are restricted to their numeric versions and not the registered
-                alphanumeric identifiers, in order to reduce the maintenance overhead when new object-types and
-                property-identifiers are introduced in the BACnet standard.</li>
-            <li>Query components (as per <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">RFC 3986 Section
-                    3.4</a>) are added to cover specific needs not covered in Annex Q.8. Current examples are command
-                priority and COV increment.</li>
-        </ol>
+      <section>
+        <h3>URI Syntax</h3>
+        <p>
+          The syntax for the 'bacnet' URI scheme is specified below in Augmented Backus-Naur Form (ABNF) [[RFC5234]]:
         </p>
-        <section>
-            <h3>URI Syntax</h3>
-            <p>
-                The syntax for the 'bacnet' URI scheme is specified below in
-                Augmented Backus-Naur Form (ABNF) [[RFC5234]]:
-            </p>
-            <pre class="abnf">
+        <pre class="abnf">
 bacnet-URI = scheme ":" scheme-specific-part [uri-variable-part]
 scheme = "bacnet"
 scheme-specific-part = "//" device-identifier "/" object-identifier [ "/" property-identifier [ "/" property-array-index ] ]
@@ -230,211 +220,193 @@ identifier = lowercase *alphanumeric *( "-" 1*alphanumeric )
 alphanumeric = uppercase / lowercase / decimal-digit
 uppercase = %x41-5A  ; "A" to "Z"
 lowercase = %x61-7A  ; "a" to "z"
-</pre>
-            <section>
-                <h4><code>device-identifier</code> Component</h4>
-                <p>
-                    The <code>device</code> component specifies the device
-                    instance number in decimal. A <code>device</code> identifier
-                    of <code>.this</code> means "this device" so that it can be
-                    used in static files that do not need to be changed when the
-                    device identifier changes.
-                </p>
-                <pre class="abnf">
+</pre
+        >
+        <section>
+          <h4><code>device-identifier</code> Component</h4>
+          <p>
+            The <code>device</code> component specifies the device instance number in decimal. A
+            <code>device</code> identifier of <code>.this</code> means "this device" so that it can be used in static
+            files that do not need to be changed when the device identifier changes.
+          </p>
+          <pre class="abnf">
 device-identifier = number / ".this"
-</pre>
-                <p>
-                    A Protocol Binding conforming to this specification SHALL
-                    use number type for device-identifier.
-                </p>
-            </section>
-            <section>
-                <h4><code>object-identifier</code> Component</h4>
-                <p>
-                    The <code>object-identifier</code> component consist of two
-                    sub-components: the object-type and the object-instance
-                    number. The object-type is either a decimal number in the
-                    range 0 to 2<sup>10</sup>-1 (inclusive) or exactly equal to
-                    the identifier text of one of the named items of the
-                    BACnetObjectType enumeration defined in Clause 21 of
-                    [[BACnet]]. The object-instance number is a decimal number
-                    in the range 0 to 2<sup>22</sup>-1 (inclusive).
-                </p>
-                <pre class="abnf">
+</pre
+          >
+          <p>A Protocol Binding conforming to this specification SHALL use number type for device-identifier.</p>
+        </section>
+        <section>
+          <h4><code>object-identifier</code> Component</h4>
+          <p>
+            The <code>object-identifier</code> component consist of two sub-components: the object-type and the
+            object-instance number. The object-type is either a decimal number in the range 0 to 2<sup>10</sup>-1
+            (inclusive) or exactly equal to the identifier text of one of the named items of the BACnetObjectType
+            enumeration defined in Clause 21 of [[BACnet]]. The object-instance number is a decimal number in the range
+            0 to 2<sup>22</sup>-1 (inclusive).
+          </p>
+          <pre class="abnf">
 object-identifier = object-type "," object-instance
 object-type = number / identifier
 object-instance = number
-</pre>
-                <p>
-                    A Protocol Binding conforming to this specification SHALL
-                    use number type for object-type.
-                </p>
-            </section>
-            <section>
-                <h4><code>property-identifier</code> Component</h4>
-                <p>
-                    The <code>property-identifier</code> component is either a decimal
-                    number or exactly equal to the identifier text of one of the
-                    named items of the BACnetPropertyIdentifier enumeration
-                    defined in Clause 21 of [[BACnet]]. If it is omitted, it
-                    defaults to <code>present-value</code> except for BACnet
-                    File objects, where the absence of the <code>property</code>
-                    component refers to the entire content of the file accessed
-                    with Stream Access.
-                </p>
-                <pre class="abnf">
+</pre
+          >
+          <p>A Protocol Binding conforming to this specification SHALL use number type for object-type.</p>
+        </section>
+        <section>
+          <h4><code>property-identifier</code> Component</h4>
+          <p>
+            The <code>property-identifier</code> component is either a decimal number or exactly equal to the identifier
+            text of one of the named items of the BACnetPropertyIdentifier enumeration defined in Clause 21 of
+            [[BACnet]]. If it is omitted, it defaults to <code>present-value</code> except for BACnet File objects,
+            where the absence of the <code>property</code>
+            component refers to the entire content of the file accessed with Stream Access.
+          </p>
+          <pre class="abnf">
 property-identifier = number / identifier
-</pre>
-                <p>
-                    A Protocol Binding conforming to this specification SHALL
-                    use number type for property-identifier.
-                </p>
-            </section>
-            <section>
-                <h4><code>property-array-index</code> Component</h4>
-                <p>
-                    The components of an array property may be individually
-                    accessed (read or written) using an "array index".
-                    The <code>index</code> component is a decimal number.
-                </p>
-                <pre class="abnf">
+</pre
+          >
+          <p>A Protocol Binding conforming to this specification SHALL use number type for property-identifier.</p>
+        </section>
+        <section>
+          <h4><code>property-array-index</code> Component</h4>
+          <p>
+            The components of an array property may be individually accessed (read or written) using an "array index".
+            The <code>index</code> component is a decimal number.
+          </p>
+          <pre class="abnf">
 property-array-index = number
-</pre>
-                <p>
-                    An index of 0 (zero) identifies the count of the number of data
-                    elements. If the array index is omitted, it means that all the
-                    elements of the array are to be accessed. An array index N,
-                    greater than zero, identifies the Nth element in the sequence.
-                </p>
-            </section>
-            <section>
-                <h4><code>uri-variable-part</code> Component</h4>
-                <p>
-                    URI variables can be used to supply additional parameters to the BACnet operation.
-                    See [[[#vocabulary-uri-variables]]] for further details.
-                </p>
-                <pre class="abnf">
+</pre
+          >
+          <p>
+            An index of 0 (zero) identifies the count of the number of data elements. If the array index is omitted, it
+            means that all the elements of the array are to be accessed. An array index N, greater than zero, identifies
+            the Nth element in the sequence.
+          </p>
+        </section>
+        <section>
+          <h4><code>uri-variable-part</code> Component</h4>
+          <p>
+            URI variables can be used to supply additional parameters to the BACnet operation. See
+            [[[#vocabulary-uri-variables]]] for further details.
+          </p>
+          <pre class="abnf">
 uri-variable-part = ?(key1=value1) *( "&" keyN=valueN )
-</pre>
-                <p>
-                    A string of key-value pairs starting with ? and separated via &amp;.
-                </p>
-            </section>
-            <section>
-                <h4>Numbers</h4>
-                <p>
-                    A decimal number consists of one or more decimal digits. The
-                    first digit is not permitted to be zero unless the number
-                    consists of a single digit.
-                </p>
-                <pre class="abnf">
+</pre
+          >
+          <p>A string of key-value pairs starting with ? and separated via &amp;.</p>
+        </section>
+        <section>
+          <h4>Numbers</h4>
+          <p>
+            A decimal number consists of one or more decimal digits. The first digit is not permitted to be zero unless
+            the number consists of a single digit.
+          </p>
+          <pre class="abnf">
 number = "0" / non-zero-digit *decimal-digit
 non-zero-digit = %x31-39  ; "1" to "9"
 decimal-digit = %x30-39  ; "0" to "9"
-</pre>
-            </section>
-            <section>
-                <h4>Identifiers</h4>
-                <p>
-                    An identifier conforms to the definition of an identifier in
-                    ASN.1 notation (Clause 12.3 of [[X.680]]). It begins with a
-                    lowercase letter and is followed by zero or more letters,
-                    digits, and hyphens. A hyphen is not permitted to be the last
-                    character, nor is it to be followed by another hyphen. The case
-                    of letters in an identifier is significant.
-                </p>
-                <pre class="abnf">
+</pre
+          >
+        </section>
+        <section>
+          <h4>Identifiers</h4>
+          <p>
+            An identifier conforms to the definition of an identifier in ASN.1 notation (Clause 12.3 of [[X.680]]). It
+            begins with a lowercase letter and is followed by zero or more letters, digits, and hyphens. A hyphen is not
+            permitted to be the last character, nor is it to be followed by another hyphen. The case of letters in an
+            identifier is significant.
+          </p>
+          <pre class="abnf">
 identifier = lowercase *alphanumeric *( "-" 1*alphanumeric )
 alphanumeric = uppercase / lowercase / decimal-digit
 uppercase = %x41-5A  ; "A" to "Z"
 lowercase = %x61-7A  ; "a" to "z"
-                </pre>
-            </section>
-
+                </pre
+          >
         </section>
+      </section>
     </section>
     <section id="vocabulary">
-        <h2>BACnet Vocabulary</h2>
+      <h2>BACnet Vocabulary</h2>
+      <p>
+        This section describes the vocabulary used in BACnet. A protocol binding implementation should use the
+        vocabulary defined in this section to describe the different configurations that can be used to exchange data
+        between Web of Things clients, devices, and services.
+      </p>
+      <p>This vocabulary is fully defined in the BACnet ontology published together with this document.</p>
+      <p class="ednote">
+        Until the JSON-LD context is published, this document will use the example URI
+        <code>"https://example.org/bacnet"</code>for the context with the prefix <code>"bacv"</code>.
+      </p>
+      <section>
+        <h3 id="vocabulary-uri-variables">URI Variables</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>URI variable</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>commandPriority</code></td>
+              <td>Sets priority for WriteProperty</td>
+              <td>optional</td>
+              <td>
+                <a href="https://www.w3.org/2019/wot/json-schema#IntegerSchema"><code>integer</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>relinquish</code></td>
+              <td>Indicates that the value at this priority should be deleted/relinquished</td>
+              <td>optional</td>
+              <td>
+                <a href="https://www.w3.org/2019/wot/json-schema#BooleanSchema"><code>boolean</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>covIncrement</code></td>
+              <td>
+                Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a property ID)
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="https://www.w3.org/2019/wot/json-schema#NumberSchema"><code>number</code></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <p>
-            This section describes the vocabulary used in BACnet. A protocol
-            binding implementation should use the vocabulary defined in this
-            section to describe the different configurations that can be used to
-            exchange data between Web of Things clients, devices, and services.
+          URI Variables are included in the 'bacnet' URI Scheme and are included in the Protocol Binding to communicate
+          PDU option settings for the BACnet driver to use when sending requests.
         </p>
         <p>
-            This vocabulary is fully defined in the BACnet ontology published together with this document.
+          The following JSON example shows the usage of the BACnet vocabulary for URI Variables, specifically
+          commandPriority, relinquish, and covIncrement. The semantic annotation is optional.
         </p>
-        <p class="ednote">
-            Until the JSON-LD context is published, this document will use the example URI
-            <code>"https://example.org/bacnet"</code>for the context with the prefix <code>"bacv"</code>.
+        <p>
+          This template could be used to construct the uriVariables element for TD interaction affordances, to enable
+          the application to communicate URI variables to the BACnet driver, using a consistent format according to the
+          schema constraints below.
         </p>
-        <section>
-            <h3 id="vocabulary-uri-variables">URI Variables</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>URI variable</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Range</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>commandPriority</code></td>
-                        <td>Sets priority for WriteProperty</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/2019/wot/json-schema#IntegerSchema"><code>integer</code></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>relinquish</code></td>
-                        <td>Indicates that the value at this priority should be deleted/relinquished</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/2019/wot/json-schema#BooleanSchema"><code>boolean</code></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>covIncrement</code></td>
-                        <td>Sets COV increment change for reporting via SubscribeCOVProperty (SubscribeCOV with a
-                            property ID)</td>
-                        <td>optional</td>
-                        <td>
-                            <a href="https://www.w3.org/2019/wot/json-schema#NumberSchema"><code>number</code></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                URI Variables are included in the 'bacnet' URI Scheme and are included in the Protocol Binding to
-                communicate PDU option settings for the BACnet driver to use when sending requests.
-            </p>
-            <p>
-                The following JSON example shows the usage of the BACnet vocabulary for URI Variables, specifically
-                commandPriority, relinquish, and covIncrement. The semantic annotation is optional.
-            </p>
-            <p>
-                This template could be used to construct the uriVariables element for TD interaction affordances, to
-                enable the application to communicate URI variables to the BACnet driver, using a consistent format
-                according to the schema constraints below.
-            </p>
-            <p>
-                These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet
-                driver to use a constant value for this parameter.
-            </p>
-            <p>
-                Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes
-                regarding URI variables:
-            <ol>
-                <li>Showing the link of URI variables to exactly which operations they apply to.</li>
-                <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
-                <li>Providing a standardized set of parameters.</li>
-                <li>Having the ability to use parameters also in other places than the href</li>
-            </ol>
-            </p>
-            <pre id="example-uri-variables" class="example" title="URI Variables Usage in BACnet">
+        <p>
+          These variables may be also fixed in the href and not exposed via URI variables, causing the BACnet driver to
+          use a constant value for this parameter.
+        </p>
+        <p>
+          Some aspects were identified as improvement candidates in TD.next, which may result in breaking changes
+          regarding URI variables:
+        </p>
+        <ol>
+          <li>Showing the link of URI variables to exactly which operations they apply to.</li>
+          <li>Exposing protocol-related parameters from Form-level instead of InteractionAffordance-level.</li>
+          <li>Providing a standardized set of parameters.</li>
+          <li>Having the ability to use parameters also in other places than the href</li>
+        </ol>
+
+        <pre id="example-uri-variables" class="example" title="URI Variables Usage in BACnet">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -459,886 +431,754 @@ lowercase = %x61-7A  ; "a" to "z"
         }
     }  
 }
-            </pre>
-        </section>
-        <section>
-            <h3 id="vocabulary-form-terms">Form terms</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Range</th>
-                        <th>Domain</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>bacv:usesService</code></td>
-                        <td>Indicates the BACnet service to use</td>
-                        <td>
-                            <a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                            <p>(one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>,
-                                <code>"SubscribeCOV"</code>, <code>"GetEventInfo"</code>,
-                                <code>"AcknowledgeAlarm"</code>,
-                                <code>"AddListElement"</code>, <code>"RemoveListElement"</code>)
-                            </p>
-                        </td>
-                        <td>hctl:Form</td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:isISO8601</code></td>
-                        <td>This data uses ISO8601 format</td>
-                        <td>
-                            <a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
-                        </td>
-                        <td>bacv:Sequence</td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasBinaryRepresentation</code></td>
-                        <td>Points to the binary representation of the resource</td>
-                        <td>
-                            <a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                            <p>(one of <code>"hex"</code>, <code>"dotted-decimal"</code>, <code>"base64"</code>)</p>
-                        </td>
-                        <td>bacv:OctetString</td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasMember</code></td>
-                        <td>Member of a Sequence or List</td>
-                        <td>
-                            bacv:DataType
-                        </td>
-                        <td>bacv:Sequence, bacv:List</td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasNamedMember</code></td>
-                        <td>Named Member of a Sequence or Choice</td>
-                        <td>
-                            bacv:NamedMember
-                        </td>
-                        <td>bacv:Sequence, bacv:Choice</td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasFieldName</code></td>
-                        <td>Name of a Named Member of a Sequence or Choice</td>
-                        <td>
-                            <a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                        </td>
-                        <td>
-                            bacv:NamedMember
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasContextTag</code></td>
-                        <td>Context Tag for a Named Member of a Sequence or Choice</td>
-                        <td>
-                            <a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>boolean</code></a>
-                        </td>
-                        <td>
-                            bacv:NamedMember
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasMapEntry</code></td>
-                        <td>An value map entry mapping an Enumerated value to text</td>
-                        <td>
-                            bacv:ValueMapEntry
-                        </td>
-                        <td>
-                            bacv:ValueMap
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasLogicalVal</code></td>
-                        <td>Logical Value for a ValueMap</td>
-                        <td><a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
-                            or <a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-                            or <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean">boolean</a></td>
-                        <td>
-                            bacv:ValueMapEntry
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasProtocolVal</code></td>
-                        <td>Protocol Value for a ValueMap</td>
-                        <td><a
-                                href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
-                        </td>
-                        <td>
-                            bacv:ValueMapEntry
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:hasValueMap</code></td>
-                        <td>Value map for an Enumeration</td>
-                        <td>
-                            bacv:ValueMap
-                        </td>
-                        <td>bacv:Boolean, bacv:Enumerated, bacv:Unsigned, bacv:BitString</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
+            </pre
+        >
+      </section>
+      <section>
+        <h3 id="vocabulary-form-terms">Form terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Range</th>
+              <th>Domain</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>bacv:usesService</code></td>
+              <td>Indicates the BACnet service to use</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <p>
+                  (one of <code>"ReadProperty"</code>, <code>"WriteProperty"</code>, <code>"SubscribeCOV"</code>,
+                  <code>"GetEventInfo"</code>, <code>"AcknowledgeAlarm"</code>, <code>"AddListElement"</code>,
+                  <code>"RemoveListElement"</code>)
+                </p>
+              </td>
+              <td>hctl:Form</td>
+            </tr>
+            <tr>
+              <td><code>bacv:isISO8601</code></td>
+              <td>This data uses ISO8601 format</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+              </td>
+              <td>bacv:Sequence</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasBinaryRepresentation</code></td>
+              <td>Points to the binary representation of the resource</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <p>(one of <code>"hex"</code>, <code>"dotted-decimal"</code>, <code>"base64"</code>)</p>
+              </td>
+              <td>bacv:OctetString</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasMember</code></td>
+              <td>Member of a Sequence or List</td>
+              <td>bacv:DataType</td>
+              <td>bacv:Sequence, bacv:List</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasNamedMember</code></td>
+              <td>Named Member of a Sequence or Choice</td>
+              <td>bacv:NamedMember</td>
+              <td>bacv:Sequence, bacv:Choice</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasFieldName</code></td>
+              <td>Name of a Named Member of a Sequence or Choice</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+              <td>bacv:NamedMember</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasContextTag</code></td>
+              <td>Context Tag for a Named Member of a Sequence or Choice</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>boolean</code></a>
+              </td>
+              <td>bacv:NamedMember</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasMapEntry</code></td>
+              <td>An value map entry mapping an Enumerated value to text</td>
+              <td>bacv:ValueMapEntry</td>
+              <td>bacv:ValueMap</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasLogicalVal</code></td>
+              <td>Logical Value for a ValueMap</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a> or
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean">boolean</a>
+              </td>
+              <td>bacv:ValueMapEntry</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasProtocolVal</code></td>
+              <td>Protocol Value for a ValueMap</td>
+              <td>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#integer"><code>integer</code></a>
+              </td>
+              <td>bacv:ValueMapEntry</td>
+            </tr>
+            <tr>
+              <td><code>bacv:hasValueMap</code></td>
+              <td>Value map for an Enumeration</td>
+              <td>bacv:ValueMap</td>
+              <td>bacv:Boolean, bacv:Enumerated, bacv:Unsigned, bacv:BitString</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </section>
     <section id="mappings">
-        <h2>Mappings</h2>
+      <h2>Mappings</h2>
+      <p>
+        This section describes the strategies and default values to use protocol-specific concepts within the
+        <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
+      </p>
+      <section id="default-mappings">
+        <h3>Default Operation Mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default Binding</th>
+              <th>Variables and parameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td><code>"bacv:usesService": "ReadProperty"</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td><code>"bacv:usesService": "WriteProperty"</code></td>
+              <td>commandPriority, relinquish</td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
+              <td>covIncrement</td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
+              <td>Note: BACnet driver must handle Status Flags</td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="datatype-mappings">
+        <h3>WoT Data Schema and BACnet Types</h3>
         <p>
-            This section describes the strategies and default values to use
-            protocol-specific concepts within the
-            <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
+          BACnet has its own data model, which cannot always be derived from the data schema of the interaction
+          affordances. Hence the type information is amended in the Form (column 3) of the protocol binding while
+          staying conceptually conformant to the WoT Data Schema (column 2). The goal here is to abstract BACnet's data
+          model into a Web-like JSON-based data model, by still keeping the wire compatibility on the protocol. The
+          table below shows how the mappings are done, comprehensively for all BACnet types.
         </p>
-        <section id="default-mappings">
-            <h3>Default Operation Mappings</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Operation</th>
-                        <th>Default Binding</th>
-                        <th>Variables and parameters</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>readproperty</code></td>
-                        <td><code>"bacv:usesService": "ReadProperty"</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><code>writeproperty</code></td>
-                        <td><code>"bacv:usesService": "WriteProperty"</code></td>
-                        <td>commandPriority, relinquish</td>
-                    </tr>
-                    <tr>
-                        <td><code>observeproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
-                        <td>covIncrement</td>
-                    </tr>
-                    <tr>
-                        <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><code>observeproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
-                        <td>Note: BACnet driver must handle Status Flags</td>
-                    </tr>
-                    <tr>
-                        <td><code>unobserveproperty</code></td>
-                        <td><code>"bacv:usesService": "SubscribeCOV"</code></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        <section id="datatype-mappings">
-            <h3>WoT Data Schema and BACnet Types</h3>
-            <p>
-                BACnet has its own data model, which cannot always be derived
-                from the data schema of the interaction affordances. Hence
-                the type information is amended in the Form (column 3) of the protocol binding while
-                staying conceptually conformant to the WoT Data Schema (column 2).
-                The goal here is to abstract BACnet's data model into a Web-like JSON-based
-                data model, by still keeping the wire compatibility on the protocol.
-                The table below shows how the mappings are done, comprehensively for all BACnet types.
-            </p>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>BACnet Type</th>
-                        <th>WoT Data Schema</th>
-                        <th>BACnet Type Description under the Form</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>bacv:SequenceOf</code></td>
-                        <td><code>{ "type": "array" }</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:SequenceOf",
-                                        "bacv:hasMember": {
-                                            "$comment": "Data type of the element",
-                                            "@type": "bacv:..."
-                                        }
-                                    }
-                                }                
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Sequence</code></td>
-                        <td>
-                            <code>{ "type": "object" }</code>
-                            <br />
-                            For the special case where a DateTime object is modeled as a Sequence
-                            <code>"bacv:isISO8601": true</code>:
-                            <br />
-                            <code>
-                                {
-                                    "type": "string",
-                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E|\\*)-((3[01]|0[1-9]|[12][0-9])|O|E|\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
-                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating dates and times using year, month, day, hour, minute, second, and optionally day of week (1: Mon, 7: Sun). Supports wildcards: 'O' for odd values, 'E' for even values, and '*' for any valid value in each component."
-                                }
-                            </code>
-                            <br />
-                            Please see <code>bacv:Date</code> and <code>bacv:Time</code> about the details of wildcards.
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Sequence",
-                                        "bacv:isISO8601": true,
-                                        "bacv:hasNamedMember": [
-                                            {
-                                                "bacv:hasFieldName": "date",
-                                                "bacv:hasDataType": {
-                                                    "@type": "bacv:Date"
-                                                }
-                                            },
-                                            {
-                                                "bacv:hasFieldName": "time",
-                                                "bacv:hasDataType": {
-                                                    "@type": "bacv:Time"
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:List</code></td>
-                        <td><code> { "type": "array", "uniqueItems": true } </code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:List",
-                                        "bacv:hasMember": {
-                                            "@type": "bacv:..."
-                                        }
-                                    }
-                                }
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Choice</code></td>
-                        <td>
-                            <code>
-                                { "oneOf": [
-                                    { "type": "..." },
-                                    { "type": "..." },
-                                    { "...": "..." },
-                                ]}
-                            </code>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Choice",
-                                        "bacv:hasNamedMember": [
-                                            {
-                                                "bacv:hasFieldName": "...",
-                                                "bacv:hasContextTag": 1,
-                                                "bacv:hasDataType": {
-                                                    "@type": "bacv:..."
-                                                }
-                                            },
-                                            {
-                                                "bacv:hasFieldName": "...",
-                                                "bacv:hasContextTag": 2,
-                                                "bacv:hasDataType": {
-                                                    "@type": "bacv:..."
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Date</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "type": "string",
-                                    "pattern": "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E|\\*)-((3[01]|0[1-9]|[12][0-9])|O|E|\\*)(\\s*\\([1-7\\*]\\))?$",
-                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating dates using year, month, day, and optionally day of week (1: Mon, 7: Sun). Supports wildcards: 'O' for odd days, 'E' for even days, and '*' for any valid value in each component."
-                                }
-                            </code>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>BACnet Type</th>
+              <th>WoT Data Schema</th>
+              <th>BACnet Type Description under the Form</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>bacv:SequenceOf</code></td>
+              <td><code>{ "type": "array" }</code></td>
+              <td>
+                <code>
+                  { "bacv:hasDataType": { "@type": "bacv:SequenceOf", "bacv:hasMember": { "$comment": "Data type of the
+                  element", "@type": "bacv:..." } } }
+                </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Sequence</code></td>
+              <td>
+                <code>{ "type": "object" }</code>
+                <br />
+                For the special case where a DateTime object is modeled as a Sequence
+                <code>"bacv:isISO8601": true</code>:
+                <br />
+                <code>
+                  { "type": "string", "pattern":
+                  "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E|\\*)-((3[01]|0[1-9]|[12][0-9])|O|E|\\*)(\\s*\\([1-7\\*]\\))?T((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                  "$comment": "A recurrence rule format based on ISO8601, specifies repeating dates and times using
+                  year, month, day, hour, minute, second, and optionally day of week (1: Mon, 7: Sun). Supports
+                  wildcards: 'O' for odd values, 'E' for even values, and '*' for any valid value in each component." }
+                </code>
+                <br />
+                Please see <code>bacv:Date</code> and <code>bacv:Time</code> about the details of wildcards.
+              </td>
+              <td>
+                <code>
+                  { "bacv:hasDataType": { "@type": "bacv:Sequence", "bacv:isISO8601": true, "bacv:hasNamedMember": [ {
+                  "bacv:hasFieldName": "date", "bacv:hasDataType": { "@type": "bacv:Date" } }, { "bacv:hasFieldName":
+                  "time", "bacv:hasDataType": { "@type": "bacv:Time" } } ] } }
+                </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:List</code></td>
+              <td><code> { "type": "array", "uniqueItems": true } </code></td>
+              <td>
+                <code>
+                  { "bacv:hasDataType": { "@type": "bacv:List", "bacv:hasMember": { "@type": "bacv:..." } } }
+                </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Choice</code></td>
+              <td>
+                <code> { "oneOf": [ { "type": "..." }, { "type": "..." }, { "...": "..." }, ]} </code>
+              </td>
+              <td>
+                <code>
+                  { "bacv:hasDataType": { "@type": "bacv:Choice", "bacv:hasNamedMember": [ { "bacv:hasFieldName": "...",
+                  "bacv:hasContextTag": 1, "bacv:hasDataType": { "@type": "bacv:..." } }, { "bacv:hasFieldName": "...",
+                  "bacv:hasContextTag": 2, "bacv:hasDataType": { "@type": "bacv:..." } } ] } }
+                </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Date</code></td>
+              <td>
+                <code>
+                  { "type": "string", "pattern":
+                  "^((([1-9][0-9]*)?[0-9]{4})|\\*)-((1[0-2]|0[1-9])|O|E|\\*)-((3[01]|0[1-9]|[12][0-9])|O|E|\\*)(\\s*\\([1-7\\*]\\))?$",
+                  "$comment": "A recurrence rule format based on ISO8601, specifies repeating dates using year, month,
+                  day, and optionally day of week (1: Mon, 7: Sun). Supports wildcards: 'O' for odd days, 'E' for even
+                  days, and '*' for any valid value in each component." }
+                </code>
 
-                            <ul>
-                                <li><code>O</code> and <code>E</code> can be used in the months field to indicate odd (1: Jan, 3: Mar...) and even (2: Feb, 4: Apr...) months.</li>
-                                <li><code>O</code> and <code>E</code> can be used in the day of week field to indicate odd and even days of the month.</li>
-                                <li><code>*</code> can be used for any year, month, day of month or day of week.</li>
-                                <li>Examples
-                                    <ul>
-                                        <li><code>*-*-01</code>: Recurs on the 1st day of every month, regardless of year.</li>
-                                        <li><code>*-06-* (1)</code>: Recurs on every Monday in June, regardless of year.</li>
-                                        <li><code>*-E-01</code>: Recurs on the 1st day of every even month, regardless of year.</li>
-                                        <li>
-                                            <code>2024-11-07 (1)</code>: November 7, 2024, is not a Monday, resulting in no recurrences.
-                                        </li>
-                                        <li><code>2024-11-07 (4)</code> / <code>2024-11-07</code>: November 7, 2024, is a Thursday, resulting in a single recurrence.</li>
-                                        <li><code>*-*-* (*)</code> / <code>*-*-*</code>: Recurs every day, regardless of year, month, or day of the week.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Date"
-                                    }
-                                }                
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Time</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "type": "string",
-                                    "pattern": "^((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
-                                    "$comment": "A recurrence rule format based on ISO8601, specifies repeating times using hour, minute, and second. Supports the '*' wildcard for any valid value in each component."
-                                }
-                            </code>
+                <ul>
+                  <li>
+                    <code>O</code> and <code>E</code> can be used in the months field to indicate odd (1: Jan, 3:
+                    Mar...) and even (2: Feb, 4: Apr...) months.
+                  </li>
+                  <li>
+                    <code>O</code> and <code>E</code> can be used in the day of week field to indicate odd and even days
+                    of the month.
+                  </li>
+                  <li><code>*</code> can be used for any year, month, day of month or day of week.</li>
+                  <li>
+                    Examples
+                    <ul>
+                      <li><code>*-*-01</code>: Recurs on the 1st day of every month, regardless of year.</li>
+                      <li><code>*-06-* (1)</code>: Recurs on every Monday in June, regardless of year.</li>
+                      <li><code>*-E-01</code>: Recurs on the 1st day of every even month, regardless of year.</li>
+                      <li>
+                        <code>2024-11-07 (1)</code>: November 7, 2024, is not a Monday, resulting in no recurrences.
+                      </li>
+                      <li>
+                        <code>2024-11-07 (4)</code> / <code>2024-11-07</code>: November 7, 2024, is a Thursday,
+                        resulting in a single recurrence.
+                      </li>
+                      <li>
+                        <code>*-*-* (*)</code> / <code>*-*-*</code>: Recurs every day, regardless of year, month, or day
+                        of the week.
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Date" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Time</code></td>
+              <td>
+                <code>
+                  { "type": "string", "pattern":
+                  "^((2[0-3]|[01][0-9])|\\*):([0-5][0-9]|\\*):([0-5][0-9]|\\*)(\\.[0-9]+)?(Z|[+-]\\d\\d:\\d\\d)?$",
+                  "$comment": "A recurrence rule format based on ISO8601, specifies repeating times using hour, minute,
+                  and second. Supports the '*' wildcard for any valid value in each component." }
+                </code>
 
-                            Examples:
-                            <ul>
-                                <li><code>*:00:00Z</code>: Recurs every hour on the hour (00 minutes, 00 seconds), using Coordinated Universal Time (UTC).</li>
-                                <li><code>*:*:*</code>: Recurs every second of every minute and every hour, essentially occurring continuously throughout the day.</li>
-                                <li><code>06:00:00Z</code>: Occurs at 6:00 AM UTC, with 0 minutes and 0 seconds past the hour.</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Time"
-                                    }
-                                }                
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:WeekNDay</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "type": "string",
-                                    "pattern": "^((1[0-2]|0[1-9])|O|E|\\*)-(01|08|15|22|29|L7|B7|B14|B21|\\*)-([1-7]|\\*)$",
-                                    "$comment": "Custom WeekNDay string: first part month 01-12, O for odd, E for even, * for any; second part week of month: beginning on 01st, 08th, the last 7 days, they days before last 7 days, last 14 days.., or any; third part day of week: 1-7 (Mon-Sun) or any"
-                                }
-                            </code>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:WeekNDay"
-                                    }
-                                }                
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Unsigned</code></td>
-                        <td><code>{ "type": "integer", "minimum": 0 } </code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Unsigned"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Signed</code></td>
-                        <td><code>{ "type": "integer" }</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Signed"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Real</code></td>
-                        <td><code>{ "type": "number" }</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Real"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Double</code></td>
-                        <td><code>{ "type": "number" }</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Double"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Boolean</code></td>
-                        <td><code>{ "type": "boolean" }</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Boolean"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Enumerated</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "$comment": "Contains the possible enum members, as strings or integers",
-                                    "enum": []
-                                }
-                            </code>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Enumerated"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:String</code></td>
-                        <td><code>{ "type": "string" }</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:String"
-                                    }
-                                }              
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:OctetString</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "type": "string",
-                                    "pattern": "^(([0-9A-F]{2}-?)+|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2}))$",
-                                    "$comment": "Binary data encoded in hex, dotted decimal (e.g., IPv4 address) or base64"
-                                }
-                            </code>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:OctetString",
-                                        "bacv:hasBinaryRepresentation": "..."
-                                    }
-                                }            
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:BitString</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "type": "array",
-                                    "items": {
-                                        "$comment": "Contains the possible bit numbers",
-                                        "enum": []
-                                    }
-                                    "uniqueItems": true
-                                }
-                            </code>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:BitString"
-                                    }
-                                }         
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:Any</code></td>
-                        <td>
-                            The <code>type</code> field should be left out completely. This is allowed according to <a href="https://www.w3.org/TR/wot-thing-description/#sec-data-schema-vocabulary-definition">WoT Data Schema Vocabulary Definitions</a>.
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:Any"
-                                    }
-                                }         
-                            </code>
-                        </td>
-                    <tr>
-                        <td><code>bacv:Null</code></td>
-                        <td><code>{ "type": "null" }</code></td>
-                        <td>
-                            <code>
-                                "bacv:hasDataType": {
-                                    "@type": "bacv:Null"
-                                }
-                            </code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><code>bacv:ObjectIdentifier</code></td>
-                        <td>
-                            <code>
-                                {
-                                    "type": "string"
-                                    "format": "iri-reference",
-                                    "$comment": "BACnet Object Identifier is to be converted to an IRI, using the href schema of this protocol binding"
-                                }
-                            </code>
-                        </td>
-                        <td>
-                            <code>
-                                {
-                                    "bacv:hasDataType": {
-                                        "@type": "bacv:ObjectIdentifier"
-                                    }
-                                }
-                            </code>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        <section id="contenttype">
-            <h3>BACnet <code>contentType</code></h3>
-            <p>
-                BACnet has only one encoding format based on <a href="https://en.wikipedia.org/wiki/ASN.1">ASN.1</a>
-                for transporting data. Since there is no other option and to avoid falling back to the
-                <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
-                of <code>application/json</code>, <code>contentType</code> shall always be set to <code>application/octet-stream</code>.
-            </p>
-        </section>
-        <section id="event-mappings">
-            <h3>Mappings related to events</h3>
-            <p>
-                BACnet has an extensive alarm model; see [[BACnet]] Chapter 13. Alarm and Event Services for a complete description.
+                Examples:
+                <ul>
+                  <li>
+                    <code>*:00:00Z</code>: Recurs every hour on the hour (00 minutes, 00 seconds), using Coordinated
+                    Universal Time (UTC).
+                  </li>
+                  <li>
+                    <code>*:*:*</code>: Recurs every second of every minute and every hour, essentially occurring
+                    continuously throughout the day.
+                  </li>
+                  <li><code>06:00:00Z</code>: Occurs at 6:00 AM UTC, with 0 minutes and 0 seconds past the hour.</li>
+                </ul>
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Time" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:WeekNDay</code></td>
+              <td>
+                <code>
+                  { "type": "string", "pattern":
+                  "^((1[0-2]|0[1-9])|O|E|\\*)-(01|08|15|22|29|L7|B7|B14|B21|\\*)-([1-7]|\\*)$", "$comment": "Custom
+                  WeekNDay string: first part month 01-12, O for odd, E for even, * for any; second part week of month:
+                  beginning on 01st, 08th, the last 7 days, they days before last 7 days, last 14 days.., or any; third
+                  part day of week: 1-7 (Mon-Sun) or any" }
+                </code>
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:WeekNDay" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Unsigned</code></td>
+              <td><code>{ "type": "integer", "minimum": 0 } </code></td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Unsigned" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Signed</code></td>
+              <td><code>{ "type": "integer" }</code></td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Signed" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Real</code></td>
+              <td><code>{ "type": "number" }</code></td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Real" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Double</code></td>
+              <td><code>{ "type": "number" }</code></td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Double" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Boolean</code></td>
+              <td><code>{ "type": "boolean" }</code></td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Boolean" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Enumerated</code></td>
+              <td>
+                <code> { "$comment": "Contains the possible enum members, as strings or integers", "enum": [] } </code>
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Enumerated" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:String</code></td>
+              <td><code>{ "type": "string" }</code></td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:String" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:OctetString</code></td>
+              <td>
+                <code>
+                  { "type": "string", "pattern":
+                  "^(([0-9A-F]{2}-?)+|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2}))$",
+                  "$comment": "Binary data encoded in hex, dotted decimal (e.g., IPv4 address) or base64" }
+                </code>
+              </td>
+              <td>
+                <code>
+                  { "bacv:hasDataType": { "@type": "bacv:OctetString", "bacv:hasBinaryRepresentation": "..." } }
+                </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:BitString</code></td>
+              <td>
+                <code>
+                  { "type": "array", "items": { "$comment": "Contains the possible bit numbers", "enum": [] }
+                  "uniqueItems": true }
+                </code>
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:BitString" } } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:Any</code></td>
+              <td>
+                The <code>type</code> field should be left out completely. This is allowed according to
+                <a href="https://www.w3.org/TR/wot-thing-description/#sec-data-schema-vocabulary-definition"
+                  >WoT Data Schema Vocabulary Definitions</a
+                >.
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:Any" } } </code>
+              </td>
+            </tr>
 
-                The fundamental aspects are as follows:
+            <tr>
+              <td><code>bacv:Null</code></td>
+              <td><code>{ "type": "null" }</code></td>
+              <td>
+                <code> "bacv:hasDataType": { "@type": "bacv:Null" } </code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>bacv:ObjectIdentifier</code></td>
+              <td>
+                <code>
+                  { "type": "string" "format": "iri-reference", "$comment": "BACnet Object Identifier is to be converted
+                  to an IRI, using the href schema of this protocol binding" }
+                </code>
+              </td>
+              <td>
+                <code> { "bacv:hasDataType": { "@type": "bacv:ObjectIdentifier" } } </code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="contenttype">
+        <h3>BACnet <code>contentType</code></h3>
+        <p>
+          BACnet has only one encoding format based on <a href="https://en.wikipedia.org/wiki/ASN.1">ASN.1</a>
+          for transporting data. Since there is no other option and to avoid falling back to the
+          <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+          of <code>application/json</code>, <code>contentType</code> shall always be set to
+          <code>application/octet-stream</code>.
+        </p>
+      </section>
+      <section id="event-mappings">
+        <h3>Mappings related to events</h3>
+        <p>
+          BACnet has an extensive alarm model; see [[BACnet]] Chapter 13. Alarm and Event Services for a complete
+          description. The fundamental aspects are as follows:
+        </p>
+        <ol>
+          <li>
+            There are three event states: Normal (no event); OffNormal (e.g., operating temperature outside of the
+            normal range); and Fault (e.g., defective sensor). Events are sent for transitions, including
+            self-transitions and toNormal transitions.
+          </li>
+          <li>
+            Objects can monitor themselves for event states (intrinsic reporting), or dedicated other objects can
+            monitor other objects (algorithmic reporting)
+          </li>
+          <li>
+            Alarms are always sent via Notification Class objects, which keep lists of alarm recipients, i.e., alarm
+            subscriptions are always of the Notification Classes; it is not possible to receive alarms only from some of
+            the objects linked to a given Notification Class. In the typical case, a client will register to all
+            Notification Classes of a BACnet Device.
+          </li>
+          <li>
+            Some alarms can be configured as "acknowledgement required". Acknowledgement is defined by BACnet as a
+            manual action performed by a human operator, and is separate from the confirmation of the successful
+            reception of the event notification.
+          </li>
+        </ol>
+        <p>The picture below demonstrates these key aspects and how they are mapped to the WoT concepts.</p>
+        <img src="../../../images/bacnet_events.drawio.svg" alt="BACnet Eventing Overview and its mapping to WoT" />
 
-                <ol>
-                    <li>
-                        There are three event states: Normal (no event); OffNormal (e.g., operating temperature outside of the normal range);
-                        and Fault (e.g., defective sensor). Events are sent for transitions, including self-transitions and toNormal transitions.
+        <p>The key aspects of the mapping to WoT are:</p>
+        <ol>
+          <li>
+            Each Notification Class is mapped to an EventAffordance. This maps directly to the subscription granularity.
+          </li>
+          <li>
+            Event Enrollment objects used for algorithmic reporting are not explicitly mapped; they are not relevant to
+            the WoT consumer, per se.
+          </li>
+          <li>
+            Special event-related actions (getting current events and acknowledging events) are mapped to
+            ActionAffordances.
+            <div class="note">
+              <p>
+                The WoT consumer does not need to know the details of BACnet alarming; it can simply interact with the
+                InteractionAffordances of the Thing, according to their data schemata. However, the consumer does need
+                to have an understanding of the relations between the InteractionAffordances:
+              </p>
 
-                    </li>
-                    <li>
-                        Objects can monitor themselves for event states (intrinsic reporting),
-                        or dedicated other objects can monitor other objects (algorithmic reporting)
-                    </li>
-                    <li>
-                        Alarms are always sent via Notification Class objects, which keep lists of alarm recipients, i.e., alarm subscriptions
-                        are always of the Notification Classes; it is not possible to receive alarms only from some of the objects linked
-                        to a given Notification Class. In the typical case, a client will register to all Notification Classes of a BACnet Device.
+              <ol>
+                <li>
+                  <code>GetCurrentEvents</code> action can be used to fetch all current events of the thing, which would
+                  not be received just by subscribing to events. This action delivers the same payload as the
+                  EventAffordance's data.
+                </li>
+                <li>
+                  <code>AcknowledgeEvent</code> action can be used for all events (including the ones received via
+                  <code>GetCurrentEvents</code>), where the <code>ackReq</code> field is true. Here the
+                  <code>source</code> field of the event should match the <code>eventSource</code> field of
+                  <code>AcknowledgeEvent.input</code>.
+                </li>
+              </ol>
+              <p>
+                Future work on
+                <a
+                  href="https://github.com/w3c/wot-thing-description/blob/main/planning/work-items/new-features.md#manageable-affordances"
+                  >Manageable Affordances</a
+                >
+                will improve this by modelling the relations between InteractionAffordances.
+              </p>
+            </div>
+          </li>
+          <li>
+            Thing is assumed to be mapped to the BACnet device. While this is simple, it is not a mandatory decision. In
+            specific cases, one BACnet device can correspond to multiple things, and even vice-versa.
+          </li>
+        </ol>
 
-                    </li>
-                    <li>
-                        Some alarms can be configured as "acknowledgement required". Acknowledgement is defined by BACnet as a manual action
-                        performed by a human operator, and is separate from the confirmation of the successful reception of the event notification.
+        <p>
+          In contrast to PropertyAffordances, which are generically mapped to BACnet, interactions related to events
+          come with a specific payload specified by the BACnet standard. The flexibility that would be possible, for
+          example, for an HTTP longpoll-based event notification with a custom HTTP body, is not possible in BACnet
+          context. Thus, it is necessary for the WoT consumer to work with a given logical data schema that is
+          influenced by the BACnet standard. Still, this binding takes an approach to define the data schemata of the
+          InteractionAffordances as independently as possible from BACnet, in order to avoid a direct dependency of WoT
+          consumers on a specific protocol.
+        </p>
+        <p>With this background, this binding takes some simplifying design decisions:</p>
+        <ol>
+          <li>
+            When the BACnet payload is fixed by the BACnet standard for a given service — e.g., event subscription, or
+            data or alarm acknowledgement — the binding doesn't model the BACnet data with
+            <code>bacv:hasDataType</code>.
+          </li>
+          <li>
+            Some features of the BACnet alarm model are abstracted away: filtering alarms based on day of week, time of
+            day, and event state; and using unconfirmed event notifications. If these become necessary, they can be
+            added in a future version.
+          </li>
+          <li>
+            Payloads containing three event states (Normal, OffNormal, Fault) are split into simpler payloads for each
+            event state. For instance, GetEventInformation sends one array item for each BACnet object containing three
+            flags, three timestamps, three acknowledge flags, etc., for each possible event state. This binding splits
+            that payload in the ActionAffordance's output into multiple payloads for each active event, with one
+            timestamp, acknowledge flag, etc. This approach makes the output similar to the EventAffordance data payload
+            and removes the three-event state-based BACnet design from the WoT Consumer's view.
+          </li>
+        </ol>
 
-                    </li>
-                </ol>
-                The picture below demonstrates these key aspects and how they are mapped to the WoT concepts.
-            </p>
-            <img src="../../../images/bacnet_events.drawio.svg" alt="BACnet Eventing Overview and its mapping to WoT" />
-            <p>
-                The key aspects of the mapping to WoT are:
-                <ol>
-                    <li>Each Notification Class is mapped to an EventAffordance. This maps directly to the subscription granularity.</li>
-                    <li>Event Enrollment objects used for algorithmic reporting are not explicitly mapped; they are not relevant to the WoT consumer, per se.</li>
-                    <li>
-                        Special event-related actions (getting current events and acknowledging events) are mapped to ActionAffordances.
-                        <div class="note">
-                            <p>The WoT consumer does not need to know the details of BACnet alarming; it can simply interact with the InteractionAffordances of the Thing,
-                            according to their data schemata. However, the consumer does need to have an understanding of the relations
-                            between the InteractionAffordances:</p>
+        <p>The resulting data payloads look like this:</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>WoT Model</th>
+              <th>BACnet Model</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>EventAffordance.subscription</td>
+              <td>Not modeled; subscription is implicit</td>
 
-                            <ol>
-                                <li>
-                                    <code>GetCurrentEvents</code> action can be used to fetch all current events of the thing, which would not be received
-                                    just by subscribing to events. This action delivers the same payload as the EventAffordance's data.
-                                </li>
-                                <li>
-                                    <code>AcknowledgeEvent</code> action can be used for all events (including the ones received via <code>GetCurrentEvents</code>),
-                                    where the <code>ackReq</code> field is true. Here the <code>source</code> field of the event should match the <code>eventSource</code>
-                                    field of <code>AcknowledgeEvent.input</code>.
-                                </li>
-                            </ol>
-                            <p>Future work on <a href="https://github.com/w3c/wot-thing-description/blob/main/planning/work-items/new-features.md#manageable-affordances">Manageable Affordances</a>
-                            will improve this by modelling the relations between InteractionAffordances.</p>
-                        </div>
-                    </li>
-                    <li>
-                        Thing is assumed to be mapped to the BACnet device. While this is simple, it is not a mandatory decision.
-                        In specific cases, one BACnet device can correspond to multiple things, and even vice-versa.
+              <td>
+                <ul>
+                  <li>valid-days</li>
+                  <li>from-time</li>
+                  <li>to-time</li>
+                  <li>recipient</li>
+                  <li>process-identifier</li>
+                  <li>issue-confirmed</li>
+                  <li>transitions</li>
+                </ul>
+              </td>
+              <td>
+                The simplifications below allow to omit the WoT Data Model.
+                <ul>
+                  <li>valid-days &#8592; all days</li>
+                  <li>from-time &#8592; all time</li>
+                  <li>to-time &#8592; all time</li>
+                  <li>recipient &#8592; BACnet address of the WoT Consumer</li>
+                  <li>process-identifier &#8592; BACnet process ID of the WoT consumer</li>
+                  <li>issue-confirmed-notifications &#8592; always true</li>
+                  <li>transitions &#8592; all transitions</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>EventAffordance.cancellation</td>
+              <td>Not modeled; cancellation is implicit</td>
 
-                    </li>
-                </ol>
-            </p>
-            <p>
-                In contrast to PropertyAffordances, which are generically mapped to BACnet,
-                interactions related to events come with a specific payload specified by the BACnet standard. The flexibility that would be possible, for example,
-                for an HTTP longpoll-based event notification with a custom HTTP body, is not possible in BACnet context.
-                Thus, it is necessary for the WoT consumer to work with a given logical data schema that is influenced by the BACnet standard.
-                Still, this binding takes an approach to define the data schemata of the InteractionAffordances as independently as possible from BACnet, in
-                order to avoid a direct dependency of WoT consumers on a specific protocol.
-            </p>
-            <p>
-                With this background, this binding takes some simplifying design decisions:
-                <ol>
-                    <li>
-                        When the BACnet payload is fixed by the BACnet standard for a given service — e.g., event subscription, or
-                        data or alarm acknowledgement — the binding doesn't model the BACnet data with <code>bacv:hasDataType</code>.
-                    </li>
-                    <li>
-                        Some features of the BACnet alarm model are abstracted away: filtering alarms based on day of week, time of day, and event state;
-                        and using unconfirmed event notifications. If these become necessary, they can be added in a future version.
+              <td>Same as EventAffordance.subscription</td>
+              <td>Same as EventAffordance.subscription</td>
+            </tr>
+            <tr>
+              <td>EventAffordance.data</td>
+              <td>
+                <ul>
+                  <li>source: IRI of the BACnet object sending the event</li>
+                  <li>time: Timestamp of the event</li>
+                  <li>prio: Priority of the event</li>
+                  <li>ackReq (optional): Flag indicating whether acknowledgement is required. Default is false.</li>
+                  <li>toState: The target state of the event transition</li>
+                  <li>
+                    origSource (optional): In case of algorithmic reporting, the IRI of the object monitored by the
+                    event-sending object.
+                  </li>
+                  <li>
+                    eventType (optional): If the event is a regular event transition, an acknowledgement notification or
+                    a general sync-required event. Default is regular.
+                  </li>
+                  <li>
+                    values (optional): Additional values associated with the event, e.g., high-limit if the value
+                    exceeded an OffNormal limit.
+                  </li>
 
-                    </li>
-                    <li>
-                        Payloads containing three event states (Normal, OffNormal, Fault) are split into simpler payloads for each event state. For instance,
-                        GetEventInformation sends one array item for each BACnet object containing three flags, three timestamps, three acknowledge flags, etc.,
-                        for each possible event state. This binding splits that payload in the ActionAffordance's output into multiple payloads for each
-                        active event, with one timestamp, acknowledge flag, etc. This approach makes the output similar to the EventAffordance data
-                        payload and removes the three-event state-based BACnet design from the WoT Consumer's view.
-                    </li>
-                </ol>
-            </p>
-            <p>
-                The resulting data payloads look like this:
-            </p>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>WoT Model</th>
-                        <th>BACnet Model</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>EventAffordance.subscription</td>
-                        <td>Not modeled; subscription is implicit</td>
-
-                        <td>
-                            <ul>
-                                <li>valid-days</li>
-                                <li>from-time</li>
-                                <li>to-time</li>
-                                <li>recipient</li>
-                                <li>process-identifier</li>
-                                <li>issue-confirmed</li>
-                                <li>transitions</li>
-                            </ul>
-                        </td>
-                        <td>
-                            The simplifications below allow to omit the WoT Data Model.
-                            <ul>
-                                <li>valid-days &#8592; all days</li>
-                                <li>from-time &#8592; all time</li>
-                                <li>to-time &#8592; all time</li>
-                                <li>recipient &#8592; BACnet address of the WoT Consumer</li>
-                                <li>process-identifier &#8592; BACnet process ID of the WoT consumer</li>
-                                <li>issue-confirmed-notifications &#8592; always true</li>
-                                <li>transitions &#8592; all transitions</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>EventAffordance.cancellation</td>
-                        <td>Not modeled; cancellation is implicit</td>
-
-                        <td>Same as EventAffordance.subscription</td>
-                        <td>Same as EventAffordance.subscription</td>
-                    </tr>
-                    <tr>
-                        <td>EventAffordance.data</td>
-                        <td>
-                            <ul>
-                                <li>source: IRI of the BACnet object sending the event</li>
-                                <li>time: Timestamp of the event</li>
-                                <li>prio: Priority of the event</li>
-                                <li>ackReq (optional): Flag indicating whether acknowledgement is required. Default is false.</li>
-                                <li>toState: The target state of the event transition</li>
-                                <li>origSource (optional): In case of algorithmic reporting, the IRI of the object monitored by the event-sending object.</li>
-                                <li>eventType (optional): If the event is a regular event transition, an acknowledgement notification or a general sync-required event. Default is regular.</li>
-                                <li>values (optional): Additional values associated with the event, e.g., high-limit if the value exceeded an OffNormal limit.</li>
-
-                                <li>message (optional): The message associated with the event.</li>
-                                <li>inactive (optional): Flag whether the event is not active anymore. Default is false. This is needed for inactive, but not yet acknowledged events; they are there for symmetry with GetCurrentEvents action.</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>process-identifier</li>
-                                <li>initiating-device-identifier</li>
-                                <li>event-object-identifier</li>
-                                <li>time-stamp</li>
-                                <li>notification-class</li>
-                                <li>priority</li>
-                                <li>event-type</li>
-                                <li>message-text</li>
-                                <li>notify-type</li>
-                                <li>ack-required</li>
-                                <li>from-state</li>
-                                <li>to-state</li>
-                                <li>event-values</li>
-                            </ul>
-                        </td>
-                        <td>
-                            We focus only on ConfirmedEventNotification; unconfirmed event notifications are currently not supported.
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>GetCurrentEvents: ActionAffordance.input</td>
-                        <td>
-                            <ul>
-                                <li>lastReceivedSource (optional): IRI of the last received object with event</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Last Received Object Identifier</li>
-                            </ul>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>GetCurrentEvents: ActionAffordance.output</td>
-                        <td>
-                            <ul>
-                                <li>
-                                    currentEvents: Array. Each array item is modeled exactly the same as EventAffordance.data:
-                                    <ul>
-                                        <li>source</li>
-                                        <li>time</li>
-                                        <li>prio</li>
-                                        <li>ackReq (optional)</li>
-                                        <li>toState</li>
-                                        <li>origSource (optional)</li>
-                                        <li>eventType (optional)</li>
-                                        <li>values (optional)</li>
-                                        <li>message (optional)</li>
-                                        <li>inactive (optional)</li>
-                                    </ul>
-                                </li>
-                                <li>moreEvents: Flag indicating whether more events should be queried</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>
-                                    List of Event Summaries:
-                                    <ul>
-                                        <li>Object Identifier</li>
-                                        <li>Event State</li>
-                                        <li>Acknowledged Transitions</li>
-                                        <li>Event Timestamps</li>
-                                        <li>Notify Type</li>
-                                        <li>Event Enable</li>
-                                        <li>Event Priorities</li>
-                                    </ul>
-                                </li>
-                                <li>More Events</li>
-                            </ul>
-                        </td>
-                        <td>
-                            As indicated above, the BACnet payload and the ActionAffordance output differ, especially around how events are grouped.
-                            In the BACnet payload, one list item represents one object with its three possible events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps, and Priorities.
-                            This is to be processed and split into one standalone event for every current event, or past unacknowledged event, of this object, with corresponding timestamp, priority, etc.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>AcknowledgeEvent: ActionAffordance.input</td>
-                        <td>
-                            <ul>
-                                <li>eventSource: Source of the event to be acknowledged</li>
-                                <li>eventState: To-state of the event to be acknowledged</li>
-                                <li>eventTime: Timestamp of the event to be acknowledged</li>
-                                <li>eventTime: Timestamp of the event to be acknowledged</li>
-                                <li>ackSource: String describing the acknowledgement source</li>
-                                <li>ackTime: Timestamp of the acknowledge operation</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Process Identifier</li>
-                                <li>Object Identifier</li>
-                                <li>Event State</li>
-                                <li>Event Timestamp</li>
-                                <li>Acknowledgement Source</li>
-                                <li>Time of Acknowledgement</li>
-                            </ul>
-                        </td>
-                        <td>
-                            Process Identifier is to be set by WoT Consumer corresponding to what it has entered at subscription time.
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                Detailed schemata of these payloads can be found in the JSON Schema linked in this file's header.
-                Examples below will be helpful in understanding the details.
-
-            </p>
-        </section>
-        <!--
+                  <li>message (optional): The message associated with the event.</li>
+                  <li>
+                    inactive (optional): Flag whether the event is not active anymore. Default is false. This is needed
+                    for inactive, but not yet acknowledged events; they are there for symmetry with GetCurrentEvents
+                    action.
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>process-identifier</li>
+                  <li>initiating-device-identifier</li>
+                  <li>event-object-identifier</li>
+                  <li>time-stamp</li>
+                  <li>notification-class</li>
+                  <li>priority</li>
+                  <li>event-type</li>
+                  <li>message-text</li>
+                  <li>notify-type</li>
+                  <li>ack-required</li>
+                  <li>from-state</li>
+                  <li>to-state</li>
+                  <li>event-values</li>
+                </ul>
+              </td>
+              <td>
+                We focus only on ConfirmedEventNotification; unconfirmed event notifications are currently not
+                supported.
+              </td>
+            </tr>
+            <tr>
+              <td>GetCurrentEvents: ActionAffordance.input</td>
+              <td>
+                <ul>
+                  <li>lastReceivedSource (optional): IRI of the last received object with event</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>Last Received Object Identifier</li>
+                </ul>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>GetCurrentEvents: ActionAffordance.output</td>
+              <td>
+                <ul>
+                  <li>
+                    currentEvents: Array. Each array item is modeled exactly the same as EventAffordance.data:
+                    <ul>
+                      <li>source</li>
+                      <li>time</li>
+                      <li>prio</li>
+                      <li>ackReq (optional)</li>
+                      <li>toState</li>
+                      <li>origSource (optional)</li>
+                      <li>eventType (optional)</li>
+                      <li>values (optional)</li>
+                      <li>message (optional)</li>
+                      <li>inactive (optional)</li>
+                    </ul>
+                  </li>
+                  <li>moreEvents: Flag indicating whether more events should be queried</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    List of Event Summaries:
+                    <ul>
+                      <li>Object Identifier</li>
+                      <li>Event State</li>
+                      <li>Acknowledged Transitions</li>
+                      <li>Event Timestamps</li>
+                      <li>Notify Type</li>
+                      <li>Event Enable</li>
+                      <li>Event Priorities</li>
+                    </ul>
+                  </li>
+                  <li>More Events</li>
+                </ul>
+              </td>
+              <td>
+                As indicated above, the BACnet payload and the ActionAffordance output differ, especially around how
+                events are grouped. In the BACnet payload, one list item represents one object with its three possible
+                events, which is reflected in Event State, Acknowledged Transitions, Event Timestamps, and Priorities.
+                This is to be processed and split into one standalone event for every current event, or past
+                unacknowledged event, of this object, with corresponding timestamp, priority, etc.
+              </td>
+            </tr>
+            <tr>
+              <td>AcknowledgeEvent: ActionAffordance.input</td>
+              <td>
+                <ul>
+                  <li>eventSource: Source of the event to be acknowledged</li>
+                  <li>eventState: To-state of the event to be acknowledged</li>
+                  <li>eventTime: Timestamp of the event to be acknowledged</li>
+                  <li>eventTime: Timestamp of the event to be acknowledged</li>
+                  <li>ackSource: String describing the acknowledgement source</li>
+                  <li>ackTime: Timestamp of the acknowledge operation</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>Process Identifier</li>
+                  <li>Object Identifier</li>
+                  <li>Event State</li>
+                  <li>Event Timestamp</li>
+                  <li>Acknowledgement Source</li>
+                  <li>Time of Acknowledgement</li>
+                </ul>
+              </td>
+              <td>
+                Process Identifier is to be set by WoT Consumer corresponding to what it has entered at subscription
+                time.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Detailed schemata of these payloads can be found in the JSON Schema linked in this file's header. Examples
+          below will be helpful in understanding the details.
+        </p>
+      </section>
+      <!--
         <section id="possible-mappings">
             <h3>Possible mappings</h3>
             <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers.</p>
@@ -1346,19 +1186,17 @@ lowercase = %x61-7A  ; "a" to "z"
         -->
     </section>
     <section>
-        <h2 id="examples">Examples</h2>
-        <p>
-            This section will present a set of examples of how the terms
-            defined in this document can be used to describe and configure a
-            Form.
-        </p>
-        <p>
-            [[[#example-readproperty]]] shows a property with the object type
-            <code>analog-input</code>, object instance <code>1</code>, and
-            property identifier <code>present-value</code> in the scope of a
-            BACnet device with device instance number <code>5</code>.
-        </p>
-        <pre id="example-readproperty" class="example" title="A BACnet property">
+      <h2 id="examples">Examples</h2>
+      <p>
+        This section will present a set of examples of how the terms defined in this document can be used to describe
+        and configure a Form.
+      </p>
+      <p>
+        [[[#example-readproperty]]] shows a property with the object type
+        <code>analog-input</code>, object instance <code>1</code>, and property identifier <code>present-value</code> in
+        the scope of a BACnet device with device instance number <code>5</code>.
+      </p>
+      <pre id="example-readproperty" class="example" title="A BACnet property">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1381,19 +1219,21 @@ lowercase = %x61-7A  ; "a" to "z"
         }
     }
 }
-</pre>
+</pre
+      >
 
-        <p>
-            [[[#example-uri-variables-with-forms]]] demonstrates how the <code>uriVariables</code> in the
-            affordance-level can be
-            used and how they need to be represented in a <code>forms</code> element.
-            The <code>"bacv:covIncrement"</code> indicates that the URI variable set by the Consumer application will be
-            used to notify the
-            Consumer only if the property value changes more than the set amount by the URI variable.
-        </p>
+      <p>
+        [[[#example-uri-variables-with-forms]]] demonstrates how the <code>uriVariables</code> in the affordance-level
+        can be used and how they need to be represented in a <code>forms</code> element. The
+        <code>"bacv:covIncrement"</code> indicates that the URI variable set by the Consumer application will be used to
+        notify the Consumer only if the property value changes more than the set amount by the URI variable.
+      </p>
 
-        <pre id="example-uri-variables-with-forms" class="example"
-            title="uriVariables in the Affordance Level with Associated forms">
+      <pre
+        id="example-uri-variables-with-forms"
+        class="example"
+        title="uriVariables in the Affordance Level with Associated forms"
+      >
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1423,31 +1263,38 @@ lowercase = %x61-7A  ; "a" to "z"
         }
     }
 }
-</pre>
+</pre
+      >
 
+      <p>
+        [[[#example-uri-variable-for-writing]]] demonstrates how the <code>uriVariable</code> in the affordance-level
+        can be used to model a writing priority in a <code>forms</code> element. The
+        <code>"bacv:CommandPriority"</code> indicates that the URI variable set by the Consumer application will be
+        relayed as the priority argument in the WriteProperty request. <code>"bacv:Relinquish"</code> indicates whether
+        the user wants to relinquish the property value at the given command priority. For other operations (e.g.,
+        <code>readproperty</code>, <code>observeproperty</code>, <code>unobserveproperty</code>) these URI variables are
+        irrelevant, so the corresponding forms do not use them. If the URI variables are also irrelevant for the
+        <code>writeproperty</code> operation (e.g., when the BACnet object doesn't have a priority array), they can also
+        be left out of the <code>writeproperty</code> form, and the URI variables can be omitted completely. The URI
+        variables come with defaults, so if the Consumer doesn't provide them, the defaults of
+        <code>writePriority=16</code> and <code>relinquish=false</code> will be used. Another possibility is to fix the
+        writing priority in the TD by giving a fixed <code>commandPriority</code> in the <code>href</code> of the form,
+        and not exposing its value via a URI variable. These decisions belong to the TD author.
+      </p>
+
+      <div class="note">
         <p>
-            [[[#example-uri-variable-for-writing]]] demonstrates how the <code>uriVariable</code> in the
-            affordance-level can be used to model a writing priority in a <code>forms</code> element.
-            The <code>"bacv:CommandPriority"</code> indicates that the URI variable set by the Consumer application will
-            be relayed as the priority argument in the WriteProperty request. <code>"bacv:Relinquish"</code> indicates whether the user wants to relinquish the property value at the given command priority.
-            For other operations (e.g., <code>readproperty</code>, <code>observeproperty</code>, <code>unobserveproperty</code>) these URI variables are irrelevant, so the corresponding forms do not use them.
-            If the URI variables are also irrelevant for the <code>writeproperty</code> operation (e.g., when the BACnet object doesn't have a priority array),
-            they can also be left out of the <code>writeproperty</code> form, and the URI variables can be omitted completely.
-            The URI variables come with defaults,
-            so if the Consumer doesn't provide them, the defaults of <code>writePriority=16</code> and <code>relinquish=false</code> will be used.
-            Another possibility is to fix the writing priority in the TD by giving a fixed <code>commandPriority</code> in the <code>href</code> of the form, and not exposing its value via a URI variable.
-            These decisions belong to the TD author.
+          When relinquish is set to <code>true</code>, WoT consumer will ignore the value given to the
+          <code>writeproperty</code> operation and write <code>NULL</code> instead. This clears the value at the
+          specified priority, and is the only way of allowing a lower priority to take effect.
         </p>
+      </div>
 
-        <div class="note">
-            <p>
-                When relinquish is set to <code>true</code>, WoT consumer will ignore the value given to the <code>writeproperty</code> operation and write <code>NULL</code> instead. This clears the value at the specified priority,
-                and is the only way of allowing a lower priority to take effect.
-            </p>
-        </div>
-
-        <pre id="example-uri-variable-for-writing" class="example"
-            title="uriVariables in the Affordance Level for writing">
+      <pre
+        id="example-uri-variable-for-writing"
+        class="example"
+        title="uriVariables in the Affordance Level for writing"
+      >
             {
                 "@context": ["https://www.w3.org/2022/wot/td/v1.1",
                 {
@@ -1495,15 +1342,16 @@ lowercase = %x61-7A  ; "a" to "z"
                     }
                 }
             }
-</pre>
+</pre
+      >
 
-        <p>
-            [[[#example-enum-mapping]]] shows how an <code>enum</code> in the Data Schema is extended in the
-            <code>forms</code>
-            to make it understandable by BACnet drivers.
-        </p>
+      <p>
+        [[[#example-enum-mapping]]] shows how an <code>enum</code> in the Data Schema is extended in the
+        <code>forms</code>
+        to make it understandable by BACnet drivers.
+      </p>
 
-        <pre id="example-enum-mapping" class="example" title="Enum Mapping for BACnet Types">
+      <pre id="example-enum-mapping" class="example" title="Enum Mapping for BACnet Types">
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1",
     {
@@ -1545,19 +1393,18 @@ lowercase = %x61-7A  ; "a" to "z"
         }
     }
 }
-</pre>
+</pre
+      >
 
-        <p>
-            [[[#example-event]]] shows the InteractionAffordances for using BACnet events:
+      <p>[[[#example-event]]] shows the InteractionAffordances for using BACnet events:</p>
 
-            <ol>
-                <li>One ActionAffordance for the Device Object for GetEventInfo, named as GetCurrentEvents</li>
-                <li>One ActionAffordance for the Device Object for AcknowledgeAlarm, named as AcknowledgeEvent</li>
-                <li>One EventAffordance for every Notification Class object</li>
-            </ol>
-        </p>
+      <ol>
+        <li>One ActionAffordance for the Device Object for GetEventInfo, named as GetCurrentEvents</li>
+        <li>One ActionAffordance for the Device Object for AcknowledgeAlarm, named as AcknowledgeEvent</li>
+        <li>One EventAffordance for every Notification Class object</li>
+      </ol>
 
-        <pre id="example-event" class="example" title="InteractionAffordances for BACnet Event">
+      <pre id="example-event" class="example" title="InteractionAffordances for BACnet Event">
         {
         "@context": ["https://www.w3.org/2022/wot/td/v1.1",
         {
@@ -1780,13 +1627,12 @@ lowercase = %x61-7A  ; "a" to "z"
               },
             }
         }
-        </pre>
+        </pre
+      >
 
-        <p>
-            The resulting example payloads are available below.
-        </p>
+      <p>The resulting example payloads are available below.</p>
 
-        <pre id="example-event-data" class="example" title="Example event data">
+      <pre id="example-event-data" class="example" title="Example event data">
             {
                 "source": "bacnet://5/0,20",
                 "time": "2024-07-30T12:33:00+00:00",
@@ -1801,18 +1647,19 @@ lowercase = %x61-7A  ; "a" to "z"
                     "statusFlags": [0, 0, 0, 0]
                 }
             }
-        </pre>
+        </pre
+      >
 
-        <p>
-            [[[#example-event-data]]] shows an event notification because of an overheating piece of equipment. Event <code>message</code>
-            gives this as a useful hint; <code>prio</code> is set accordingly. <code>values</code> object gives additional details
-            about the event — that the current value is 55, and the exceeded limit was 50. The unit of these values can be found at the
-            <code>source</code> object that triggered this event.
-            Because overheating events are important for the operator to notice, <code>ackReq</code> is set, so the operator definitely
-            will see the event, even after the overheating condition is over.
-        </p>
+      <p>
+        [[[#example-event-data]]] shows an event notification because of an overheating piece of equipment. Event
+        <code>message</code> gives this as a useful hint; <code>prio</code> is set accordingly.
+        <code>values</code> object gives additional details about the event — that the current value is 55, and the
+        exceeded limit was 50. The unit of these values can be found at the <code>source</code> object that triggered
+        this event. Because overheating events are important for the operator to notice, <code>ackReq</code> is set, so
+        the operator definitely will see the event, even after the overheating condition is over.
+      </p>
 
-        <pre id="example-acknowledgeevent-input" class="example" title="Example AcknowledgeEvent input">
+      <pre id="example-acknowledgeevent-input" class="example" title="Example AcknowledgeEvent input">
             {
                 "source": "bacnet://5/0,20",
                 "toState": "offnormal",
@@ -1820,14 +1667,15 @@ lowercase = %x61-7A  ; "a" to "z"
                 "ackSource": "Management Station Operator Acknowledge",
                 "ackTime": "2024-07-30T13:15:00+00:00"
             }
-        </pre>
+        </pre
+      >
 
-        <p>
-            When the operator sees this event and decides to acnowledge it, management station will send the payload shown in
-            [[[#example-acknowledgeevent-input]]]. This can happen before or after the event is over.
-        </p>
-        
-        <pre id="example-getcurrentevents-output" class="example" title="Example GetCurrentEvents output">
+      <p>
+        When the operator sees this event and decides to acnowledge it, management station will send the payload shown
+        in [[[#example-acknowledgeevent-input]]]. This can happen before or after the event is over.
+      </p>
+
+      <pre id="example-getcurrentevents-output" class="example" title="Example GetCurrentEvents output">
             {
                 "currentEvents": [
                     {
@@ -1854,17 +1702,17 @@ lowercase = %x61-7A  ; "a" to "z"
                 ],
                 "moreEvents": false
             }
-        </pre>
+        </pre
+      >
 
-        <p>
-            If the event client wants to get a list of all events of the device, it will invoke the GetCurrentEvents action, and will receive
-            te payload shown in [[[#example-getcurrentevents-output]]]. Here the event notification about the overheating and a past fault event can be
-            seen. This is useful for synchronizing the events known on the client to the events that are on the device, in case of temporary
-            disconnection, reboot of client or device, etc. Please note that in the second alarm, the <code>ackReq</code> value turned to 0,
-            because this event was acknowledged by the operator in the meantime.
-        </p>
-
+      <p>
+        If the event client wants to get a list of all events of the device, it will invoke the GetCurrentEvents action,
+        and will receive te payload shown in [[[#example-getcurrentevents-output]]]. Here the event notification about
+        the overheating and a past fault event can be seen. This is useful for synchronizing the events known on the
+        client to the events that are on the device, in case of temporary disconnection, reboot of client or device,
+        etc. Please note that in the second alarm, the <code>ackReq</code> value turned to 0, because this event was
+        acknowledged by the operator in the meantime.
+      </p>
     </section>
-</body>
-
+  </body>
 </html>

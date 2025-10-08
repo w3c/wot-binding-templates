@@ -1,195 +1,189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-    <meta charset='utf-8'>
-    <meta name='color-scheme' content='light dark'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
-    <script class='remove'>
-        var respecConfig = {
-            specStatus: "ED",
-            group: "wg/wot",
-            editors: [
-                {
-                    name: "Klaus Hartke",
-                    w3cid: "107859",
-                    company: "Siemens AG",
-                    companyURL: "https://www.siemens.com/"
-                },
-                {
-                    name: "Jan Romann",
-                    w3cid: "129690",
-                    company: "Invited Expert",
-                    companyURL: "https://github.com/JKRhb"
-                },
-            ],
-            edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
-            shortName: "wot-coap-binding",
-            github: "https://github.com/w3c/wot-binding-templates",
-            localBiblio: {
-                "I.D.-coap-pubsub": {
-                    href: "https://tools.ietf.org/html/draft-ietf-core-coap-pubsub-14",
-                    title: "A publish-subscribe architecture for the Constrained Application Protocol (CoAP)",
-                    status: "Internet-Draft",
-                    publisher: "IETF",
-                    date: "18 April 2024",
-                    authors: [
-                        "Jaime Jimenez",
-                        "Michael Koster",
-                        "Ari Keranen",
-                    ]
-                },
-                "I.D.-stp": {
-                    href: "https://datatracker.ietf.org/doc/html/draft-bormann-t2trg-stp-03",
-                    title: "The Series Transfer Pattern (STP)",
-                    status: "Internet-Draft",
-                    publisher: "IETF",
-                    date: "8 April 2020",
-                    authors: [
-                        "Carsten Bormann",
-                        "Klaus Hartke",
-                    ]
-                },
-                "WOT-BINDINGS-REGISTRY": {
-                    title: "Web of Things (WoT) Bindings Registry",
-                    //, href: "https://www.w3.org/TR/wot-bindings-registry/"
-                    href: "https://w3c.github.io/wot-bindings-registry/",
-                    authors: ["TODO"], //TODO: sync authors
-                    publisher: "W3C",
-                    date: "TODO" //TODO: Add publication date
-                }
-            },
-            otherLinks: [{
-                key: "WoT Bindings Registry",
-                data: [
-                    {
-                        value: "Web of Things (WoT) Bindings Registry",
-                        href: "https://w3c.github.io/wot-bindings-registry/"
-                    }
-                ]
-            },
-            {
-                key: "Bindings Section of the TD Specification",
-                data: [
-                    {
-                        value: "Explanation of the binding mechanism",
-                        href: " https://w3c.github.io/wot-thing-description/#bindings"
-                    }
-                ]
-            },
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Klaus Hartke",
+            w3cid: "107859",
+            company: "Siemens AG",
+            companyURL: "https://www.siemens.com/"
+          },
+          {
+            name: "Jan Romann",
+            w3cid: "129690",
+            company: "Invited Expert",
+            companyURL: "https://github.com/JKRhb"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/",
+        shortName: "wot-coap-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "I.D.-coap-pubsub": {
+            href: "https://tools.ietf.org/html/draft-ietf-core-coap-pubsub-14",
+            title: "A publish-subscribe architecture for the Constrained Application Protocol (CoAP)",
+            status: "Internet-Draft",
+            publisher: "IETF",
+            date: "18 April 2024",
+            authors: ["Jaime Jimenez", "Michael Koster", "Ari Keranen"]
+          },
+          "I.D.-stp": {
+            href: "https://datatracker.ietf.org/doc/html/draft-bormann-t2trg-stp-03",
+            title: "The Series Transfer Pattern (STP)",
+            status: "Internet-Draft",
+            publisher: "IETF",
+            date: "8 April 2020",
+            authors: ["Carsten Bormann", "Klaus Hartke"]
+          },
+          "WOT-BINDINGS-REGISTRY": {
+            title: "Web of Things (WoT) Bindings Registry",
+            //, href: "https://www.w3.org/TR/wot-bindings-registry/"
+            href: "https://w3c.github.io/wot-bindings-registry/",
+            authors: ["TODO"], //TODO: sync authors
+            publisher: "W3C",
+            date: "TODO" //TODO: Add publication date
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Bindings Registry",
+            data: [
               {
-                key: "JSON Schema",
-                data: [
-                    {
-                        value: "CoAP JSON Schema",
-                        href: "coap.schema.json"
-                    }
-                ]
-               },
-               {
-                   key: "Ontology",
-                   data: [
-                       {
-                       value: "CoAP Vocabulary for the Web of Things",
-                       href: "ontology.html",
-                       }
-                   ]
-               }
+                value: "Web of Things (WoT) Bindings Registry",
+                href: "https://w3c.github.io/wot-bindings-registry/"
+              }
             ]
-        };
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: " https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "CoAP JSON Schema",
+                href: "coap.schema.json"
+              }
+            ]
+          },
+          {
+            key: "Ontology",
+            data: [
+              {
+                value: "CoAP Vocabulary for the Web of Things",
+                href: "ontology.html"
+              }
+            ]
+          }
+        ]
+      };
     </script>
     <title>Web of Things (WoT) CoAP Binding</title>
-</head>
+  </head>
 
-<body>
-    <section id='abstract'>
-        <p>
-            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to
-            implement a specific IoT protocol, data format or IoT platform.
-            The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
-            This document is a binding for the Constrained Application Protocol (CoAP), which
-            is a specialized web transfer protocol for use with constrained nodes and constrained (e.g., low-power, lossy) networks.
-        </p>
-        <p>
-            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description document,
-            and associated rules which allow to describe WoT operations using CoAP over the network.
-            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
-        </p>
+  <body>
+    <section id="abstract">
+      <p>
+        In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to implement a
+        specific IoT protocol, data format or IoT platform. The WoT Thing Description specification explains the overall
+        mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow. This document
+        is a binding for the Constrained Application Protocol (CoAP), which is a specialized web transfer protocol for
+        use with constrained nodes and constrained (e.g., low-power, lossy) networks.
+      </p>
+      <p>
+        More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
+        document, and associated rules which allow to describe WoT operations using CoAP over the network. Additionally,
+        relevant examples are provided to showcase different vocabulary terms and the associated behavior.
+      </p>
     </section>
-    <section id='sotd'>
-        <p>
-            <em>This document is a work in progress</em>
-        </p>
+    <section id="sotd">
+      <p>
+        <em>This document is a work in progress</em>
+      </p>
     </section>
-    <section id='introduction'>
-        <h2>Introduction</h2>
-        <p>
-            The Constrained Application Protocol (CoAP) [[RFC7252]] is a
-            specialized web transfer protocol for use with constrained nodes and
-            constrained (e.g., low-power, lossy) networks. The nodes often have
-            8-bit microcontrollers with small amounts of ROM and RAM, while
-            constrained networks such as IPv6 over Low-Power Wireless Personal
-            Area Networks (6LoWPANs) often have high packet error rates and a
-            typical throughput of 10s of kbit/s. The protocol is designed for
-            machine-to-machine (M2M) applications such as smart energy and
-            building automation.
-        </p>
-        <p>
-            This document describes how to present devices that use CoAP in a Thing Description.
-            In particular, the document explains how to create valid Forms for the different operations that CoAP can perform.
-        </p>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        The Constrained Application Protocol (CoAP) [[RFC7252]] is a specialized web transfer protocol for use with
+        constrained nodes and constrained (e.g., low-power, lossy) networks. The nodes often have 8-bit microcontrollers
+        with small amounts of ROM and RAM, while constrained networks such as IPv6 over Low-Power Wireless Personal Area
+        Networks (6LoWPANs) often have high packet error rates and a typical throughput of 10s of kbit/s. The protocol
+        is designed for machine-to-machine (M2M) applications such as smart energy and building automation.
+      </p>
+      <p>
+        This document describes how to present devices that use CoAP in a Thing Description. In particular, the document
+        explains how to create valid Forms for the different operations that CoAP can perform.
+      </p>
     </section>
     <section id="conformance">
-        <p>
-            Forms of a Thing Description instance with CoAP Binding complies with this specification if it follows
-            the normative statements in <a href="#vocabulary"></a> and <a href="#mappings"></a>.
-        </p>
-        <p>
-            A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances
-            containing CoAP Binding is provided in the <a href="coap.schema.json">GitHub repository</a>.
-        </p>
+      <p>
+        Forms of a Thing Description instance with CoAP Binding complies with this specification if it follows the
+        normative statements in <a href="#vocabulary"></a> and <a href="#mappings"></a>.
+      </p>
+      <p>
+        A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances containing CoAP Binding is provided in
+        the <a href="coap.schema.json">GitHub repository</a>.
+      </p>
     </section>
     <section id="overview">
-        <h2>Protocol Overview</h2>
+      <h2>Protocol Overview</h2>
+      <p>
+        The interaction model of CoAP [[RFC7252]] is similar to the client/server model of HTTP [[RFC7230]]: A CoAP
+        client sends requests to a CoAP server and receives responses. Requests indicate the action to be performed
+        (e.g., GET, POST, PUT, DELETE) by means of a CoAP method code. Responses carry a CoAP status code that indicates
+        success or failure. Requests and response may carry a representation in a CoAP content format (i.e., content
+        type with optional content coding).
+      </p>
+      <p>
+        The parameters and metadata of requests and responses are carried in CoAP options. CoAP defines a set of common
+        options (e.g., URI path and query components, Accept and Content-Format) and allows new options to be defined.
+        Options are generally set when using certain CoAP features, such as the <code>Observe</code> option being set
+        when Observing Resources in CoAP [[RFC7641]].
+      </p>
+      <p>
+        The following sections provide an overview of the CoAP features defined at the time of writing and give examples
+        of a how these can be used in a [[[WOT-THING-DESCRIPTION]]]. The vocabulary terms used in these examples are
+        defined in section [[[#vocabulary]]].
+      </p>
+      <aside class="ednote">
         <p>
-            The interaction model of CoAP [[RFC7252]] is similar to the client/server model of HTTP [[RFC7230]]:
-            A CoAP client sends requests to a CoAP server and receives responses.
-            Requests indicate the action to be performed (e.g., GET, POST, PUT, DELETE) by means of a CoAP method code.
-            Responses carry a CoAP status code that indicates success or failure.
-            Requests and response may carry a representation in a CoAP content format (i.e., content type with optional content coding).
+          In contrast to HTTP, where header fields all follow the same key-value based structure, CoAP defines specific
+          formats for its options, which all have to be registered with IANA, being the primary way for adding new
+          features to the protocol.
         </p>
         <p>
-            The parameters and metadata of requests and responses are carried in CoAP options.
-            CoAP defines a set of common options (e.g., URI path and query components, Accept and Content-Format) and allows new options to be defined.
-            Options are generally set when using certain CoAP features, such as the <code>Observe</code> option being set when Observing Resources in CoAP [[RFC7641]].
+          Due to the highly standardized nature of CoAP options, mapping them to a vocabulary of <em>features</em> makes
+          more sense than offering a generic format for defining them within a TD form, also considering that there are
+          options with binary, numeric or string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more
+          details).
+        </p>
+      </aside>
+      <section>
+        <h3>Requests/Responses</h3>
+        <p>
+          Things accessible via CoAP provide interaction affordances that direct Consumers to send CoAP requests to a
+          CoAP endpoint. The Thing processes these requests and sends appropriate CoAP responses.
         </p>
         <p>
-            The following sections provide an overview of the CoAP features defined at the time of writing and give examples of a how these can be used in a [[[WOT-THING-DESCRIPTION]]].
-            The vocabulary terms used in these examples are defined in section [[[#vocabulary]]].
+          The <strong>target resource</strong> is specified in the Thing Description by the <code>href</code> member of
+          a form, using one of the CoAP URI schemes (see section [[[#url]]]). The <strong>request method</strong> (e.g.,
+          <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, or <code>"DELETE"</code>) is specified using the
+          <code>cov:method</code> member of a form.
         </p>
-        <aside class="ednote">
-            <p>
-                In contrast to HTTP, where header fields all follow the same key-value based structure,
-                CoAP defines specific formats for its options, which all have to be registered with IANA,
-                being the primary way for adding new features to the protocol.
-            </p>
-            <p>
-                Due to the highly standardized nature of CoAP options, mapping them to a vocabulary
-                of <em>features</em> makes more sense than offering a generic format for defining them
-                within a TD form, also considering that there are options with binary, numeric or
-                string-based values (see sections 3.1 and 3.2 of [[RFC7252]] for more details).
-            </p>
-        </aside>
-        <section>
-            <h3>Requests/Responses</h3>
-            <p>
-                Things accessible via CoAP provide interaction affordances that direct Consumers to send CoAP requests to a CoAP endpoint. The Thing processes these requests and sends appropriate CoAP responses.
-            </p>
-            <p>
-                The <strong>target resource</strong> is specified in the Thing Description by the <code>href</code> member of a form, using one of the CoAP URI schemes (see section [[[#url]]]).
-                The <strong>request method</strong> (e.g., <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, or <code>"DELETE"</code>) is specified using the <code>cov:method</code> member of a form.
-            </p>
-            <pre id="example-request" class="example" title="A simple Thing Description using CoAP">
+        <pre id="example-request" class="example" title="A simple Thing Description using CoAP">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -206,11 +200,17 @@
         }
     }
 }
-</pre>
-            <p>
-                The <code>cov:method</code> member may be omitted if the request method is the default for the operation (see section [[[#default-mappings]]]).
-            </p>
-            <pre id="example-request-defaults" class="example" title="A simple Thing Description using CoAP with defaults omitted">
+</pre
+        >
+        <p>
+          The <code>cov:method</code> member may be omitted if the request method is the default for the operation (see
+          section [[[#default-mappings]]]).
+        </p>
+        <pre
+          id="example-request-defaults"
+          class="example"
+          title="A simple Thing Description using CoAP with defaults omitted"
+        >
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -225,47 +225,71 @@
         }
     }
 }
-</pre>
-            <p>
-                The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format of the request and/or response.
-                In <abbr title="Constrained Application Protocol">CoAP</abbr>, combinations of content type and content coding are encoded using standardized values listed in the <a href="https://www.iana.org/assignments/core-parameters/#content-formats">IANA CoAP Content-Formats registry</a>.
-                Therefore, not every combination of content type and content coding can be used with CoAP.
-                Furthermore, even parameters are included in the mapping: in [[[#example-request-defaults]]], the content type <code>text/plain;charset=utf-8</code> would be mapped to Content-Format ID 0.
-                Omitting the <code>charset</code> parameter, for instance, would break a literal mapping from content type to Content-Format in this case.
-            </p>
-            <p>
-                Section [[[#content-negotiation]]] introduces the additional vocabulary terms <code>cov:contentFormat</code> and <code>cov:accept</code> to deal with ambiguities of content types and content codings in the context of CoAP, and to give Consumers guidance for the content negotiation process.
-            </p>
-        </section>
-        <section id="content-negotiation">
-            <h3>Content Negotiation</h3>
-            <p>
-                Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different representations available.
-            </p>
-            <p>
-                Content negotiation is accomplished through the use of CoAP <code>Accept</code> and <code>Content-Format</code> options.
-                The CoAP Accept option is used by clients to request a particular content format, while the <code>Content-Format</code> option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively.
-            </p>
-            <p>
-                Mapping the string-based <code>contentType</code> and <code>contentCoding</code> fields to a numeric Content-Format can be difficult for a Consumer for a number of reasons:
-                First, a Consumer needs to be aware of all potential mappings between the string-based and the numerical representations.
-                Furthermore, since there is no well-defined algorithm for converting a combination of <code>contentType</code> and <code>contentCoding</code> to a CoAP Content-Format, the process might be prone to error.
-            </p>
-            <p>
-                Therefore, this document introduces the vocabulary term <code>cov:contentFormat</code> for providing a hint to simplify the conversion for a Consumer.
-                It can be used in all Thing Description classes that contain the <code>contentType</code> and <code>contentCoding</code> fields.
-                If the field <code>cov:contentFormat</code> is present, it must match the string representation expressed by <code>contentType</code> and <code>contentCoding</code>.
-                Corresponding with the default <code>contentType</code> value <code>application/json</code>, Consumers are supposed to assume a Content-Format value 50 if <code>cov:contentFormat</code> and <code>application/json</code> is not present.
-            </p>
-            <p>
-                Forms may contain a <code>cov:accept</code> field to explicitly require a Consumer to provide an Accept option.
-                If a <code>cov:accept</code> member is present in a Form, then the Consumer must use the contained value in an Accept option when requesting the described resource.
-            </p>
-            <p>
-                In the case of the following example, a Consumer trying to invoke the <code>start</code> Action would include a <code>Content-Format</code> option with value 50 (<code>application/json</code>) and an <code>Accept</code> option with value 60 (<code>application/cbor</code>) in its request when choosing the first Form provided.
-                Since both forms have the same <code>href</code>, use of <code>Accept</code> option allows the Consumer to choose the correct form.
-            </p>
-            <pre id="example-request-contentFormat" class="example" title="A simple Thing Description using CoAP Content-Formats in an Action Affordance.">
+</pre
+        >
+        <p>
+          The <code>contentType</code> and <code>contentCoding</code> members of a form specify the CoAP content format
+          of the request and/or response. In <abbr title="Constrained Application Protocol">CoAP</abbr>, combinations of
+          content type and content coding are encoded using standardized values listed in the
+          <a href="https://www.iana.org/assignments/core-parameters/#content-formats"
+            >IANA CoAP Content-Formats registry</a
+          >. Therefore, not every combination of content type and content coding can be used with CoAP. Furthermore,
+          even parameters are included in the mapping: in [[[#example-request-defaults]]], the content type
+          <code>text/plain;charset=utf-8</code> would be mapped to Content-Format ID 0. Omitting the
+          <code>charset</code> parameter, for instance, would break a literal mapping from content type to
+          Content-Format in this case.
+        </p>
+        <p>
+          Section [[[#content-negotiation]]] introduces the additional vocabulary terms
+          <code>cov:contentFormat</code> and <code>cov:accept</code> to deal with ambiguities of content types and
+          content codings in the context of CoAP, and to give Consumers guidance for the content negotiation process.
+        </p>
+      </section>
+      <section id="content-negotiation">
+        <h3>Content Negotiation</h3>
+        <p>
+          Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different
+          representations available.
+        </p>
+        <p>
+          Content negotiation is accomplished through the use of CoAP <code>Accept</code> and
+          <code>Content-Format</code> options. The CoAP Accept option is used by clients to request a particular content
+          format, while the <code>Content-Format</code> option is used by clients and servers to indicate the content
+          format of the representation in requests and responses, respectively.
+        </p>
+        <p>
+          Mapping the string-based <code>contentType</code> and <code>contentCoding</code> fields to a numeric
+          Content-Format can be difficult for a Consumer for a number of reasons: First, a Consumer needs to be aware of
+          all potential mappings between the string-based and the numerical representations. Furthermore, since there is
+          no well-defined algorithm for converting a combination of <code>contentType</code> and
+          <code>contentCoding</code> to a CoAP Content-Format, the process might be prone to error.
+        </p>
+        <p>
+          Therefore, this document introduces the vocabulary term <code>cov:contentFormat</code> for providing a hint to
+          simplify the conversion for a Consumer. It can be used in all Thing Description classes that contain the
+          <code>contentType</code> and <code>contentCoding</code> fields. If the field <code>cov:contentFormat</code> is
+          present, it must match the string representation expressed by <code>contentType</code> and
+          <code>contentCoding</code>. Corresponding with the default <code>contentType</code> value
+          <code>application/json</code>, Consumers are supposed to assume a Content-Format value 50 if
+          <code>cov:contentFormat</code> and <code>application/json</code> is not present.
+        </p>
+        <p>
+          Forms may contain a <code>cov:accept</code> field to explicitly require a Consumer to provide an Accept
+          option. If a <code>cov:accept</code> member is present in a Form, then the Consumer must use the contained
+          value in an Accept option when requesting the described resource.
+        </p>
+        <p>
+          In the case of the following example, a Consumer trying to invoke the <code>start</code> Action would include
+          a <code>Content-Format</code> option with value 50 (<code>application/json</code>) and an
+          <code>Accept</code> option with value 60 (<code>application/cbor</code>) in its request when choosing the
+          first Form provided. Since both forms have the same <code>href</code>, use of <code>Accept</code> option
+          allows the Consumer to choose the correct form.
+        </p>
+        <pre
+          id="example-request-contentFormat"
+          class="example"
+          title="A simple Thing Description using CoAP Content-Formats in an Action Affordance."
+        >
                 {
                     "@context": "https://www.w3.org/2022/wot/td/v1.1",
                     ...
@@ -296,47 +320,47 @@
                         }
                     }
                 }
-                </pre>
-        </section>
-        <section>
-            <h3>Caching</h3>
-            <p>
-                CoAP features two mechanisms to make efficient use of network resources and minimize the number of required transmissions.
-                First, a CoAP client may store responses to requests in order to satisfy future requests without sending a new request.
-                A stored response may be used if it is still valid, i.e., if the response's Max-Age value has not been exceeded.
-                Second, a CoAP client may validate a stored response by sending a new request with the ETag from the stored response.
-                This allows the server to quickly respond with a 2.03 (Valid) response if the stored response is still valid.
-            </p>
-            <p>
-                Consumers are generally expected to make use of both mechanisms to minimize the number of required CoAP transmissions.
-            </p>
-        </section>
-        <section id="polling-resources">
-            <h3>Polling Resources</h3>
-            <p>
-                A CoAP client may need a current representation of a resource over a period of time.
-                In this case, the client may poll the CoAP server periodically for new content, taking advantage of caching to
-                keep traffic to a minimum.
-            </p>
-            <p>
-                It is important to note that a response's Max-Age is independent of how often a client polls.
-                For example, if a response contains the current position of an aircraft, after less than a second it can no
-                longer be assumed that the aircraft is still in the same position.
-                This means the server would set Max-Age to 0 in the response, indicating the response cannot be reused for a
-                future request.
-            </p>
-            <p>
-                If a client polls too frequently, a server may send a 4.29 (Too Many Requests) response [[RFC8516]].
-                This error response is cacheable, with the Max-Age indicating after which time the client is allowed to try
-                again.
-            </p>
-            <p>
-                In a form, the <code>cov:minPollingInterval</code> member can be used to provide a hint of what minimum polling
-                interval the server is willing to accept.
-                (This doesn't mean that the client won't get a 4.29 response if it complies; just that the client will most
-                likely get a 4.29 response if it doesn't.)
-            </p>
-            <pre id="example-polling-interval" class="example" title="Minimum Allowed Polling Interval">
+                </pre
+        >
+      </section>
+      <section>
+        <h3>Caching</h3>
+        <p>
+          CoAP features two mechanisms to make efficient use of network resources and minimize the number of required
+          transmissions. First, a CoAP client may store responses to requests in order to satisfy future requests
+          without sending a new request. A stored response may be used if it is still valid, i.e., if the response's
+          Max-Age value has not been exceeded. Second, a CoAP client may validate a stored response by sending a new
+          request with the ETag from the stored response. This allows the server to quickly respond with a 2.03 (Valid)
+          response if the stored response is still valid.
+        </p>
+        <p>
+          Consumers are generally expected to make use of both mechanisms to minimize the number of required CoAP
+          transmissions.
+        </p>
+      </section>
+      <section id="polling-resources">
+        <h3>Polling Resources</h3>
+        <p>
+          A CoAP client may need a current representation of a resource over a period of time. In this case, the client
+          may poll the CoAP server periodically for new content, taking advantage of caching to keep traffic to a
+          minimum.
+        </p>
+        <p>
+          It is important to note that a response's Max-Age is independent of how often a client polls. For example, if
+          a response contains the current position of an aircraft, after less than a second it can no longer be assumed
+          that the aircraft is still in the same position. This means the server would set Max-Age to 0 in the response,
+          indicating the response cannot be reused for a future request.
+        </p>
+        <p>
+          If a client polls too frequently, a server may send a 4.29 (Too Many Requests) response [[RFC8516]]. This
+          error response is cacheable, with the Max-Age indicating after which time the client is allowed to try again.
+        </p>
+        <p>
+          In a form, the <code>cov:minPollingInterval</code> member can be used to provide a hint of what minimum
+          polling interval the server is willing to accept. (This doesn't mean that the client won't get a 4.29 response
+          if it complies; just that the client will most likely get a 4.29 response if it doesn't.)
+        </p>
+        <pre id="example-polling-interval" class="example" title="Minimum Allowed Polling Interval">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -353,19 +377,22 @@
     }
 }
         </pre>
-        </section>
-        <section>
-            <h3>Observing Resources</h3>
-            <p>
-                As a significant improvement over polling, CoAP provides a mechanism for clients to "observe" resources [[RFC7641]], i.e., to request notifications from the server whenever the resource changes.
-                This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.
-            </p>
-            <p>
-                A resource can be observed by sending a `GET` or `FETCH` [[RFC8132]] request with the `Observe` option set.
-                The server will respond with the current representation of the resource, and will send notifications of future changes to the client.
-                A server is not required to support the `Observe` option for all resources; a resource without `Observe` support can still be manually observed by polling it at regular intervals.
-            </p>
-            <pre id="example-observing-resources" class="example" title="Observing Resources">
+      </section>
+      <section>
+        <h3>Observing Resources</h3>
+        <p>
+          As a significant improvement over polling, CoAP provides a mechanism for clients to "observe" resources
+          [[RFC7641]], i.e., to request notifications from the server whenever the resource changes. This is especially
+          useful in the Web of Things where many Things are expected to have resources that change over time, such as
+          sensor readings.
+        </p>
+        <p>
+          A resource can be observed by sending a `GET` or `FETCH` [[RFC8132]] request with the `Observe` option set.
+          The server will respond with the current representation of the resource, and will send notifications of future
+          changes to the client. A server is not required to support the `Observe` option for all resources; a resource
+          without `Observe` support can still be manually observed by polling it at regular intervals.
+        </p>
+        <pre id="example-observing-resources" class="example" title="Observing Resources">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -382,20 +409,24 @@
         }
     }
 }
-</pre>
-        </section>
-        <section>
-            <h3>Block-wise Transfers</h3>
-            <p>
-                CoAP supports block-wise transfers to allow large resource representations to be transferred between clients and servers.
-                This feature enables clients and servers to request or provide resource representations in smaller blocks, which can be useful when constrained network conditions make it undesirable to transfer large amounts of data at once.
-            </p>
-            <p>
-                At the time of writing, CoAP supports two mechanisms for block-wise transfers:
-                Block-Wise Transfers [[RFC7959]] and Block-Wise Transfer Options Supporting Robust Transmission [[RFC9177]].
-                In a form, support for these can be indicated by a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member, respectively.
-            </p>
-            <pre id="example-blockwise" class="example" title="Block-wise Transfer">
+</pre
+        >
+      </section>
+      <section>
+        <h3>Block-wise Transfers</h3>
+        <p>
+          CoAP supports block-wise transfers to allow large resource representations to be transferred between clients
+          and servers. This feature enables clients and servers to request or provide resource representations in
+          smaller blocks, which can be useful when constrained network conditions make it undesirable to transfer large
+          amounts of data at once.
+        </p>
+        <p>
+          At the time of writing, CoAP supports two mechanisms for block-wise transfers: Block-Wise Transfers
+          [[RFC7959]] and Block-Wise Transfer Options Supporting Robust Transmission [[RFC9177]]. In a form, support for
+          these can be indicated by a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member,
+          respectively.
+        </p>
+        <pre id="example-blockwise" class="example" title="Block-wise Transfer">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -411,11 +442,13 @@
         }
     }
 }
-</pre>
-            <p>
-                Additionally, a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member may indicate relevant parameters, such as the largest block size that may be used in a <code>Block2</code> Option.
-            </p>
-            <pre id="example-blockwise-parameters" class="example" title="Block-wise Transfer with Parameters">
+</pre
+        >
+        <p>
+          Additionally, a <code>cov:blockwise</code> or <code>cov:quickblockwise</code> member may indicate relevant
+          parameters, such as the largest block size that may be used in a <code>Block2</code> Option.
+        </p>
+        <pre id="example-blockwise-parameters" class="example" title="Block-wise Transfer with Parameters">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -433,38 +466,49 @@
         }
     }
 }
-</pre>
-        </section>
-        <section>
-            <h3>Conditional Requests</h3>
-            <p>
-                With conditional requests, a CoAP client can include conditions in a request that specify how the server should process the request.
-                If the server cannot satisfy the conditions, it returns a 4.12 (Precondition Failed) response.
-            </p>
-            <p>
-                At the time of writing, CoAP supports three types of conditional requests:
-            </p>
-            <ul>
-                <li><code>If-Match</code> option with an ETag: "only process the request if the target resource exists and has a representation with this ETag"</li>
-                <li><code>If-Match</code> option without an ETag: "only process the request if the target resource exists"</li>
-                <li><code>If-None-Match</code> option without an ETag: "only process the request if the target resource does not exist"</li>
-            </ul>
-            <p>
-                Conditional requests are typically used in the context of larger, multi-step workflows.
-                For example, a CoAP client might want to make sure that a resource has not been modified before it performs some action on it.
-                Therefore, no vocabulary is provided for driving conditional requests from the Thing Description.
-                Instead, consumers are expected to be familiar with the specifics of the workflows in which they are participating and to use conditional requests accordingly.
-            </p>
-        </section>
-        <section>
-            <h3>Hop Limit</h3>
-            <p>
-                The CoAP <code>Hop-Limit</code> option [[RFC8768]] limits the number of hops a CoAP message can take before it is considered undeliverable. This prevents infinite message loops in CoAP networks.
-            </p>
-            <p>
-                In a form, the <code>cov:hopLimit</code> member can be used to set the desired hop limit for a particular CoAP request.
-            </p>
-            <pre id="example-hoplimit" class="example" title="Hop Limit">
+</pre
+        >
+      </section>
+      <section>
+        <h3>Conditional Requests</h3>
+        <p>
+          With conditional requests, a CoAP client can include conditions in a request that specify how the server
+          should process the request. If the server cannot satisfy the conditions, it returns a 4.12 (Precondition
+          Failed) response.
+        </p>
+        <p>At the time of writing, CoAP supports three types of conditional requests:</p>
+        <ul>
+          <li>
+            <code>If-Match</code> option with an ETag: "only process the request if the target resource exists and has a
+            representation with this ETag"
+          </li>
+          <li>
+            <code>If-Match</code> option without an ETag: "only process the request if the target resource exists"
+          </li>
+          <li>
+            <code>If-None-Match</code> option without an ETag: "only process the request if the target resource does not
+            exist"
+          </li>
+        </ul>
+        <p>
+          Conditional requests are typically used in the context of larger, multi-step workflows. For example, a CoAP
+          client might want to make sure that a resource has not been modified before it performs some action on it.
+          Therefore, no vocabulary is provided for driving conditional requests from the Thing Description. Instead,
+          consumers are expected to be familiar with the specifics of the workflows in which they are participating and
+          to use conditional requests accordingly.
+        </p>
+      </section>
+      <section>
+        <h3>Hop Limit</h3>
+        <p>
+          The CoAP <code>Hop-Limit</code> option [[RFC8768]] limits the number of hops a CoAP message can take before it
+          is considered undeliverable. This prevents infinite message loops in CoAP networks.
+        </p>
+        <p>
+          In a form, the <code>cov:hopLimit</code> member can be used to set the desired hop limit for a particular CoAP
+          request.
+        </p>
+        <pre id="example-hoplimit" class="example" title="Hop Limit">
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     ...
@@ -480,9 +524,10 @@
         }
     }
 }
-</pre>
-        </section>
-        <!--
+</pre
+        >
+      </section>
+      <!--
         <section>
             <h3>Request Freshness</h3>
             <p>
@@ -502,19 +547,27 @@
             <h3>EDHOC</h3>
         </section>
         -->
-        <section>
-            <h3>Message Transmission</h3>
-            <p>
-                In CoAP over UDP or DTLS [[RFC7252]], requests and responses can be transmitted reliably using confirmable (CON) messages or without reliability using non-confirmable (NON) messages.
-                The difference is that confirmable messages are retransmitted multiple times until an acknowledgement (ACK) message is received, while non-confirmable requests are not.
-            </p>
-            <p>
-                The vocabulary term `cov:confirmable` can be used in a form to provide a hint whether a Consumer should send requests in confirmable or non-confirmable messages.
-                A value of `true` encourages the Consumer to use confirmable messages, while a value of `false` encourages the Consumer to use non-confirmable messages.
-                Note that, as the vocabulary term is just a hint, the Consumer is not bound to this recommendation.
-                When `cov:confirmable` is absent from a form, the Consumer can choose freely between confirmable and non-confirmable messages.
-            </p>
-            <pre id="example-request-con-non" class="example" title="A Thing Description containing CoAP forms with hints for confirmable and non-confirmable requests.">
+      <section>
+        <h3>Message Transmission</h3>
+        <p>
+          In CoAP over UDP or DTLS [[RFC7252]], requests and responses can be transmitted reliably using confirmable
+          (CON) messages or without reliability using non-confirmable (NON) messages. The difference is that confirmable
+          messages are retransmitted multiple times until an acknowledgement (ACK) message is received, while
+          non-confirmable requests are not.
+        </p>
+        <p>
+          The vocabulary term `cov:confirmable` can be used in a form to provide a hint whether a Consumer should send
+          requests in confirmable or non-confirmable messages. A value of `true` encourages the Consumer to use
+          confirmable messages, while a value of `false` encourages the Consumer to use non-confirmable messages. Note
+          that, as the vocabulary term is just a hint, the Consumer is not bound to this recommendation. When
+          `cov:confirmable` is absent from a form, the Consumer can choose freely between confirmable and
+          non-confirmable messages.
+        </p>
+        <pre
+          id="example-request-con-non"
+          class="example"
+          title="A Thing Description containing CoAP forms with hints for confirmable and non-confirmable requests."
+        >
                 {
                     "@context": "https://www.w3.org/2022/wot/td/v1.1",
                     ...
@@ -548,249 +601,266 @@
                         }
                     }
                 }
-            </pre>
-            <p>
-                The choice of whether responses are sent as CON, NON or piggyback as ACK message is up to the CoAP server and cannot be influenced by a Consumer.
-            </p>
-            <p>
-                For those cases where the underlying transport protocol provides reliability (such as in CoAP over TCP, TLS, and WebSockets [[RFC8323]]), the vocabulary term `cov:confirmable` is not applicable and can be ignored by a Consumer.
-            </p>
-        </section>
+            </pre
+        >
+        <p>
+          The choice of whether responses are sent as CON, NON or piggyback as ACK message is up to the CoAP server and
+          cannot be influenced by a Consumer.
+        </p>
+        <p>
+          For those cases where the underlying transport protocol provides reliability (such as in CoAP over TCP, TLS,
+          and WebSockets [[RFC8323]]), the vocabulary term `cov:confirmable` is not applicable and can be ignored by a
+          Consumer.
+        </p>
+      </section>
     </section>
     <section id="url">
-        <h2>URI Schemes</h2>
-        <p>
-            CoAP uses the following Uniform Resource Identifier (URI) schemes for identifying CoAP resources
-            and providing a means of locating the resource:
-        </p>
-        <table class="data">
-            <thead>
-                <tr>
-                    <th>URI Scheme</th>
-                    <th>Reference</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>coap</td>
-                    <td>[[RFC7252]]</td>
-                </tr>
-                <tr>
-                    <td>coap+tcp</td>
-                    <td>[[RFC8323]]</td>
-                </tr>
-                <tr>
-                    <td>coap+ws</td>
-                    <td>[[RFC8323]]</td>
-                </tr>
-                <tr>
-                    <td>coaps</td>
-                    <td>[[RFC7252]]</td>
-                </tr>
-                <tr>
-                    <td>coaps+tcp</td>
-                    <td>[[RFC8323]]</td>
-                </tr>
-                <tr>
-                    <td>coaps+ws</td>
-                    <td>[[RFC8323]]</td>
-                </tr>
-            </tbody>
-        </table>
-        <p>
-            See the <a href="https://www.iana.org/assignments/uri-schemes/">Uniform Resource Identifier (URI) Schemes</a>
-            registry for the complete list of CoAP URI schemes.
-        </p>
+      <h2>URI Schemes</h2>
+      <p>
+        CoAP uses the following Uniform Resource Identifier (URI) schemes for identifying CoAP resources and providing a
+        means of locating the resource:
+      </p>
+      <table class="data">
+        <thead>
+          <tr>
+            <th>URI Scheme</th>
+            <th>Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>coap</td>
+            <td>[[RFC7252]]</td>
+          </tr>
+          <tr>
+            <td>coap+tcp</td>
+            <td>[[RFC8323]]</td>
+          </tr>
+          <tr>
+            <td>coap+ws</td>
+            <td>[[RFC8323]]</td>
+          </tr>
+          <tr>
+            <td>coaps</td>
+            <td>[[RFC7252]]</td>
+          </tr>
+          <tr>
+            <td>coaps+tcp</td>
+            <td>[[RFC8323]]</td>
+          </tr>
+          <tr>
+            <td>coaps+ws</td>
+            <td>[[RFC8323]]</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        See the <a href="https://www.iana.org/assignments/uri-schemes/">Uniform Resource Identifier (URI) Schemes</a>
+        registry for the complete list of CoAP URI schemes.
+      </p>
     </section>
     <section id="vocabulary">
-        <h2>CoAP Vocabulary</h2>
+      <h2>CoAP Vocabulary</h2>
+      <p>
+        This section describes the vocabulary used in CoAP. A protocol binding implementation should use the vocabulary
+        defined in this section to describe the different configuration that can be used to exchanged data between Web
+        of Things.
+      </p>
+      <section>
+        <h3>Form terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Form terms from the ontology-->
+            %s
+          </tbody>
+        </table>
+      </section>
+      <section id="ResponseParameters">
+        <h3>Response terms</h3>
         <p>
-            This section describes the vocabulary used in CoAP. A protocol
-            binding implementation should use the vocabulary defined in this
-            section to describe the different configuration that can be used to
-            exchanged data between Web of Things.
+          The following vocabulary terms are usable in the <code>ExpectedResponse</code> and
+          <code>AdditionalExpectedResponse</code> classes.
         </p>
-        <section>
-            <h3>Form terms</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Form terms from the ontology-->
-                    %s
-                </tbody>
-            </table>
-        </section>
-        <section id="ResponseParameters">
-            <h3>Response terms</h3>
-            <p>
-                The following vocabulary terms are usable in the <code>ExpectedResponse</code> and <code>AdditionalExpectedResponse</code> classes.
-            </p>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Response terms from the ontology-->
-                    %s
-                </tbody>
-            </table>
-        </section>
-        <section id="BlockWiseTransferParameters">
-            <h3>BlockWiseTransferParameters</h3>
-            <table class="def" id="blockwisetransferparameters">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Blockwise terms from the ontology-->
-                    %s
-                </tbody>
-            </table>
-        </section>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Response terms from the ontology-->
+            %s
+          </tbody>
+        </table>
+      </section>
+      <section id="BlockWiseTransferParameters">
+        <h3>BlockWiseTransferParameters</h3>
+        <table class="def" id="blockwisetransferparameters">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Blockwise terms from the ontology-->
+            %s
+          </tbody>
+        </table>
+      </section>
     </section>
     <section id="mappings">
-        <h2>Mappings</h2>
+      <h2>Mappings</h2>
+      <p>
+        This section describes the strategies and default values to use protocol specific concepts within the
+        <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
+      </p>
+      <section id="default-mappings">
+        <h3>Default mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default Binding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td><code>"cov:method": "PUT"</code></td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>readmultipleproperties</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>writemultipleproperties</code></td>
+              <td><code>"cov:method": "PUT"</code></td>
+            </tr>
+            <tr>
+              <td><code>readallproperties</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>writeallproperties</code></td>
+              <td><code>"cov:method": "PUT"</code></td>
+            </tr>
+            <tr>
+              <td><code>observeallproperties</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>unobserveallproperties</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>invokeaction</code></td>
+              <td><code>"cov:method": "POST"</code></td>
+            </tr>
+            <tr>
+              <td><code>queryaction</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>cancelaction</code></td>
+              <td><code>"cov:method": "POST"</code></td>
+            </tr>
+            <tr>
+              <td><code>queryallactions</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>subscribeevent</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>unsubscribeevent</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>subscribeallevents</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+            <tr>
+              <td><code>unsubscribeallevents</code></td>
+              <td><code>"cov:method": "GET"</code></td>
+            </tr>
+          </tbody>
+        </table>
         <p>
-            This section describes the strategies and default values to use
-            protocol specific concepts within the
-            <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model">WoT Interaction model</a>.
+          For the `observeproperty` and `subscribeevent` operations, a consumer SHOULD add an `Observe` option to `GET`
+          or `FETCH` requests. Note, however, that using `FETCH` for the `observeproperty` operation is NOT RECOMMENDED,
+          as `FETCH` requests must contain a `Content-Format` option which can imply that the request payload must not
+          be empty. For the `subscribeevent` operation, on the other hand, using `FETCH` is RECOMMENDED if the Event
+          Affordance expects the consumer to provide data described by the `subscription` field.
         </p>
-        <section id="default-mappings">
-            <h3>Default mappings</h3>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Operation</th>
-                        <th>Default Binding</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>readproperty</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>writeproperty</code></td>
-                        <td><code>"cov:method": "PUT"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>observeproperty</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>unobserveproperty</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>readmultipleproperties</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>writemultipleproperties</code></td>
-                        <td><code>"cov:method": "PUT"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>readallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>writeallproperties</code></td>
-                        <td><code>"cov:method": "PUT"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>observeallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>unobserveallproperties</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>invokeaction</code></td>
-                        <td><code>"cov:method": "POST"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>queryaction</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>cancelaction</code></td>
-                        <td><code>"cov:method": "POST"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>queryallactions</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>subscribeevent</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>unsubscribeevent</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>subscribeallevents</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>unsubscribeallevents</code></td>
-                        <td><code>"cov:method": "GET"</code></td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                For the `observeproperty` and `subscribeevent` operations, a consumer SHOULD add an `Observe` option to `GET` or `FETCH` requests.
-                Note, however, that using `FETCH` for the `observeproperty` operation is NOT RECOMMENDED, as `FETCH` requests must contain a `Content-Format` option which can imply that the request payload must not be empty.
-                For the `subscribeevent` operation, on the other hand, using `FETCH` is RECOMMENDED if the Event Affordance expects the consumer to provide data described by the `subscription` field.
-            </p>
-            <p>
-                If the server's response does not contain an `Observe` option, this indicates that the requested server does not support observe, and that the consumer SHOULD fall back to polling instead (see section [[[#polling-resources]]]).
-                Consequently, a consumer can always fall back to polling a resource if observing that resource is permanently or temporarily not
-                possible.
-                In fact, a typical CoAP client implementation is to poll for as long as the client is interested in having a current
-                representation, setting the `Observe` option each time.
-                As long as the client is receiving notifications, it doesn't need to poll; as soon as the notifications are missing,
-                the client polls again with the `Observe` option set.
-            </p>
-            <p>
-                The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe MUST be performed as specified in section 3.6 of [[RFC7641]].
-                Note that this operation can be performed either actively (i.e., by sending an explicit deregistration request) or passively (by "forgetting" the observe relation and sending a reset message after receiving the next notification response from the server).
-                For the `unobserveproperty` and `unsubscribeevent` operations to work, they MUST refer to the same resource as the matching `observeproperty` and `subscribeevent` operations.
-                It is therefore RECOMMENDED to always include these operations in the same form as their counterparts when defining them for an affordance.
-                If no `unobserveproperty` or `unsubscribeevent` operation is defined for an observable property or an event, it SHOULD be assumed that the "passive" deregistration variant is meant to be used with the respective affordance.
-            </p>
-            <p>
-                The same considerations apply to the operations `observemultipleproperties`, `observeallproperties`, `subscribemultipleevents`, `subscribeallevents`, and their respective `unobserve-` and `unsubscribe-` counterparts.
-                Note, however, that it is NOT RECOMMENDED to use the `observeallproperties` and `subscribeallevents` operations with constrained devices that provide many properties and/or events, as the observe notifications may become too large for constrained devices or their surrounding environments to handle.
-            </p>
-            <p class="note" title="Advanced Event Mechanisms">
-                In the case of Event Affordances, CoAP Observe only supports a simply event notification mechanism that corresponds with the `data` field of the `EventAffordance` class within a Thing Description.
-                More complex event mechanisms may be supported via the procedures defined in specifications such as [[?I.D.-coap-pubsub]] or [[?I.D.-stp]] in the future.
-            </p>
-        </section>
-        <section id="possible-mappings">
-            <h3>Possible mappings</h3>
-            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is meant to be informative but it provides guidelines for implementers.</p>
-        </section>
+        <p>
+          If the server's response does not contain an `Observe` option, this indicates that the requested server does
+          not support observe, and that the consumer SHOULD fall back to polling instead (see section
+          [[[#polling-resources]]]). Consequently, a consumer can always fall back to polling a resource if observing
+          that resource is permanently or temporarily not possible. In fact, a typical CoAP client implementation is to
+          poll for as long as the client is interested in having a current representation, setting the `Observe` option
+          each time. As long as the client is receiving notifications, it doesn't need to poll; as soon as the
+          notifications are missing, the client polls again with the `Observe` option set.
+        </p>
+        <p>
+          The `unobserveproperty` and `unsubscribeevent` operations with CoAP observe MUST be performed as specified in
+          section 3.6 of [[RFC7641]]. Note that this operation can be performed either actively (i.e., by sending an
+          explicit deregistration request) or passively (by "forgetting" the observe relation and sending a reset
+          message after receiving the next notification response from the server). For the `unobserveproperty` and
+          `unsubscribeevent` operations to work, they MUST refer to the same resource as the matching `observeproperty`
+          and `subscribeevent` operations. It is therefore RECOMMENDED to always include these operations in the same
+          form as their counterparts when defining them for an affordance. If no `unobserveproperty` or
+          `unsubscribeevent` operation is defined for an observable property or an event, it SHOULD be assumed that the
+          "passive" deregistration variant is meant to be used with the respective affordance.
+        </p>
+        <p>
+          The same considerations apply to the operations `observemultipleproperties`, `observeallproperties`,
+          `subscribemultipleevents`, `subscribeallevents`, and their respective `unobserve-` and `unsubscribe-`
+          counterparts. Note, however, that it is NOT RECOMMENDED to use the `observeallproperties` and
+          `subscribeallevents` operations with constrained devices that provide many properties and/or events, as the
+          observe notifications may become too large for constrained devices or their surrounding environments to
+          handle.
+        </p>
+        <p class="note" title="Advanced Event Mechanisms">
+          In the case of Event Affordances, CoAP Observe only supports a simply event notification mechanism that
+          corresponds with the `data` field of the `EventAffordance` class within a Thing Description. More complex
+          event mechanisms may be supported via the procedures defined in specifications such as [[?I.D.-coap-pubsub]]
+          or [[?I.D.-stp]] in the future.
+        </p>
+      </section>
+      <section id="possible-mappings">
+        <h3>Possible mappings</h3>
+        <p class="ednote">
+          TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
+          informative but it provides guidelines for implementers.
+        </p>
+      </section>
     </section>
-</body>
-
+  </body>
 </html>

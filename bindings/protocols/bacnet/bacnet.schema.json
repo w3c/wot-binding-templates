@@ -1,419 +1,393 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title":"JSON Schema BACnet for TDs using BACnet Binding",
-    "anyOf": [
-        {
-            "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JSON Schema BACnet for TDs using BACnet Binding",
+  "anyOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+    }
+  ],
+  "definitions": {
+    "bacnetForm": {
+      "type": "object",
+      "properties": {
+        "bacv:usesService": {
+          "type": "string",
+          "enum": [
+            "ReadProperty",
+            "WriteProperty",
+            "SubscribeCOV",
+            "GetEventInfo",
+            "AcknowledgeAlarm",
+            "AddListElement",
+            "RemoveListElement"
+          ]
+        },
+        "bacv:hasDataType": {
+          "$ref": "#/definitions/bacnetDataType"
+        },
+        "contentType": {
+          "const": "application/octet-stream",
+          "default": "application/octet-stream"
         }
-    ],
-    "definitions": {
-        "bacnetForm": {
-            "type": "object",
-            "properties": {
-                "bacv:usesService": {
-                    "type": "string",
-                    "enum": [
-                        "ReadProperty",
-                        "WriteProperty",
-                        "SubscribeCOV",
-                        "GetEventInfo",
-                        "AcknowledgeAlarm",
-                        "AddListElement",
-                        "RemoveListElement"
-                    ]
-                },
-                "bacv:hasDataType": {
-                    "$ref": "#/definitions/bacnetDataType"
-                },
-                "contentType": {
-                    "const": "application/octet-stream",
-                    "default": "application/octet-stream"
-                }
+      }
+    },
+    "bacnetDataType": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:SequenceOf" },
+            "bacv:hasMember": {
+              "$ref": "#/definitions/bacnetDataType"
             }
+          },
+          "required": ["@type", "bacv:hasMember"]
         },
-        "bacnetDataType": {
-            "oneOf": [
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:SequenceOf"},
-                        "bacv:hasMember": {
-                            "$ref": "#/definitions/bacnetDataType"
-                        }
-                    },
-                    "required": ["@type", "bacv:hasMember"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Sequence"},
-                        "bacv:isISO8601": {"type": "boolean"},
-                        "bacv:hasNamedMember": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/bacnetNamedMember"
-                            },
-                            "minItems": 1
-                        }
-                    },
-                    "required": ["@type", "bacv:hasNamedMember"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:List"},
-                        "bacv:hasMember": {
-                            "$ref": "#/definitions/bacnetDataType"
-                        }
-                    },
-                    "required": ["@type", "bacv:hasMember"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Choice"},
-                        "bacv:hasNamedMember": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/bacnetNamedMember"
-                            },
-                            "minItems": 1
-                        }
-                    },
-                    "required": ["@type", "bacv:hasNamedMember"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Date"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Time"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:WeekNDay"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Unsigned"},
-                        "bacv:hasValueMap": {
-                            "$ref": "#/definitions/bacnetValueMap"
-                        }
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Signed"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Real"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Double"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Boolean"},
-                        "bacv:hasValueMap": {
-                            "$ref": "#/definitions/bacnetValueMap"
-                        }
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Enumerated"},
-                        "bacv:hasValueMap": {
-                            "$ref": "#/definitions/bacnetValueMap"
-                        }
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:String"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:OctetString"},
-                        "bacv:hasBinaryRepresentation": {
-                            "type": "string",
-                            "enum": [
-                                "hex",
-                                "dotted-decimal",
-                                "base64"
-                            ]
-                        }
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:BitString"},
-                        "bacv:hasValueMap": {
-                            "$ref": "#/definitions/bacnetValueMap"
-                        }
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Any"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:Null"}
-                    },
-                    "required": ["@type"]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {"const": "bacv:ObjectIdentifier"}
-                    },
-                    "required": ["@type"]
-                }
-            ]
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Sequence" },
+            "bacv:isISO8601": { "type": "boolean" },
+            "bacv:hasNamedMember": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/bacnetNamedMember"
+              },
+              "minItems": 1
+            }
+          },
+          "required": ["@type", "bacv:hasNamedMember"]
         },
-        "bacnetNamedMember": {
-            "type": "object",
-            "properties": {
-                "bacv:hasFieldName": {
-                    "type": "string"
-                },
-                "bacv:hasDataType": {
-                    "$ref": "#/definitions/bacnetDataType"
-                },
-                "bacv:hasContextTag": {
-                    "type": "integer"
-                }
-            },
-            "required": ["bacv:hasFieldName", "bacv:hasDataType"]
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:List" },
+            "bacv:hasMember": {
+              "$ref": "#/definitions/bacnetDataType"
+            }
+          },
+          "required": ["@type", "bacv:hasMember"]
         },
-        "bacnetValueMap": {
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Choice" },
+            "bacv:hasNamedMember": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/bacnetNamedMember"
+              },
+              "minItems": 1
+            }
+          },
+          "required": ["@type", "bacv:hasNamedMember"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Date" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Time" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:WeekNDay" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Unsigned" },
+            "bacv:hasValueMap": {
+              "$ref": "#/definitions/bacnetValueMap"
+            }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Signed" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Real" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Double" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Boolean" },
+            "bacv:hasValueMap": {
+              "$ref": "#/definitions/bacnetValueMap"
+            }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Enumerated" },
+            "bacv:hasValueMap": {
+              "$ref": "#/definitions/bacnetValueMap"
+            }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:String" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:OctetString" },
+            "bacv:hasBinaryRepresentation": {
+              "type": "string",
+              "enum": ["hex", "dotted-decimal", "base64"]
+            }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:BitString" },
+            "bacv:hasValueMap": {
+              "$ref": "#/definitions/bacnetValueMap"
+            }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Any" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:Null" }
+          },
+          "required": ["@type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "bacv:ObjectIdentifier" }
+          },
+          "required": ["@type"]
+        }
+      ]
+    },
+    "bacnetNamedMember": {
+      "type": "object",
+      "properties": {
+        "bacv:hasFieldName": {
+          "type": "string"
+        },
+        "bacv:hasDataType": {
+          "$ref": "#/definitions/bacnetDataType"
+        },
+        "bacv:hasContextTag": {
+          "type": "integer"
+        }
+      },
+      "required": ["bacv:hasFieldName", "bacv:hasDataType"]
+    },
+    "bacnetValueMap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "bacv:hasLogicalVal": {
+            "oneOf": [{ "type": "integer" }, { "type": "string" }, { "type": "boolean" }]
+          },
+          "bacv:hasProtocolVal": {
+            "type": "integer"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "covIncrement": {
+      "type": "number",
+      "minimum": 0
+    },
+    "commandPriority": {
+      "type": "integer",
+      "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "default": 16
+    },
+    "relinquish": {
+      "type": "boolean",
+      "default": false
+    },
+    "eventPayload": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "format": "iri-reference"
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "prio": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "ackReq": {
+          "type": "integer",
+          "enum": [0, 1],
+          "default": 0
+        },
+        "toState": {
+          "type": "string",
+          "enum": ["fault", "offnormal", "normal"]
+        },
+        "eventType": {
+          "type": "string",
+          "enum": ["regular", "ack", "syncrequired"],
+          "default": "regular"
+        },
+        "origSource": {
+          "type": "string",
+          "format": "iri-reference"
+        },
+        "values": {
+          "type": "object"
+        },
+        "inactive": {
+          "type": "integer",
+          "enum": [0, 1],
+          "default": 0
+        }
+      },
+      "required": ["source", "time", "prio", "toState"]
+    },
+    "action_input_getCurrentEvents": {
+      "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet GetEventInfo",
+      "type": "object",
+      "properties": {
+        "lastReceivedSource": {
+          "type": "string",
+          "fomat": "iri-reference"
+        }
+      }
+    },
+    "action_output_getCurrentEvents": {
+      "$comment": "This is not part of the form, but should be used in ActionAffordance.output BACnet GetEventInfo",
+      "type": "object",
+      "properties": {
+        "currentEvents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/eventPayload"
+          }
+        },
+        "moreEvents": {
+          "type": "boolean"
+        }
+      },
+      "required": ["currentEvents", "moreEvents"]
+    },
+    "action_input_acknowledgeEvent": {
+      "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet AcknowledgeAlarm",
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "format": "iri-reference"
+        },
+        "toState": {
+          "$comment": "The state being acknowledged",
+          "type": "string",
+          "enum": ["fault", "offnormal", "normal"]
+        },
+        "eventTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ackSource": {
+          "type": "string"
+        },
+        "ackTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["source", "ackState", "eventTime", "ackSource", "ackTime"]
+    },
+    "affordance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
             "type": "array",
             "items": {
-                "type": "object",
-                "properties": {
-                    "bacv:hasLogicalVal": {
-                        "oneOf": [
-                            {"type": "integer"},
-                            {"type": "string"},
-                            {"type": "boolean"}
-                        ]
-                    },
-                    "bacv:hasProtocolVal": {
-                        "type": "integer"
-                    }
-                }
-            },
-            "minItems": 1
-        },
-        "covIncrement": {
-            "type": "number",
-            "minimum": 0
-        },
-        "commandPriority": {
-            "type": "integer",
-            "enum": [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-            "default": 16
-        },
-        "relinquish": {
-            "type": "boolean",
-            "default": false
-        },
-        "eventPayload": {
-            "type": "object",
-            "properties": {
-              "source": {
-                "type": "string",
-                "format": "iri-reference"
-              },
-              "time": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "prio": {
-                "type": "integer"
-              },
-              "message": {
-                "type": "string"
-              },
-              "ackReq": {
-                "type": "integer",
-                "enum": [0, 1],
-                "default": 0
-              },
-              "toState": {
-                "type": "string",
-                "enum": [
-                  "fault",
-                  "offnormal",
-                  "normal"
-                ]
-              },
-              "eventType": {
-                "type": "string",
-                "enum": ["regular", "ack", "syncrequired"],
-                "default": "regular"
-              },
-              "origSource": {
-                "type": "string",
-                "format": "iri-reference"
-              },
-              "values": {
-                "type": "object"
-              },
-              "inactive": {
-                "type": "integer",
-                "enum": [0, 1],
-                "default": 0
-              }
-            },
-            "required": [
-              "source",
-              "time",
-              "prio",
-              "toState"
-            ]
-        },
-        "action_input_getCurrentEvents": {
-            "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet GetEventInfo",
-            "type": "object",
-            "properties": {
-              "lastReceivedSource": {
-                "type": "string",
-                "fomat": "iri-reference"
-              }
+              "$ref": "#/definitions/bacnetForm"
             }
-        },
-        "action_output_getCurrentEvents": {
-            "$comment": "This is not part of the form, but should be used in ActionAffordance.output BACnet GetEventInfo",
-            "type": "object",
-            "properties": {
-              "currentEvents": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/eventPayload"
-                }
-              },
-              "moreEvents": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "currentEvents",
-              "moreEvents"
-            ]
-        },
-        "action_input_acknowledgeEvent": {
-            "$comment": "This is not part of the form, but should be used in ActionAffordance.input BACnet AcknowledgeAlarm",
-            "type": "object",
-            "properties": {
-                "source": {
-                    "type": "string",
-                    "format": "iri-reference"
-                  },
-                  "toState": {
-                    "$comment": "The state being acknowledged",
-                    "type": "string",
-                    "enum": [
-                      "fault",
-                      "offnormal",
-                      "normal"
-                    ]
-                  },
-                  "eventTime": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "ackSource": {
-                    "type": "string"
-                  },
-                  "ackTime": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-            },
-            "required": ["source", "ackState", "eventTime", "ackSource", "ackTime"]
-        },
-        "affordance": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "object",
-                "properties": {
-                    "forms": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/bacnetForm"
-                        }
-                    }
-                }
-            }
-        },
-        "event_data": {
-            "$comment": "This is not part of the form, but should be used in EventAffordance.data for BACnet events",
-            "$ref": "#/definitions/eventPayload"
+          }
         }
+      }
     },
-    "type": "object",
-    "properties": {
-        "@context": {
-            "type": "array",
-            "contains": {
-                "type": "object",
-                "properties": {
-                    "bacv": {
-                        "type": "string",
-                        "enum": [
-                            "https://example.org/bacnet"
-                        ]
-                    }
-                }
-            }
-        },
-        "properties": {
-            "$ref": "#/definitions/affordance"
-        },
-        "actions": {
-            "$ref": "#/definitions/affordance"
-        },
-        "events": {
-            "$ref": "#/definitions/affordance"
-        }
+    "event_data": {
+      "$comment": "This is not part of the form, but should be used in EventAffordance.data for BACnet events",
+      "$ref": "#/definitions/eventPayload"
     }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "properties": {
+          "bacv": {
+            "type": "string",
+            "enum": ["https://example.org/bacnet"]
+          }
+        }
+      }
+    },
+    "properties": {
+      "$ref": "#/definitions/affordance"
+    },
+    "actions": {
+      "$ref": "#/definitions/affordance"
+    },
+    "events": {
+      "$ref": "#/definitions/affordance"
+    }
+  }
 }

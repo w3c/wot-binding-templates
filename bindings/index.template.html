@@ -1,161 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
-    <meta charset='utf-8'>
-    <meta name='color-scheme' content='light dark'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
-    <script class='remove'>
-        var respecConfig = {
-            specStatus: "ED",
-            editors: [
-                {
-                    name: "EDITOR NAME",
-                   // w3cid: "1232", 
-                }
-            ],
-            edDraftURI: "https://w3c.github.io/wot-binding-templates/BINDINGNAME",
-            github: "https://github.com/w3c/wot-binding-templates",// please do not change this
-            shortName: "wot-BINDINGNAME-binding",
-            otherLinks: [{
-                key: "WoT Bindings Registry",
-                data: [
-                    {
-                        value: "Web of Things (WoT) Bindings Registry",
-                        href: "https://w3c.github.io/wot-bindings-registry/"
-                    }
-                ]
-                },
-                {
-                    key: "Bindings Section of the TD Specification",
-                    data: [
-                        {
-                            value: "Explanation of the binding mechanism",
-                            href: " https://w3c.github.io/wot-thing-description/#bindings"
-                        }
-                    ]
-                },
-                {
-                  key: "JSON Schema",
-                  data: [
-                      {
-                      value: "BINDINGNAME JSON Schema",
-                      href: "template.schema.json"
-                      }
-                  ]
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        editors: [
+          {
+            name: "EDITOR NAME"
+            // w3cid: "1232",
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/BINDINGNAME",
+        github: "https://github.com/w3c/wot-binding-templates", // please do not change this
+        shortName: "wot-BINDINGNAME-binding",
+        otherLinks: [
+          {
+            key: "WoT Bindings Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Bindings Registry",
+                href: "https://w3c.github.io/wot-bindings-registry/"
               }
-            ],
-            localBiblio:{
-                "WOT-BINDINGS-REGISTRY": {
-                    title: "Web of Things (WoT) Bindings Registry",
-                    //, href: "https://www.w3.org/TR/wot-bindings-registry/"
-                    href: "https://w3c.github.io/wot-bindings-registry/",
-                    authors: ["TODO"], //TODO: sync authors
-                    publisher: "W3C",
-                    date: "TODO" //TODO: Add publication date
-                }
-            }
-        };
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: " https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "BINDINGNAME JSON Schema",
+                href: "template.schema.json"
+              }
+            ]
+          }
+        ],
+        localBiblio: {
+          "WOT-BINDINGS-REGISTRY": {
+            title: "Web of Things (WoT) Bindings Registry",
+            //, href: "https://www.w3.org/TR/wot-bindings-registry/"
+            href: "https://w3c.github.io/wot-bindings-registry/",
+            authors: ["TODO"], //TODO: sync authors
+            publisher: "W3C",
+            date: "TODO" //TODO: Add publication date
+          }
+        }
+      };
     </script>
     <title>Web of Things (WoT) BINDINGNAME Binding</title>
-</head>
+  </head>
 
-<body>
-    <section id='abstract'>
-        <p class="ednote">Please update according to the binding in question. Make sure to replace X with the binding in question.</p>
-        <p>
-            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to 
-            implement a specific IoT protocol, data format or IoT platform.
-            The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
-            This document is a binding for the X, which is used here and there, has features Y and Z.
-            <!-- Please make sure that the part starts by "This document" is not longer than 2 or 3 sentences and it is objective,
+  <body>
+    <section id="abstract">
+      <p class="ednote">
+        Please update according to the binding in question. Make sure to replace X with the binding in question.
+      </p>
+      <p>
+        In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to implement a
+        specific IoT protocol, data format or IoT platform. The WoT Thing Description specification explains the overall
+        mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow. This document
+        is a binding for the X, which is used here and there, has features Y and Z.
+        <!-- Please make sure that the part starts by "This document" is not longer than 2 or 3 sentences and it is objective,
             i.e. do not say it is the best protocol to do something -->
-        </p>
-        <p>
-            More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description or Thing Model document, 
-            and associated rules which allow to describe WoT operations using X over the network.
-            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
-        </p>
+      </p>
+      <p>
+        More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
+        or Thing Model document, and associated rules which allow to describe WoT operations using X over the network.
+        Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior.
+      </p>
     </section>
-    <section id='introduction'>
-        <h2>Introduction</h2>
-        <p class="ednote">TODO: Introduce the binding and its peculiarities within the Web of Things. </p>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p class="ednote">TODO: Introduce the binding and its peculiarities within the Web of Things.</p>
     </section>
-    <section id='sotd'>
-        <p>
-            <em>This document is a work in progress</em>
-        </p>
+    <section id="sotd">
+      <p>
+        <em>This document is a work in progress</em>
+      </p>
     </section>
     <section id="url">
-        <h2>URL format</h2>
-        <p class="ednote">TODO: Describe the URL format of the protocol binding. Provide syntax and examples. </p>
+      <h2>URL format</h2>
+      <p class="ednote">TODO: Describe the URL format of the protocol binding. Provide syntax and examples.</p>
     </section>
     <section id="vocabulary">
-        <h2>BINDING NAME Vocabulary</h2>
-        <p class="ednote">TODO: Introduce briefly the vocabulary</p>
-        <section>
-            <h3>Form terms</h3>
-            <p class="ednote">TODO: Describe the allowed terms in a form that use this binding. Provide the terms using the table structure</p>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Vocabulary term</th>
-                        <th>Description</th>
-                        <th>Assignment</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-        <section id="additional">
-            <h3>Additional terms</h3>
-            <p class="ednote"> Bindings may introduce domain specific concepts or data types. Add a dedicated section for each
-                domain specific term. If the term can have a finite set of values fill the table below to describe the possibilities.
-            </p>
+      <h2>BINDING NAME Vocabulary</h2>
+      <p class="ednote">TODO: Introduce briefly the vocabulary</p>
+      <section>
+        <h3>Form terms</h3>
+        <p class="ednote">
+          TODO: Describe the allowed terms in a form that use this binding. Provide the terms using the table structure
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <section id="additional">
+        <h3>Additional terms</h3>
+        <p class="ednote">
+          Bindings may introduce domain specific concepts or data types. Add a dedicated section for each domain
+          specific term. If the term can have a finite set of values fill the table below to describe the possibilities.
+        </p>
 
-            <table class="def" title="Entity values">
-                <thead>
-                    <tr>
-                        <th>Value</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-    
+        <table class="def" title="Entity values">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
     </section>
     <section id="mappings">
-        <h2>Mappings</h2>
-        This section describes the strategies and default values to use protocol specific concepts within the <a>WoT Interaction model</a>.
-        
-        <section id="default-mappings">
-            <h3>Default mappings</h3>
-            <p class="ednote"> Map WoT Interaction model verbs to default values if any </p>
-            <table class="def">
-                <thead>
-                    <tr>
-                        <th>Operation</th>
-                        <th>Default Binding</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </section>
-        <section id="possible-mappings">
-            <h3>Possible mappings</h3>
-            <p class="ednote">TODO: This section should describe other mappings that can be used by TD designers. It is
-                meant to be informative but it provides guidelines for implementers.</p>
-        </section>
+      <h2>Mappings</h2>
+      This section describes the strategies and default values to use protocol specific concepts within the
+      <a>WoT Interaction model</a>.
+
+      <section id="default-mappings">
+        <h3>Default mappings</h3>
+        <p class="ednote">Map WoT Interaction model verbs to default values if any</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default Binding</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <section id="possible-mappings">
+        <h3>Possible mappings</h3>
+        <p class="ednote">
+          TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
+          informative but it provides guidelines for implementers.
+        </p>
+      </section>
     </section>
     <section>
-        <h2>Examples</h2>
-        <p class="ednote">TODO: Provide a compressive list of examples about how this binding can be used within forms or Thing Descriptions</p>
+      <h2>Examples</h2>
+      <p class="ednote">
+        TODO: Provide a compressive list of examples about how this binding can be used within forms or Thing
+        Descriptions
+      </p>
     </section>
-</body>
-
+  </body>
 </html>

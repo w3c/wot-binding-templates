@@ -58,4 +58,5 @@ which can be used as an alternative representation based on content negotiation.
 
 Examples of existing binding documents can be found in the `bindings`
 directory.
+
 <!-- TODO: Expand template for bindings -->

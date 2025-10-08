@@ -15,7 +15,7 @@ This section should be removed in the final survey sent to people.
 - Who to send to:
   - Industry Stakeholders (Liaison SDOs)
   - More discussion is needed in WG to complete this
-- Where to send the survey to: 
+- Where to send the survey to:
   - public-wot-wg@w3.org (Public WG Mailing List)
   - public-wot-ig@w3.org (Public IG Mailing List)
   - public-web-of-things@w3.org (Public WoT CG Mailing List)
@@ -57,12 +57,12 @@ This section should be removed in the final survey sent to people.
     - (Empty Field)
 
 - Do the current bindings provide enough information to write TDs on your own, using the binding in question? Please provide details if the choice is "No" for a binding. (How the answers look like depend on the survey tool)
-    - HTTP: (Empty Field)
-    - CoAP: (Empty Field)
-    - MQTT: (Empty Field)
-    - Modbus: (Empty Field)
-    - (?) XML: (Empty Field)
-    - (?) JSON: (Empty Field)
+  - HTTP: (Empty Field)
+  - CoAP: (Empty Field)
+  - MQTT: (Empty Field)
+  - Modbus: (Empty Field)
+  - (?) XML: (Empty Field)
+  - (?) JSON: (Empty Field)
 
 - What new bindings do you want to see developed by the WoT Working Group?
   - (Empty Field)

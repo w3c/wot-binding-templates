@@ -15,10 +15,7 @@
         },
         "profv:method": {
           "type": "string",
-          "enum": [
-            "READ",
-            "WRITE"
-          ]
+          "enum": ["READ", "WRITE"]
         },
         "profv:type": {
           "type": "string",
@@ -216,9 +213,7 @@
         "properties": {
           "profv": {
             "type": "string",
-            "enum": [
-              "https://profinet_vocabulary_context"
-            ]
+            "enum": ["https://profinet_vocabulary_context"]
           }
         }
       }

@@ -1,286 +1,299 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <meta charset='utf-8'>
-    <meta name='color-scheme' content='light dark'>
-    <script src='https://www.w3.org/Tools/respec/respec-w3c' class='remove'></script>
-    <script class='remove'>
-        var respecConfig = {
-            specStatus: "ED",
-            group: "wg/wot",
-            editors: [{
-                name: "Michael Koster",
-                w3cid: "110658",
-                company: "Invited Expert",
-                companyURL: "https://github.com/mjkoster/"
-                },
-                {
-                name: "Ege Korkan",
-                w3cid: "110131",
-                company: "Siemens AG",
-                companyURL: "https://www.siemens.com/"
-                }
-            ],
-            edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/http/",
-            shortName: "wot-http-binding",
-            github: "https://github.com/w3c/wot-binding-templates",
-            otherLinks: [{
-                key: "WoT Bindings Registry",
-                data: [
-                    {
-                        value: "Web of Things (WoT) Bindings Registry",
-                        href: "https://w3c.github.io/wot-bindings-registry/"
-                    }
-                ]
-                },
-                {
-                    key: "Bindings Section of the TD Specification",
-                    data: [
-                        {
-                            value: "Explanation of the binding mechanism",
-                            href: " https://w3c.github.io/wot-thing-description/#bindings"
-                        }
-                    ]
-                },
-                {
-                  key: "Ontology",
-                  data: [
-                      {
-                      value: "HTTP in RDF",
-                      href: "https://www.w3.org/TR/HTTP-in-RDF10/"
-                      }
-                  ]
-              },
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Michael Koster",
+            w3cid: "110658",
+            company: "Invited Expert",
+            companyURL: "https://github.com/mjkoster/"
+          },
+          {
+            name: "Ege Korkan",
+            w3cid: "110131",
+            company: "Siemens AG",
+            companyURL: "https://www.siemens.com/"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/http/",
+        shortName: "wot-http-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        otherLinks: [
+          {
+            key: "WoT Bindings Registry",
+            data: [
               {
-                  key: "JSON Schema",
-                  data: [
-                      {
-                      value: "HTTP JSON Schema",
-                      href: "http.schema.json"
-                      }
-                  ]
+                value: "Web of Things (WoT) Bindings Registry",
+                href: "https://w3c.github.io/wot-bindings-registry/"
               }
-            ],
-            localBiblio: {
-                "WOT-BINDING-REGISTRY": {
-                    title: "Web of Things (WoT) Binding Registry",
-                    //, href: "https://www.w3.org/TR/wot-binding-registry/"
-                    href: "https://w3c.github.io/wot-binding-registry/",
-                    authors: ["Ege Korkan"],
-                    publisher: "W3C",
-                    date: "TODO" //TODO: Add publication date
-                }
-            }
-        };
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: " https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "Ontology",
+            data: [
+              {
+                value: "HTTP in RDF",
+                href: "https://www.w3.org/TR/HTTP-in-RDF10/"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "HTTP JSON Schema",
+                href: "http.schema.json"
+              }
+            ]
+          }
+        ],
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            //, href: "https://www.w3.org/TR/wot-binding-registry/"
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "TODO" //TODO: Add publication date
+          }
+        }
+      };
     </script>
     <style>
-        a[href].internalDFN {
-            color: inherit;
-            border-bottom: 1px solid #99c;
-            text-decoration: none;
-        }
-    
-        .example {
-            border-color: #ea1252;
-            background: #fef11e;
-            counter-increment: example;
-            overflow: auto;
-            clear: both;
-        }
-    
-        .with-default .with-default-control {
-            margin-top: 1em;
-            margin-bottom: 1em;
-        }
-    
-        .with-default pre.selected {
-            margin-top: 0;
-            margin-bottom: 1em;
-            height: auto;
-        }
-    
+      a[href].internalDFN {
+        color: inherit;
+        border-bottom: 1px solid #99c;
+        text-decoration: none;
+      }
+
+      .example {
+        border-color: #ea1252;
+        background: #fef11e;
+        counter-increment: example;
+        overflow: auto;
+        clear: both;
+      }
+
+      .with-default .with-default-control {
+        margin-top: 1em;
+        margin-bottom: 1em;
+      }
+
+      .with-default pre.selected {
+        margin-top: 0;
+        margin-bottom: 1em;
+        height: auto;
+      }
+
+      .with-default pre {
+        margin-top: 0;
+        margin-bottom: 0;
+        height: 0;
+      }
+
+      /* Print parts that might be hidden */
+      @media print {
         .with-default pre {
-            margin-top: 0;
-            margin-bottom: 0;
-            height: 0;
+          margin-top: 0;
+          margin-bottom: 1em;
+          height: auto;
         }
-    
-        /* Print parts that might be hidden */
-        @media print {
-            .with-default pre {
-                margin-top: 0;
-                margin-bottom: 1em;
-                height: auto;
-            }
-        }
+      }
     </style>
     <script>
-        function defaultCheckboxListener() {
-            document.querySelectorAll(".with-default").forEach((n) => {
-                let wo = n.querySelector("pre:nth-of-type(1)");
-                let w = n.querySelector("pre:nth-of-type(2)");
-                let cbox = n.querySelector('.with-default-control input[type="checkbox"]');
+      function defaultCheckboxListener() {
+        document.querySelectorAll(".with-default").forEach((n) => {
+          let wo = n.querySelector("pre:nth-of-type(1)");
+          let w = n.querySelector("pre:nth-of-type(2)");
+          let cbox = n.querySelector('.with-default-control input[type="checkbox"]');
 
-                w.classList.add("selected");
-                cbox.checked = true;
+          w.classList.add("selected");
+          cbox.checked = true;
 
-                cbox.addEventListener("change", (e) => {
-                    if (e.target.checked) {
-                        // with default
-                        w.classList.add("selected");
-                        wo.classList.remove("selected");
-                    } else {
-                        // without
-                        w.classList.remove("selected");
-                        wo.classList.add("selected");
-                    }
-                });
-            });
-        }
+          cbox.addEventListener("change", (e) => {
+            if (e.target.checked) {
+              // with default
+              w.classList.add("selected");
+              wo.classList.remove("selected");
+            } else {
+              // without
+              w.classList.remove("selected");
+              wo.classList.add("selected");
+            }
+          });
+        });
+      }
 
-        if (document.respec) {
-            // ReSpec mode
-            document.addEventListener("DOMContentLoaded", () => {
-                // let ReSpec do syntax highlighting first
-                document.respec.ready.then(() => {
-                    defaultCheckboxListener();
-                });
-            });
-        } else {
-            // W3C specs on the W3C server don't use ReSpec
-            document.addEventListener("readystatechange", () => {
-                if (document.readyState === "complete") {
-                    defaultCheckboxListener();
-                }
-            });
-        }
+      if (document.respec) {
+        // ReSpec mode
+        document.addEventListener("DOMContentLoaded", () => {
+          // let ReSpec do syntax highlighting first
+          document.respec.ready.then(() => {
+            defaultCheckboxListener();
+          });
+        });
+      } else {
+        // W3C specs on the W3C server don't use ReSpec
+        document.addEventListener("readystatechange", () => {
+          if (document.readyState === "complete") {
+            defaultCheckboxListener();
+          }
+        });
+      }
     </script>
     <title>Web of Things (WoT) HTTP Binding</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <section id="abstract">
-        <h2>Abstract</h2>
-        <p>
-            In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to 
-            implement a specific IoT protocol, data format or IoT platform.
-            The WoT Thing Description specification explains the overall mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow.
-            This document is a binding for the Hypertext Transfer Protocol (HTTP), which is one of the most used protocols
-            in the Internet to exchange any kind of data related to Webpages, Web APIs, IoT devices and much more. 
-        </p>
-        <p>
-            More specifically, it defines a set of vocabulary terms that can be used inside a Thing Description document, 
-            and associated rules which allow to describe WoT operations using HTTP over the network.
-            Additionally, relevant examples are provided to showcase different vocabulary terms and the associated behavior. 
-        </p>
+      <h2>Abstract</h2>
+      <p>
+        In the context of the Web of Things (WoT), a Binding is a blueprint that gives guidance on how to implement a
+        specific IoT protocol, data format or IoT platform. The WoT Thing Description specification explains the overall
+        mechanism and the WoT Binding Registry provides the formal requirements for any binding to follow. This document
+        is a binding for the Hypertext Transfer Protocol (HTTP), which is one of the most used protocols in the Internet
+        to exchange any kind of data related to Webpages, Web APIs, IoT devices and much more.
+      </p>
+      <p>
+        More specifically, it defines a set of vocabulary terms that can be used inside a Thing Description document,
+        and associated rules which allow to describe WoT operations using HTTP over the network. Additionally, relevant
+        examples are provided to showcase different vocabulary terms and the associated behavior.
+      </p>
     </section>
 
-    <section id='introduction'>
-        <h2>Introduction</h2>
-        <p class="ednote">the following is a draft introduction</p>
-        <p>
-            This document describes how to map the HTTP protocol to the W3C Web of Things.
-            At the current state of the WoT specifications, this document mirrors the vocabulary terms and defaults that 
-            are defined in the [[WOT-THING-DESCRIPTION11]] (see <a href="https://www.w3.org/TR/wot-thing-description11/#http-binding-assertions">Section on Protocol Binding based on HTTP</a>).
-        </p>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p class="ednote">the following is a draft introduction</p>
+      <p>
+        This document describes how to map the HTTP protocol to the W3C Web of Things. At the current state of the WoT
+        specifications, this document mirrors the vocabulary terms and defaults that are defined in the
+        [[WOT-THING-DESCRIPTION11]] (see
+        <a href="https://www.w3.org/TR/wot-thing-description11/#http-binding-assertions"
+          >Section on Protocol Binding based on HTTP</a
+        >).
+      </p>
     </section>
 
-    <section id='sotd'>
-    </section>
+    <section id="sotd"></section>
 
-    <section id="conformance">
-    </section>
+    <section id="conformance"></section>
 
     <section id="terminology" class="informative">
-        <h2>Terminology</h2>
-        <p>
-            The fundamental WoT terminology such as <dfn class="lint-ignore">Thing</dfn>, <dfn class="lint-ignore">Consumer</dfn>, <dfn class="lint-ignore">Producer</dfn>,
-            <dfn class="lint-ignore">Thing Description</dfn> (<dfn class="lint-ignore">TD</dfn>), <dfn class="lint-ignore">Partial TD</dfn>,
-            <dfn class="lint-ignore">Thing Model</dfn> (<dfn class="lint-ignore">TM</dfn>), <dfn class="lint-ignore">Interaction Model</dfn>,
-            <dfn class="lint-ignore">Interaction Affordance</dfn>, <dfn class="lint-ignore">IoT Platform</dfn>, <dfn class="lint-ignore">Property</dfn>,
-            <dfn class="lint-ignore">Action</dfn>, <dfn class="lint-ignore">Event</dfn>, <dfn class="lint-ignore">Data Schema</dfn>,
-            <dfn class="lint-ignore">Content Type</dfn>, <dfn class="lint-ignore">Protocol Binding</dfn>, <dfn class="lint-ignore">Servient</dfn>,
-            <dfn class="lint-ignore">Vocabulary</dfn>, <dfn class="lint-ignore">Term</dfn>, <dfn id="dfn-vocab-term" class="lint-ignore">Vocabulary Term</dfn>,
-            <dfn class="lint-ignore">WoT Interface</dfn>, and <dfn class="lint-ignore">WoT Runtime</dfn>
-            are defined in <a href="https://www.w3.org/TR/wot-architecture/#terminology">Section 3</a>
-            of the WoT Architecture specification [[wot-architecture11]].
-        </p>
+      <h2>Terminology</h2>
+      <p>
+        The fundamental WoT terminology such as <dfn class="lint-ignore">Thing</dfn>,
+        <dfn class="lint-ignore">Consumer</dfn>, <dfn class="lint-ignore">Producer</dfn>,
+        <dfn class="lint-ignore">Thing Description</dfn> (<dfn class="lint-ignore">TD</dfn>),
+        <dfn class="lint-ignore">Partial TD</dfn>, <dfn class="lint-ignore">Thing Model</dfn> (<dfn class="lint-ignore"
+          >TM</dfn
+        >), <dfn class="lint-ignore">Interaction Model</dfn>, <dfn class="lint-ignore">Interaction Affordance</dfn>,
+        <dfn class="lint-ignore">IoT Platform</dfn>, <dfn class="lint-ignore">Property</dfn>,
+        <dfn class="lint-ignore">Action</dfn>, <dfn class="lint-ignore">Event</dfn>,
+        <dfn class="lint-ignore">Data Schema</dfn>, <dfn class="lint-ignore">Content Type</dfn>,
+        <dfn class="lint-ignore">Protocol Binding</dfn>, <dfn class="lint-ignore">Servient</dfn>,
+        <dfn class="lint-ignore">Vocabulary</dfn>, <dfn class="lint-ignore">Term</dfn>,
+        <dfn id="dfn-vocab-term" class="lint-ignore">Vocabulary Term</dfn>,
+        <dfn class="lint-ignore">WoT Interface</dfn>, and <dfn class="lint-ignore">WoT Runtime</dfn> are defined in
+        <a href="https://www.w3.org/TR/wot-architecture/#terminology">Section 3</a>
+        of the WoT Architecture specification [[wot-architecture11]].
+      </p>
     </section>
-    
-    <section>
 
+    <section>
       <h3>HTTP Vocabulary</h3>
 
       <section>
-      <h4>HTTP Vocabulary Terms</h4>
+        <h4>HTTP Vocabulary Terms</h4>
 
-    <p>
-        Per default, the [[WOT-THING-DESCRIPTION11]] supports the <a>Protocol Binding</a> based on HTTP by including the
-        HTTP
-        RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This vocabulary can
-        be directly used within TD instances by the use of the prefix <code>htv</code>, which points to
-        <code>http://www.w3.org/2011/http#</code>.
-    </p>
+        <p>
+          Per default, the [[WOT-THING-DESCRIPTION11]] supports the <a>Protocol Binding</a> based on HTTP by including
+          the HTTP RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This
+          vocabulary can be directly used within TD instances by the use of the prefix <code>htv</code>, which points to
+          <code>http://www.w3.org/2011/http#</code>.
+        </p>
 
-    <p>
-        On the other hand, going forward, the new version of Thing Description specification does not include the HTTP vocabulary by default.
-        Thus, newer TDs need to explicitly include the HTTP vocabulary in the <code>@context</code> field of the TD.
-        Examples after the table illustrate how to include the HTTP vocabulary in the TD.
-    </p>
+        <p>
+          On the other hand, going forward, the new version of Thing Description specification does not include the HTTP
+          vocabulary by default. Thus, newer TDs need to explicitly include the HTTP vocabulary in the
+          <code>@context</code> field of the TD. Examples after the table illustrate how to include the HTTP vocabulary
+          in the TD.
+        </p>
 
-      <table class="def" id="table-http-vocab-terms">
-        <thead>
-          <tr>
-            <th>Vocabulary term</th>
-            <th>Description</th>
-            <th>Assignment</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>htv:methodName</code></td>
-            <td>HTTP method name (Literal).</td>
-            <td>optional</td>
-            <td>
-              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-              <p>(one of <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, <code>"DELETE"</code>,
-                <code>"PATCH"</code>)</p>
-            </td>
-          </tr>
-          <tr>
-            <td><code>htv:headers</code></td>
-            <td>HTTP headers sent with the message.</td>
-            <td>optional</td>
-            <td>
-              array of <a
-                href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>htv:MessageHeader</code></a>
-            </td>
-          </tr>
-          <tr>
-            <td><code>htv:fieldName</code></td>
-            <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
-            <td>mandatory within <code>htv:MessageHeader</code></td>
-            <td>
-              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-            </td>
-          </tr>
-          <tr>
-            <td><code>htv:fieldValue</code></td>
-            <td>Header value (Literal). To be used together with <code>htv:fieldName</code> inside a <code>htv:MessageHeader</code></td>
-            <td>optional</td>
-            <td>
-              <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <p>
-        In the example below, the use of the HTTP vocabulary terms is illustrated.
-        Note that the HTTP vocabulary is explicitly included in the <code>@context</code> field of the TD.
-        Furthermore, the <code>humidity</code> property shows how to use multiple forms to express different content types, where the Consumer needs to include the right content type in the <code>Accept</code> header.
-      </p>
+        <table class="def" id="table-http-vocab-terms">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>htv:methodName</code></td>
+              <td>HTTP method name (Literal).</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <p>
+                  (one of <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, <code>"DELETE"</code>,
+                  <code>"PATCH"</code>)
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td><code>htv:headers</code></td>
+              <td>HTTP headers sent with the message.</td>
+              <td>optional</td>
+              <td>
+                array of
+                <a href="https://www.w3.org/TR/HTTP-in-RDF10/#MessageHeaderClass"><code>htv:MessageHeader</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>htv:fieldName</code></td>
+              <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
+              <td>mandatory within <code>htv:MessageHeader</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>htv:fieldValue</code></td>
+              <td>
+                Header value (Literal). To be used together with <code>htv:fieldName</code> inside a
+                <code>htv:MessageHeader</code>
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          In the example below, the use of the HTTP vocabulary terms is illustrated. Note that the HTTP vocabulary is
+          explicitly included in the <code>@context</code> field of the TD. Furthermore, the
+          <code>humidity</code> property shows how to use multiple forms to express different content types, where the
+          Consumer needs to include the right content type in the <code>Accept</code> header.
+        </p>
 
         <pre class="example" id="binding-http-usage-1" title="TD with HTTP vocabulary included in @context">
 {
@@ -360,78 +373,80 @@
   }
 }
         </pre>
+      </section>
 
-    </section>
+      <section>
+        <h4>HTTP Default Vocabulary Terms</h4>
 
-    <section>
-      <h4>HTTP Default Vocabulary Terms</h4>
+        <p>
+          To interact with a <a>Thing</a> that implements the <a>Protocol Binding</a> based on HTTP, a <a>Consumer</a>
+          needs to know what HTTP method to use when performing a WoT operation. In the general case, a Thing
+          Description can explicitly include a term indicating the method, i.e.,
+          <code>htv:methodName</code>. For the sake of conciseness, the HTTP <a>Protocol Binding</a> defines Default
+          Values for the operation types listed below, which also aims at convergence of the methods expected by
+          <a>Things</a> (e.g., GET to read, PUT to write).
+        </p>
 
+        <p>
+          As required by the [[WOT-THING-DESCRIPTION11]], when the terms are not present in a form of a TD Affordance
+          containing an HTTP URI Scheme, the defaults in the following table apply.
+        </p>
 
-    <p>
-        To interact with a <a>Thing</a> that implements the <a>Protocol Binding</a> based on HTTP, a <a>Consumer</a>
-        needs to know what HTTP method to use when performing a WoT operation. In the general case, a Thing Description can
-        explicitly include a term indicating the method, i.e.,
-        <code>htv:methodName</code>. For the sake of conciseness, the HTTP <a>Protocol Binding</a> defines
-        Default Values for the operation types listed below, which also aims at convergence of the methods
-        expected by <a>Things</a> (e.g., GET to read, PUT to write).
-    </p>
-
-    <p>
-        As required by the [[WOT-THING-DESCRIPTION11]], when the terms are not present in a form of a TD Affordance containing an HTTP URI Scheme, the defaults in the following table apply.
-    </p>
-
-    <table class="def">
-        <thead>
+        <table class="def">
+          <thead>
             <tr>
-                <th><code>op</code> value</th>
-                <th>Default Binding</th>
+              <th><code>op</code> value</th>
+              <th>Default Binding</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <tr>
-                <td><code>readproperty</code></td>
-                <td><code>"htv:methodName": "GET"</code></td>
-            </tr>
-            <tr>
-                <td><code>writeproperty</code></td>
-                <td><code>"htv:methodName": "PUT"</code></td>
+              <td><code>readproperty</code></td>
+              <td><code>"htv:methodName": "GET"</code></td>
             </tr>
             <tr>
-                <td><code>invokeaction</code></td>
-                <td> <code>"htv:methodName": "POST" </code></td>
+              <td><code>writeproperty</code></td>
+              <td><code>"htv:methodName": "PUT"</code></td>
             </tr>
             <tr>
-                <td><code>readallproperties</code></td>
-                <td> <code>"htv:methodName": "GET"</code></td>
+              <td><code>invokeaction</code></td>
+              <td><code>"htv:methodName": "POST" </code></td>
             </tr>
             <tr>
-                <td><code>writeallproperties</code></td>
-                <td> <code>"htv:methodName": "PUT"</code></td>
+              <td><code>readallproperties</code></td>
+              <td><code>"htv:methodName": "GET"</code></td>
             </tr>
             <tr>
-                <td><code>readmultipleproperties</code></td>
-                <td> <code>"htv:methodName": "GET"</code></td>
+              <td><code>writeallproperties</code></td>
+              <td><code>"htv:methodName": "PUT"</code></td>
             </tr>
             <tr>
-                <td><code>writemultipleproperties</code></td>
-                <td> <code>"htv:methodName": "PUT"</code></td>
+              <td><code>readmultipleproperties</code></td>
+              <td><code>"htv:methodName": "GET"</code></td>
             </tr>
-        </tbody>
-    </table>
-</p>
+            <tr>
+              <td><code>writemultipleproperties</code></td>
+              <td><code>"htv:methodName": "PUT"</code></td>
+            </tr>
+          </tbody>
+        </table>
 
+        <p>
+          The following Thing Description shows the insertion of default values for the values of
+          <code>htv:methodName</code>
+          based on the table above:
+        </p>
 
-<p>
-    The following Thing Description shows the insertion of default values for the values of <code>htv:methodName</code> 
-    based on the table above:
-</p>
-
-<aside class="example with-default" id="example-http-defaults" title="TD with and without default HTTP method names">
-    <div class="with-default-control">
-        <input type="checkbox" />
-        <span><i>with default values for HTTP Protocol Binding</i></span>
-    </div>
-    <pre class="json">
+        <aside
+          class="example with-default"
+          id="example-http-defaults"
+          title="TD with and without default HTTP method names"
+        >
+          <div class="with-default-control">
+            <input type="checkbox" />
+            <span><i>with default values for HTTP Protocol Binding</i></span>
+          </div>
+          <pre class="json">
 {
     "@context": "https://www.w3.org/ns/wot-next/td",
     "id": "urn:uuid:3a559b69-cbec-4e7b-b543-bd8e6e41fd8b",
@@ -468,8 +483,9 @@
         }
     }
 }
-    </pre>
-    <pre class="json">
+    </pre
+          >
+          <pre class="json">
 {
     "@context": ["https://www.w3.org/ns/wot-next/td", {
         "htv": "http://www.w3.org/2011/http#"
@@ -509,20 +525,28 @@
             ]
         }
     }
-}</pre>
-</aside>
+}</pre
+          >
+        </aside>
 
-<p>
-    As required by the [[WOT-THING-DESCRIPTION11]], when there multiple <code>op</code> values, the form is extended by the Consumer.
-    The following TD example shows how a single form can be extended to two forms to explicitly include the <code>htv:methodName</code> values.
-</p>
+        <p>
+          As required by the [[WOT-THING-DESCRIPTION11]], when there multiple <code>op</code> values, the form is
+          extended by the Consumer. The following TD example shows how a single form can be extended to two forms to
+          explicitly include the <code>htv:methodName</code> values.
+        </p>
 
-<aside class="example with-default" id="example-http-multiform-op" title="TD with and without extended forms for multiple operations">
-    <div class="with-default-control">
-        <input type="checkbox" />
-        <span><i>extended <code>forms</code> in case of multiple values in <code>op</code></i></span>
-    </div>
-    <pre class="json">
+        <aside
+          class="example with-default"
+          id="example-http-multiform-op"
+          title="TD with and without extended forms for multiple operations"
+        >
+          <div class="with-default-control">
+            <input type="checkbox" />
+            <span
+              ><i>extended <code>forms</code> in case of multiple values in <code>op</code></i></span
+            >
+          </div>
+          <pre class="json">
 {
     "@context": "https://www.w3.org/ns/wot-next/td",
     "id": "urn:uuid:43e2081d-3fd9-41bf-803d-baaefb79c70f",
@@ -548,8 +572,9 @@
         }
     }
 }
-    </pre>
-    <pre class="json">
+    </pre
+          >
+          <pre class="json">
 {
     "@context": ["https://www.w3.org/ns/wot-next/td", {
         "htv": "http://www.w3.org/2011/http#"
@@ -583,185 +608,182 @@
         }
     }
 }
-    </pre>
-</aside>
-
-
-      
+    </pre
+          >
+        </aside>
+      </section>
     </section>
-  </section>
 
     <section id="appendix-example-sequences" class="appendix informative">
       <h1>Example Sequences of Interaction Affordances</h1>
-      <p> This section illustrates example sequences of application and protocol
-          transactions that correspond to operations 
-          (defined in the Thing Description Specification)
-          implementing various interactions among WoT Consumer and WoT Things.
-          The illustrations show both the concrete protocol transactions
-          and the interactions between the applications running
-          inside the WoT Consumer and WoT Thing
-          and the Consumed Thing and Exposed Thing abstractions.
+      <p>
+        This section illustrates example sequences of application and protocol transactions that correspond to
+        operations (defined in the Thing Description Specification) implementing various interactions among WoT Consumer
+        and WoT Things. The illustrations show both the concrete protocol transactions and the interactions between the
+        applications running inside the WoT Consumer and WoT Thing and the Consumed Thing and Exposed Thing
+        abstractions.
       </p>
-      <p> For the sake of simplicity, remote and local proxies
-          between the Consumer and the Thing are omitted from the following sequences.
-          We also assume HTTP as the concrete protocol
-          and omit any additional transactions for implementing security,
-          such as those that would be used for authentication or
-          to set up a secure connection for HTTPS.
-          Other concrete protocols and the addition of security transactions
-          however would only affect the concrete protocol transactions,
-          not the application-level interactions with the
-          Consumed Thing and Exposed Thing abstractions.
+      <p>
+        For the sake of simplicity, remote and local proxies between the Consumer and the Thing are omitted from the
+        following sequences. We also assume HTTP as the concrete protocol and omit any additional transactions for
+        implementing security, such as those that would be used for authentication or to set up a secure connection for
+        HTTPS. Other concrete protocols and the addition of security transactions however would only affect the concrete
+        protocol transactions, not the application-level interactions with the Consumed Thing and Exposed Thing
+        abstractions.
       </p>
       <section>
-          <h2>Property Interactions</h2>
-          <section>
-              <h3>Read property (HTTP binding)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the 
-                 <code>readproperty</code> operation
-                 with an HTTP protocol binding.</p>
-              <p>
-                  <img
-                      src="images/message-flows/A_1_1_readProperty.png"
-                      alt="Read property (HTTP binding)" />
-              </p>
-          </section>
-          <section>
-              <h3>Write property (HTTP binding)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the 
-                 <code>writeproperty</code> operation
-                 with an HTTP protocol binding.</p>
-              <p>
-                  <img
-                      src="images/message-flows/A_1_2_writeProperty.png"
-                      alt="Write property (HTTP binding)" />
-              </p>
-          </section>
-          <section>
-              <h3>Observe property (HTTP binding with Long Polling subprotocol)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the 
-                 <code>observeproperty</code> operation
-                 with an HTTP protocol binding using 
-                 the "longpolling" (Long Polling) subprotocol.</p>
-              <p>
-                  <img
-                      src="images/message-flows/A_1_3a_observePropertyLongPoll.png"
-                      alt="Observe property (HTTP binding with Long Polling subprotocol)" />
-              </p>
-          </section>
-          <section>
-              <h3>Observe property (HTTP binding with Server Sent Event subprotocol)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the <code>observeproperty</code> operation
-                 with an HTTP protocol binding using 
-                 the "sse" (Server Sent Event) subprotocol.</p>
-              <p>
-                  <img
-                      src="images/message-flows/A_1_3b_observePropertySSE.png"
-                      alt="Observe property (HTTP binding with Server Sent Event subprotocol)" />
-              </p>
-          </section>
-          <section>
-              <h3>Observe property (HTTP binding with WebSocket subprotocol)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the <code>observeproperty</code> operation
-                 with an HTTP protocol binding using
-                 a WebSocket-based subprotocol.</p>
-              <p>
-                  <img
-                      src="images/message-flows/A_1_3c_observePropertyWebSocket.png"
-                      alt="Observe property (HTTP binding with a WebSocket subprotocol)" />
-              </p>
-          </section>
+        <h2>Property Interactions</h2>
+        <section>
+          <h3>Read property (HTTP binding)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>readproperty</code> operation with an HTTP protocol binding.
+          </p>
+          <p>
+            <img src="images/message-flows/A_1_1_readProperty.png" alt="Read property (HTTP binding)" />
+          </p>
+        </section>
+        <section>
+          <h3>Write property (HTTP binding)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>writeproperty</code> operation with an HTTP protocol binding.
+          </p>
+          <p>
+            <img src="images/message-flows/A_1_2_writeProperty.png" alt="Write property (HTTP binding)" />
+          </p>
+        </section>
+        <section>
+          <h3>Observe property (HTTP binding with Long Polling subprotocol)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>observeproperty</code> operation with an HTTP protocol binding using the "longpolling" (Long Polling)
+            subprotocol.
+          </p>
+          <p>
+            <img
+              src="images/message-flows/A_1_3a_observePropertyLongPoll.png"
+              alt="Observe property (HTTP binding with Long Polling subprotocol)"
+            />
+          </p>
+        </section>
+        <section>
+          <h3>Observe property (HTTP binding with Server Sent Event subprotocol)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>observeproperty</code> operation with an HTTP protocol binding using the "sse" (Server Sent Event)
+            subprotocol.
+          </p>
+          <p>
+            <img
+              src="images/message-flows/A_1_3b_observePropertySSE.png"
+              alt="Observe property (HTTP binding with Server Sent Event subprotocol)"
+            />
+          </p>
+        </section>
+        <section>
+          <h3>Observe property (HTTP binding with WebSocket subprotocol)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>observeproperty</code> operation with an HTTP protocol binding using a WebSocket-based subprotocol.
+          </p>
+          <p>
+            <img
+              src="images/message-flows/A_1_3c_observePropertyWebSocket.png"
+              alt="Observe property (HTTP binding with a WebSocket subprotocol)"
+            />
+          </p>
+        </section>
       </section>
       <section>
-          <h2>Action Interactions</h2>
-          <section>
-              <h3>Invoke action (HTTP binding)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the 
-                 <code>invokeaction</code> operation
-                 with an HTTP protocol binding, where the
-                 operation is synchronous and the response from the server
-                 is delayed until after the action completes.</p>
-              <p>
-                  <img
-                      src="images/message-flows/A_2_1_invokeAction.png"
-                      alt="Invoke action (HTTP binding)" />
-              </p>
-              <!-- Note: Actions with asynchronous operation is
+        <h2>Action Interactions</h2>
+        <section>
+          <h3>Invoke action (HTTP binding)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>invokeaction</code> operation with an HTTP protocol binding, where the operation is synchronous and
+            the response from the server is delayed until after the action completes.
+          </p>
+          <p>
+            <img src="images/message-flows/A_2_1_invokeAction.png" alt="Invoke action (HTTP binding)" />
+          </p>
+          <!-- Note: Actions with asynchronous operation is
                    subject to further study.
               -->
-          </section>
+        </section>
       </section>
       <section>
-          <h2>Event Interactions</h2>
-          <p>In the following, note that there is no explicit operation defined for event notification itself.
-             The subprotocol used for notification is associated with 
-             the <code>subscribeevent</code> operation, and any necessary concrete
-             protocol transactions are managed by the Protocol Binding subsystem.
+        <h2>Event Interactions</h2>
+        <p>
+          In the following, note that there is no explicit operation defined for event notification itself. The
+          subprotocol used for notification is associated with the <code>subscribeevent</code> operation, and any
+          necessary concrete protocol transactions are managed by the Protocol Binding subsystem.
+        </p>
+        <p>
+          There are also several subprotocols possible for event notification using WebSockets. The interaction diagrams
+          show only one of several possible implementations.
+        </p>
+        <section>
+          <h3>Subscribe, notify and unsubscribe event (HTTP binding with Long Polling subprotocol)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>subscribeevent</code> and <code>unsubscribeevent</code> operations with an HTTP protocol binding using
+            the Long Polling subprotocol.
           </p>
-          <p>There are also several subprotocols possible for event notification
-             using WebSockets.
-             The interaction diagrams show only one of several possible implementations.
+          <p>
+            <img
+              src="images/message-flows/A_3_1a_eventLongPoll.png"
+              alt="Subscribe, notify, and unsubscribe event (HTTP binding with Long Polling subprotocol)"
+            />
           </p>
-          <section>
-              <h3>Subscribe, notify and unsubscribe event
-                  (HTTP binding with Long Polling subprotocol)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the 
-                 <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
-                 with an HTTP protocol binding using the Long Polling subprotocol.
-              </p>
-              <p>
-                  <img
-                      src="images/message-flows/A_3_1a_eventLongPoll.png"
-                      alt="Subscribe, notify, and unsubscribe event (HTTP binding with Long Polling subprotocol)" />
-              </p>
-          </section>
-          <section>
-              <h3>Subscribe, notify and unsubscribe event
-                  (HTTP binding with Server Sent Event subprotocol)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the 
-                 <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
-                 with an HTTP protocol binding using the Server Sent Event subprotocol.
-              </p>
-              <p>
-                  <img src="images/message-flows/A_3_1b_eventSSE.png"
-                      alt="Subscribe, notify and unsubscribe event (HTTP binding with Server Sent Event subprotocol)" />
-              </p>
-          </section>
-          <section>
-              <h3>Subscribe, notify and unsubscribe event
-                  (HTTP binding with WebSocket subprotocol)</h3>
-              <p>The following sequence illustrates application and network
-                 transactions to implement the <code>subscribeevent</code> and <code>unsubscribeevent</code> operations
-                 with an HTTP protocol binding using a WebSocket subprotocol.
-              </p>
-              <p>
-                  <img
-                      src="images/message-flows/A_3_1c_eventWebSocket.png"
-                      alt="Subscribe, notify and unsubscribe event (HTTP binding with WebSocket subprotocol)" />
-              </p>
-          </section>
+        </section>
+        <section>
+          <h3>Subscribe, notify and unsubscribe event (HTTP binding with Server Sent Event subprotocol)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>subscribeevent</code> and <code>unsubscribeevent</code> operations with an HTTP protocol binding using
+            the Server Sent Event subprotocol.
+          </p>
+          <p>
+            <img
+              src="images/message-flows/A_3_1b_eventSSE.png"
+              alt="Subscribe, notify and unsubscribe event (HTTP binding with Server Sent Event subprotocol)"
+            />
+          </p>
+        </section>
+        <section>
+          <h3>Subscribe, notify and unsubscribe event (HTTP binding with WebSocket subprotocol)</h3>
+          <p>
+            The following sequence illustrates application and network transactions to implement the
+            <code>subscribeevent</code> and <code>unsubscribeevent</code> operations with an HTTP protocol binding using
+            a WebSocket subprotocol.
+          </p>
+          <p>
+            <img
+              src="images/message-flows/A_3_1c_eventWebSocket.png"
+              alt="Subscribe, notify and unsubscribe event (HTTP binding with WebSocket subprotocol)"
+            />
+          </p>
+        </section>
       </section>
-  </section>
+    </section>
 
     <script id="dstimer" language="javascript">
-        //<![CDATA[
-        if (dschk() == 1) {
-          if (typeof (dsSetTimers) != "undefined") {
-            dsSetTimers(1454572750, 1454589711, 43200, 86400, 180, 1454589796 - parseInt("" + (new Date()).getTime() /
-              1000), 1);
-          }
+      //<![CDATA[
+      if (dschk() == 1) {
+        if (typeof dsSetTimers != "undefined") {
+          dsSetTimers(
+            1454572750,
+            1454589711,
+            43200,
+            86400,
+            180,
+            1454589796 - parseInt("" + new Date().getTime() / 1000),
+            1
+          );
         }
-        //]]>
-      </script>
-
-</body>
-
+      }
+      //]]>
+    </script>
+  </body>
 </html>

@@ -23,7 +23,7 @@
 # Web of Things (WoT) Binding Templates
 
 General information about the Web of Things can be found on https://www.w3.org/WoT/.
-  
+
 ---
 
 Bindings enable a Thing Description to be adapted to a specific protocol and/or data payload format.
@@ -74,7 +74,7 @@ Make sure to run `npm install` first to install husky in the first place.
 ### Formatting
 
 Please use [EditorConfig](https://editorconfig.org/) by installing a plugin for your favorite editor.
-This detects the [.editorconfig](.editorconfig) file and adjusts your IDE's behavior regarding indentation, line 
+This detects the [.editorconfig](.editorconfig) file and adjusts your IDE's behavior regarding indentation, line
 endings and more.
 Additionally, please adjust your IDE to use 120 line length, where each line that is longer than 120
 should be continued in the following line.

@@ -1,28 +1,30 @@
 {
-    "name": "render",
-    "description": "Renders vocabulary pages",
-    "version": "1.0.0",
-    "main": "render.js",
-    "watch": {
-        "build": {
-            "patterns": [
-                "bindings/protocols",
-                "ontology"
-            ],
-            "extensions": "ttl,template.html,sparql,rq"
-        }
-    },
-    "scripts": {
-        "render": "node render.js",
-        "watch": "npm-watch build",
-        "prepare": "husky install"
-    },
-    "dependencies": {
-        "sttl": "github:vcharpenay/STTL.js",
-        "urdf": "github:vcharpenay/uRDF.js"
-    },
-    "devDependencies": {
-        "husky": "^7.0.0",
-        "npm-watch": "^0.10.0"
+  "name": "render",
+  "description": "Renders vocabulary pages",
+  "version": "1.0.0",
+  "main": "render.js",
+  "watch": {
+    "build": {
+      "patterns": [
+        "bindings/protocols",
+        "ontology"
+      ],
+      "extensions": "ttl,template.html,sparql,rq"
     }
+  },
+  "scripts": {
+    "render": "node render.js && prettier . --write",
+    "watch": "npm-watch build",
+    "prepare": "husky install",
+    "format": "prettier . --write"
+  },
+  "dependencies": {
+    "prettier": "3.0.0",
+    "sttl": "github:vcharpenay/STTL.js",
+    "urdf": "github:vcharpenay/uRDF.js"
+  },
+  "devDependencies": {
+    "husky": "^7.0.0",
+    "npm-watch": "^0.10.0"
+  }
 }

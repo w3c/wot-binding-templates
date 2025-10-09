@@ -1,0 +1,14 @@
+# Files added by default, repeating for transparency
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+# Publication-related files
+publication
+
+# Archive
+Archive
+
+# Automatically generated files
+

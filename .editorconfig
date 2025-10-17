@@ -4,8 +4,17 @@
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
-charset = utf-8
-trim_trailing_whitespace = false
-insert_final_newline = false
+indent_style = space # useTabs=false in prettier
+indent_size = 2 # tabWidth in prettier
+end_of_line = lf # endOfLine in prettier
+charset = utf-8 # not configurable in prettier
+trim_trailing_whitespace = false # not configurable in prettier
+insert_final_newline = true # always true in prettier
+
+[{/publication/**,/node_modules/**}]
+indent_style = unset
+indent_size = unset
+end_of_line = unset
+charset = unset
+trim_trailing_whitespace = unset
+insert_final_newline = unset

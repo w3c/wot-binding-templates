@@ -249,6 +249,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
                                             :writeMultipleHoldingRegisters
                                             :writeSingleCoil
                                             :writeSingleHoldingRegister
+                                            :readFileRecord
                                           )
                               ] ;
           rdfs:subClassOf :Function_Field ;
@@ -552,6 +553,14 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                             :hasCodeNumber 6 ;
                             rdfs:comment "Write Single HoldingRegister (internal bits). Address range 40001-49999"@en ;
                             rdfs:label "Write Single Holding Register"@en .
+
+###  https://www.w3.org/2019/wot/modbus#readFileRecord
+:readFileRecord rdf:type owl:NamedIndividual ,
+                                     :Function ;
+                             # :readFrom :readFileRecord ; //  tbd
+                            :hasCodeNumber 14 ;
+                            rdfs:comment "Read File Record that starts with the MBAP header and subsequently the actual file record"@en ;
+                            rdfs:label "Read File Record"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus/errorCode#01

@@ -217,8 +217,8 @@ binding:assignment rdf:type owl:AnnotationProperty .
 #    Classes
 #################################################################
 
-###  https://www.w3.org/2019/wot/modbus#Data_Field
-:Data_Field rdf:type owl:Class ;
+###  https://www.w3.org/2019/wot/modbus#DataField
+:DataField rdf:type owl:Class ;
             rdfs:subClassOf :Payload ;
             rdfs:comment "The Data Field of a Modbus messages can contain different kind of information: additional information that the server uses to take the action defined by the function code (data request), information regarding the performed action requested by the client (data response), information about the reason of the error (exception code)."@en ;
             rdfs:label "Data Field" .
@@ -252,7 +252,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
                                             :readFileRecord
                                           )
                               ] ;
-          rdfs:subClassOf :Function_Field ;
+          rdfs:subClassOf :FunctionField ;
           rdfs:comment "Function code identifies the operation requested by client, indicates to the server what kind of action to perform. For a normal response, the server simply echoes to the request the original function code."@en ;
           rdfs:label "Function"@en .
 
@@ -281,8 +281,8 @@ binding:assignment rdf:type owl:AnnotationProperty .
           rdfs:label "PayloadDataType"@en .
 
 
-###  https://www.w3.org/2019/wot/modbus#Function_Field
-:Function_Field rdf:type owl:Class ;
+###  https://www.w3.org/2019/wot/modbus#FunctionField
+:FunctionField rdf:type owl:Class ;
                 rdfs:subClassOf :Payload ;
                 rdfs:comment """Function Field class represents the value of the function in a Modbus frame. Each operation identified with a human readable name have a corresponding code.
 The response function code corresponds exactly to the request function code sent by the client when no error occurs. 
@@ -328,14 +328,14 @@ On the contrary, the response operation is identified with an error code or exce
                                                 <https://www.w3.org/2019/wot/modbus/errorCode#06>
                                               )
                                   ] ;
-              rdfs:subClassOf :Data_Field ;
+              rdfs:subClassOf :DataField ;
               rdfs:comment "For an Exception Response, the server returns an exception code as data response field. Exception code defines the server condition that caused the exception as well as the reason of the error."@en ;
               rdfs:label "Exception code"@en .
 
 
 ###  https://www.w3.org/2019/wot/modbus#DataRequest
 :DataRequest rdf:type owl:Class ;
-              rdfs:subClassOf :Data_Field ;
+              rdfs:subClassOf :DataField ;
               rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code. 
 This can include items like register address, the quantity of items to be handled, and the count of actual data bytes in the field.
 
@@ -345,14 +345,14 @@ The data request field may be nonexistent (zero length) in certain kind of reque
 
 ###  https://www.w3.org/2019/wot/modbus#DataResponse
 :DataResponse rdf:type owl:Class ;
-               rdfs:subClassOf :Data_Field ;
+               rdfs:subClassOf :DataField ;
                rdfs:comment "Data response contains the information requested by the client to the server."@en ;
                rdfs:label "Data response" .
 
 
 ###  https://www.w3.org/2019/wot/modbus#ExceptionFunction
 :ExceptionFunction rdf:type owl:Class ;
-                    rdfs:subClassOf :Function_Field ;
+                    rdfs:subClassOf :FunctionField ;
                     rdfs:comment "In case of error, the server replaces the normal function code with an exception function code (or error code) corresponding to the request function code +0x80."@en ;
                     rdfs:label "Exception function" .
 

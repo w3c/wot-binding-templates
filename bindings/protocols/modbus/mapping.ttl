@@ -15,7 +15,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix schema: <http://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix modbus: <https://www.w3.org/2019/wot/modbus#> .
+@prefix modv: <https://www.w3.org/2019/wot/modbus#> .
 @prefix binding: <https://www.w3.org/2019/wot/binding#> .
 @base <https://www.w3.org/ns/wot/binding/modbus-validation#> .
 

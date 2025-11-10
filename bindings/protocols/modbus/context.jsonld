@@ -50,14 +50,15 @@
         "DiscreteInput" : "modv:DiscreteInput",
         "HoldingRegister": "modv:HoldingRegister",
         "InputRegister": "modv:InputRegister",
-        "readCoil": "modv:readCoil",
-        "readDiscreteInput": "modv:readDiscreteInput",
-        "readHoldingRegister" : "modv:readHoldingRegister",
-        "readInputRegister": "modv:readInputRegister",
-        "writeSingleCoil": "modv:writeSingleCoil",
-        "writeMultipleCoils": "modv:writeMultipleCoils",
-        "writeMultipleHoldingRegister": "modv:writeMultipleHoldingRegister",
-        "writeSingleHoldingRegister" : "modv:writeSingleHoldingRegister"
+        "ReadCoil": "modv:ReadCoil",
+        "ReadDiscreteInput": "modv:ReadDiscreteInput",
+        "ReadHoldingRegister" : "modv:ReadHoldingRegister",
+        "ReadInputRegister": "modv:ReadInputRegister",
+        "WriteSingleCoil": "modv:WriteSingleCoil",
+        "WriteMultipleCoils": "modv:WriteMultipleCoils",
+        "WriteMultipleHoldingRegister": "modv:WriteMultipleHoldingRegister",
+        "WriteSingleHoldingRegister" : "modv:WriteSingleHoldingRegister",
+        "ReadFileRecord" : "modv:ReadFileRecord"
 
     }
 }

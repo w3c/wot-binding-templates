@@ -46,19 +46,18 @@
             "@id": "modv:hasPayloadDataType",
             "@type": "@vocab"
         },
-        "Coil": "modv:Coil",
-        "DiscreteInput" : "modv:DiscreteInput",
-        "HoldingRegister": "modv:HoldingRegister",
-        "InputRegister": "modv:InputRegister",
-        "ReadCoil": "modv:ReadCoil",
-        "ReadDiscreteInput": "modv:ReadDiscreteInput",
-        "ReadHoldingRegister" : "modv:ReadHoldingRegister",
-        "ReadInputRegister": "modv:ReadInputRegister",
-        "WriteSingleCoil": "modv:WriteSingleCoil",
-        "WriteMultipleCoils": "modv:WriteMultipleCoils",
-        "WriteMultipleHoldingRegister": "modv:WriteMultipleHoldingRegister",
-        "WriteSingleHoldingRegister" : "modv:WriteSingleHoldingRegister",
-        "ReadFileRecord" : "modv:ReadFileRecord"
-
+        "coil": "modv:Coil",
+        "discreteInput" : "modv:DiscreteInput",
+        "holdingRegister": "modv:HoldingRegister",
+        "inputRegister": "modv:InputRegister",
+        "readCoil": "modv:ReadCoil",
+        "readDiscreteInput": "modv:ReadDiscreteInput",
+        "readHoldingRegister" : "modv:ReadHoldingRegister",
+        "readInputRegister": "modv:ReadInputRegister",
+        "writeSingleCoil": "modv:WriteSingleCoil",
+        "writeMultipleCoils": "modv:WriteMultipleCoils",
+        "writeMultipleHoldingRegister": "modv:WriteMultipleHoldingRegister",
+        "writeSingleHoldingRegister" : "modv:WriteSingleHoldingRegister",
+        "readFileRecord" : "modv:ReadFileRecord"
     }
 }

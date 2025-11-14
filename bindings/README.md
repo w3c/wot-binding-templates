@@ -8,4 +8,4 @@ binding-specific documentation. Each sub-folder typically provide the following:
 - context.jsonld file containing the related jsonld `@context` definition
 - A JSON Schema file based on [template.schema.json](/template.schema.json) that describes the binding structure for validation purposes.
 
-Please refer to the [WoT Binding Registry](https://w3c.github.io/wot-bindings-registry/) for the complete list of requirements and the process.
+Please refer to the [WoT Binding Registry](https://w3c.github.io/wot-binding-registry/) for the complete list of requirements and the process.

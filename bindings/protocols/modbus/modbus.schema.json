@@ -24,7 +24,8 @@
             "writeSingleCoil",
             "writeMultipleCoils",
             "writeMultipleHoldingRegisters",
-            "writeSingleHoldingRegister"
+            "writeSingleHoldingRegister",
+            "readFileRecord"
           ]
         },
         "modv:type": {

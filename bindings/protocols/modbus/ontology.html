@@ -35,6 +35,34 @@
       <section>
         <h3>Classes</h3>
         <section>
+          <h4>Data Field</h4>
+          <p>IRI: <code>https://www.w3.org/2019/wot/modbus#DataField</code></p>
+          <span
+            >The Data Field of a Modbus messages can contain different kind of information: additional information that
+            the server uses to take the action defined by the function code (data request), information regarding the
+            performed action requested by the client (data response), information about the reason of the error
+            (exception code).</span
+          >
+          <table class="def">
+            <tbody>
+              <tr>
+                <td>Sub-class of</td>
+                <td>
+                  <code><a href="#payload">Payload</a></code>
+                </td>
+              </tr>
+              <tr>
+                <td>Super-class of</td>
+                <td>
+                  <code><a href="#data-request">Data request</a></code
+                  ><br /><code><a href="#data-response">Data response</a></code
+                  ><br /><code><a href="#exception-code">Exception code</a></code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h4>Data request</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#DataRequest</code></p>
           <span
@@ -65,34 +93,6 @@
                 <td>Sub-class of</td>
                 <td>
                   <code><a href="#data-field">Data Field</a></code>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <h4>Data Field</h4>
-          <p>IRI: <code>https://www.w3.org/2019/wot/modbus#Data_Field</code></p>
-          <span
-            >The Data Field of a Modbus messages can contain different kind of information: additional information that
-            the server uses to take the action defined by the function code (data request), information regarding the
-            performed action requested by the client (data response), information about the reason of the error
-            (exception code).</span
-          >
-          <table class="def">
-            <tbody>
-              <tr>
-                <td>Sub-class of</td>
-                <td>
-                  <code><a href="#payload">Payload</a></code>
-                </td>
-              </tr>
-              <tr>
-                <td>Super-class of</td>
-                <td>
-                  <code><a href="#data-request">Data request</a></code
-                  ><br /><code><a href="#data-response">Data response</a></code
-                  ><br /><code><a href="#exception-code">Exception code</a></code>
                 </td>
               </tr>
             </tbody>
@@ -175,7 +175,8 @@
                   ><br /><code><a href="#write-multiple-coils">Write Multiple Coils</a></code
                   ><br /><code><a href="#write-multiple-holding-registers">Write Multiple Holding Registers</a></code
                   ><br /><code><a href="#write-single-coil">Write Single Coil</a></code
-                  ><br /><code><a href="#write-single-holding-register">Write Single Holding Register</a></code>
+                  ><br /><code><a href="#write-single-holding-register">Write Single Holding Register</a></code
+                  ><br /><code><a href="#read-file-record">Read File Record</a></code>
                 </td>
               </tr>
             </tbody>
@@ -183,7 +184,7 @@
         </section>
         <section>
           <h4>Function Field</h4>
-          <p>IRI: <code>https://www.w3.org/2019/wot/modbus#Function_Field</code></p>
+          <p>IRI: <code>https://www.w3.org/2019/wot/modbus#FunctionField</code></p>
           <span
             >Function Field class represents the value of the function in a Modbus frame. Each operation identified with
             a human readable name have a corresponding code. The response function code corresponds exactly to the
@@ -352,7 +353,7 @@
                   ><br /><code><a href="#illegal-data-value">ILLEGAL DATA VALUE</a></code
                   ><br /><code><a href="#slavedevice-failure">SLAVEDEVICE FAILURE</a></code
                   ><br /><code><a href="#acknowledge">ACKNOWLEDGE</a></code
-                  ><br /><code><a href="#slavedevice-buisy">SLAVEDEVICE BUISY</a></code>
+                  ><br /><code><a href="#slavedevice-busy">SLAVEDEVICE BUSY</a></code>
                 </td>
               </tr>
             </tbody>
@@ -756,6 +757,21 @@
           </table>
         </section>
         <section>
+          <h4>Read File Record</h4>
+          <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readFileRecord</code></p>
+          <span>Read File Record that starts with the MBAP header and subsequently the actual file record</span>
+          <table class="def">
+            <tbody>
+              <tr>
+                <td>Instance of</td>
+                <td>
+                  <code><a href="#function">Function</a></code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
           <h4>Read Multiple Holding Registers</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readHoldingRegisters</code></p>
           <span>Read Multiple Holding Registers (16 bit access). Address range 40001-49999</span>
@@ -925,7 +941,7 @@
           </table>
         </section>
         <section>
-          <h4>SLAVEDEVICE BUISY</h4>
+          <h4>SLAVEDEVICE BUSY</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus/errorCode#06</code></p>
           <span>Slave is engaged in processing a long-duration command. Master should retry later </span>
           <table class="def">

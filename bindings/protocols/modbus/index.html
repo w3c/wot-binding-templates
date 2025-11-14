@@ -185,11 +185,8 @@
             <!-- Generate forms terms from the ontology-->
 
             <tr>
-              <td><code>modv:unitID</code></td>
-              <td>
-                The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier,
-                but for compatibility reasons it MUST be included
-              </td>
+              <td><code>modv:address</code></td>
+              <td>Specifies the starting address of the Modbus operations</td>
               <td>required</td>
               <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
             </tr>
@@ -197,8 +194,11 @@
             <tr></tr>
 
             <tr>
-              <td><code>modv:address</code></td>
-              <td>Specifies the starting address of the Modbus operations</td>
+              <td><code>modv:unitID</code></td>
+              <td>
+                The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier,
+                but for compatibility reasons it MUST be included
+              </td>
               <td>required</td>
               <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
             </tr>
@@ -294,6 +294,18 @@
             <tr></tr>
 
             <tr>
+              <td><code>modv:type</code></td>
+              <td>
+                Specifies the data type contained in the request or response payload. Users can define the specific data
+                type using a sub type of <code>xsd:decimal</code>.
+              </td>
+              <td>optional</td>
+              <td><a href="#payloaddatatype">PayloadDataType</a></td>
+            </tr>
+
+            <tr></tr>
+
+            <tr>
               <td><code>modv:entity</code></td>
               <td>A registry type to let the runtime automatically detect the right function code</td>
               <td>optional</td>
@@ -307,18 +319,6 @@
               <td>Function Code sent by the master in every request. Specifying the desired interaction.</td>
               <td>optional</td>
               <td><a href="#function">Function</a></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>modv:type</code></td>
-              <td>
-                Specifies the data type contained in the request or response payload. Users can define the specific data
-                type using a sub type of <code>xsd:decimal</code>.
-              </td>
-              <td>optional</td>
-              <td><a href="#payloaddatatype">PayloadDataType</a></td>
             </tr>
 
             <tr></tr>
@@ -432,6 +432,15 @@
               <td>Read Discrete Inputs</td>
               <td>2</td>
               <td>Read Physical Discrete Inputs (bit access). Address range 10001-19999</td>
+            </tr>
+
+            <tr></tr>
+
+            <tr>
+              <td><code>readFileRecord</code></td>
+              <td>Read File Record</td>
+              <td>14</td>
+              <td>Read File Record that starts with the MBAP header and subsequently the actual file record</td>
             </tr>
 
             <tr></tr>
@@ -559,48 +568,6 @@
           </thead>
           <tbody>
             <!-- Generate mappings from the mapping ontology -->
-
-            <tr>
-              <td><code>writeproperty</code></td>
-              <td><code>"modv:function": "writeSingleCoil"</code></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>invokeaction</code></td>
-              <td><code>"modv:function": "writeSingleCoil"</code></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>readallproperties</code></td>
-              <td><code>"modv:function": "readHoldingRegisters"</code></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>readmultipleproperties</code></td>
-              <td><code>"modv:function": "readHoldingRegisters"</code></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>writeallproperties</code></td>
-              <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>writemultipleproperties</code></td>
-              <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
-            </tr>
-
-            <tr></tr>
           </tbody>
         </table>
         The next table defines default values for other terms, regardless of their use in combination with one of the

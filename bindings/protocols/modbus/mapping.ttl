@@ -15,7 +15,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix schema: <http://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix modbus: <https://www.w3.org/2019/wot/modbus#> .
+@prefix modv: <https://www.w3.org/2019/wot/modbus#> .
 @prefix binding: <https://www.w3.org/2019/wot/binding#> .
 @base <https://www.w3.org/ns/wot/binding/modbus-validation#> .
 
@@ -31,65 +31,64 @@
 	sh:order 1 ; # Used to select the shape
     sh:closed false ;
     sh:property [
-        sh:path modbus:hasEntity ;
-		sh:class modbus:Entity ;
+        sh:path modv:hasEntity ;
+		sh:class modv:Entity ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:path modbus:hasFunction ;
-		sh:class modbus:Function ;
+        sh:path modv:hasFunction ;
+		sh:class modv:Function ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:path modbus:hasPayloadDataType ;
-		sh:class modbus:PayloadDataType ;
+        sh:path modv:hasPayloadDataType ;
+		sh:class modv:PayloadDataType ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:path modbus:hasAddress ;
+        sh:path modv:hasAddress ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:datatype xsd:integer ;
     ] ;
     sh:property [
-        sh:path modbus:hasUnitID ;
+        sh:path modv:hasUnitID ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:integer ;
     ] ;
     sh:property [
-        sh:path modbus:hasQuantity ;
+        sh:path modv:hasQuantity ;
         sh:maxCount 1 ;
         sh:datatype xsd:integer ;
     ] ;
     sh:property [
-        sh:path modbus:hasPollingTime ;
+        sh:path modv:hasPollingTime ;
         sh:maxCount 1 ;
         sh:datatype xsd:integer ;
     ] ;
     sh:property [
-        sh:path modbus:hasTimeout ;
+        sh:path modv:hasTimeout ;
         sh:maxCount 1 ;
         sh:datatype xsd:integer ;
     ] ;
     sh:property [
-        sh:path modbus:hasMostSignificantByte ;
+        sh:path modv:hasMostSignificantByte ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
     ] ;
     sh:property [
-        sh:path modbus:hasMostSignificantWord ;
+        sh:path modv:hasMostSignificantWord ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
     ] ;
     sh:property [
-        sh:path modbus:hasZeroBasedAddressingFlag ;
+        sh:path modv:hasZeroBasedAddressingFlag ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
     ] .
 
 # Default mappings
-
 :ReadModubsPropertyForm a sh:NodeShape ;
     sh:targetClass hctl:Form;
     sh:order 2 ;
@@ -98,8 +97,8 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:readProperty
     ], [
-        sh:path modbus:hasFunction ;
-        sh:defaultValue modbus:readCoil
+        sh:path modv:hasFunction ;
+        sh:defaultValue modv:readCoil
     ] .
 :WriteModubsPropertyForm a sh:NodeShape ;
     sh:targetClass hctl:Form ;
@@ -108,8 +107,8 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:writeProperty , td:invokeAction
     ], [
-        sh:path modbus:function ;
-        sh:defaultValue  modbus:writeSingleCoil
+        sh:path modv:Function ;
+        sh:defaultValue modv:writeSingleCoil
     ] .
 
 :ReadAllModubsPropertyForm a sh:NodeShape ;
@@ -119,8 +118,8 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:readAllProperties , td:readMultipleProperties
     ], [
-        sh:path modbus:function ;
-        sh:defaultValue  modbus:readHoldingRegisters
+        sh:path modv:Function ;
+        sh:defaultValue  modv:readHoldingRegisters
     ] .
 :WriteAllModubsPropertyForm a sh:NodeShape ;
     sh:order 5 ;
@@ -129,6 +128,6 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:writeAllProperties , td:writeMultipleProperties
     ], [
-        sh:path modbus:function ;
-        sh:defaultValue  modbus:writeMultipleHoldingRegisters
+        sh:path modv:Function ;
+        sh:defaultValue  modv:writeMultipleHoldingRegisters
     ] .

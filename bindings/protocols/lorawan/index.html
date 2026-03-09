@@ -7,6 +7,7 @@
     <script class="remove">
       var respecConfig = {
         specStatus: "ED",
+        group: "wg/wot",
         editors: [
           {
             name: "Erich Barnstedt"
@@ -217,7 +218,7 @@
               <td>2-dimensional Array of integers</td>
             </tr>
             <tr>
-              <td><code>\<chipName\>_conf</code></td>
+              <td><code>&lt;chipName&gt;_conf</code></td>
               <td>region-specific radio frequencies for a specific LoRaWAN transceiver chip</td>
               <td>required (router config only)</td>
               <td>Array</td>
@@ -243,52 +244,53 @@
           </tbody>
         </table>
       </section>
-<section id="payloaddatatype">
-  <h3>Payload DataType</h3>
-  <p>
-    The <code>PayloadDataType</code> class within a LoRaWAN binding instance serves as value for the
-    <code>modv:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
-    offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to cover the most common data types
-    used in LoRaWAN messages. Note that the <code>PayloadDataType</code> entity is designed for describing
-    established conventions in the LoRaWAN ecosystem; future development might remove this functionality or add new
-    terms. Currently, the <code>PayloadDataType</code> class contains the following data types:
-  </p>
-  <ul>
-    <li><code>xsd:integer</code></li>
+    </section>
+    <section id="payloaddatatype">
+      <h3>Payload DataType</h3>
+      <p>
+        The <code>PayloadDataType</code> class within a LoRaWAN binding instance serves as value for the
+        <code>modv:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
+        offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to cover the most common data types used
+        in LoRaWAN messages. Note that the <code>PayloadDataType</code> entity is designed for describing established
+        conventions in the LoRaWAN ecosystem; future development might remove this functionality or add new terms.
+        Currently, the <code>PayloadDataType</code> class contains the following data types:
+      </p>
+      <ul>
+        <li><code>xsd:integer</code></li>
 
-    <li><code>xsd:boolean</code></li>
+        <li><code>xsd:boolean</code></li>
 
-    <li><code>xsd:string</code></li>
+        <li><code>xsd:string</code></li>
 
-    <li><code>xsd:float</code></li>
+        <li><code>xsd:float</code></li>
 
-    <li><code>xsd:decimal</code></li>
+        <li><code>xsd:decimal</code></li>
 
-    <li><code>xsd:byte</code></li>
+        <li><code>xsd:byte</code></li>
 
-    <li><code>xsd:short</code></li>
+        <li><code>xsd:short</code></li>
 
-    <li><code>xsd:int</code></li>
+        <li><code>xsd:int</code></li>
 
-    <li><code>xsd:long</code></li>
+        <li><code>xsd:long</code></li>
 
-    <li><code>xsd:unsignedByte</code></li>
+        <li><code>xsd:unsignedByte</code></li>
 
-    <li><code>xsd:unsignedShort</code></li>
+        <li><code>xsd:unsignedShort</code></li>
 
-    <li><code>xsd:unsignedInt</code></li>
+        <li><code>xsd:unsignedInt</code></li>
 
-    <li><code>xsd:unsignedLong</code></li>
+        <li><code>xsd:unsignedLong</code></li>
 
-    <li><code>xsd:double</code></li>
+        <li><code>xsd:double</code></li>
 
-    <li><code>xsd:hexBinary</code></li>
-  </ul>
-</section>
+        <li><code>xsd:hexBinary</code></li>
+      </ul>
+    </section>
     <section id="mappings">
       <h2>Mappings</h2>
-      This section describes the strategies and default values to use protocol specific concepts within the
-      <a>WoT Interaction model</a>.
+      This section describes the strategies and default values to use protocol specific concepts within the WoT
+      Interaction model.
 
       <section id="default-mappings">
         <h3>Default mappings</h3>
@@ -313,7 +315,7 @@
     </section>
     <section>
       <h2>Examples</h2>
-        <pre id="device-td" class="example" title="Device Properties">
+      <pre id="device-td" class="example" title="Device Properties">
 {
   "@context": [
     "https://www.w3.org/2022/wot/td/v1.1"
@@ -393,9 +395,10 @@
     }
   }
 }
-        </pre>
+        </pre
+      >
 
-        <pre id="device-td" class="example" title="Router Configuration">
+      <pre id="device-td" class="example" title="Router Configuration">
 {
   "@context": [
     "https://www.w3.org/2019/wot/td/v1"
@@ -509,7 +512,8 @@
     }
   }
 }
-        </pre>
+        </pre
+      >
     </section>
   </body>
 </html>

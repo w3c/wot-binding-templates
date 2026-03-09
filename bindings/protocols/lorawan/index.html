@@ -1,0 +1,515 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        editors: [
+          {
+            name: "Erich Barnstedt"
+            // w3cid: "1232",
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan",
+        github: "https://github.com/w3c/wot-binding-templates", // please do not change this
+        shortName: "wot-lorawan-binding",
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: " https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "Lorawan JSON Schema",
+                href: "lorawan.schema.json"
+              }
+            ]
+          }
+        ],
+        localBiblio: {}
+      };
+    </script>
+    <title>Web of Things (WoT) Lorawan Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        In the Web of Things (WoT), a Binding provides guidance for implementing a specific IoT protocol/platform by
+        defining vocabulary terms that can be used in a TD and rules describing how WoT operations map to protocol
+        interactions. This document proposes a binding for LoRaWAN, defining vocabulary and rules for describing
+        interactions with LoRaWAN end devices and gateways via a LoRaWAN “network-facing interface” (typically a local
+        Network Server, gateway bridge, or compatible service endpoint).
+      </p>
+      <!-- TODO: add protocol intro and bridge to next paragraph -->
+      <p>
+        More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
+        or Thing Model document, and associated rules which allow to describe WoT operations using Lorawan over the
+        network. Additionally, relevant examples are provided to showcase different vocabulary terms and the associated
+        behavior.
+      </p>
+    </section>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        LoRaWAN is commonly used in asynchronous telemetry scenarios: devices emit uplinks periodically or on change,
+        while downlinks are scheduled (often with delivery constraints). This proposed binding therefore emphasizes
+        observeproperty/subscribeevent for uplinks and invokeaction/writeproperty for downlinks. A TD using this LoRaWAN
+        binding conforms if:
+      </p>
+      <ul>
+        <li>It includes the LoRaWAN binding context in @context (Section 4), and</li>
+        <li>Any form using LoRaWAN terms follows the constraints in this document (Sections 3–5), and</li>
+        <li>It validates against the JSON Schema in Appendix (Section A)</li>
+      </ul>
+    </section>
+    <section id="sotd">
+      <p>
+        <em>This document is a work in progress</em>
+      </p>
+    </section>
+    <section id="url">
+      <h2>URI format</h2>
+      <p>This binding defines these URI schemes:</p>
+
+      <ul>
+        <li><code>lorawan://{deviceEui}/{appKey}/device</code> A LoRaWAN device endpoint.</li>
+        <li><code>lorawan://{deviceEui}/{gatewayModel}/routerconfig</code> A LoRaWAN router endpoint.</li>
+      </ul>
+
+      <p>
+        Device and gateway identification are expressed in forms via vocabulary terms (Section 4.1), rather than being
+        forced into the URL path.
+      </p>
+    </section>
+
+    <section id="vocabulary">
+      <h2>LoRaWAN Vocabulary</h2>
+      <p>This section defines vocabulary terms usable inside TDs.</p>
+      <section>
+        <h3>URI terms</h3>
+
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lorawan:deviceEui</code></td>
+              <td>LoRaWAN Device EUI (end device identifier)</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>lorav:gatewayModel</code></td>
+              <td>LoRaWAN Gateway identifier (e.g., configured ID)</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>lorav:appKey</code></td>
+              <td>Application identifier within the endpoint.</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h3>Form terms</h3>
+
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lorav: mostSignificantByte</code></td>
+              <td>
+                When true, it describes that the byte order of the data in the Modbus message is the most significant
+                byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
+                Little-Endian).
+              </td>
+              <td>optional</td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>lorav:bitmask</code></td>
+              <td>Bitmask masking the returned device byte blob to extract the value</td>
+              <td>optional</td>
+              <td>hex string</td>
+            </tr>
+            <tr>
+              <td><code>lorav:multiplier</code></td>
+              <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
+              <td>optional</td>
+              <td>float</td>
+            </tr>
+            <tr>
+              <td><code>msgtype</code></td>
+              <td>Must be <code>“router_config”</code></td>
+              <td>required (router config only)</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>NetID</code></td>
+              <td>Network identifier</td>
+              <td>required (router config only)</td>
+              <td>Array of integers</td>
+            </tr>
+            <tr>
+              <td><code>JoinEui</code></td>
+              <td>Range of join EUIs accepted by the router</td>
+              <td>required (router config only)</td>
+              <td>2-dimensional Array of integers</td>
+            </tr>
+            <tr>
+              <td><code>region</code></td>
+              <td>Region code</td>
+              <td>required (router config only)</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>hwspec</code></td>
+              <td>Chip type and version</td>
+              <td>required (router config only)</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>freq_range</code></td>
+              <td>Frequency range of the region</td>
+              <td>required (router config only)</td>
+              <td>Array of integers</td>
+            </tr>
+            <tr>
+              <td><code>DRs</code></td>
+              <td>Data rates array containing [spreading factor, bandwidth and downlink flag] triples</td>
+              <td>required (router config only)</td>
+              <td>2-dimensional Array of integers</td>
+            </tr>
+            <tr>
+              <td><code>\<chipName\>_conf</code></td>
+              <td>region-specific radio frequencies for a specific LoRaWAN transceiver chip</td>
+              <td>required (router config only)</td>
+              <td>Array</td>
+            </tr>
+            <tr>
+              <td><code>nocca</code></td>
+              <td>Disable Clear Channel Assessment flag</td>
+              <td>required (router config only)</td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>nodc</code></td>
+              <td>Disable duty-cycle limitations flag</td>
+              <td>required (router config only)</td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>nodwell</code></td>
+              <td>Disable dwell time limitations flag</td>
+              <td>required (router config only)</td>
+              <td>boolean</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+<section id="payloaddatatype">
+  <h3>Payload DataType</h3>
+  <p>
+    The <code>PayloadDataType</code> class within a LoRaWAN binding instance serves as value for the
+    <code>modv:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
+    offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to cover the most common data types
+    used in LoRaWAN messages. Note that the <code>PayloadDataType</code> entity is designed for describing
+    established conventions in the LoRaWAN ecosystem; future development might remove this functionality or add new
+    terms. Currently, the <code>PayloadDataType</code> class contains the following data types:
+  </p>
+  <ul>
+    <li><code>xsd:integer</code></li>
+
+    <li><code>xsd:boolean</code></li>
+
+    <li><code>xsd:string</code></li>
+
+    <li><code>xsd:float</code></li>
+
+    <li><code>xsd:decimal</code></li>
+
+    <li><code>xsd:byte</code></li>
+
+    <li><code>xsd:short</code></li>
+
+    <li><code>xsd:int</code></li>
+
+    <li><code>xsd:long</code></li>
+
+    <li><code>xsd:unsignedByte</code></li>
+
+    <li><code>xsd:unsignedShort</code></li>
+
+    <li><code>xsd:unsignedInt</code></li>
+
+    <li><code>xsd:unsignedLong</code></li>
+
+    <li><code>xsd:double</code></li>
+
+    <li><code>xsd:hexBinary</code></li>
+  </ul>
+</section>
+    <section id="mappings">
+      <h2>Mappings</h2>
+      This section describes the strategies and default values to use protocol specific concepts within the
+      <a>WoT Interaction model</a>.
+
+      <section id="default-mappings">
+        <h3>Default mappings</h3>
+        <p class="ednote">Map WoT Interaction model verbs to default values if any</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default Binding</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <section id="possible-mappings">
+        <h3>Possible mappings</h3>
+        <p class="ednote">
+          TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
+          informative but it provides guidelines for implementers.
+        </p>
+      </section>
+    </section>
+    <section>
+      <h2>Examples</h2>
+        <pre id="device-td" class="example" title="Device Properties">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1"
+  ],
+  "id": "urn:dragino-lht-65n-e3",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": [
+    "nosec_sc"
+  ],
+  "@type": [
+    "Thing"
+  ],
+  "name": "Dragino LHT65N-E3 A84041B98D5CB233",
+  "base": "lorawan://A84041B98D5CB233/569F632C48146DBB92E7ECA0859F12A7/device",
+  "title": "Dragino LHT65N-E3",
+  "properties": {
+    "batteryLevel": {
+      "type": "number",
+      "uav:mapToNodeId": "s=A84041B98D5CB233_BatteryLevel",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/0?quantity=2",
+          "type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:bitmask": "0x3FFF",
+          "lorav:multiplier": 0.001
+        }
+      ]
+    },
+    "temperature": {
+      "type": "number",
+      "uav:mapToNodeId": "s=A84041B98D5CB233_Temperature",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/2?quantity=2",
+          "type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:multiplier": 0.01
+        }
+      ]
+    },
+    "humidity": {
+      "type": "number",
+      "uav:mapToNodeId": "s=A84041B98D5CB233_Humidity",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/4?quantity=2",
+          "type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:multiplier": 0.1
+        }
+      ]
+    },
+    "extTemperature": {
+      "type": "number",
+      "uav:mapToNodeId": "s=A84041B98D5CB233_ExternalTemperature",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/7?quantity=2",
+          "type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:multiplier": 0.01
+        }
+      ]
+    }
+  }
+}
+        </pre>
+
+        <pre id="device-td" class="example" title="Router Configuration">
+{
+  "@context": [
+    "https://www.w3.org/2019/wot/td/v1"
+  ],
+  "id": "urn:dev:ops:lorawan:router:eu868:sx1301",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": [
+    "nosec_sc"
+  ],
+  "@type": [
+    "Thing"
+  ],
+  "name": "SX1301 EU868 2CCF67FFFEFB3C8F",
+  "base": "lorawan://2CCF67FFFEFB3C8F/SX1301EU/routerconfig",
+  "title": "LoRaWAN Router Config - EU868 SX1301",
+  "properties": {
+    "routerConfig": {
+      "type": "object",
+      "uav:mapToNodeId": "s=2CCF67FFFEFB3C8F_RouterConfig",
+      "readOnly": true,
+      "forms": [
+        {
+          "msgtype": "router_config",
+          "NetID": [ 1 ],
+          "JoinEui": [ [ 0, -1 ] ],
+          "region": "EU863",
+          "hwspec": "sx1301/1",
+          "freq_range": [ 863000000, 870000000 ],
+          "DRs": [
+            [ 12, 125, 0 ],
+            [ 11, 125, 0 ],
+            [ 10, 125, 0 ],
+            [ 9, 125, 0 ],
+            [ 8, 125, 0 ],
+            [ 7, 125, 0 ],
+            [ 7, 250, 0 ]
+          ],
+          "sx1301_conf": [
+            {
+              "radio_0": {
+                "enable": true,
+                "freq": 867500000
+              },
+              "radio_1": {
+                "enable": true,
+                "freq": 868500000
+              },
+              "chan_FSK": {
+                "enable": true,
+                "radio": 1,
+                "if": 300000
+              },
+              "chan_Lora_std": {
+                "enable": true,
+                "radio": 1,
+                "if": -200000,
+                "bandwidth": 250000,
+                "spread_factor": 7
+              },
+              "chan_multiSF_0": {
+                "enable": true,
+                "radio": 1,
+                "if": -400000
+              },
+              "chan_multiSF_1": {
+                "enable": true,
+                "radio": 1,
+                "if": -200000
+              },
+              "chan_multiSF_2": {
+                "enable": true,
+                "radio": 1,
+                "if": 0
+              },
+              "chan_multiSF_3": {
+                "enable": true,
+                "radio": 0,
+                "if": -400000
+              },
+              "chan_multiSF_4": {
+                "enable": true,
+                "radio": 0,
+                "if": -200000
+              },
+              "chan_multiSF_5": {
+                "enable": true,
+                "radio": 0,
+                "if": 0
+              },
+              "chan_multiSF_6": {
+                "enable": true,
+                "radio": 0,
+                "if": 200000
+              },
+              "chan_multiSF_7": {
+                "enable": true,
+                "radio": 0,
+                "if": 400000
+              }
+            }
+          ],
+          "nocca": true,
+          "nodc": true,
+          "nodwell": true
+        }
+      ]
+    }
+  }
+}
+        </pre>
+    </section>
+  </body>
+</html>

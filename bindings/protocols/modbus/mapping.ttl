@@ -97,7 +97,7 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:readProperty
     ], [
-        sh:path modv:hasFunction ;
+        sh:path modv:Function ;
         sh:defaultValue modv:readCoil
     ] .
 :WriteModubsPropertyForm a sh:NodeShape ;

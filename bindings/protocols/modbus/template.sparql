@@ -157,7 +157,7 @@ template :mappings(?ns ?prefix){
         sh:defaultValue ?default.
    
    filter( ?index > 1 )
-    bind(IRI(CONCAT(STR( ?ns),"#function")) as ?modbusFunction)
+    bind(IRI(CONCAT(STR( ?ns),"#Function")) as ?modbusFunction)
 }
 
 template :entityValues(?ns ?prefix){

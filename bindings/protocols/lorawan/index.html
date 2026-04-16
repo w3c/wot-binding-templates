@@ -90,16 +90,18 @@
     </section>
     <section id="url">
       <h2>URI format</h2>
-      <p>This binding defines these URI schemes:</p>
+      <p>This binding defines the URI scheme with following Augmented Backus-Naur Form (ABNF) [[RFC5234]]:</p>
 
-      <ul>
-        <li><code>lorawan://{lorav:deviceEui}/{lorav:appKey}/device</code> A LoRaWAN device endpoint.</li>
-        <li><code>lorawan://{lorav:deviceEui}/{lorav:gatewayModel}/routerconfig</code> A LoRaWAN router endpoint.</li>
-      </ul>
+      <pre class="abnf">
+      "lorawan://" lorav:deviceEui "/" ("{lorav:appKey}/device") / ( lorav:gatewayModel "/routerconfig" )
+      </pre>
 
       <p>
-        Device and gateway identification are expressed in forms via vocabulary terms (Section 4.1), rather than being
-        forced into the URL path.
+        A device URI looks like <code>lorawan://{lorav:deviceEui}/{lorav:appKey}/device</code>, whereas the
+        gateway/router URI looks like <code>lorawan://{lorav:gatewayModel}/routerconfig</code>. The device URI includes
+        the device EUI and application key, while the gateway/router URI includes the gateway model. Device and gateway
+        identification are expressed in forms via vocabulary terms (Section 4.1), rather than being forced into the URI
+        path.
       </p>
     </section>
 
@@ -142,7 +144,6 @@
       </section>
       <section>
         <h3>Form terms</h3>
-
 
         <section>
           <h4>End-device Specific Terms</h4>
@@ -189,9 +190,7 @@
         </section>
         <section>
           <h4>Router Specific Terms</h4>
-          <p>
-            The following terms are specific to forms describing LoRaWAN router configuration parameters.
-          </p>
+          <p>The following terms are specific to forms describing LoRaWAN router configuration parameters.</p>
           <table class="def">
             <thead>
               <tr>

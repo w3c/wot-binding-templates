@@ -93,8 +93,8 @@
       <p>This binding defines these URI schemes:</p>
 
       <ul>
-        <li><code>lorawan://{deviceEui}/{appKey}/device</code> A LoRaWAN device endpoint.</li>
-        <li><code>lorawan://{deviceEui}/{gatewayModel}/routerconfig</code> A LoRaWAN router endpoint.</li>
+        <li><code>lorawan://{lorav:deviceEui}/{lorav:appKey}/device</code> A LoRaWAN device endpoint.</li>
+        <li><code>lorawan://{lorav:deviceEui}/{lorav:gatewayModel}/routerconfig</code> A LoRaWAN router endpoint.</li>
       </ul>
 
       <p>
@@ -120,7 +120,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>lorawan:deviceEui</code></td>
+              <td><code>lorav:deviceEui</code></td>
               <td>LoRaWAN Device EUI (end device identifier)</td>
               <td>required</td>
               <td>string</td>
@@ -176,67 +176,67 @@
               <td>float</td>
             </tr>
             <tr>
-              <td><code>msgtype</code></td>
+              <td><code>lorav:msgtype</code></td>
               <td>Must be <code>“router_config”</code></td>
               <td>required (router config only)</td>
               <td>string</td>
             </tr>
             <tr>
-              <td><code>NetID</code></td>
+              <td><code>lorav:NetID</code></td>
               <td>Network identifier</td>
               <td>required (router config only)</td>
               <td>Array of integers</td>
             </tr>
             <tr>
-              <td><code>JoinEui</code></td>
+              <td><code>lorav:JoinEui</code></td>
               <td>Range of join EUIs accepted by the router</td>
               <td>required (router config only)</td>
               <td>2-dimensional Array of integers</td>
             </tr>
             <tr>
-              <td><code>region</code></td>
+              <td><code>lorav:region</code></td>
               <td>Region code</td>
               <td>required (router config only)</td>
               <td>string</td>
             </tr>
             <tr>
-              <td><code>hwspec</code></td>
+              <td><code>lorav:hwspec</code></td>
               <td>Chip type and version</td>
               <td>required (router config only)</td>
               <td>string</td>
             </tr>
             <tr>
-              <td><code>freq_range</code></td>
+              <td><code>lorav:freq_range</code></td>
               <td>Frequency range of the region</td>
               <td>required (router config only)</td>
               <td>Array of integers</td>
             </tr>
             <tr>
-              <td><code>DRs</code></td>
+              <td><code>lorav:DRs</code></td>
               <td>Data rates array containing [spreading factor, bandwidth and downlink flag] triples</td>
               <td>required (router config only)</td>
               <td>2-dimensional Array of integers</td>
             </tr>
             <tr>
-              <td><code>&lt;chipName&gt;_conf</code></td>
+              <td><code>lorav:&lt;chipName&gt;_conf</code></td>
               <td>region-specific radio frequencies for a specific LoRaWAN transceiver chip</td>
               <td>required (router config only)</td>
               <td>Array</td>
             </tr>
             <tr>
-              <td><code>nocca</code></td>
+              <td><code>lorav:nocca</code></td>
               <td>Disable Clear Channel Assessment flag</td>
               <td>required (router config only)</td>
               <td>boolean</td>
             </tr>
             <tr>
-              <td><code>nodc</code></td>
+              <td><code>lorav:nodc</code></td>
               <td>Disable duty-cycle limitations flag</td>
               <td>required (router config only)</td>
               <td>boolean</td>
             </tr>
             <tr>
-              <td><code>nodwell</code></td>
+              <td><code>lorav:nodwell</code></td>
               <td>Disable dwell time limitations flag</td>
               <td>required (router config only)</td>
               <td>boolean</td>
@@ -249,7 +249,7 @@
       <h3>Payload DataType</h3>
       <p>
         The <code>PayloadDataType</code> class within a LoRaWAN binding instance serves as value for the
-        <code>modv:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
+        <code>lorav:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
         offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to cover the most common data types used
         in LoRaWAN messages. Note that the <code>PayloadDataType</code> entity is designed for describing established
         conventions in the LoRaWAN ecosystem; future development might remove this functionality or add new terms.
@@ -338,13 +338,12 @@
   "properties": {
     "batteryLevel": {
       "type": "number",
-      "uav:mapToNodeId": "s=A84041B98D5CB233_BatteryLevel",
       "readOnly": true,
       "observable": true,
       "forms": [
         {
           "href": "A84041B98D5CB233/0?quantity=2",
-          "type": "xsd:short",
+          "lorav:type": "xsd:short",
           "lorav:mostSignificantByte": true,
           "lorav:bitmask": "0x3FFF",
           "lorav:multiplier": 0.001
@@ -353,13 +352,12 @@
     },
     "temperature": {
       "type": "number",
-      "uav:mapToNodeId": "s=A84041B98D5CB233_Temperature",
       "readOnly": true,
       "observable": true,
       "forms": [
         {
           "href": "A84041B98D5CB233/2?quantity=2",
-          "type": "xsd:short",
+          "lorav:type": "xsd:short",
           "lorav:mostSignificantByte": true,
           "lorav:multiplier": 0.01
         }
@@ -367,13 +365,12 @@
     },
     "humidity": {
       "type": "number",
-      "uav:mapToNodeId": "s=A84041B98D5CB233_Humidity",
       "readOnly": true,
       "observable": true,
       "forms": [
         {
           "href": "A84041B98D5CB233/4?quantity=2",
-          "type": "xsd:short",
+          "lorav:type": "xsd:short",
           "lorav:mostSignificantByte": true,
           "lorav:multiplier": 0.1
         }
@@ -381,13 +378,12 @@
     },
     "extTemperature": {
       "type": "number",
-      "uav:mapToNodeId": "s=A84041B98D5CB233_ExternalTemperature",
       "readOnly": true,
       "observable": true,
       "forms": [
         {
           "href": "A84041B98D5CB233/7?quantity=2",
-          "type": "xsd:short",
+          "lorav:type": "xsd:short",
           "lorav:mostSignificantByte": true,
           "lorav:multiplier": 0.01
         }
@@ -421,17 +417,16 @@
   "properties": {
     "routerConfig": {
       "type": "object",
-      "uav:mapToNodeId": "s=2CCF67FFFEFB3C8F_RouterConfig",
       "readOnly": true,
       "forms": [
         {
-          "msgtype": "router_config",
-          "NetID": [ 1 ],
-          "JoinEui": [ [ 0, -1 ] ],
-          "region": "EU863",
-          "hwspec": "sx1301/1",
-          "freq_range": [ 863000000, 870000000 ],
-          "DRs": [
+          "lorav:msgtype": "router_config",
+          "lorav:NetID": [ 1 ],
+          "lorav:JoinEui": [ [ 0, -1 ] ],
+          "lorav:region": "EU863",
+          "lorav:hwspec": "sx1301/1",
+          "lorav:freq_range": [ 863000000, 870000000 ],
+          "lorav:DRs": [
             [ 12, 125, 0 ],
             [ 11, 125, 0 ],
             [ 10, 125, 0 ],
@@ -440,7 +435,7 @@
             [ 7, 125, 0 ],
             [ 7, 250, 0 ]
           ],
-          "sx1301_conf": [
+          "lorav:sx1301_conf": [
             {
               "radio_0": {
                 "enable": true,
@@ -504,9 +499,9 @@
               }
             }
           ],
-          "nocca": true,
-          "nodc": true,
-          "nodwell": true
+          "lorav:nocca": true,
+          "lorav:nodc": true,
+          "lorav:nodwell": true
         }
       ]
     }

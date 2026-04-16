@@ -143,106 +143,134 @@
       <section>
         <h3>Form terms</h3>
 
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Vocabulary term</th>
-              <th>Description</th>
-              <th>Assignment</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>lorav: mostSignificantByte</code></td>
-              <td>
-                When true, it describes that the byte order of the data in the Modbus message is the most significant
-                byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
-                Little-Endian).
-              </td>
-              <td>optional</td>
-              <td>boolean</td>
-            </tr>
-            <tr>
-              <td><code>lorav:bitmask</code></td>
-              <td>Bitmask masking the returned device byte blob to extract the value</td>
-              <td>optional</td>
-              <td>hex string</td>
-            </tr>
-            <tr>
-              <td><code>lorav:multiplier</code></td>
-              <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
-              <td>optional</td>
-              <td>float</td>
-            </tr>
-            <tr>
-              <td><code>lorav:msgtype</code></td>
-              <td>Must be <code>“router_config”</code></td>
-              <td>required (router config only)</td>
-              <td>string</td>
-            </tr>
-            <tr>
-              <td><code>lorav:NetID</code></td>
-              <td>Network identifier</td>
-              <td>required (router config only)</td>
-              <td>Array of integers</td>
-            </tr>
-            <tr>
-              <td><code>lorav:JoinEui</code></td>
-              <td>Range of join EUIs accepted by the router</td>
-              <td>required (router config only)</td>
-              <td>2-dimensional Array of integers</td>
-            </tr>
-            <tr>
-              <td><code>lorav:region</code></td>
-              <td>Region code</td>
-              <td>required (router config only)</td>
-              <td>string</td>
-            </tr>
-            <tr>
-              <td><code>lorav:hwspec</code></td>
-              <td>Chip type and version</td>
-              <td>required (router config only)</td>
-              <td>string</td>
-            </tr>
-            <tr>
-              <td><code>lorav:freq_range</code></td>
-              <td>Frequency range of the region</td>
-              <td>required (router config only)</td>
-              <td>Array of integers</td>
-            </tr>
-            <tr>
-              <td><code>lorav:DRs</code></td>
-              <td>Data rates array containing [spreading factor, bandwidth and downlink flag] triples</td>
-              <td>required (router config only)</td>
-              <td>2-dimensional Array of integers</td>
-            </tr>
-            <tr>
-              <td><code>lorav:&lt;chipName&gt;_conf</code></td>
-              <td>region-specific radio frequencies for a specific LoRaWAN transceiver chip</td>
-              <td>required (router config only)</td>
-              <td>Array</td>
-            </tr>
-            <tr>
-              <td><code>lorav:nocca</code></td>
-              <td>Disable Clear Channel Assessment flag</td>
-              <td>required (router config only)</td>
-              <td>boolean</td>
-            </tr>
-            <tr>
-              <td><code>lorav:nodc</code></td>
-              <td>Disable duty-cycle limitations flag</td>
-              <td>required (router config only)</td>
-              <td>boolean</td>
-            </tr>
-            <tr>
-              <td><code>lorav:nodwell</code></td>
-              <td>Disable dwell time limitations flag</td>
-              <td>required (router config only)</td>
-              <td>boolean</td>
-            </tr>
-          </tbody>
-        </table>
+
+        <section>
+          <h4>End-device Specific Terms</h4>
+
+          <p>
+            The following terms are specific to forms describing LoRaWAN end device interactions (e.g., reading sensor
+            data).
+          </p>
+
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Vocabulary term</th>
+                <th>Description</th>
+                <th>Assignment</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>lorav: mostSignificantByte</code></td>
+                <td>
+                  When true, it describes that the byte order of the data in the Modbus message is the most significant
+                  byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
+                  Little-Endian).
+                </td>
+                <td>optional</td>
+                <td>boolean</td>
+              </tr>
+              <tr>
+                <td><code>lorav:bitmask</code></td>
+                <td>Bitmask masking the returned device byte blob to extract the value</td>
+                <td>optional</td>
+                <td>hex string</td>
+              </tr>
+              <tr>
+                <td><code>lorav:multiplier</code></td>
+                <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
+                <td>optional</td>
+                <td>float</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h4>Router Specific Terms</h4>
+          <p>
+            The following terms are specific to forms describing LoRaWAN router configuration parameters.
+          </p>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Vocabulary term</th>
+                <th>Description</th>
+                <th>Assignment</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>lorav:msgtype</code></td>
+                <td>Must be <code>“router_config”</code></td>
+                <td>required</td>
+                <td>string</td>
+              </tr>
+              <tr>
+                <td><code>lorav:NetID</code></td>
+                <td>Network identifier</td>
+                <td>required</td>
+                <td>Array of integers</td>
+              </tr>
+              <tr>
+                <td><code>lorav:JoinEui</code></td>
+                <td>Range of join EUIs accepted by the router</td>
+                <td>required</td>
+                <td>2-dimensional Array of integers</td>
+              </tr>
+              <tr>
+                <td><code>lorav:region</code></td>
+                <td>Region code</td>
+                <td>required</td>
+                <td>string</td>
+              </tr>
+              <tr>
+                <td><code>lorav:hwspec</code></td>
+                <td>Chip type and version</td>
+                <td>required</td>
+                <td>string</td>
+              </tr>
+              <tr>
+                <td><code>lorav:freq_range</code></td>
+                <td>Frequency range of the region</td>
+                <td>required</td>
+                <td>Array of integers</td>
+              </tr>
+              <tr>
+                <td><code>lorav:DRs</code></td>
+                <td>Data rates array containing [spreading factor, bandwidth and downlink flag] triples</td>
+                <td>required</td>
+                <td>2-dimensional Array of integers</td>
+              </tr>
+              <tr>
+                <td><code>lorav:&lt;chipName&gt;_conf</code></td>
+                <td>region-specific radio frequencies for a specific LoRaWAN transceiver chip</td>
+                <td>required</td>
+                <td>Array</td>
+              </tr>
+              <tr>
+                <td><code>lorav:nocca</code></td>
+                <td>Disable Clear Channel Assessment flag</td>
+                <td>required</td>
+                <td>boolean</td>
+              </tr>
+              <tr>
+                <td><code>lorav:nodc</code></td>
+                <td>Disable duty-cycle limitations flag</td>
+                <td>required</td>
+                <td>boolean</td>
+              </tr>
+              <tr>
+                <td><code>lorav:nodwell</code></td>
+                <td>Disable dwell time limitations flag</td>
+                <td>required</td>
+                <td>boolean</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
       </section>
     </section>
     <section id="payloaddatatype">

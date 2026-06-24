@@ -550,7 +550,7 @@ function decodeUplink(input) {
       <p>This binding defines the URI scheme with following Augmented Backus-Naur Form (ABNF) [[RFC5234]]:</p>
 
       <pre class="abnf">
-      "lorawan://" lorav:deviceEui "/" ("{lorav:appKey}/device")
+      "lorawan://" lorav:deviceEui "/" "{lorav:appKey}/device"
       </pre>
 
       <p>
@@ -594,49 +594,45 @@ function decodeUplink(input) {
       <section>
         <h3>Form terms</h3>
 
-        <section>
-          <h4>End-device Specific Terms</h4>
+        <p>
+          The following terms are specific to forms describing LoRaWAN end device interactions (e.g., reading sensor
+          data).
+        </p>
 
-          <p>
-            The following terms are specific to forms describing LoRaWAN end device interactions (e.g., reading sensor
-            data).
-          </p>
-
-          <table class="def">
-            <thead>
-              <tr>
-                <th>Vocabulary term</th>
-                <th>Description</th>
-                <th>Assignment</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>lorav:mostSignificantByte</code></td>
-                <td>
-                  When true, it describes that the byte order of the data in the LoRaWAN message is the most significant
-                  byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
-                  Little-Endian).
-                </td>
-                <td>optional</td>
-                <td>boolean</td>
-              </tr>
-              <tr>
-                <td><code>lorav:bitmask</code></td>
-                <td>Bitmask masking the returned device byte blob to extract the value</td>
-                <td>optional</td>
-                <td>hex string</td>
-              </tr>
-              <tr>
-                <td><code>lorav:multiplier</code></td>
-                <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
-                <td>optional</td>
-                <td>float</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lorav:mostSignificantByte</code></td>
+              <td>
+                When true, it describes that the byte order of the data in the LoRaWAN message is the most significant
+                byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
+                Little-Endian).
+              </td>
+              <td>optional</td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>lorav:bitmask</code></td>
+              <td>Bitmask masking the returned device byte blob to extract the value</td>
+              <td>optional</td>
+              <td>hex string</td>
+            </tr>
+            <tr>
+              <td><code>lorav:multiplier</code></td>
+              <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
+              <td>optional</td>
+              <td>float</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </section>
     <section id="payloaddatatype">
@@ -782,122 +778,6 @@ function decodeUplink(input) {
           "lorav:type": "xsd:short",
           "lorav:mostSignificantByte": true,
           "lorav:multiplier": 0.01
-        }
-      ]
-    }
-  }
-}
-        </pre
-      >
-
-      <pre id="device-td" class="example" title="Router Configuration">
-{
-  "@context": [
-    "https://www.w3.org/2019/wot/td/v1"
-  ],
-  "id": "urn:dev:ops:lorawan:router:eu868:sx1301",
-  "securityDefinitions": {
-    "nosec_sc": {
-      "scheme": "nosec"
-    }
-  },
-  "security": [
-    "nosec_sc"
-  ],
-  "@type": [
-    "Thing"
-  ],
-  "name": "SX1301 EU868 2CCF67FFFEFB3C8F",
-  "base": "lorawan://2CCF67FFFEFB3C8F/SX1301EU/routerconfig",
-  "title": "LoRaWAN Router Config - EU868 SX1301",
-  "properties": {
-    "routerConfig": {
-      "type": "object",
-      "readOnly": true,
-      "forms": [
-        {
-          "lorav:msgtype": "router_config",
-          "lorav:NetID": [ 1 ],
-          "lorav:JoinEui": [ [ 0, -1 ] ],
-          "lorav:region": "EU863",
-          "lorav:hwspec": "sx1301/1",
-          "lorav:freq_range": [ 863000000, 870000000 ],
-          "lorav:DRs": [
-            [ 12, 125, 0 ],
-            [ 11, 125, 0 ],
-            [ 10, 125, 0 ],
-            [ 9, 125, 0 ],
-            [ 8, 125, 0 ],
-            [ 7, 125, 0 ],
-            [ 7, 250, 0 ]
-          ],
-          "lorav:sx1301_conf": [
-            {
-              "radio_0": {
-                "enable": true,
-                "freq": 867500000
-              },
-              "radio_1": {
-                "enable": true,
-                "freq": 868500000
-              },
-              "chan_FSK": {
-                "enable": true,
-                "radio": 1,
-                "if": 300000
-              },
-              "chan_Lora_std": {
-                "enable": true,
-                "radio": 1,
-                "if": -200000,
-                "bandwidth": 250000,
-                "spread_factor": 7
-              },
-              "chan_multiSF_0": {
-                "enable": true,
-                "radio": 1,
-                "if": -400000
-              },
-              "chan_multiSF_1": {
-                "enable": true,
-                "radio": 1,
-                "if": -200000
-              },
-              "chan_multiSF_2": {
-                "enable": true,
-                "radio": 1,
-                "if": 0
-              },
-              "chan_multiSF_3": {
-                "enable": true,
-                "radio": 0,
-                "if": -400000
-              },
-              "chan_multiSF_4": {
-                "enable": true,
-                "radio": 0,
-                "if": -200000
-              },
-              "chan_multiSF_5": {
-                "enable": true,
-                "radio": 0,
-                "if": 0
-              },
-              "chan_multiSF_6": {
-                "enable": true,
-                "radio": 0,
-                "if": 200000
-              },
-              "chan_multiSF_7": {
-                "enable": true,
-                "radio": 0,
-                "if": 400000
-              }
-            }
-          ],
-          "lorav:nocca": true,
-          "lorav:nodc": true,
-          "lorav:nodwell": true
         }
       ]
     }

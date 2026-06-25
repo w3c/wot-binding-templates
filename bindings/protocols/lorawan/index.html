@@ -1,0 +1,789 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt"
+            // w3cid: "1232",
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan",
+        github: "https://github.com/w3c/wot-binding-templates", // please do not change this
+        shortName: "wot-lorawan-binding",
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: " https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "LoRaWAN JSON Schema",
+                href: "lorawan.schema.json"
+              }
+            ]
+          }
+        ],
+        localBiblio: {}
+      };
+    </script>
+    <title>Web of Things (WoT) LoRaWAN Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        In the Web of Things (WoT), a Binding provides guidance for implementing a specific IoT protocol/platform by
+        defining vocabulary terms that can be used in a TD and rules describing how WoT operations map to protocol
+        interactions. This document proposes a binding for LoRaWAN, defining vocabulary and rules for describing
+        interactions with LoRaWAN end devices via a LoRaWAN “network-facing interface” (typically a local Network
+        Server, gateway bridge, or compatible service endpoint).
+      </p>
+      <!-- TODO: add protocol intro and bridge to next paragraph -->
+      <p>
+        More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
+        or Thing Model document, and associated rules which allow description of WoT operations using LoRaWAN over the
+        network. Additionally, relevant examples are provided to showcase different vocabulary terms and the associated
+        behavior.
+      </p>
+    </section>
+    <section id="sotd">
+      <p>
+        <em>This document is a work in progress</em>
+      </p>
+    </section>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        LoRaWAN is commonly used in asynchronous telemetry scenarios: devices emit uplinks periodically or on change,
+        while downlinks are scheduled (often with delivery constraints). This proposed binding therefore emphasizes
+        <code>observeproperty</code>/<code>subscribeevent</code> for uplinks and <code>invokeaction</code>/<code
+          >writeproperty</code
+        >
+        for downlinks. A TD using this LoRaWAN binding conforms if all of the following are true:
+      </p>
+      <ul>
+        <li>It includes the LoRaWAN binding context in @context (Section 4).</li>
+        <li>Any form using LoRaWAN terms follows the constraints in this document (Sections 3–5).</li>
+        <li>It validates against the JSON Schema in Appendix (Section A).</li>
+      </ul>
+      <h3>LoRaWAN Architecture</h3>
+      <p>
+        LoRaWAN networks use a <strong>star-of-stars</strong> topology consisting of four logical roles: end node,
+        gateways, network server, and application servers (plus a Join Server for OTAA activation). Understanding this
+        separation of concerns is necessary background for the binding defined below.
+        <img src="images/lorawan_diagram_architecture.svg" alt="LoRaWAN Architecture Diagram" width="750" />
+      </p>
+      <ul>
+        <li>
+          <strong>End Nodes</strong> &mdash; sensors and/or actuators that transmit/broadcast LoRa-modulated messages
+          and, depending on device class, open receive windows to accept downlinks. End devices are not paired to a
+          specific gateway, instead any gateway in range can receive the transmission.
+        </li>
+        <li>
+          <strong>Gateways</strong> &mdash; receive LoRa messages from any end device in range and forward them
+          transparently to the Network Server over a backhaul (cellular, WiFi, Ethernet, or fiber). Gateways perform no
+          application-level processing and each gateway is registered to exactly one Network Server.
+        </li>
+        <li>
+          <strong>Network Server (NS)</strong> &mdash; manages the network: deduplicates uplinks received by multiple
+          gateways, validates message integrity, selects the best gateway for each downlink, runs Adaptive Data Rate
+          (ADR), handles MAC-layer commands, and routes application payloads to the appropriate Application Server.
+        </li>
+        <li>
+          <strong>Application Server (AS)</strong> &mdash; processes application-layer data (decrypted with
+          <code>AppSKey</code>) and generates downlink application payloads, which it passes to the Network Server for
+          delivery. A network may have multiple Application Servers for different applications.
+        </li>
+        <li>
+          <strong>Join Server (JS)</strong> &mdash; handles OTAA device activation, processing Join-request messages and
+          distributing session keys (<code>NwkSKey</code> to the NS, <code>AppSKey</code> to the AS).
+        </li>
+      </ul>
+      <p>
+        <strong>Uplink</strong> messages travel from an end device, are received by every gateway in range, and are
+        deduplicated and routed by the Network Server to the correct Application Server.
+        <strong>Downlink</strong> messages originate at the Application Server, pass through the Network Server &mdash;
+        which selects a single best gateway for transmission &mdash; and are delivered to the end device only within its
+        receive window.
+      </p>
+      <h3>Structure of a LoRaWAN Uplink Message</h3>
+      <p>
+        A LoRaWAN uplink is built from three nested layers: Phyical Layer, MAC Layer, and Frame Layer. Each layer is
+        handled by a different component. No single component sees the message in fully decoded form &mdash; this is why
+        a WoT Consumer cannot simply "read" a LoRaWAN device the way it would read an HTTP resource.
+        <img src="images/lorawan_diagram_uplink_msg.svg" alt="LoRaWAN Uplink Message Structure" width="750" />
+      </p>
+      <ul>
+        <li>
+          <strong>Physical Layer (PHY)</strong> &mdash; the LoRa-modulated radio frame: <code>preamble</code>, PHY
+          header (<code>PHDR</code>), header cyclic redundancy check (<code>PHDR_CRC</code>), and the
+          <code>PHYPayload</code> itself. This layer is terminated at the <strong>Gateway</strong>, which demodulates
+          the radio signal and hands the raw <code>PHYPayload</code> bytes &mdash; together with radio metadata such as
+          SNR, frequency, and spreading factor &mdash; to the Network Server over the backhaul. The gateway never
+          inspects anything inside <code>PHYPayload</code>.
+        </li>
+        <li>
+          <strong>MAC Layer</strong> &mdash; <code>PHYPayload</code> decomposes into MAC Header (<code>MHDR</code>) |
+          <code>MACPayload</code> | Message Integrity Code (<code>MIC</code>). This layer is terminated at the
+          <strong>Network Server</strong>, which verifies the <code>MIC</code> using <code>NwkSKey</code>, deduplicates
+          copies received via multiple gateways, processes Frame Options (<code>FOpts</code>) MAC commands (e.g.,
+          Adaptive Data Rate (ADR)), and tracks Frame Count (<code>FCnt</code>) for replay protection.
+        </li>
+        <li>
+          <strong>Frame / Application Layer</strong> &mdash; <code>MACPayload</code> contains the Frame Header
+          (<code>FHDR</code>), Frame Port (<code>FPort</code>), and <code>FRMPayload</code>. <code>FRMPayload</code> is
+          encrypted with <code>AppSKey</code> whenever <code>FPort &gt; 0</code>. This layer is terminated at the
+          <strong>Application Server</strong>, which decrypts <code>FRMPayload</code> using <code>AppSKey</code> to
+          obtain the raw application payload bytes.
+        </li>
+      </ul>
+
+      <h3>Payload Codec</h3>
+      <p>
+        Decrypting <code>FRMPayload</code> does not automatically produce structured application data. &mdash; It only
+        recovers the raw byte string that the LoRaWAN end device originally packed into the uplink. Turning those bytes
+        into typed values, such as temperature, humidity, battery voltage, alarms, counters, or device status, is the
+        job of a <strong>payload codec</strong>, applied immediately after <code>FRMPayload</code> decryption, at the
+        Application Server.
+      </p>
+      <p>
+        The codec is usually JavaScript functions not defined by LoRaWAN itself, but depends on the device, vendor,
+        firmware version, and configuration. The codec specification is usually published in a device datasheet, a
+        vendor portal, or an online documentation. It may follow a fixed binary layout, a TLV scheme, Cayenne LPP, a
+        ZCL-based encoding, or a vendor-defined user-configurable format.
+      </p>
+      <p>In the following, we show some examples of common codec schema.</p>
+      <h4>Fixed Binary Layout with/without branching</h4>
+      <p>In a fixed binary layout, each byte or group of bytes has a predefined meaning.</p>
+      <p>Example layout:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Byte Position</th>
+            <th>Field</th>
+            <th>Encoding</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Byte 0</code></td>
+            <td>Report type</td>
+            <td>Unsigned integer</td>
+          </tr>
+          <tr>
+            <td><code>Byte 1-2</code></td>
+            <td>Temperature</td>
+            <td>Signed or unsigned 16-bit integer, big-endian, scale 0.01 °C</td>
+          </tr>
+          <tr>
+            <td><code>Byte 3-4</code></td>
+            <td>Unsigned 16-bit integer, big-endian, unit mV</td>
+            <td>Battery voltage</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Example payload:</p>
+      <pre><code>01 07 6B 0C CC</code></pre>
+      <p>Decoding result:</p>
+      <ul>
+        <li><code>0x01</code>: status report</li>
+        <li><code>0x076B</code>: raw temperature value <code>1899</code>, decoded as <code>18.99 °C</code></li>
+        <li><code>0x0CCC</code>: raw battery value <code>3276</code>, decoded as <code>3.276 V</code></li>
+      </ul>
+      <p>
+        It's worth mentioning, as a decoder output is <strong>not standardized</strong>, it can return any measurement
+        in any unit, as well as any additional information based on the configuration. So the final structured output
+        could look like this:
+      </p>
+      <pre><code>{ "reportType": "status", "temperatureC": 18.99, "batteryV": 3.276 }</code></pre>
+
+      <p>
+        <strong>Branching:</strong> Some devices use the first byte, or sometimes the <code>FPort</code>, to indicate
+        the payload type. The remaining bytes are decoded differently depending on that type. An example is provided in
+        <a href="#js example 1">the following section</a>.
+      </p>
+      <h4>Channel-Type-Value Layout</h4>
+      <p>
+        A Channel-Type-Value format uses a channel identifier and a type identifier before the value. The value length
+        is not explicitly included. Instead, the type determines how many bytes must be read. A common example of this
+        approach is <strong>Cayenne Low Power Payload</strong>, often called <strong>Cayenne LPP</strong>.
+      </p>
+      <p>Generic structure:</p>
+      <pre><code>[Channel][Type][Value]</code></pre>
+      <p>Example payload:</p>
+      <pre><code>01 67 00 EA 02 68 7A</code></pre>
+      <p>Decoding:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Bytes</th>
+            <th>Meaning</th>
+            <th>Decoded Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>01 67 00 EA</code></td>
+            <td>Channel <code>1</code>, type <code>0x67</code> = temperature</td>
+            <td>Raw value <code>234</code>, decoded as <code>23.4 °C</code></td>
+          </tr>
+          <tr>
+            <td><code>02 68 7A</code></td>
+            <td>Channel <code>2</code>, type <code>0x68</code> = relative humidity</td>
+            <td>Raw value <code>122</code>, decoded as <code>61 %RH</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Final structured output could look like this:</p>
+      <pre><code>{ "channel1": { "type": "temperature", "value": 23.4, "unit": "°C" }, "channel2": { "type": "humidity", "value": 61, "unit": "%RH" } }</code></pre>
+      <p>
+        The advantage of this schema are compactness and interoperability. The disadvantage is that the decoder must
+        know the type table in advance, which offers limited semantics and flexibility.
+      </p>
+      <h4>Type-Length-Value Layout</h4>
+      <p>
+        In a Type-Length-Value format, often abbreviated as <strong>TLV</strong>, each field contains a type, an
+        explicit length, and then the value bytes.
+      </p>
+      <p>Generic structure:</p>
+      <pre><code>[Type][Length][Value]</code></pre>
+      <p>Example payload:</p>
+      <pre><code>01 02 01 10</code></pre>
+      <p>Example interpretation:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Part</th>
+            <th>Value</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Type</td>
+            <td><code>0x01</code></td>
+            <td>Temperature</td>
+          </tr>
+          <tr>
+            <td>Length</td>
+            <td><code>0x02</code></td>
+            <td>Two value bytes follow</td>
+          </tr>
+          <tr>
+            <td>Value</td>
+            <td><code>0x0110</code></td>
+            <td>Raw value <code>272</code>, decoded as <code>27.2 °C</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        TLV is more self-describing than a fixed binary layout because each value includes its own length. This makes it
+        easier to add new field types in future firmware versions. However, it has slightly more overhead because every
+        value carries additional metadata.
+      </p>
+      <h4>Vendor-Defined Configurable Layout</h4>
+      <p>
+        Some devices allow users to configure which measurements are sent and in what order. For example, some sensors
+        allow customized extension based on the attached sensors.
+      </p>
+
+      <h3 id="js example 1">Codec JS function example</h3>
+      <p>
+        The following is an example of a JavaScript function for uplink message decoding from the
+        <a href="http://www.netvox.com.tw/product.asp?pro=R718A">Netvox: R718A sensor</a> that decodes a fixed binary
+        layout with branching based on the <code>fPort</code> and the first byte of the payload. The code snippet is
+        sourced from
+        <a
+          href="https://github.com/TheThingsNetwork/lorawan-devices/blob/master/vendor/netvox/payload/r711_r718a_r718ab_r720a.js"
+          >TTN device profile repository</a
+        >.
+      </p>
+      <pre>
+    <code>
+function decodeUplink(input) {
+  // Output object — fields are added depending on which fPort and message type is received
+  var data = {};
+
+  // fPort identifies the message type.
+  // This device uses fPort 6 for sensor data and fPort 7 for command responses.
+  switch (input.fPort) {
+
+    case 6: // ── SENSOR DATA PORT ─────────────────────────────────────────────
+
+      // bytes[2] === 0x00 is a special flag meaning this is a VERSION/IDENTITY
+      // frame, not a regular sensor reading. Sent once on join or on request.
+      if (input.bytes[2] === 0x00)
+      {
+        // bytes[1]: device type identifier, resolved via a getDeviceName() lookup table not shown here
+        data.Device = getDeviceName(input.bytes[1]);
+
+        // bytes[3]: firmware version stored as integer, scaled by 10
+        // e.g. 0x0F = 15 → 15/10 = 1.5 (meaning v1.5)
+        data.SWver = input.bytes[3] / 10;
+
+        // bytes[4]: hardware revision, raw integer (no scaling)
+        data.HWver = input.bytes[4];
+
+        // bytes[5–8]: manufacture date, each byte is one hex pair of the date string.
+        // .toString(16) converts the byte to a hex string (e.g. 5 → "5").
+        // padLeft(..., 2) zero-pads to 2 chars (e.g. "5" → "05"), ensuring
+        // each byte always contributes exactly 2 characters.
+        // Concatenated result example: 0x20,0x23,0x12,0x05 → "20231205" (Dec 5, 2023)
+        data.Datecode = padLeft(input.bytes[5].toString(16), 2)
+                      + padLeft(input.bytes[6].toString(16), 2)
+                      + padLeft(input.bytes[7].toString(16), 2)
+                      + padLeft(input.bytes[8].toString(16), 2);
+
+        // Return early — version frames contain no sensor readings
+        return {
+          data: data,
+        };
+      }
+
+      // ── REGULAR SENSOR FRAME (bytes[2] !== 0x00), sent every 15 minutes at the runtime──────────────────────────
+
+      // bytes[3]: battery voltage.
+      // The MSB (0x80 = 10000000) is used as a low-battery flag.
+      // & 0x80 isolates that single bit; if it is 1, the battery is low.
+      if (input.bytes[3] & 0x80)
+      {
+        // Mask off the flag bit with & 0x7F (01111111) to get the actual voltage value.
+        // Divide by 10 to get volts (e.g. 0x23 = 35 → 35/10 = 3.5 V).
+        // Append a warning string so the consumer is immediately aware.
+        var tmp_v = input.bytes[3] & 0x7F;
+        data.Volt = (tmp_v / 10).toString() + '(low battery)';
+      }
+      else
+        // No low-battery flag — decode voltage directly (e.g. 0x24 = 36 → 3.6 V)
+        data.Volt = input.bytes[3] / 10;
+
+      data.Device = getDeviceName(input.bytes[1]);
+
+      // bytes[4–5]: temperature, encoded as a 16-bit big-endian signed integer,
+      // scaled by 100 (i.e. 2964 → 29.64 °C, 65436 → −1.00 °C).
+      //
+      // Negative temperatures are stored in two's complement:
+      // the actual range 0x8000–0xFFFF represents −327.68 to −0.01 °C.
+      // The most significant bit (MSB) of bytes[4] (checked with & 0x80) acts as the sign bit.
+      if (input.bytes[4] & 0x80) // if MSB is set -> negative temperature
+      {
+        // Reassemble the 16-bit raw value from two bytes (big-endian) via bits shifting:
+        // bytes[4] is the high byte → shift left 8 bits,
+        // then OR with bytes[5] (low byte) to fill the lower 8 bits.
+        // Example: bytes[4]=0xFF, bytes[5]=0x9C → 0xFF9C = 65436
+        var tmpval = (input.bytes[4] << 8 | input.bytes[5]);
+
+        // Reverse the two's complement encoding to get the magnitude, then negate.
+        // 0x10000 (= 65536) is the 16-bit "clock size"; subtracting gives the distance
+        // from zero. Divide by 100 to unscale, multiply by -1 to apply the sign.
+        // Example: (65536 − 65436) / 100 * −1 = 100 / 100 * −1 = −1.00 °C
+        data.Temp = (0x10000 - tmpval) / 100 * -1;
+      }
+      else
+        // Positive temperature: combine bytes big-endian and unscale directly.
+        // Example: bytes[4]=0x0B, bytes[5]=0x94 → 0x0B94 = 2964 → 2964/100 = 29.64 °C
+        data.Temp = (input.bytes[4] << 8 | input.bytes[5]) / 100;
+
+      // bytes[6–7]: relative humidity, 16-bit big-endian unsigned, scaled by 100.
+      // Humidity is always positive so no sign-bit handling is needed.
+      // Example: bytes[6]=0x17, bytes[7]=0x70 → 0x1770 = 6000 → 6000/100 = 60.00 %RH
+      data.Humi = (input.bytes[6] << 8 | input.bytes[7]) / 100;
+      break;
+
+    case 7: // ── COMMAND RESPONSE PORT ────────────────────────────────────────
+
+      data.Device = getDeviceName(input.bytes[1]);
+
+      // bytes[0] identifies the specific command response type:
+      // 0x81 = ACK for a write command (did it succeed?)
+      // 0x82 = read-back of the current reporting interval configuration
+
+      if (input.bytes[0] === 0x81)
+      {
+        // Resolve 0x81 to a human-readable command name via lookup table
+        data.Cmd = getCmdId(input.bytes[0]);
+
+        // bytes[2]: 0x00 means the downlink command was applied successfully,
+        // any other value means the device rejected or failed to apply it
+        data.Status = (input.bytes[2] === 0x00) ? 'Success' : 'Failure';
+      }
+      else if (input.bytes[0] === 0x82) // event-driven and heartbeat reporting pattern
+      {
+
+        data.Cmd = getCmdId(input.bytes[0]);
+
+        // bytes[2–3]: minimum quiet period in seconds.
+        // No uplink is sent during this window, even if readings change dramatically.
+        // Prevents network flooding from rapid fluctuations.
+        // Big-endian 16-bit: bytes[2] is high byte, bytes[3] is low byte.
+        data.MinTime = (input.bytes[2] << 8 | input.bytes[3]);
+
+        // bytes[4–5]: maximum heartbeat interval in seconds.
+        // The device MUST send an uplink by this deadline even if nothing changed.
+        // Allows the server to detect a lost/dead device if no packet arrives in time.
+        data.MaxTime = (input.bytes[4] << 8 | input.bytes[5]);
+
+        // bytes[6]: voltage change threshold that triggers an early uplink.
+        // Scaled by 10 → e.g. 0x03 = 3 → 0.3 V drop triggers a send.
+        data.BatteryChange = input.bytes[6] / 10;
+
+        // bytes[7–8]: temperature change threshold in °C.
+        // Big-endian 16-bit, scaled by 100 → e.g. 0x0032 = 50 → 0.50 °C triggers a send.
+        data.TempChange = (input.bytes[7] << 8 | input.bytes[8]) / 100;
+
+        // bytes[9–10]: humidity change threshold in %RH.
+        // Big-endian 16-bit, scaled by 100 → e.g. 0x01F4 = 500 → 5.00 %RH triggers a send.
+        data.HumiChange = (input.bytes[9] << 8 | input.bytes[10]) / 100;
+      }
+      break;
+
+    default:
+      // Any fPort not handled above is unexpected — return a descriptive error
+      // so the LNS or WoT Consumer can flag it for investigation.
+      return {
+        errors: ['unknown FPort'],
+      };
+  }
+
+  // Return the decoded fields for all non-error, non-early-return paths
+  return {
+    data: data,
+  };
+}
+    </code>
+    </pre>
+
+      <p>
+        Based on the <a href="http://www.netvox.com.tw/um/R718A/R718AUsermanual.pdf">device datasheet</a>, the following
+        table shows the meaning of each byte in the payload. For <code>FPort 0x06</code>, the following table applies:
+      </p>
+      <img src="images/payload_decode_1.png" alt="Payload Codec Table FPort 0x06" width="750" />
+      <p>For <code>FPort 0x07</code>, the following table applies:</p>
+      <img src="images/payload_decode_2.png" alt="Payload Codec Table FPort 0x07" width="750" />
+
+      <p>
+        So an example message
+        <b>"010b01240b2d0bef000000"</b> can be decoded as follows:
+      </p>
+
+      <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Byte(s)</th>
+            <th>Hex Value</th>
+            <th>Field</th>
+            <th>Description / Calculation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1st byte</td>
+            <td>01</td>
+            <td>Version</td>
+            <td>Version value</td>
+          </tr>
+          <tr>
+            <td>2nd byte</td>
+            <td>0B</td>
+            <td>DeviceType</td>
+            <td>0x0B - R718A</td>
+          </tr>
+          <tr>
+            <td>3rd byte</td>
+            <td>01</td>
+            <td>ReportType</td>
+            <td>Report type value</td>
+          </tr>
+          <tr>
+            <td>4th byte</td>
+            <td>24</td>
+            <td>Battery</td>
+            <td>3.6V; 24(Hex) = 36(Dec), 36 x 0.1V = 3.6V</td>
+          </tr>
+          <tr>
+            <td>5th - 6th byte</td>
+            <td>0B2D</td>
+            <td>Temperature</td>
+            <td>28.61°C; 0B2D(Hex) = 2861(Dec), 2861 x 0.01 = 28.61°C</td>
+          </tr>
+          <tr>
+            <td>7th - 8th byte</td>
+            <td>0BEF</td>
+            <td>Humidity</td>
+            <td>30.55%; 0BEF(Hex) = 3055(Dec), 3055 x 0.01 = 30.55%</td>
+          </tr>
+          <tr>
+            <td>9th - 11th byte</td>
+            <td>000000</td>
+            <td>Reserved</td>
+            <td>Reserved bytes</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="url">
+      <h2>URI format</h2>
+      <p>This binding defines the URI scheme with following Augmented Backus-Naur Form (ABNF) [[RFC5234]]:</p>
+
+      <pre class="abnf">
+      "lorawan://" lorav:deviceEui "/" "{lorav:appKey}/device"
+      </pre>
+
+      <p>
+        A device URI looks like <code>lorawan://{lorav:deviceEui}/{lorav:appKey}/device</code>. The device URI includes
+        the device EUI and application key. Device identification are expressed in forms via vocabulary terms (Section
+        4.1), rather than being forced into the URI path.
+      </p>
+    </section>
+
+    <section id="vocabulary">
+      <h2>LoRaWAN Vocabulary</h2>
+      <p>This section defines vocabulary terms usable inside TDs.</p>
+      <section>
+        <h3>URI terms</h3>
+
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lorav:deviceEui</code></td>
+              <td>LoRaWAN Device EUI (end device identifier)</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>lorav:appKey</code></td>
+              <td>Application key that is supplied via the security definitions mechanism</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h3>Form terms</h3>
+
+        <p>
+          The following terms are specific to forms describing LoRaWAN end device interactions (e.g., reading sensor
+          data).
+        </p>
+
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>lorav:mostSignificantByte</code></td>
+              <td>
+                When true, it describes that the byte order of the data in the LoRaWAN message is the most significant
+                byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
+                Little-Endian).
+              </td>
+              <td>optional</td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>lorav:bitmask</code></td>
+              <td>Bitmask masking the returned device byte blob to extract the value</td>
+              <td>optional</td>
+              <td>hex string</td>
+            </tr>
+            <tr>
+              <td><code>lorav:multiplier</code></td>
+              <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
+              <td>optional</td>
+              <td>float</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+    <section id="payloaddatatype">
+      <h3>Payload DataType</h3>
+      <p>
+        The <code>PayloadDataType</code> class within a LoRaWAN binding instance serves as value for the
+        <code>lorav:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
+        offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to cover the most common data types used
+        in LoRaWAN messages. Note that the <code>PayloadDataType</code> entity is designed for describing established
+        conventions in the LoRaWAN ecosystem; future development might remove this functionality or add new terms.
+        Currently, the <code>PayloadDataType</code> class contains the following data types:
+      </p>
+      <ul>
+        <li><code>xsd:integer</code></li>
+
+        <li><code>xsd:boolean</code></li>
+
+        <li><code>xsd:string</code></li>
+
+        <li><code>xsd:float</code></li>
+
+        <li><code>xsd:decimal</code></li>
+
+        <li><code>xsd:byte</code></li>
+
+        <li><code>xsd:short</code></li>
+
+        <li><code>xsd:int</code></li>
+
+        <li><code>xsd:long</code></li>
+
+        <li><code>xsd:unsignedByte</code></li>
+
+        <li><code>xsd:unsignedShort</code></li>
+
+        <li><code>xsd:unsignedInt</code></li>
+
+        <li><code>xsd:unsignedLong</code></li>
+
+        <li><code>xsd:double</code></li>
+
+        <li><code>xsd:hexBinary</code></li>
+      </ul>
+    </section>
+    <section id="mappings">
+      <h2>Mappings</h2>
+      This section describes the strategies and default values to use protocol specific concepts within the WoT
+      Interaction model.
+
+      <section id="default-mappings">
+        <h3>Default mappings</h3>
+        <p class="ednote">Map WoT Interaction model verbs to default values if any</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default Binding</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <section id="possible-mappings">
+        <h3>Possible mappings</h3>
+        <p class="ednote">
+          TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
+          informative but it provides guidelines for implementers.
+        </p>
+      </section>
+    </section>
+    <section>
+      <h2>Examples</h2>
+      <pre id="device-td" class="example" title="Device Properties">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1"
+  ],
+  "id": "urn:dragino-lht-65n-e3",
+  "securityDefinitions": {
+    "apikey_sc": {
+      "scheme": "apikey",
+      "in": "uri",
+      "name": "appKey"
+    }
+  },
+  "security": [
+    "apikey_sc"
+  ],
+  "@type": [
+    "Thing"
+  ],
+  "name": "Dragino LHT65N-E3 A84041B98D5CB233",
+  "base": "lorawan://A84041B98D5CB233/{appKey}/device",
+  "title": "Dragino LHT65N-E3",
+  "properties": {
+    "batteryLevel": {
+      "type": "number",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/0?quantity=2",
+          "lorav:type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:bitmask": "0x3FFF",
+          "lorav:multiplier": 0.001
+        }
+      ]
+    },
+    "temperature": {
+      "type": "number",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/2?quantity=2",
+          "lorav:type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:multiplier": 0.01
+        }
+      ]
+    },
+    "humidity": {
+      "type": "number",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/4?quantity=2",
+          "lorav:type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:multiplier": 0.1
+        }
+      ]
+    },
+    "extTemperature": {
+      "type": "number",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "A84041B98D5CB233/7?quantity=2",
+          "lorav:type": "xsd:short",
+          "lorav:mostSignificantByte": true,
+          "lorav:multiplier": 0.01
+        }
+      ]
+    }
+  }
+}
+        </pre
+      >
+    </section>
+  </body>
+</html>

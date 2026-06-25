@@ -1,9 +1,10 @@
 /bindings/payloads/xml/ @egekorkan @mjkoster
 /bindings/platforms/hue/ @egekorkan @mjkoster
-/bindings/protocols/bacnet/ @ektrah @mjkoster @fennibay 
+/bindings/protocols/bacnet/ @ektrah @mjkoster @fennibay
 /bindings/protocols/coap/ @ektrah @JKRhb
 /bindings/protocols/http/ @egekorkan @mjkoster
 /bindings/protocols/modbus/ @relu91
 /bindings/protocols/mqtt/ @egekorkan @mjkoster @relu91
 /bindings/protocols/profinet/ @Kaz040
+/bindings/protocols/lorawan/ @barnstee
 /index.html @egekorkan @mjkoster

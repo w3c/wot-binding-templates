@@ -38,6 +38,7 @@ This is done through additional descriptive vocabularies, Thing Models and examp
 ## Publications
 
 - Binding Publications by WoT WG:
+
   - [HTTP Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html)
   - [CoAP Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/index.html)
   - [MQTT Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/index.html)

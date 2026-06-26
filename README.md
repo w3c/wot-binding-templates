@@ -46,7 +46,7 @@ This is done through additional descriptive vocabularies, Thing Models and examp
   - [PROFINET Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html)
   - [LoRaWAN Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan/index.html)
   - [XML Binding](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
- 
+
 - Binding Publications by other organizations:
   - [OPCUA Binding](https://reference.opcfoundation.org/specs/OPC-10101)
 

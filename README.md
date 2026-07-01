@@ -37,15 +37,19 @@ This is done through additional descriptive vocabularies, Thing Models and examp
 
 ## Publications
 
-- [Latest Working Draft](https://www.w3.org/TR/wot-binding-templates/)
-- Other deliverables:
-  - [HTTP Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html)
-  - [CoAP Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/index.html)
-  - [MQTT Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/index.html)
-  - [Modbus Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/index.html)
-  - [BACnet Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html)
+- Binding Publications by WoT WG:
+
+  - [HTTP Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/http/index.html)
+  - [CoAP Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/coap/index.html)
+  - [MQTT Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/mqtt/index.html)
+  - [Modbus Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/index.html)
+  - [BACnet Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/bacnet/index.html)
   - [PROFINET Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html)
-  - [XML Binding Template](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
+  - [LoRaWAN Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan/index.html)
+  - [XML Binding](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
+
+- Binding Publications by other organizations:
+  - [OPCUA Binding](https://reference.opcfoundation.org/specs/OPC-10101)
 
 You can find other related documents below:
 

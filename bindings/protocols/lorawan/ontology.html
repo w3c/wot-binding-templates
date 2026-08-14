@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>LoRaWAN Binding Ontology</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        margin: 2rem auto;
+        max-width: 60rem;
+        padding: 0 1rem;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid #999;
+        padding: 0.5rem;
+        text-align: left;
+        vertical-align: top;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LoRaWAN Binding Ontology</h1>
+    <p>
+      This page summarizes the current LoRaWAN WoT binding vocabulary. The normative RDF source is
+      <a href="ontology.ttl">ontology.ttl</a>.
+    </p>
+
+    <h2>Thing-Level Terms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lorav:payloadLayout</td>
+          <td>Overall payload structure.</td>
+        </tr>
+        <tr>
+          <td>lorav:tagFields</td>
+          <td>Optional tag-field definitions for tlv or ctv layouts.</td>
+        </tr>
+        <tr>
+          <td>lorav:devEUI</td>
+          <td>Device identifier.</td>
+        </tr>
+        <tr>
+          <td>lorav:joinEUI</td>
+          <td>Join identifier.</td>
+        </tr>
+        <tr>
+          <td>lorav:macVersion</td>
+          <td>LoRaWAN MAC version.</td>
+        </tr>
+        <tr>
+          <td>lorav:region</td>
+          <td>Regulatory region.</td>
+        </tr>
+        <tr>
+          <td>lorav:frequencyPlan</td>
+          <td>Frequency plan identifier.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Form-Level Terms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lorav:fPort</td>
+          <td>Frame port for ports layouts.</td>
+        </tr>
+        <tr>
+          <td>lorav:wireType</td>
+          <td>Wire data type.</td>
+        </tr>
+        <tr>
+          <td>lorav:endian</td>
+          <td>Byte order.</td>
+        </tr>
+        <tr>
+          <td>lorav:byteOffset</td>
+          <td>Zero-based byte position.</td>
+        </tr>
+        <tr>
+          <td>lorav:byteLength</td>
+          <td>Byte length for variable-length values.</td>
+        </tr>
+        <tr>
+          <td>lorav:tag</td>
+          <td>Tag values for tlv or ctv layouts.</td>
+        </tr>
+        <tr>
+          <td>lorav:slot</td>
+          <td>Order within a grouped case.</td>
+        </tr>
+        <tr>
+          <td>lorav:padBefore</td>
+          <td>Reserved bytes consumed before a value.</td>
+        </tr>
+        <tr>
+          <td>lorav:bitmask</td>
+          <td>Contiguous mask for a shared raw value.</td>
+        </tr>
+        <tr>
+          <td>lorav:multiplier</td>
+          <td>Multiplier scaling.</td>
+        </tr>
+        <tr>
+          <td>lorav:divisor</td>
+          <td>Divisor scaling.</td>
+        </tr>
+        <tr>
+          <td>lorav:addend</td>
+          <td>Constant added after scaling.</td>
+        </tr>
+        <tr>
+          <td>lorav:presentWhen</td>
+          <td>Condition describing when a value appears.</td>
+        </tr>
+        <tr>
+          <td>lorav:alias</td>
+          <td>Reference name used by related conditions.</td>
+        </tr>
+        <tr>
+          <td>lorav:derived</td>
+          <td>Descriptor for computed values.</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

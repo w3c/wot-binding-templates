@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.w3.org/2024/wot/lorawan/lorawan.schema.json",
+  "title": "LoRaWAN WoT Binding Schema Bundle",
+  "description": "Bundle of validation rules for LoRaWAN Thing-level terms and LoRaWAN event-form terms. The Thing Description core model is validated elsewhere; this file documents and validates the binding-specific additions.",
+  "type": "object",
+  "properties": {
+    "lorav:payloadLayout": {
+      "type": "string",
+      "enum": ["fixed", "ports", "tlv", "ctv"]
+    },
+    "lorav:tagFields": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" }
+        },
+        "required": ["name", "type"],
+        "additionalProperties": false
+      }
+    },
+    "lorav:devEUI": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{16}$"
+    },
+    "lorav:joinEUI": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{16}$"
+    },
+    "lorav:macVersion": {
+      "type": "string",
+      "pattern": "^1\\.[01]\\.[0-9]+$"
+    },
+    "lorav:region": {
+      "type": "string"
+    },
+    "lorav:frequencyPlan": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "lorawanForm": {
+      "type": "object",
+      "properties": {
+        "op": {
+          "oneOf": [
+            { "enum": ["subscribeevent", "unsubscribeevent"] },
+            {
+              "type": "array",
+              "items": { "enum": ["subscribeevent", "unsubscribeevent"] },
+              "minItems": 1
+            }
+          ]
+        },
+        "lorav:fPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255
+        },
+        "lorav:wireType": {
+          "type": "string",
+          "enum": [
+            "xsd:byte",
+            "xsd:short",
+            "xsd:int",
+            "xsd:long",
+            "xsd:unsignedByte",
+            "xsd:unsignedShort",
+            "xsd:unsignedInt",
+            "xsd:unsignedLong",
+            "xsd:float",
+            "xsd:double",
+            "xsd:boolean",
+            "xsd:hexBinary",
+            "xsd:string",
+            "u8",
+            "u16",
+            "u24",
+            "u32",
+            "u64",
+            "s8",
+            "s16",
+            "s24",
+            "s32",
+            "s64",
+            "f16",
+            "f32",
+            "f64",
+            "bool",
+            "ascii",
+            "hex",
+            "bytes",
+            "base64",
+            "number"
+          ]
+        },
+        "lorav:endian": {
+          "type": "string",
+          "enum": ["big", "little"],
+          "default": "big"
+        },
+        "lorav:multiplier": {
+          "type": "number"
+        },
+        "lorav:divisor": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "lorav:addend": {
+          "type": "number"
+        },
+        "lorav:bitmask": {
+          "type": "string",
+          "pattern": "^0[xX][0-9a-fA-F]+$"
+        },
+        "lorav:byteOffset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lorav:byteLength": {
+          "type": "integer",
+          "minimum": -1
+        },
+        "lorav:tag": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "minItems": 1
+        },
+        "lorav:slot": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lorav:padBefore": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lorav:presentWhen": {
+          "type": "object",
+          "properties": {
+            "field": { "type": "string" },
+            "bit": { "type": "integer", "minimum": 0 },
+            "value": { "type": "integer" }
+          },
+          "required": ["field"],
+          "additionalProperties": false,
+          "not": {
+            "required": ["bit", "value"]
+          }
+        },
+        "lorav:alias": {
+          "type": "string"
+        },
+        "lorav:derived": {
+          "type": "object",
+          "properties": {
+            "ref": { "type": "string" },
+            "polynomial": {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            "compute": { "type": "object" },
+            "guard": { "type": "object" },
+            "transform": {
+              "type": "array",
+              "items": { "type": "object" }
+            }
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        }
+      },
+      "required": ["lorav:wireType"],
+      "not": {
+        "required": ["lorav:multiplier", "lorav:divisor"]
+      },
+      "dependencies": {
+        "lorav:derived": {
+          "properties": {
+            "lorav:wireType": { "const": "number" }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "descriptionNotes": {
+    "thingLevel": "Validate Thing-level lorav terms directly on the TD root object.",
+    "formLevel": "Validate each LoRaWAN event form with #/$defs/lorawanForm."
+  },
+  "additionalProperties": true
+}

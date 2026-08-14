@@ -11,11 +11,13 @@
         editors: [
           {
             name: "Erich Barnstedt"
-            // w3cid: "1232",
+          },
+          {
+            name: "Haoyu Ren"
           }
         ],
         edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan",
-        github: "https://github.com/w3c/wot-binding-templates", // please do not change this
+        github: "https://github.com/w3c/wot-binding-templates",
         shortName: "wot-lorawan-binding",
         otherLinks: [
           {
@@ -32,7 +34,7 @@
             data: [
               {
                 value: "Explanation of the binding mechanism",
-                href: " https://w3c.github.io/wot-thing-description/#bindings"
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
               }
             ]
           },
@@ -44,9 +46,33 @@
                 href: "lorawan.schema.json"
               }
             ]
+          },
+          {
+            key: "Ontology",
+            data: [
+              {
+                value: "LoRaWAN Ontology",
+                href: "ontology.html"
+              }
+            ]
+          },
+          {
+            key: "JSON-LD Context",
+            data: [
+              {
+                value: "LoRaWAN Context",
+                href: "context.jsonld"
+              }
+            ]
           }
         ],
-        localBiblio: {}
+        localBiblio: {
+          LORAWAN: {
+            title: "LoRaWAN Specification",
+            href: "https://lora-alliance.org/resource_hub/lorawan-specification-v1-1/",
+            publisher: "LoRa Alliance"
+          }
+        }
       };
     </script>
     <title>Web of Things (WoT) LoRaWAN Binding</title>
@@ -58,10 +84,9 @@
         In the Web of Things (WoT), a Binding provides guidance for implementing a specific IoT protocol/platform by
         defining vocabulary terms that can be used in a TD and rules describing how WoT operations map to protocol
         interactions. This document proposes a binding for LoRaWAN, defining vocabulary and rules for describing
-        interactions with LoRaWAN end devices via a LoRaWAN “network-facing interface” (typically a local Network
-        Server, gateway bridge, or compatible service endpoint).
+        interactions (for now, uplink only) with LoRaWAN end devices via a LoRaWAN “network-facing interface” (typically
+        a local Network Server, gateway bridge, or compatible service endpoint).
       </p>
-      <!-- TODO: add protocol intro and bridge to next paragraph -->
       <p>
         More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
         or Thing Model document, and associated rules which allow description of WoT operations using LoRaWAN over the
@@ -69,32 +94,50 @@
         behavior.
       </p>
     </section>
-    <section id="sotd">
-      <p>
-        <em>This document is a work in progress</em>
-      </p>
-    </section>
+
+    <section id="sotd"></section>
+
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        LoRaWAN is commonly used in asynchronous telemetry scenarios: devices emit uplinks periodically or on change,
-        while downlinks are scheduled (often with delivery constraints). This proposed binding therefore emphasizes
-        <code>observeproperty</code>/<code>subscribeevent</code> for uplinks and <code>invokeaction</code>/<code
-          >writeproperty</code
-        >
-        for downlinks. A TD using this LoRaWAN binding conforms if all of the following are true:
+        LoRaWAN devices usually transmit measurements asynchronously: devices emit uplinks periodically or on change,
+        while downlinks are scheduled (often with delivery constraints). A consumer does not poll a sensor on demand;
+        instead it subscribes to uplinks that the device emits on its own schedule. For that reason, this binding models
+        uplink values as WoT <strong>events</strong>, not readable properties, emphasizing <code>subscribeevent</code>.
       </p>
-      <ul>
-        <li>It includes the LoRaWAN binding context in @context (Section 4).</li>
-        <li>Any form using LoRaWAN terms follows the constraints in this document (Sections 3–5).</li>
-        <li>It validates against the JSON Schema in Appendix (Section A).</li>
-      </ul>
-      <h3>LoRaWAN Architecture</h3>
       <p>
-        LoRaWAN networks use a <strong>star-of-stars</strong> topology consisting of four logical roles: end node,
-        gateways, network server, and application servers (plus a Join Server for OTAA activation). Understanding this
-        separation of concerns is necessary background for the binding defined below.
-        <img src="images/lorawan_diagram_architecture.svg" alt="LoRaWAN Architecture Diagram" width="750" />
+        Each event describes one decoded value. The event <code>data</code> schema says what the value means, while the
+        event form carries the <code>lorav:</code> terms that say how that value is found in the payload bytes.
+      </p>
+    </section>
+
+    <section id="conformance">
+      <h2>Conformance</h2>
+      <p>A Thing Description using this binding conforms when all of the following are true:</p>
+      <ul>
+        <li>
+          It includes the LoRaWAN binding namespace <code>https://www.w3.org/2024/wot/lorawan#</code> in
+          <code>@context</code>.
+        </li>
+        <li>Thing-level <code>lorav:</code> terms are placed on the Thing itself.</li>
+        <li>Form-level <code>lorav:</code> terms are placed on event forms.</li>
+        <li>
+          Any form using LoRaWAN terms follows the constraints in <a href="#lorawan-vocabulary">LoRaWAN Vocabulary</a>.
+        </li>
+        <li>It validates against the <a href="lorawan.schema.json">LoRaWAN JSON Schema</a>.</li>
+        <li>
+          Security secrets such as <code>AppKey</code> and <code>NwkKey</code> are declared as WoT security schemes.
+        </li>
+      </ul>
+    </section>
+
+    <section id="architecture">
+      <h2>LoRaWAN Background</h2>
+      <p>
+        LoRaWAN uses a <strong>star-of-stars</strong> topology: end devices transmit radio frames, gateways forward
+        them, the network server handles MAC-layer processing, and the application server exposes the decoded
+        application payload (plus a Join Server for OTAA activation). Understanding this separation of concerns is
+        necessary background for the binding defined below.
       </p>
       <ul>
         <li>
@@ -123,15 +166,15 @@
         </li>
       </ul>
       <p>
-        <strong>Uplink</strong> messages travel from an end device, are received by every gateway in range, and are
-        deduplicated and routed by the Network Server to the correct Application Server.
-        <strong>Downlink</strong> messages originate at the Application Server, pass through the Network Server &mdash;
-        which selects a single best gateway for transmission &mdash; and are delivered to the end device only within its
-        receive window.
+        <img src="images/lorawan_diagram_architecture.svg" alt="LoRaWAN Architecture Diagram" width="750" />
+      </p>
+      <p>
+        The application payload is obtained only after LoRaWAN framing, security, and routing are handled by the network
+        infrastructure.
       </p>
       <h3>Structure of a LoRaWAN Uplink Message</h3>
       <p>
-        A LoRaWAN uplink is built from three nested layers: Phyical Layer, MAC Layer, and Frame Layer. Each layer is
+        A LoRaWAN uplink is built from three nested layers: Physical Layer, MAC Layer, and Frame Layer. Each layer is
         handled by a different component. No single component sees the message in fully decoded form &mdash; this is why
         a WoT Consumer cannot simply "read" a LoRaWAN device the way it would read an HTTP resource.
         <img src="images/lorawan_diagram_uplink_msg.svg" alt="LoRaWAN Uplink Message Structure" width="750" />
@@ -200,8 +243,8 @@
           </tr>
           <tr>
             <td><code>Byte 3-4</code></td>
-            <td>Unsigned 16-bit integer, big-endian, unit mV</td>
             <td>Battery voltage</td>
+            <td>Unsigned 16-bit integer, big-endian, unit mV</td>
           </tr>
         </tbody>
       </table>
@@ -223,7 +266,7 @@
       <p>
         <strong>Branching:</strong> Some devices use the first byte, or sometimes the <code>FPort</code>, to indicate
         the payload type. The remaining bytes are decoded differently depending on that type. An example is provided in
-        <a href="#js example 1">the following section</a>.
+        <a href="#js-codec-example">the following section</a>.
       </p>
       <h4>Channel-Type-Value Layout</h4>
       <p>
@@ -260,7 +303,7 @@
       <p>Final structured output could look like this:</p>
       <pre><code>{ "channel1": { "type": "temperature", "value": 23.4, "unit": "°C" }, "channel2": { "type": "humidity", "value": 61, "unit": "%RH" } }</code></pre>
       <p>
-        The advantage of this schema are compactness and interoperability. The disadvantage is that the decoder must
+        The advantages of this schema are compactness and interoperability. The disadvantage is that the decoder must
         know the type table in advance, which offers limited semantics and flexibility.
       </p>
       <h4>Type-Length-Value Layout</h4>
@@ -310,7 +353,7 @@
         allow customized extension based on the attached sensors.
       </p>
 
-      <h3 id="js example 1">Codec JS function example</h3>
+      <h3 id="js-codec-example">Codec JS function example</h3>
       <p>
         The following is an example of a JavaScript function for uplink message decoding from the
         <a href="http://www.netvox.com.tw/product.asp?pro=R718A">Netvox: R718A sensor</a> that decodes a fixed binary
@@ -546,244 +589,659 @@ function decodeUplink(input) {
     </section>
     <section id="url">
       <h2>URI format</h2>
-      <p>This binding defines the URI scheme with following Augmented Backus-Naur Form (ABNF) [[RFC5234]]:</p>
+      <p>
+        A WoT Consumer never addresses a LoRaWAN end device over the radio. It addresses the
+        <strong>network-facing interface</strong> &mdash; a Network Server, Application Server, or gateway bridge
+        &mdash; that has already terminated the PHY, MAC, and Frame layers and can deliver the decrypted application
+        payload. A LoRaWAN URI therefore identifies <em>which interface</em> and <em>which device</em>, and nothing
+        else.
+      </p>
+
+      <p>This binding defines the URI scheme with the following Augmented Backus-Naur Form (ABNF) [[RFC5234]]:</p>
 
       <pre class="abnf">
-      "lorawan://" lorav:deviceEui "/" "{lorav:appKey}/device"
+lorawan-URI = "lorawan://" authority "/" dev-eui "/" op-target
+
+authority   = host   ; as defined in [[RFC3986]]
+dev-eui     = 16HEXDIG            ; the value of lorav:devEUI, case-insensitive
+op-target   = "uplink" / "downlink"
       </pre>
 
+      <p>Examples:</p>
+      <pre><code>lorawan://ns.example.org/0000000000000001/uplink</code></pre>
+
       <p>
-        A device URI looks like <code>lorawan://{lorav:deviceEui}/{lorav:appKey}/device</code>. The device URI includes
-        the device EUI and application key. Device identification are expressed in forms via vocabulary terms (Section
-        4.1), rather than being forced into the URI path.
+        Because every form of a Thing shares the same interface and device, a TD normally sets <code>base</code> once
+        and uses the relative targets <code>uplink</code> and <code>downlink</code> in each form:
       </p>
-    </section>
 
-    <section id="vocabulary">
-      <h2>LoRaWAN Vocabulary</h2>
-      <p>This section defines vocabulary terms usable inside TDs.</p>
-      <section>
-        <h3>URI terms</h3>
-
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Vocabulary term</th>
-              <th>Description</th>
-              <th>Assignment</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>lorav:deviceEui</code></td>
-              <td>LoRaWAN Device EUI (end device identifier)</td>
-              <td>required</td>
-              <td>string</td>
-            </tr>
-            <tr>
-              <td><code>lorav:appKey</code></td>
-              <td>Application key that is supplied via the security definitions mechanism</td>
-              <td>required</td>
-              <td>string</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-      <section>
-        <h3>Form terms</h3>
-
-        <p>
-          The following terms are specific to forms describing LoRaWAN end device interactions (e.g., reading sensor
-          data).
-        </p>
-
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Vocabulary term</th>
-              <th>Description</th>
-              <th>Assignment</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>lorav:mostSignificantByte</code></td>
-              <td>
-                When true, it describes that the byte order of the data in the LoRaWAN message is the most significant
-                byte first (i.e., Big-Endian). When false, it describes the least significant byte first (i.e.,
-                Little-Endian).
-              </td>
-              <td>optional</td>
-              <td>boolean</td>
-            </tr>
-            <tr>
-              <td><code>lorav:bitmask</code></td>
-              <td>Bitmask masking the returned device byte blob to extract the value</td>
-              <td>optional</td>
-              <td>hex string</td>
-            </tr>
-            <tr>
-              <td><code>lorav:multiplier</code></td>
-              <td>Multiplier to multiply the returned device byte blob with to extract the true value</td>
-              <td>optional</td>
-              <td>float</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </section>
-    <section id="payloaddatatype">
-      <h3>Payload DataType</h3>
-      <p>
-        The <code>PayloadDataType</code> class within a LoRaWAN binding instance serves as value for the
-        <code>lorav:type</code> property to specify the expected data types of payload content in LoRaWAN messages. It
-        offers a set of terms taken from XML Schema [[XMLSCHEMA11-2-20120405]] to cover the most common data types used
-        in LoRaWAN messages. Note that the <code>PayloadDataType</code> entity is designed for describing established
-        conventions in the LoRaWAN ecosystem; future development might remove this functionality or add new terms.
-        Currently, the <code>PayloadDataType</code> class contains the following data types:
-      </p>
-      <ul>
-        <li><code>xsd:integer</code></li>
-
-        <li><code>xsd:boolean</code></li>
-
-        <li><code>xsd:string</code></li>
-
-        <li><code>xsd:float</code></li>
-
-        <li><code>xsd:decimal</code></li>
-
-        <li><code>xsd:byte</code></li>
-
-        <li><code>xsd:short</code></li>
-
-        <li><code>xsd:int</code></li>
-
-        <li><code>xsd:long</code></li>
-
-        <li><code>xsd:unsignedByte</code></li>
-
-        <li><code>xsd:unsignedShort</code></li>
-
-        <li><code>xsd:unsignedInt</code></li>
-
-        <li><code>xsd:unsignedLong</code></li>
-
-        <li><code>xsd:double</code></li>
-
-        <li><code>xsd:hexBinary</code></li>
-      </ul>
-    </section>
-    <section id="mappings">
-      <h2>Mappings</h2>
-      This section describes the strategies and default values to use protocol specific concepts within the WoT
-      Interaction model.
-
-      <section id="default-mappings">
-        <h3>Default mappings</h3>
-        <p class="ednote">Map WoT Interaction model verbs to default values if any</p>
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Operation</th>
-              <th>Default Binding</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-      <section id="possible-mappings">
-        <h3>Possible mappings</h3>
-        <p class="ednote">
-          TODO: This section should describe other mappings that can be used by TD designers. It is meant to be
-          informative but it provides guidelines for implementers.
-        </p>
-      </section>
-    </section>
-    <section>
-      <h2>Examples</h2>
-      <pre id="device-td" class="example" title="Device Properties">
-{
-  "@context": [
-    "https://www.w3.org/2022/wot/td/v1.1"
-  ],
-  "id": "urn:dragino-lht-65n-e3",
-  "securityDefinitions": {
-    "apikey_sc": {
-      "scheme": "apikey",
-      "in": "uri",
-      "name": "appKey"
-    }
-  },
-  "security": [
-    "apikey_sc"
-  ],
-  "@type": [
-    "Thing"
-  ],
-  "name": "Dragino LHT65N-E3 A84041B98D5CB233",
-  "base": "lorawan://A84041B98D5CB233/{appKey}/device",
-  "title": "Dragino LHT65N-E3",
-  "properties": {
-    "batteryLevel": {
-      "type": "number",
-      "readOnly": true,
-      "observable": true,
-      "forms": [
-        {
-          "href": "A84041B98D5CB233/0?quantity=2",
-          "lorav:type": "xsd:short",
-          "lorav:mostSignificantByte": true,
-          "lorav:bitmask": "0x3FFF",
-          "lorav:multiplier": 0.001
-        }
-      ]
-    },
+      <pre class="example" title="Base URI with relative form targets"><code>{
+  "base": "lorawan://ns.example.org/0000000000000001/",
+  "events": {
     "temperature": {
-      "type": "number",
-      "readOnly": true,
-      "observable": true,
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"]
+      }]
+    }
+  }
+}</code></pre>
+    </section>
+
+    <section id="lorawan-vocabulary">
+      <h2>LoRaWAN Vocabulary</h2>
+      <p>
+        The binding uses one event per decoded value. Several events may point to the same part of the payload when a
+        device packs multiple values together, uses tags, or branches on status bytes or frame ports.
+      </p>
+      <p>
+        The form <code>href</code> for uplinks is the relative target <code>uplink</code>, resolved against the Thing's
+        <code>base</code> as described in <a href="#url">URI format</a>.
+      </p>
+      <pre class="example" title="Minimal event-based LoRaWAN TD snippet"><code>{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+  ],
+  "title": "Temperature Sensor",
+  "securityDefinitions": {
+    "otaa_sc": { "scheme": "apikey", "in": "uri", "name": "appKey" }
+  },
+  "security": "otaa_sc",
+  "lorav:payloadLayout": "fixed",
+  "lorav:devEUI": "0000000000000001",
+  "lorav:joinEUI": "0000000000000000",
+  "lorav:macVersion": "1.0.3",
+  "events": {
+    "temperature": {
+      "data": {
+        "type": "number",
+        "unit": "Cel"
+      },
       "forms": [
         {
-          "href": "A84041B98D5CB233/2?quantity=2",
-          "lorav:type": "xsd:short",
-          "lorav:mostSignificantByte": true,
-          "lorav:multiplier": 0.01
-        }
-      ]
-    },
-    "humidity": {
-      "type": "number",
-      "readOnly": true,
-      "observable": true,
-      "forms": [
-        {
-          "href": "A84041B98D5CB233/4?quantity=2",
-          "lorav:type": "xsd:short",
-          "lorav:mostSignificantByte": true,
-          "lorav:multiplier": 0.1
-        }
-      ]
-    },
-    "extTemperature": {
-      "type": "number",
-      "readOnly": true,
-      "observable": true,
-      "forms": [
-        {
-          "href": "A84041B98D5CB233/7?quantity=2",
-          "lorav:type": "xsd:short",
-          "lorav:mostSignificantByte": true,
-          "lorav:multiplier": 0.01
+          "href": "uplink",
+          "op": ["subscribeevent", "unsubscribeevent"],
+          "lorav:byteOffset": 2,
+          "lorav:wireType": "xsd:short",
+          "lorav:endian": "big",
+          "lorav:divisor": 100
         }
       ]
     }
   }
-}
-        </pre
-      >
+}</code></pre>
+      <p>
+        In this model, the event says that the device publishes a temperature value; the form says where the raw bytes
+        come from and how they are scaled.
+      </p>
+
+      <h3>Thing-Level Vocabulary</h3>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>lorav:payloadLayout</code></td>
+            <td>
+              Overall payload structure: <code>fixed</code>, <code>ports</code>, <code>tlv</code>, or <code>ctv</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>lorav:tagFields</code></td>
+            <td>Optional tag-field definitions for <code>tlv</code> and <code>ctv</code> layouts.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:devEUI</code></td>
+            <td>Device identifier as 16 hexadecimal characters.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:joinEUI</code></td>
+            <td>Join identifier as 16 hexadecimal characters.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:macVersion</code></td>
+            <td>LoRaWAN MAC version such as <code>1.0.3</code> or <code>1.1.0</code>.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:region</code></td>
+            <td>Regulatory region or profile such as <code>EU868</code>.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:frequencyPlan</code></td>
+            <td>Network-server frequency plan identifier.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        The OTAA root keys are not vocabulary terms. They should be declared as WoT <code>apikey</code> security schemes
+        with the conventional names <code>appKey</code> and, for LoRaWAN 1.1.x, <code>nwkKey</code>.
+      </p>
+
+      <h3>Payload Layouts</h3>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Layout</th>
+            <th>When to use it</th>
+            <th>Required form terms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>fixed</code></td>
+            <td>Every value sits at a fixed byte position.</td>
+            <td><code>lorav:byteOffset</code></td>
+          </tr>
+          <tr>
+            <td><code>ports</code></td>
+            <td>The LoRaWAN <code>fPort</code> selects a fixed layout.</td>
+            <td><code>lorav:fPort</code>, <code>lorav:byteOffset</code></td>
+          </tr>
+          <tr>
+            <td><code>tlv</code></td>
+            <td>Values are selected by tags such as type-length-value.</td>
+            <td><code>lorav:tag</code></td>
+          </tr>
+          <tr>
+            <td><code>ctv</code></td>
+            <td>Values are selected by channel-type-value tags.</td>
+            <td><code>lorav:tag</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        For <code>tlv</code> and <code>ctv</code>, a Thing may optionally declare <code>lorav:tagFields</code> to define
+        the leading fields that make up the tag.
+      </p>
+
+      <h3>Form-Level Vocabulary</h3>
+      <p>Form-level terms describe how a value is carried on the wire. They belong on <code>event</code> forms.</p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>lorav:wireType</code></td>
+            <td>
+              Wire data type, using an <code>xsd:</code> alias or a native type such as <code>u16</code> or
+              <code>s16</code>.
+            </td>
+          </tr>
+          <tr>
+            <td><code>lorav:endian</code></td>
+            <td>Byte order for multi-byte values: <code>big</code> or <code>little</code>.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:byteOffset</code></td>
+            <td>Zero-based byte position in a fixed or port-selected layout.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:byteLength</code></td>
+            <td>Byte length for variable-length types such as strings or raw bytes.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:fPort</code></td>
+            <td>LoRaWAN frame port used by a <code>ports</code> layout.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:tag</code></td>
+            <td>Tag values that select a field in a <code>tlv</code> or <code>ctv</code> layout.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:slot</code></td>
+            <td>Order of a value within a grouped case.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:padBefore</code></td>
+            <td>Reserved bytes consumed before a value inside a group.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:bitmask</code></td>
+            <td>Contiguous hexadecimal bit mask used to extract a range from a shared raw value.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:divisor</code></td>
+            <td>Preferred scaling term for decimal values: decoded value = raw value / divisor.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:multiplier</code></td>
+            <td>Alternative scaling term: decoded value = raw value * multiplier.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:addend</code></td>
+            <td>Constant added after scaling.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:presentWhen</code></td>
+            <td>Condition object that gates a value by flag bit or by discriminator value.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:alias</code></td>
+            <td>Name under which other conditional blocks reference a value.</td>
+          </tr>
+          <tr>
+            <td><code>lorav:derived</code></td>
+            <td>Descriptor for a value computed from already-decoded values rather than read from the wire.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Value semantics should stay in the event <code>data</code> schema. Use TD core terms such as <code>unit</code>,
+        <code>minimum</code>, <code>maximum</code>, and <code>oneOf</code> rather than creating duplicate binding terms.
+      </p>
+
+      <h3>Grouped and Conditional Values</h3>
+      <p>
+        Some devices pack several values into a shared byte sequence or expose fields only when a status flag is set.
+        The binding keeps the model simple by still using one event per decoded value.
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Shape</th>
+            <th>How it is modeled</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Several values share one byte or word</td>
+            <td>Use the same locator and give each event a different <code>lorav:bitmask</code>.</td>
+          </tr>
+          <tr>
+            <td>Several values share one tag</td>
+            <td>Use the same <code>lorav:tag</code> and order them with <code>lorav:slot</code>.</td>
+          </tr>
+          <tr>
+            <td>A value is present only when a flag bit is set</td>
+            <td>Use <code>lorav:presentWhen</code> with <code>{"field": "flags", "bit": n}</code>.</td>
+          </tr>
+          <tr>
+            <td>A value belongs to one discriminator branch</td>
+            <td>Use <code>lorav:presentWhen</code> with <code>{"field": "kind", "value": n}</code>.</td>
+          </tr>
+          <tr>
+            <td>A value is derived</td>
+            <td>Use <code>lorav:wireType</code> = <code>number</code> together with <code>lorav:derived</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="examples">
+      <h2>Examples</h2>
+      <p>
+        Each example is a complete Thing Description illustrating one payload layout. Device EUIs use placeholder
+        values; real deployments will supply actual identifiers and inject OTAA keys at runtime via the declared
+        security scheme.
+      </p>
+
+      <section>
+        <h3>Fixed Layout</h3>
+        <p>
+          Every value sits at a known byte position. This is the simplest layout: <code>lorav:byteOffset</code> locates
+          each field, and <code>lorav:divisor</code> (or <code>lorav:multiplier</code>) scales the raw integer into the
+          engineering unit.
+        </p>
+        <pre class="example" title="Fixed-layout environmental sensor"><code>{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+  ],
+  "@type": "Thing",
+  "id": "urn:dev:example:env-sensor-fixed-01",
+  "title": "Environmental Sensor (fixed layout)",
+  "description": "Temperature, humidity, and battery packed at fixed byte positions.",
+  "securityDefinitions": {
+    "otaa_sc": {
+      "scheme": "apikey",
+      "in": "uri",
+      "name": "appKey",
+      "description": "LoRaWAN OTAA AppKey. Injected at runtime."
+    }
+  },
+  "security": "otaa_sc",
+  "lorav:devEUI": "0000000000000001",
+  "lorav:joinEUI": "0000000000000000",
+  "lorav:macVersion": "1.0.3",
+  "lorav:region": "EU868",
+  "lorav:frequencyPlan": "EU_863_870",
+  "lorav:payloadLayout": "fixed",
+  "events": {
+    "battery": {
+      "data": { "type": "integer", "unit": "%", "minimum": 0, "maximum": 100 },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:byteOffset": 0,
+        "lorav:wireType": "u8"
+      }]
+    },
+    "temperature": {
+      "data": { "type": "number", "unit": "Cel" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:byteOffset": 2,
+        "lorav:wireType": "s16",
+        "lorav:divisor": 10
+      }]
+    },
+    "humidity": {
+      "data": { "type": "integer", "unit": "%" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:byteOffset": 4,
+        "lorav:wireType": "u8"
+      }]
+    }
+  }
+}</code></pre>
+        <p>
+          For LoRaWAN 1.1, declare a second <code>apikey</code> scheme named <code>nwkKey</code>, require both in
+          <code>security</code>, and set <code>lorav:macVersion</code> to <code>1.1.0</code>. Everything else stays the
+          same.
+        </p>
+      </section>
+
+      <section>
+        <h3>Ports Layout</h3>
+        <p>
+          The LoRaWAN frame port (<code>fPort</code>) selects a fixed-position layout. Each event form carries
+          <code>lorav:fPort</code>. When one port carries different message types, a discriminator byte can gate
+          individual fields using <code>lorav:presentWhen</code>. The discriminator itself is exposed as an event with
+          <code>lorav:alias</code> so other events can reference it by name.
+        </p>
+        <pre class="example" title="Ports-layout sensor with conditional fields"><code>{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+  ],
+  "@type": "Thing",
+  "id": "urn:dev:example:multi-sensor-ports-01",
+  "title": "Multi-Sensor (ports layout)",
+  "description": "Routes uplinks by fPort. Within fPort 6, fields are conditional on a discriminator byte.",
+  "securityDefinitions": {
+    "otaa_sc": {
+      "scheme": "apikey",
+      "in": "uri",
+      "name": "appKey",
+      "description": "LoRaWAN OTAA AppKey. Injected at runtime."
+    }
+  },
+  "security": "otaa_sc",
+  "lorav:devEUI": "0000000000000002",
+  "lorav:joinEUI": "0000000000000000",
+  "lorav:macVersion": "1.0.2",
+  "lorav:region": "EU868",
+  "lorav:frequencyPlan": "EU_863_870",
+  "lorav:payloadLayout": "ports",
+  "events": {
+    "reportType": {
+      "description": "Discriminator for fPort 6: value 1 = periodic status, value 0 = startup info.",
+      "data": { "type": "integer" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:fPort": 6,
+        "lorav:byteOffset": 2,
+        "lorav:wireType": "u8",
+        "lorav:alias": "reportType"
+      }]
+    },
+    "batteryVoltage": {
+      "data": { "type": "number", "unit": "V" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:fPort": 6,
+        "lorav:byteOffset": 3,
+        "lorav:wireType": "u8",
+        "lorav:bitmask": "0x7F",
+        "lorav:divisor": 10,
+        "lorav:presentWhen": { "field": "reportType", "value": 1 },
+        "lorav:slot": 0
+      }]
+    },
+    "temperature": {
+      "data": { "type": "number", "unit": "Cel" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:fPort": 6,
+        "lorav:byteOffset": 4,
+        "lorav:wireType": "s16",
+        "lorav:divisor": 100,
+        "lorav:presentWhen": { "field": "reportType", "value": 1 },
+        "lorav:slot": 1
+      }]
+    },
+    "humidity": {
+      "data": { "type": "number", "unit": "%RH" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:fPort": 6,
+        "lorav:byteOffset": 6,
+        "lorav:wireType": "u16",
+        "lorav:divisor": 100,
+        "lorav:presentWhen": { "field": "reportType", "value": 1 },
+        "lorav:slot": 2
+      }]
+    },
+    "commandStatus": {
+      "data": {
+        "type": "integer",
+        "oneOf": [
+          { "const": 0, "title": "success" },
+          { "const": 1, "title": "failure" }
+        ]
+      },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:fPort": 7,
+        "lorav:byteOffset": 2,
+        "lorav:wireType": "u8"
+      }]
+    }
+  }
+}</code></pre>
+      </section>
+
+      <section>
+        <h3>TLV Layout</h3>
+        <p>
+          In a type-length-value layout, each field in the uplink is prefixed by tag bytes that identify it. The binding
+          selects each field by its <code>lorav:tag</code> value. The tag composition is declared at Thing level via
+          <code>lorav:tagFields</code>. Categorical values use <code>oneOf</code> in the event <code>data</code> schema.
+        </p>
+        <pre class="example" title="TLV-layout leak detector"><code>{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+  ],
+  "@type": "Thing",
+  "id": "urn:dev:example:leak-detector-tlv-01",
+  "title": "Leak Detector (TLV layout)",
+  "description": "Each measurement is preceded by [channel_id, channel_type] tag bytes.",
+  "securityDefinitions": {
+    "otaa_sc": {
+      "scheme": "apikey",
+      "in": "uri",
+      "name": "appKey",
+      "description": "LoRaWAN OTAA AppKey. Injected at runtime."
+    }
+  },
+  "security": "otaa_sc",
+  "lorav:devEUI": "0000000000000003",
+  "lorav:joinEUI": "0000000000000000",
+  "lorav:macVersion": "1.0.2",
+  "lorav:region": "EU868",
+  "lorav:frequencyPlan": "EU_863_870",
+  "lorav:payloadLayout": "tlv",
+  "lorav:tagFields": [
+    { "name": "channel_id",   "type": "u8" },
+    { "name": "channel_type", "type": "u8" }
+  ],
+  "events": {
+    "battery": {
+      "data": { "type": "integer", "unit": "%" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [1, 117],
+        "lorav:wireType": "u8"
+      }]
+    },
+    "temperature": {
+      "data": { "type": "number", "unit": "Cel" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [3, 103],
+        "lorav:wireType": "s16",
+        "lorav:endian": "little",
+        "lorav:divisor": 10
+      }]
+    },
+    "humidity": {
+      "data": { "type": "number", "unit": "%RH" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [4, 104],
+        "lorav:wireType": "u8",
+        "lorav:divisor": 2
+      }]
+    },
+    "leakStatus": {
+      "data": {
+        "type": "integer",
+        "oneOf": [
+          { "const": 0, "title": "normal" },
+          { "const": 1, "title": "leak detected" }
+        ]
+      },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [5, 0],
+        "lorav:wireType": "u8"
+      }]
+    }
+  }
+}</code></pre>
+      </section>
+
+      <section>
+        <h3>CTV Layout</h3>
+        <p>
+          The channel-type-value layout is a specialisation of TLV where the first tag byte identifies the sensor
+          channel and the second identifies the physical quantity (following a convention such as Cayenne LPP). The
+          schema structure is identical to TLV; the distinction is semantic. <code>lorav:tagFields</code> makes the
+          meaning of each tag position explicit.
+        </p>
+        <pre class="example" title="CTV-layout indoor sensor"><code>{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+  ],
+  "@type": "Thing",
+  "id": "urn:dev:example:indoor-sensor-ctv-01",
+  "title": "Indoor Sensor (CTV layout)",
+  "description": "Channel/type/value payload. Channel 1 = battery, channel 3 = temperature, channel 4 = humidity.",
+  "securityDefinitions": {
+    "otaa_sc": {
+      "scheme": "apikey",
+      "in": "uri",
+      "name": "appKey",
+      "description": "LoRaWAN OTAA AppKey. Injected at runtime."
+    }
+  },
+  "security": "otaa_sc",
+  "lorav:devEUI": "0000000000000004",
+  "lorav:joinEUI": "0000000000000000",
+  "lorav:macVersion": "1.0.3",
+  "lorav:region": "EU868",
+  "lorav:frequencyPlan": "EU_863_870",
+  "lorav:payloadLayout": "ctv",
+  "lorav:tagFields": [
+    { "name": "channel_id",   "type": "u8" },
+    { "name": "channel_type", "type": "u8" }
+  ],
+  "events": {
+    "battery": {
+      "data": { "type": "integer", "unit": "%" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [1, 117],
+        "lorav:wireType": "xsd:unsignedByte"
+      }]
+    },
+    "temperature": {
+      "data": { "type": "number", "unit": "Cel" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [3, 103],
+        "lorav:wireType": "xsd:short",
+        "lorav:endian": "little",
+        "lorav:divisor": 10
+      }]
+    },
+    "humidity": {
+      "data": { "type": "number", "unit": "%RH" },
+      "forms": [{
+        "href": "uplink",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "lorav:tag": [4, 104],
+        "lorav:wireType": "xsd:unsignedByte",
+        "lorav:divisor": 2
+      }]
+    }
+  }
+}</code></pre>
+      </section>
+    </section>
+
+    <section id="limitations">
+      <h2>Scope and Known Limitations</h2>
+      <p>
+        This binding currently describes uplink decoding and the generation of compatible payload codecs. It does not
+        yet define a complete downlink model.
+      </p>
+      <ul>
+        <li>Arrays and nested object payloads are not represented by this event-per-value model.</li>
+        <li>Some TLV variants outside the declared tag-field style are not covered.</li>
+        <li>Explicit match cases are supported, but wildcard or default branches are not yet modeled.</li>
+        <li>Some vendor-specific alternate source branches remain difficult to express cleanly.</li>
+        <li>
+          Generated JavaScript codecs may differ in edge cases involving shared-byte gaps, even when reference decoding
+          is correct.
+        </li>
+      </ul>
+    </section>
+
+    <section id="artifacts">
+      <h2>Machine-Readable Artifacts</h2>
+      <p>The binding vocabulary and validation rules are published alongside this page:</p>
+      <ul>
+        <li><a href="context.jsonld">JSON-LD context</a></li>
+        <li><a href="lorawan.schema.json">JSON Schema bundle</a></li>
+        <li><a href="ontology.ttl">RDF vocabulary</a></li>
+        <li><a href="ontology.html">Rendered ontology summary</a></li>
+      </ul>
     </section>
   </body>
 </html>

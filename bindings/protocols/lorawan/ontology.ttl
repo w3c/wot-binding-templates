@@ -1,0 +1,116 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix lorav: <https://www.w3.org/2024/wot/lorawan#> .
+
+lorav: a owl:Ontology ;
+  rdfs:label "LoRaWAN Binding Vocabulary" ;
+  rdfs:comment "Vocabulary for describing LoRaWAN payload bindings in WoT Thing Descriptions." ;
+  owl:versionInfo "0.3.0" .
+
+lorav:payloadLayout a owl:DatatypeProperty ;
+  rdfs:label "payload layout" ;
+  rdfs:comment "Overall payload structure: fixed, ports, tlv, or ctv." ;
+  rdfs:range xsd:string .
+
+lorav:tagFields a owl:DatatypeProperty ;
+  rdfs:label "tag fields" ;
+  rdfs:comment "Leading tag fields used by tlv or ctv layouts." .
+
+lorav:devEUI a owl:DatatypeProperty ;
+  rdfs:label "DevEUI" ;
+  rdfs:comment "8-byte LoRaWAN device identifier." ;
+  rdfs:range xsd:string .
+
+lorav:joinEUI a owl:DatatypeProperty ;
+  rdfs:label "JoinEUI" ;
+  rdfs:comment "8-byte LoRaWAN join identifier." ;
+  rdfs:range xsd:string .
+
+lorav:macVersion a owl:DatatypeProperty ;
+  rdfs:label "MAC version" ;
+  rdfs:comment "LoRaWAN MAC version such as 1.0.3 or 1.1.0." ;
+  rdfs:range xsd:string .
+
+lorav:region a owl:DatatypeProperty ;
+  rdfs:label "region" ;
+  rdfs:comment "Regulatory region or profile." ;
+  rdfs:range xsd:string .
+
+lorav:frequencyPlan a owl:DatatypeProperty ;
+  rdfs:label "frequency plan" ;
+  rdfs:comment "Network-server frequency plan identifier." ;
+  rdfs:range xsd:string .
+
+lorav:fPort a owl:DatatypeProperty ;
+  rdfs:label "frame port" ;
+  rdfs:comment "LoRaWAN frame port used in a ports layout." ;
+  rdfs:range xsd:integer .
+
+lorav:wireType a owl:DatatypeProperty ;
+  rdfs:label "wire data type" ;
+  rdfs:comment "Data type of the value on the wire." ;
+  rdfs:range xsd:string .
+
+lorav:endian a owl:DatatypeProperty ;
+  rdfs:label "byte order" ;
+  rdfs:comment "Byte order of a multi-byte value: big or little." ;
+  rdfs:range xsd:string .
+
+lorav:byteOffset a owl:DatatypeProperty ;
+  rdfs:label "byte offset" ;
+  rdfs:comment "Zero-based byte position within a fixed layout." ;
+  rdfs:range xsd:integer .
+
+lorav:byteLength a owl:DatatypeProperty ;
+  rdfs:label "byte length" ;
+  rdfs:comment "Length in bytes for variable-length types." ;
+  rdfs:range xsd:integer .
+
+lorav:tag a owl:DatatypeProperty ;
+  rdfs:label "tag" ;
+  rdfs:comment "Tag values selecting a field in tlv or ctv layouts." .
+
+lorav:slot a owl:DatatypeProperty ;
+  rdfs:label "group slot" ;
+  rdfs:comment "Zero-based order of a value inside a grouped case." ;
+  rdfs:range xsd:integer .
+
+lorav:padBefore a owl:DatatypeProperty ;
+  rdfs:label "padding before" ;
+  rdfs:comment "Reserved bytes consumed before this value within a group." ;
+  rdfs:range xsd:integer .
+
+lorav:bitmask a owl:DatatypeProperty ;
+  rdfs:label "bitmask" ;
+  rdfs:comment "Contiguous hexadecimal bit mask selecting a range from a shared raw value." ;
+  rdfs:range xsd:string .
+
+lorav:multiplier a owl:DatatypeProperty ;
+  rdfs:label "multiplier" ;
+  rdfs:comment "Raw value multiplier." ;
+  rdfs:range xsd:double .
+
+lorav:divisor a owl:DatatypeProperty ;
+  rdfs:label "divisor" ;
+  rdfs:comment "Raw value divisor." ;
+  rdfs:range xsd:double .
+
+lorav:addend a owl:DatatypeProperty ;
+  rdfs:label "addend" ;
+  rdfs:comment "Constant added after scaling." ;
+  rdfs:range xsd:double .
+
+lorav:presentWhen a owl:DatatypeProperty ;
+  rdfs:label "presence condition" ;
+  rdfs:comment "Condition object describing when a value appears in the payload." .
+
+lorav:alias a owl:DatatypeProperty ;
+  rdfs:label "alias" ;
+  rdfs:comment "Reference name used by other conditional blocks." ;
+  rdfs:range xsd:string .
+
+lorav:derived a owl:DatatypeProperty ;
+  rdfs:label "derived value" ;
+  rdfs:comment "Descriptor object for a value computed from already-decoded values." .

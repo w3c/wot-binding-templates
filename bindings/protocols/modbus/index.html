@@ -431,7 +431,7 @@
               <td><code>readDiscreteInput</code></td>
               <td>Read Discrete Inputs</td>
               <td>2</td>
-              <td>Read Physical Discrete Inputs (bit access). Address range 10001-19999</td>
+              <td>Read Physical Discrete Inputs (bit access). Usually in the address range 10001-19999</td>
             </tr>
 
             <tr></tr>
@@ -449,7 +449,7 @@
               <td><code>readHoldingRegisters</code></td>
               <td>Read Multiple Holding Registers</td>
               <td>3</td>
-              <td>Read Multiple Holding Registers (16 bit access). Address range 40001-49999</td>
+              <td>Read Multiple Holding Registers (16 bit access). Usually in the address range 40001-49999</td>
             </tr>
 
             <tr></tr>
@@ -458,7 +458,7 @@
               <td><code>readInputRegisters</code></td>
               <td>Read Multiple Input Registers</td>
               <td>4</td>
-              <td>Read Multiple Physical Input Registers (16 bits). Address range 30001-39999</td>
+              <td>Read Multiple Physical Input Registers (16 bits). Usually in the address range 30001-39999</td>
             </tr>
 
             <tr></tr>
@@ -467,7 +467,7 @@
               <td><code>writeMultipleCoils</code></td>
               <td>Write Multiple Coils</td>
               <td>15</td>
-              <td>Write Multiple Physical Coils (internal bits). Address range 00001-09999</td>
+              <td>Write Multiple Physical Coils (internal bits). Usually in the address range 00001-09999</td>
             </tr>
 
             <tr></tr>
@@ -476,7 +476,9 @@
               <td><code>writeMultipleHoldingRegisters</code></td>
               <td>Write Multiple Holding Registers</td>
               <td>16</td>
-              <td>Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999</td>
+              <td>
+                Write Multiple Holding Registers (output registers, 16 bit). Usually in the address range 40001-49999
+              </td>
             </tr>
 
             <tr></tr>
@@ -485,7 +487,7 @@
               <td><code>writeSingleCoil</code></td>
               <td>Write Single Coil</td>
               <td>5</td>
-              <td>Write Single Physical Coil (internal bit). Address range 00001-09999</td>
+              <td>Write Single Physical Coil (internal bit). Usually in the address range 00001-09999</td>
             </tr>
 
             <tr></tr>
@@ -494,12 +496,19 @@
               <td><code>writeSingleHoldingRegister</code></td>
               <td>Write Single Holding Register</td>
               <td>6</td>
-              <td>Write Single HoldingRegister (internal bits). Address range 40001-49999</td>
+              <td>Write Single HoldingRegister (internal bits). Usually in the address range 40001-49999</td>
             </tr>
 
             <tr></tr>
           </tbody>
         </table>
+        <p class="note">
+          The address ranges indicated are based on the observations of the Modbus community and are not part of the
+          official Modbus specification. While you can use any address within the 0-65535 range, it is recommended for
+          new devices to adhere to these ranges for better compatibility with existing Modbus devices and systems. A WoT
+          Consumer application should not assume that a specific address range is used for a particular type of register
+          or coil, and should always use the Thing Description as the source of truth.
+        </p>
       </section>
       <section id="payloaddatatype">
         <h3>Payload DataType</h3>

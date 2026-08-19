@@ -254,7 +254,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
           rdfs:comment "Function code identifies the operation requested by client, indicates to the server what kind of action to perform. For a normal response, the server simply echoes to the request the original function code."@en ;
           rdfs:label "Function"@en .
 
-        
+
 ###  https://www.w3.org/2019/wot/modbus#PayloadDataType
 :PayloadDataType rdf:type owl:Class ;
           owl:equivalentClass [ rdf:type owl:Class ;
@@ -283,7 +283,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :FunctionField rdf:type owl:Class ;
                 rdfs:subClassOf :Payload ;
                 rdfs:comment """Function Field class represents the value of the function in a Modbus frame. Each operation identified with a human readable name have a corresponding code.
-The response function code corresponds exactly to the request function code sent by the client when no error occurs. 
+The response function code corresponds exactly to the request function code sent by the client when no error occurs.
 On the contrary, the response operation is identified with an error code or exception function code corresponding to the request function code + 0x80."""@en ;
                 rdfs:label "Function Field" .
 
@@ -334,7 +334,7 @@ On the contrary, the response operation is identified with an error code or exce
 ###  https://www.w3.org/2019/wot/modbus#DataRequest
 :DataRequest rdf:type owl:Class ;
               rdfs:subClassOf :DataField ;
-              rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code. 
+              rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code.
 This can include items like register address, the quantity of items to be handled, and the count of actual data bytes in the field.
 
 The data request field may be nonexistent (zero length) in certain kind of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;
@@ -495,7 +495,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                             :Function ;
                    :readFrom :DiscreteInput ;
                    :hasCodeNumber 2 ;
-                   rdfs:comment "Read Physical Discrete Inputs (bit access). Address range 10001-19999"@en ;
+                   rdfs:comment "Read Physical Discrete Inputs (bit access). Usually in the address range 10001-19999"@en ;
                    rdfs:label "Read Discrete Inputs"@en .
 
 
@@ -504,7 +504,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                :Function ;
                       :readFrom :HoldingRegister ;
                       :hasCodeNumber 3 ;
-                      rdfs:comment "Read Multiple Holding Registers (16 bit access). Address range 40001-49999"@en ;
+                      rdfs:comment "Read Multiple Holding Registers (16 bit access). Usually in the address range 40001-49999"@en ;
                       rdfs:label "Read Multiple Holding Registers"@en .
 
 
@@ -513,7 +513,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                              :Function ;
                     :readFrom :InputRegister ;
                     :hasCodeNumber 4 ;
-                    rdfs:comment "Read Multiple Physical Input Registers (16 bits). Address range 30001-39999"@en ;
+                    rdfs:comment "Read Multiple Physical Input Registers (16 bits). Usually in the address range 30001-39999"@en ;
                     rdfs:label "Read Multiple Input Registers"@en .
 
 
@@ -522,7 +522,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                              :Function ;
                     :writesOn :Coil ;
                     :hasCodeNumber 15 ;
-                    rdfs:comment "Write Multiple Physical Coils (internal bits). Address range 00001-09999"@en ;
+                    rdfs:comment "Write Multiple Physical Coils (internal bits). Usually in the address range 00001-09999"@en ;
                     rdfs:label "Write Multiple Coils"@en .
 
 
@@ -531,7 +531,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                         :Function ;
                                :writesOn :HoldingRegister ;
                                :hasCodeNumber 16 ;
-                               rdfs:comment "Write Multiple Holding Registers (output registers, 16 bit). Address range 40001-49999"@en ;
+                               rdfs:comment "Write Multiple Holding Registers (output registers, 16 bit). Usually in the address range 40001-49999"@en ;
                                rdfs:label "Write Multiple Holding Registers"@en .
 
 
@@ -540,7 +540,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                           :Function ;
                  :writesOn :Coil ;
                  :hasCodeNumber 5 ;
-                 rdfs:comment "Write Single Physical Coil (internal bit). Address range 00001-09999"@en ;
+                 rdfs:comment "Write Single Physical Coil (internal bit). Usually in the address range 00001-09999"@en ;
                  rdfs:label "Write Single Coil"@en .
 
 
@@ -549,7 +549,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                      :Function ;
                             :writesOn :HoldingRegister ;
                             :hasCodeNumber 6 ;
-                            rdfs:comment "Write Single HoldingRegister (internal bits). Address range 40001-49999"@en ;
+                            rdfs:comment "Write Single HoldingRegister (internal bits). Usually in the address range 40001-49999"@en ;
                             rdfs:label "Write Single Holding Register"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#readFileRecord

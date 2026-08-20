@@ -17,7 +17,10 @@
   </head>
   <body>
     <section id="abstract">
-      <p>Vocabulary to represent Modbus messages in RDF.</p>
+      <p>
+        This document defines a vocabulary to represent Modbus messages in RDF. Even though it is provided by the Web of
+        Things, it can be used independently.
+      </p>
     </section>
     <section id="sotd">
       <p>
@@ -448,7 +451,7 @@
               <tr>
                 <td>Range</td>
                 <td>
-                  <code><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></code>
+                  <code><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></code>
                 </td>
               </tr>
             </tbody>
@@ -546,7 +549,7 @@
               <tr>
                 <td>Range</td>
                 <td>
-                  <code><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></code>
+                  <code><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></code>
                 </td>
               </tr>
             </tbody>
@@ -567,7 +570,7 @@
               <tr>
                 <td>Range</td>
                 <td>
-                  <code><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></code>
+                  <code><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></code>
                 </td>
               </tr>
             </tbody>
@@ -577,8 +580,8 @@
           <h4>hasTimeout</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#hasTimeout</code></p>
           <span
-            >Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a
-            reply from the device.</span
+            >Maximum waiting time for a response. Defines how much time the runtime should wait until it receives a
+            reply from the device. Defined as integer of milliseconds.</span
           >
           <table class="def">
             <tbody>
@@ -591,7 +594,7 @@
               <tr>
                 <td>Range</td>
                 <td>
-                  <code><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></code>
+                  <code><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></code>
                 </td>
               </tr>
             </tbody>
@@ -601,8 +604,9 @@
           <h4>hasUnitID</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#hasUnitID</code></p>
           <span
-            >The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier, but
-            for compatibility reasons it MUST be included</span
+            >Sometimes also called the Slave or Server ID, the Unit ID is technically not needed for ModbusTCP, since
+            the IP-address works as unique identifier, but for compatibility reasons it MUST be included. Mostly between
+            1 and 247 but 255 is technically possible</span
           >
           <table class="def">
             <tbody>
@@ -615,7 +619,7 @@
               <tr>
                 <td>Range</td>
                 <td>
-                  <code><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></code>
+                  <code><a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a></code>
                 </td>
               </tr>
             </tbody>

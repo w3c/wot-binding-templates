@@ -196,8 +196,9 @@
             <tr>
               <td><code>modv:unitID</code></td>
               <td>
-                The Unit ID is technically not needed for ModbusTCP, since the IP-address works as unique identifier,
-                but for compatibility reasons it MUST be included
+                Sometimes also called the Slave or Server ID, the Unit ID is technically not needed for ModbusTCP, since
+                the IP-address works as unique identifier, but for compatibility reasons it MUST be included. Mostly
+                between 1 and 247 but 255 is technically possible
               </td>
               <td>required</td>
               <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
@@ -246,8 +247,8 @@
             <tr>
               <td><code>modv:timeout</code></td>
               <td>
-                Modbus response maximum waiting time. Defines how much time the runtime should wait until it receives a
-                reply from the device.
+                Maximum waiting time for a response. Defines how much time the runtime should wait until it receives a
+                reply from the device. Defined as integer of milliseconds.
               </td>
               <td>optional</td>
               <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>

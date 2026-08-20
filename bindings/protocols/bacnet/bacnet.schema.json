@@ -3,7 +3,7 @@
   "title": "JSON Schema BACnet for TDs using BACnet Binding",
   "anyOf": [
     {
-      "$ref": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json"
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
     }
   ],
   "definitions": {

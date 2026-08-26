@@ -1,9 +1,11 @@
 {
   "@context": {
-    "lorav": "https://www.w3.org/2024/wot/lorawan#",
+    "lorav": "https://www.w3.org/2026/wot/lorawan#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
+
     "payloadLayout": "lorav:payloadLayout",
     "tagFields": "lorav:tagFields",
+
     "fPort": "lorav:fPort",
     "wireType": "lorav:wireType",
     "endian": "lorav:endian",
@@ -11,6 +13,7 @@
     "divisor": "lorav:divisor",
     "addend": "lorav:addend",
     "bitmask": "lorav:bitmask",
+    "valueMap": "lorav:valueMap",
     "byteOffset": "lorav:byteOffset",
     "byteLength": "lorav:byteLength",
     "tag": "lorav:tag",
@@ -19,9 +22,11 @@
     "presentWhen": "lorav:presentWhen",
     "alias": "lorav:alias",
     "derived": "lorav:derived",
+
     "devEUI": "lorav:devEUI",
     "joinEUI": "lorav:joinEUI",
     "macVersion": "lorav:macVersion",
+
     "region": "lorav:region",
     "frequencyPlan": "lorav:frequencyPlan"
   }

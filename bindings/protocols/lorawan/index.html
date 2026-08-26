@@ -116,7 +116,7 @@
       <p>A Thing Description using this binding conforms when all of the following are true:</p>
       <ul>
         <li>
-          It includes the LoRaWAN binding namespace <code>https://www.w3.org/2024/wot/lorawan#</code> in
+          It includes the LoRaWAN binding namespace <code>https://www.w3.org/2026/wot/lorawan#</code> in
           <code>@context</code>.
         </li>
         <li>Thing-level <code>lorav:</code> terms are placed on the Thing itself.</li>
@@ -615,6 +615,11 @@ op-target   = "uplink" / "downlink"
         and uses the relative targets <code>uplink</code> and <code>downlink</code> in each form:
       </p>
 
+      <p>
+        OTAA root keys are secrets and MUST NOT be embedded in <code>base</code>, <code>href</code>, or URI query
+        strings. Declare them as WoT security schemes and inject the actual values at runtime.
+      </p>
+
       <pre class="example" title="Base URI with relative form targets"><code>{
   "base": "lorawan://ns.example.org/0000000000000001/",
   "events": {
@@ -640,12 +645,12 @@ op-target   = "uplink" / "downlink"
       </p>
       <pre class="example" title="Minimal event-based LoRaWAN TD snippet"><code>{
   "@context": [
-    "https://www.w3.org/2022/wot/td/v1.1",
-    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+    "https://www.w3.org/2026/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2026/wot/lorawan#" }
   ],
   "title": "Temperature Sensor",
   "securityDefinitions": {
-    "otaa_sc": { "scheme": "apikey", "in": "uri", "name": "appKey" }
+    "otaa_sc": { "scheme": "apikey", "in": "header", "name": "appKey" }
   },
   "security": "otaa_sc",
   "lorav:payloadLayout": "fixed",
@@ -756,7 +761,8 @@ op-target   = "uplink" / "downlink"
       </table>
       <p>
         For <code>tlv</code> and <code>ctv</code>, a Thing may optionally declare <code>lorav:tagFields</code> to define
-        the leading fields that make up the tag.
+        the leading fields that make up the tag. In the current converter, <code>ctv</code> is accepted as an alias of
+        <code>tlv</code> and is converted with the same mechanics.
       </p>
 
       <h3>Form-Level Vocabulary</h3>
@@ -809,6 +815,12 @@ op-target   = "uplink" / "downlink"
             <td>Contiguous hexadecimal bit mask used to extract a range from a shared raw value.</td>
           </tr>
           <tr>
+            <td><code>lorav:valueMap</code></td>
+            <td>
+              Mapping from wire integer values to decoded values, as <code>[{"wireValue": n, "value": ...}]</code>.
+            </td>
+          </tr>
+          <tr>
             <td><code>lorav:divisor</code></td>
             <td>Preferred scaling term for decimal values: decoded value = raw value / divisor.</td>
           </tr>
@@ -836,7 +848,7 @@ op-target   = "uplink" / "downlink"
       </table>
       <p>
         Value semantics should stay in the event <code>data</code> schema. Use TD core terms such as <code>unit</code>,
-        <code>minimum</code>, <code>maximum</code>, and <code>oneOf</code> rather than creating duplicate binding terms.
+        <code>minimum</code>, <code>maximum</code>, and <code>enum</code> rather than creating duplicate binding terms.
       </p>
 
       <h3>Grouped and Conditional Values</h3>
@@ -874,6 +886,73 @@ op-target   = "uplink" / "downlink"
           </tr>
         </tbody>
       </table>
+
+      <h3>Withdrawn Terms</h3>
+      <p>
+        Older TDs may still contain pre-0.3 terms. They are kept in the ontology as deprecated IRIs for migration, but
+        new documents should use the replacements below.
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Withdrawn term</th>
+            <th>Use instead</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>lorav:type</code></td>
+            <td><code>lorav:wireType</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:offset</code></td>
+            <td><code>lorav:addend</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:length</code></td>
+            <td><code>lorav:byteLength</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:enum</code></td>
+            <td><code>lorav:valueMap</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:presenceField</code>/<code>lorav:presenceBit</code></td>
+            <td><code>lorav:presentWhen</code> with <code>field</code>/<code>bit</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:switchField</code>/<code>lorav:switchValue</code></td>
+            <td><code>lorav:presentWhen</code> with <code>field</code>/<code>value</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:var</code></td>
+            <td><code>lorav:alias</code></td>
+          </tr>
+          <tr>
+            <td>
+              <code>lorav:ref</code>, <code>lorav:polynomial</code>, <code>lorav:compute</code>,
+              <code>lorav:guard</code>, <code>lorav:transform</code>
+            </td>
+            <td>keys inside <code>lorav:derived</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:validRange</code></td>
+            <td>TD core <code>minimum</code>/<code>maximum</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:unece</code></td>
+            <td>TD core <code>unit</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:brand</code>, <code>lorav:model</code></td>
+            <td><code>schema:manufacturer</code>, <code>schema:mpn</code></td>
+          </tr>
+          <tr>
+            <td><code>lorav:hardwareVersion</code>, <code>lorav:softwareVersion</code></td>
+            <td><code>schema:version</code>, <code>schema:softwareVersion</code></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section id="examples">
@@ -893,8 +972,8 @@ op-target   = "uplink" / "downlink"
         </p>
         <pre class="example" title="Fixed-layout environmental sensor"><code>{
   "@context": [
-    "https://www.w3.org/2022/wot/td/v1.1",
-    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+    "https://www.w3.org/2026/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2026/wot/lorawan#" }
   ],
   "@type": "Thing",
   "id": "urn:dev:example:env-sensor-fixed-01",
@@ -903,7 +982,7 @@ op-target   = "uplink" / "downlink"
   "securityDefinitions": {
     "otaa_sc": {
       "scheme": "apikey",
-      "in": "uri",
+      "in": "header",
       "name": "appKey",
       "description": "LoRaWAN OTAA AppKey. Injected at runtime."
     }
@@ -963,8 +1042,8 @@ op-target   = "uplink" / "downlink"
         </p>
         <pre class="example" title="Ports-layout sensor with conditional fields"><code>{
   "@context": [
-    "https://www.w3.org/2022/wot/td/v1.1",
-    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+    "https://www.w3.org/2026/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2026/wot/lorawan#" }
   ],
   "@type": "Thing",
   "id": "urn:dev:example:multi-sensor-ports-01",
@@ -973,7 +1052,7 @@ op-target   = "uplink" / "downlink"
   "securityDefinitions": {
     "otaa_sc": {
       "scheme": "apikey",
-      "in": "uri",
+      "in": "header",
       "name": "appKey",
       "description": "LoRaWAN OTAA AppKey. Injected at runtime."
     }
@@ -1040,18 +1119,19 @@ op-target   = "uplink" / "downlink"
     },
     "commandStatus": {
       "data": {
-        "type": "integer",
-        "oneOf": [
-          { "const": 0, "title": "success" },
-          { "const": 1, "title": "failure" }
-        ]
+        "type": "string",
+        "enum": ["success", "failure"]
       },
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
         "lorav:fPort": 7,
         "lorav:byteOffset": 2,
-        "lorav:wireType": "u8"
+        "lorav:wireType": "u8",
+        "lorav:valueMap": [
+          { "wireValue": 0, "value": "success" },
+          { "wireValue": 1, "value": "failure" }
+        ]
       }]
     }
   }
@@ -1063,12 +1143,13 @@ op-target   = "uplink" / "downlink"
         <p>
           In a type-length-value layout, each field in the uplink is prefixed by tag bytes that identify it. The binding
           selects each field by its <code>lorav:tag</code> value. The tag composition is declared at Thing level via
-          <code>lorav:tagFields</code>. Categorical values use <code>oneOf</code> in the event <code>data</code> schema.
+          <code>lorav:tagFields</code>. Categorical values use <code>enum</code> in event <code>data</code> plus
+          <code>lorav:valueMap</code> on the form.
         </p>
         <pre class="example" title="TLV-layout leak detector"><code>{
   "@context": [
-    "https://www.w3.org/2022/wot/td/v1.1",
-    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+    "https://www.w3.org/2026/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2026/wot/lorawan#" }
   ],
   "@type": "Thing",
   "id": "urn:dev:example:leak-detector-tlv-01",
@@ -1077,7 +1158,7 @@ op-target   = "uplink" / "downlink"
   "securityDefinitions": {
     "otaa_sc": {
       "scheme": "apikey",
-      "in": "uri",
+      "in": "header",
       "name": "appKey",
       "description": "LoRaWAN OTAA AppKey. Injected at runtime."
     }
@@ -1126,17 +1207,18 @@ op-target   = "uplink" / "downlink"
     },
     "leakStatus": {
       "data": {
-        "type": "integer",
-        "oneOf": [
-          { "const": 0, "title": "normal" },
-          { "const": 1, "title": "leak detected" }
-        ]
+        "type": "string",
+        "enum": ["normal", "leak detected"]
       },
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
         "lorav:tag": [5, 0],
-        "lorav:wireType": "u8"
+        "lorav:wireType": "u8",
+        "lorav:valueMap": [
+          { "wireValue": 0, "value": "normal" },
+          { "wireValue": 1, "value": "leak detected" }
+        ]
       }]
     }
   }
@@ -1149,12 +1231,13 @@ op-target   = "uplink" / "downlink"
           The channel-type-value layout is a specialisation of TLV where the first tag byte identifies the sensor
           channel and the second identifies the physical quantity (following a convention such as Cayenne LPP). The
           schema structure is identical to TLV; the distinction is semantic. <code>lorav:tagFields</code> makes the
-          meaning of each tag position explicit.
+          meaning of each tag position explicit. In the current converter, ctv is accepted as an alias of tlv and is
+          converted with the same mechanics.
         </p>
         <pre class="example" title="CTV-layout indoor sensor"><code>{
   "@context": [
-    "https://www.w3.org/2022/wot/td/v1.1",
-    { "lorav": "https://www.w3.org/2024/wot/lorawan#" }
+    "https://www.w3.org/2026/wot/td/v1.1",
+    { "lorav": "https://www.w3.org/2026/wot/lorawan#" }
   ],
   "@type": "Thing",
   "id": "urn:dev:example:indoor-sensor-ctv-01",
@@ -1163,7 +1246,7 @@ op-target   = "uplink" / "downlink"
   "securityDefinitions": {
     "otaa_sc": {
       "scheme": "apikey",
-      "in": "uri",
+      "in": "header",
       "name": "appKey",
       "description": "LoRaWAN OTAA AppKey. Injected at runtime."
     }
@@ -1226,6 +1309,10 @@ op-target   = "uplink" / "downlink"
         <li>Some TLV variants outside the declared tag-field style are not covered.</li>
         <li>Explicit match cases are supported, but wildcard or default branches are not yet modeled.</li>
         <li>Some vendor-specific alternate source branches remain difficult to express cleanly.</li>
+        <li>
+          <code>lorav:valueMap</code> tables are interpreted positionally by some downstream generators, so
+          non-contiguous mappings may decode unexpectedly.
+        </li>
         <li>
           Generated JavaScript codecs may differ in edge cases involving shared-byte gaps, even when reference decoding
           is correct.

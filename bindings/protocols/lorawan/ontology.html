@@ -119,6 +119,10 @@
           <td>Contiguous mask for a shared raw value.</td>
         </tr>
         <tr>
+          <td>lorav:valueMap</td>
+          <td>Mapping from wire integer values to decoded values.</td>
+        </tr>
+        <tr>
           <td>lorav:multiplier</td>
           <td>Multiplier scaling.</td>
         </tr>
@@ -141,6 +145,74 @@
         <tr>
           <td>lorav:derived</td>
           <td>Descriptor for computed values.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Withdrawn Terms (Deprecated)</h2>
+    <p>
+      The following terms remain in <a href="ontology.ttl">ontology.ttl</a> with <code>owl:deprecated true</code> for
+      migration support.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Replacement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lorav:type</td>
+          <td>lorav:wireType</td>
+        </tr>
+        <tr>
+          <td>lorav:offset</td>
+          <td>lorav:addend</td>
+        </tr>
+        <tr>
+          <td>lorav:length</td>
+          <td>lorav:byteLength</td>
+        </tr>
+        <tr>
+          <td>lorav:enum</td>
+          <td>lorav:valueMap</td>
+        </tr>
+        <tr>
+          <td>lorav:presenceField / lorav:presenceBit</td>
+          <td>lorav:presentWhen { field, bit }</td>
+        </tr>
+        <tr>
+          <td>lorav:switchField / lorav:switchValue</td>
+          <td>lorav:presentWhen { field, value }</td>
+        </tr>
+        <tr>
+          <td>lorav:var</td>
+          <td>lorav:alias</td>
+        </tr>
+        <tr>
+          <td>lorav:ref / lorav:polynomial / lorav:compute / lorav:guard / lorav:transform</td>
+          <td>keys under lorav:derived</td>
+        </tr>
+        <tr>
+          <td>lorav:validRange</td>
+          <td>TD core minimum / maximum</td>
+        </tr>
+        <tr>
+          <td>lorav:unece</td>
+          <td>TD core unit</td>
+        </tr>
+        <tr>
+          <td>lorav:brand / lorav:model</td>
+          <td>schema:manufacturer / schema:mpn</td>
+        </tr>
+        <tr>
+          <td>lorav:hardwareVersion / lorav:softwareVersion</td>
+          <td>schema:version / schema:softwareVersion</td>
+        </tr>
+        <tr>
+          <td>lorav:endDeviceId</td>
+          <td>Thing id / title</td>
         </tr>
       </tbody>
     </table>

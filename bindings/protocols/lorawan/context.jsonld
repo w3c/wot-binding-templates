@@ -1,6 +1,6 @@
 {
   "@context": {
-    "lorav": "https://www.w3.org/2022/wot/lorawan#",
+    "lorav": "https://www.w3.org/2026/wot/lorawan#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
 
     "payloadLayout": "lorav:payloadLayout",

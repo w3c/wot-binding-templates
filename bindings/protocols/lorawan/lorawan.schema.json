@@ -1,0 +1,280 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.w3.org/2026/wot/lorawan/lorawan.schema.json",
+  "title": "LoRaWAN WoT Binding Schema Bundle",
+  "description": "Bundle of validation rules for LoRaWAN Thing-level terms and LoRaWAN event-form terms. The Thing Description core model is validated elsewhere; this file documents and validates the binding-specific additions.",
+  "type": "object",
+  "properties": {
+    "lorav:devEUI": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{16}$",
+      "description": "8-byte device identifier as 16 hexadecimal characters."
+    },
+    "lorav:joinEUI": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{16}$",
+      "description": "8-byte join/application identifier as 16 hexadecimal characters."
+    },
+    "lorav:macVersion": {
+      "type": "string",
+      "pattern": "^1\\.[01]\\.[0-9]+$",
+      "description": "LoRaWAN MAC version, e.g. '1.0.3' or '1.1.0'."
+    },
+    "lorav:region": {
+      "type": "string",
+      "description": "Regulatory region / profile of the device, e.g. 'EU868', 'US915'."
+    },
+    "lorav:frequencyPlan": {
+      "type": "string",
+      "description": "LoRaWAN Network Server frequency plan identifier, e.g. 'EU_863_870_TTN'."
+    },
+    "lorav:payloadLayout": {
+      "type": "string",
+      "enum": ["fixed", "ports", "tlv", "ctv"],
+      "description": "Overall structure of the device payload."
+    },
+    "lorav:tagFields": {
+      "type": "array",
+      "minItems": 1,
+      "description": "For 'tlv'/'ctv' layouts, the leading tag field(s) (e.g. channel + type) that select a value.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" }
+        },
+        "required": ["name", "type"]
+      }
+    }
+  },
+  "not": {
+    "description": "Root keys that must never appear: the OTAA root keys are secrets and belong in security schemes, 'lorav:endian' is per-value and belongs on a form, and 'properties' is the withdrawn pre-events shape.",
+    "anyOf": [
+      { "required": ["lorav:appKey"] },
+      { "required": ["lorav:nwkKey"] },
+      { "required": ["lorav:appkey"] },
+      { "required": ["lorav:nwkkey"] },
+      { "required": ["lorav:endian"] },
+      { "required": ["properties"] }
+    ]
+  },
+  "$defs": {
+    "lorawanForm": {
+      "type": "object",
+      "properties": {
+        "op": {
+          "description": "Uplinks are pushed by the device on its own schedule and cannot be polled, so a LoRaWAN form only ever offers event subscription operations.",
+          "oneOf": [
+            { "enum": ["subscribeevent", "unsubscribeevent"] },
+            {
+              "type": "array",
+              "items": { "enum": ["subscribeevent", "unsubscribeevent"] },
+              "minItems": 1
+            }
+          ]
+        },
+        "lorav:fPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "description": "LoRaWAN frame port (routing / branching)."
+        },
+        "lorav:wireType": {
+          "type": "string",
+          "description": "Data type of the value on the wire, as an xsd:* alias or a native type. The value 'number' marks a derived value, which occupies no payload bytes.",
+          "enum": [
+            "xsd:byte",
+            "xsd:short",
+            "xsd:int",
+            "xsd:long",
+            "xsd:unsignedByte",
+            "xsd:unsignedShort",
+            "xsd:unsignedInt",
+            "xsd:unsignedLong",
+            "xsd:float",
+            "xsd:double",
+            "xsd:boolean",
+            "xsd:hexBinary",
+            "xsd:string",
+            "u8",
+            "u16",
+            "u24",
+            "u32",
+            "u64",
+            "s8",
+            "s16",
+            "s24",
+            "s32",
+            "s64",
+            "f16",
+            "f32",
+            "f64",
+            "bool",
+            "ascii",
+            "hex",
+            "bytes",
+            "base64",
+            "number"
+          ]
+        },
+        "lorav:endian": {
+          "type": "string",
+          "enum": ["big", "little"],
+          "default": "big",
+          "description": "Byte order of this multi-byte value. Byte order only; there is no byte- or word-swap mode."
+        },
+        "lorav:multiplier": {
+          "type": "number",
+          "description": "Factor multiplied with the raw value. Prefer lorav:divisor for decimal scaling."
+        },
+        "lorav:divisor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Factor the raw value is divided by. Preferred over lorav:multiplier for decimal scaling."
+        },
+        "lorav:addend": {
+          "type": "number",
+          "description": "Constant added to the value after scaling."
+        },
+        "lorav:bitmask": {
+          "type": "string",
+          "pattern": "^0[xX][0-9a-fA-F]+$",
+          "description": "Hexadecimal mask selecting a contiguous range of bits."
+        },
+        "lorav:valueMap": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Maps each integer on the wire to the value it denotes.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "wireValue": {
+                "type": "integer",
+                "description": "The integer as it appears in the payload."
+              },
+              "value": {
+                "description": "The decoded value. Any JSON type the event's data schema accepts."
+              }
+            },
+            "required": ["wireValue", "value"],
+            "additionalProperties": false
+          }
+        },
+        "lorav:byteOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Zero-based byte position of the value within a fixed payload layout."
+        },
+        "lorav:byteLength": {
+          "type": "integer",
+          "minimum": -1,
+          "description": "Byte length for variable-length wire types (string/bytes/hex/base64); -1 means consume the remaining bytes."
+        },
+        "lorav:tag": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "minItems": 1,
+          "description": "Tag value(s), e.g. [channel, type], selecting this value in a tlv/ctv layout."
+        },
+        "lorav:slot": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "0-based order of this event within its group."
+        },
+        "lorav:padBefore": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Reserved bytes consumed immediately before this value within its group."
+        },
+        "lorav:presentWhen": {
+          "type": "object",
+          "description": "Condition gating whether this value appears in the payload.",
+          "properties": {
+            "field": {
+              "type": "string",
+              "description": "Name of the value that decides the condition."
+            },
+            "bit": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Bit index in the flags field that must be set for this value to appear."
+            },
+            "value": {
+              "type": "integer",
+              "description": "Discriminator value selecting the match case this value belongs to."
+            }
+          },
+          "not": {
+            "description": "A value is gated either by a flag bit or by a discriminator value, never by both.",
+            "required": ["bit", "value"]
+          },
+          "required": ["field"],
+          "additionalProperties": false
+        },
+        "lorav:alias": {
+          "type": "string",
+          "description": "Name under which other blocks reference this value as $alias."
+        },
+        "lorav:derived": {
+          "type": "object",
+          "description": "Describes a value computed from other decoded values rather than read off the wire.",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "description": "Input value, a $name reference to another event."
+            },
+            "polynomial": {
+              "type": "array",
+              "items": { "type": "number" },
+              "description": "Coefficients [c0, c1, ...] evaluated as c0 + c1*x + c2*x^2 + ... over the input value."
+            },
+            "compute": {
+              "type": "object",
+              "description": "Binary operation {op, a, b} over two values or constants."
+            },
+            "guard": {
+              "type": "object",
+              "description": "Conditional gate {when: [...], else: value}."
+            },
+            "transform": {
+              "type": "array",
+              "items": { "type": "object" },
+              "description": "Ordered post-processing operations (add/div/mult/round)."
+            }
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        }
+      },
+      "required": ["lorav:wireType"],
+      "not": {
+        "description": "Scaling is stated once, as either a multiplier or a divisor.",
+        "required": ["lorav:multiplier", "lorav:divisor"]
+      },
+      "if": {
+        "properties": {
+          "lorav:derived": {
+            "type": "object",
+            "anyOf": [
+              { "required": ["ref"] },
+              { "required": ["polynomial"] },
+              { "required": ["compute"] },
+              { "required": ["guard"] }
+            ]
+          }
+        },
+        "required": ["lorav:derived"]
+      },
+      "then": {
+        "description": "A value computed from other values reads no payload bytes, so its wire type is 'number'.",
+        "properties": { "lorav:wireType": { "const": "number" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "descriptionNotes": {
+    "thingLevel": "Validate Thing-level lorav terms directly on the TD root object.",
+    "formLevel": "Validate each LoRaWAN event form with #/$defs/lorawanForm."
+  },
+  "additionalProperties": true
+}

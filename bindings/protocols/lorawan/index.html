@@ -535,11 +535,77 @@ function decodeUplink(input) {
 
       <p>
         Based on the <a href="http://www.netvox.com.tw/um/R718A/R718AUsermanual.pdf">device datasheet</a>, the following
-        table shows the meaning of each byte in the payload. For <code>FPort 0x06</code>, the following table applies:
+        table shows the meaning of each byte in the payload. For <code>FPort 0x06</code>, the following table
+        (re-authored summary) applies:
       </p>
-      <img src="images/payload_decode_1.png" alt="Payload Codec Table FPort 0x06" width="750" />
-      <p>For <code>FPort 0x07</code>, the following table applies:</p>
-      <img src="images/payload_decode_2.png" alt="Payload Codec Table FPort 0x07" width="750" />
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Byte Index (0-based)</th>
+            <th>Field Name</th>
+            <th>Type / Encoding</th>
+            <th>Decode Rule</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0</td>
+            <td>Version</td>
+            <td>u8</td>
+            <td>raw</td>
+            <td>Frame format version marker.</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>DeviceType</td>
+            <td>u8</td>
+            <td>lookup table</td>
+            <td>Mapped to model name by decoder logic.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>ReportType</td>
+            <td>u8</td>
+            <td>raw discriminator</td>
+            <td>
+              <code>0x00</code> or <code>0x01</code>, leading to two different decoding for the following frame.
+              <strong> For the rest of the table, <code>0x01</code> is assumed.</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Battery</td>
+            <td>u8</td>
+            <td><code>(byte &amp; 0x7F) / 10</code> V</td>
+            <td>MSB <code>0x80</code> used as low-battery flag.</td>
+          </tr>
+          <tr>
+            <td>4-5</td>
+            <td>Temperature</td>
+            <td>s16, big-endian</td>
+            <td><code>raw / 100</code> °C</td>
+            <td>Two's-complement signed value.</td>
+          </tr>
+          <tr>
+            <td>6-7</td>
+            <td>Humidity</td>
+            <td>u16, big-endian</td>
+            <td><code>raw / 100</code> %RH</td>
+            <td>Unsigned.</td>
+          </tr>
+          <tr>
+            <td>8-10</td>
+            <td>Reserved</td>
+            <td>bytes[3]</td>
+            <td>ignore</td>
+            <td>Kept for compatibility/future use.</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <img src="images/payload_decode_1.png" alt="Payload Codec Table FPort 0x06" width="750" /> -->
+      <!-- <p>For <code>FPort 0x07</code>, the following table applies:</p>
+      <img src="images/payload_decode_2.png" alt="Payload Codec Table FPort 0x07" width="750" /> -->
 
       <p>
         So an example message

@@ -224,7 +224,7 @@
           Per default, the [[WOT-THING-DESCRIPTION11]] supports the <a>Protocol Binding</a> based on HTTP by including
           the HTTP RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This
           vocabulary can be directly used within TD instances by the use of the prefix <code>htv</code>, which points to
-          <code>http://www.w3.org/2011/http#</code>.
+          <code>https://www.w3.org/2011/http#</code>.
         </p>
 
         <p>
@@ -249,7 +249,7 @@
               <td>HTTP method name (Literal).</td>
               <td>optional</td>
               <td>
-                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
                 <p>
                   (one of <code>"GET"</code>, <code>"PUT"</code>, <code>"POST"</code>, <code>"DELETE"</code>,
                   <code>"PATCH"</code>)
@@ -270,7 +270,7 @@
               <td>Header name (Literal), e.g., <code>"Accept"</code>, <code>"Transfer-Encoding"</code>.</td>
               <td>mandatory within <code>htv:MessageHeader</code></td>
               <td>
-                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
               </td>
             </tr>
             <tr>
@@ -281,7 +281,7 @@
               </td>
               <td>optional</td>
               <td>
-                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+                <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
               </td>
             </tr>
           </tbody>
@@ -297,7 +297,7 @@
         <pre class="example" id="binding-http-usage-1" title="TD with HTTP vocabulary included in @context">
 {
   "@context": ["https://www.w3.org/ns/wot-next/td",
-    {"htv":"http://www.w3.org/2011/http#"}
+    {"htv":"https://www.w3.org/2011/http#"}
   ],
   "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
   "title": "MyLampThing",
@@ -307,7 +307,7 @@
       "type": "string",
       "forms": [
         {
-          "href": "http://example.com/properties/temperature",
+          "href": "https://example.com/properties/temperature",
           "op": "readproperty",
           "htv:methodName": "GET"
         }
@@ -317,7 +317,7 @@
       "type": "string",
       "forms": [
         {
-          "href": "http://example.com/properties/humidity",
+          "href": "https://example.com/properties/humidity",
           "op": "readproperty",
           "htv:methodName": "GET",
           "contentType": "application/json",
@@ -330,7 +330,7 @@
           ]
         },
         {
-          "href": "http://example.com/properties/humidity",
+          "href": "https://example.com/properties/humidity",
           "op": "readproperty",
           "htv:methodName": "GET",
           "contentType": "application/cbor",
@@ -487,7 +487,7 @@
           <pre class="json">
 {
     "@context": ["https://www.w3.org/ns/wot-next/td", {
-        "htv": "http://www.w3.org/2011/http#"
+        "htv": "https://www.w3.org/2011/http#"
     }],
     "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
     "title": "MyLampThing",
@@ -576,7 +576,7 @@
           <pre class="json">
 {
     "@context": ["https://www.w3.org/ns/wot-next/td", {
-        "htv": "http://www.w3.org/2011/http#"
+        "htv": "https://www.w3.org/2011/http#"
     }],
     "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
     "title": "MyLampThing",

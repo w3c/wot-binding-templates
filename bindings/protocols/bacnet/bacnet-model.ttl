@@ -1,4 +1,4 @@
-@prefix : <https://www.w3.org/2022/bacnet#> .
+@prefix : <http://www.w3.org/2022/bacnet#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -10,12 +10,12 @@
 @prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
 @prefix td: <https://www.w3.org/2019/wot/td#> .
 @prefix jsonschema: <https://www.w3.org/2019/wot/json-schema#> .
-@prefix bacv: <https://www.w3.org/2022/bacnet#> .
+@prefix bacv: <http://www.w3.org/2022/bacnet#> .
 
-@base <https://www.w3.org/2022/bacnet> .
+@base <http://www.w3.org/2022/bacnet> .
 
-<https://www.w3.org/2022/bacnet> rdf:type owl:Ontology ;
-                                owl:versionIRI <https://www.w3.org/2022/bacnet> ;
+<http://www.w3.org/2022/bacnet> rdf:type owl:Ontology ;
+                                owl:versionIRI <http://www.w3.org/2022/bacnet> ;
                                 dcterms:contributor "Dogan Fennibay" ;
                                 dcterms:created "2021-07-01"^^xsd:date ;
                                 dcterms:creator "Dogan Fennibay" ;
@@ -26,7 +26,7 @@
                                 # dcterms:publisher "TODO" ;
                                 # dcterms:rights "TODO" ;
                                 dcterms:title "BACnet Model" ;
-                                dcterms:source "https://www.w3.org/2022/bacnet" ;
+                                dcterms:source "http://www.w3.org/2022/bacnet" ;
                                 vann:preferredNamespacePrefix "bacv" ;
                                 vann:preferredNamespaceUri bacv: ;
                                 vaem:hasOwner "Dogan Fennibay" ;

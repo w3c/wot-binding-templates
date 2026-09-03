@@ -1,15 +1,15 @@
-prefix st: <https://ns.inria.fr/sparql-template/>
-prefix sh: <https://www.w3.org/ns/shacl#>
-prefix jsonld: <https://www.w3.org/ns/json-ld#>
-prefix vann: <https://purl.org/vocab/vann/>
-prefix skos: <https://www.w3.org/2004/02/skos/core#>
-prefix rdf: <https://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix rdfs: <https://www.w3.org/2000/01/rdf-schema#>
-prefix owl: <https://www.w3.org/2002/07/owl#>
-prefix xsd: <https://www.w3.org/2001/XMLSchema#>
+prefix st: <http://ns.inria.fr/sparql-template/>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix jsonld: <http://www.w3.org/ns/json-ld#>
+prefix vann: <http://purl.org/vocab/vann/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix binding: <https://www.w3.org/2019/wot/binding#>
 prefix hctl: <https://www.w3.org/2019/wot/hypermedia#>
-prefix sh: <https://www.w3.org/ns/shacl#>
+prefix sh: <http://www.w3.org/ns/shacl#>
 prefix : <https://w3c.github.io/wot-binding-templates/mappings#>
 
 

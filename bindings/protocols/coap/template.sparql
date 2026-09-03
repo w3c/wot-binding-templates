@@ -1,15 +1,15 @@
 prefix binding: <https://www.w3.org/2019/wot/binding#>
 prefix cov: <https://www.w3.org/2019/wot/coap#>
 prefix hctl: <https://www.w3.org/2019/wot/hypermedia#>
-prefix jsonld: <https://www.w3.org/ns/json-ld#>
-prefix owl: <https://www.w3.org/2002/07/owl#>
-prefix rdf: <https://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix rdfs: <https://www.w3.org/2000/01/rdf-schema#>
-prefix sh: <https://www.w3.org/ns/shacl#>
-prefix skos: <https://www.w3.org/2004/02/skos/core#>
-prefix st: <https://ns.inria.fr/sparql-template/>
-prefix xsd: <https://www.w3.org/2001/XMLSchema#>
-prefix vann: <https://purl.org/vocab/vann/>
+prefix jsonld: <http://www.w3.org/ns/json-ld#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix st: <http://ns.inria.fr/sparql-template/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix vann: <http://purl.org/vocab/vann/>
 prefix : <https://w3c.github.io/wot-binding-templates/mappings#>
 
 template :coap {

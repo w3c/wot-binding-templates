@@ -1,6 +1,6 @@
 {
     "@context": {
-        "xsd": "https://www.w3.org/2001/XMLSchema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
         "mqv": "https://www.w3.org/2019/wot/mqtt#",
         "quality": "https://www.w3.org/2019/wot/mqtt/qualitfyOfService#",
         "controlPacket": {

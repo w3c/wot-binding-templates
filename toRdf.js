@@ -1,8 +1,8 @@
 // original file https://raw.githubusercontent.com/w3c/wot-thing-description/main/context/toRDF.js
 const fs = require("fs");
 
-const ld = "https://www.w3.org/ns/json-ld#";
-const a = "https://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+const ld = "http://www.w3.org/ns/json-ld#";
+const a = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 
 function fullIRI(curie, ctx) {
   let capture = /^(\w+):(\w+)$/.exec(curie);

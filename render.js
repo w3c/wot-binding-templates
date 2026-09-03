@@ -34,7 +34,7 @@ const ontologies = [
 
 console.log("Rendering ontology documentation...");
 const promiseChain = ontologies.reduce(async (previousPromise, ontologyFile) => {
-  const templateURI = "http://w3c.github.io/wot-binding-templates/ontology#main";
+  const templateURI = "https://w3c.github.io/wot-binding-templates/ontology#main";
   await previousPromise;
   await render(ontologyFile, templateURI, ontologyFile.replace(".ttl", ".html"));
   await urdf.clear();
@@ -46,19 +46,19 @@ const mappings = [
   {
     ontologyFile: "bindings/protocols/modbus/mapping.ttl",
     baseOntologyFile: "bindings/protocols/modbus/ontology.ttl",
-    templateURI: "http://w3c.github.io/wot-binding-templates/mappings#modbus",
+    templateURI: "https://w3c.github.io/wot-binding-templates/mappings#modbus",
     contextFile: "bindings/protocols/modbus/context.jsonld"
   },
   {
     ontologyFile: "bindings/protocols/mqtt/mapping.ttl",
     baseOntologyFile: "bindings/protocols/mqtt/ontology.ttl",
-    templateURI: "http://w3c.github.io/wot-binding-templates/mappings#mqtt",
+    templateURI: "https://w3c.github.io/wot-binding-templates/mappings#mqtt",
     contextFile: "bindings/protocols/mqtt/context.jsonld"
   },
   {
     ontologyFile: "bindings/protocols/coap/mapping.ttl",
     baseOntologyFile: "bindings/protocols/coap/ontology.ttl",
-    templateURI: "http://w3c.github.io/wot-binding-templates/mappings#coap",
+    templateURI: "https://w3c.github.io/wot-binding-templates/mappings#coap",
     contextFile: "bindings/protocols/coap/context.jsonld"
   }
 ];

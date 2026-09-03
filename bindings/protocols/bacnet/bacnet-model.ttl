@@ -3,7 +3,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix schema: <http://schema.org/> .
+@prefix schema: <https://schema.org/> .
 @prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
@@ -22,7 +22,7 @@
                                 dcterms:modified "2022-01-13"^^xsd:date;
                                 dcterms:description "The BACnet model describes how WoT InteractionAffordances are represented on BACnet including data model and protocol specifics" ;
                                 # TODO: Use an open source license, or just leave out:
-                                # dcterms:license "TODO" ; 
+                                # dcterms:license "TODO" ;
                                 # dcterms:publisher "TODO" ;
                                 # dcterms:rights "TODO" ;
                                 dcterms:title "BACnet Model" ;

@@ -284,8 +284,12 @@
             <tr>
               <td><code>modv:zeroBasedAddressing</code></td>
               <td>
-                Modbus implementations can differ in the way addressing works, as the first coil/register can be either
-                referred to as <code>true</code> or <code>false</code>.
+                DEPRECATED as TDs are expected to contain the address to be directly used by the Consumer
+                implementation. See also
+                <a href="https://github.com/w3c/wot-binding-templates/issues/187">the relevant issue</a>. Previous
+                explanation:Modbus implementations can differ in the way addressing works, as the first coil/register
+                can be either referred to as <code>true</code> or <code>false</code>. False when the first register
+                starts at address 1.
               </td>
               <td>optional</td>
               <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
@@ -642,7 +646,7 @@
               <td>
                 <code>false</code>
               </td>
-              <td></td>
+              <td>The term is deprecated and should not be used anymore.</td>
             </tr>
             <tr>
               <td><code>modv:mostSignificantByte</code></td>

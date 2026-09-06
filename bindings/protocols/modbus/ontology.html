@@ -625,9 +625,12 @@
           <h4>hasZeroBasedAddressingFlag</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#hasZeroBasedAddressingFlag</code></p>
           <span
-            >Modbus implementations can differ in the way addressing works, as the first coil/register can be either
-            referred to as <code>true</code> or <code>false</code>.</span
-          >
+            >DEPRECATED as TDs are expected to contain the address to be directly used by the Consumer implementation.
+            See also <a href="https://github.com/w3c/wot-binding-templates/issues/187">the relevant issue</a>. Previous
+            explanation:Modbus implementations can differ in the way addressing works, as the first coil/register can be
+            either referred to as <code>true</code> or <code>false</code>. False when the first register starts at
+            address 1.
+          </span>
           <table class="def">
             <tbody>
               <tr>

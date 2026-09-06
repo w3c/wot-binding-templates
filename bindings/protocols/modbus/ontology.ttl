@@ -195,7 +195,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :hasZeroBasedAddressingFlag rdf:type owl:DatatypeProperty ;
                             rdfs:domain :Request ;
                             rdfs:range xsd:boolean ;
-                            rdfs:comment "Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as <code>true</code> or <code>false</code>."@en ;
+                            rdfs:comment "DEPRECATED as TDs are expected to contain the address to be directly used by the Consumer implementation. See also <a href=\"https://github.com/w3c/wot-binding-templates/issues/187\">the relevant issue</a>. Previous explanation:Modbus implementations can differ in the way addressing works, as the first coil/register can be either referred to as <code>true</code> or <code>false</code>. False when the first register starts at address 1. "@en ;
                             rdfs:label "hasZeroBasedAddressingFlag"@en .
 
 :hasMostSignificantByte rdf:type owl:DatatypeProperty ;
@@ -254,7 +254,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
           rdfs:comment "Function code identifies the operation requested by client, indicates to the server what kind of action to perform. For a normal response, the server simply echoes to the request the original function code."@en ;
           rdfs:label "Function"@en .
 
-        
+
 ###  https://www.w3.org/2019/wot/modbus#PayloadDataType
 :PayloadDataType rdf:type owl:Class ;
           owl:equivalentClass [ rdf:type owl:Class ;
@@ -283,7 +283,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
 :FunctionField rdf:type owl:Class ;
                 rdfs:subClassOf :Payload ;
                 rdfs:comment """Function Field class represents the value of the function in a Modbus frame. Each operation identified with a human readable name have a corresponding code.
-The response function code corresponds exactly to the request function code sent by the client when no error occurs. 
+The response function code corresponds exactly to the request function code sent by the client when no error occurs.
 On the contrary, the response operation is identified with an error code or exception function code corresponding to the request function code + 0x80."""@en ;
                 rdfs:label "Function Field" .
 
@@ -334,7 +334,7 @@ On the contrary, the response operation is identified with an error code or exce
 ###  https://www.w3.org/2019/wot/modbus#DataRequest
 :DataRequest rdf:type owl:Class ;
               rdfs:subClassOf :DataField ;
-              rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code. 
+              rdfs:comment """Data request contains additional information sent from a client to server that the server uses to take the action defined by the function code.
 This can include items like register address, the quantity of items to be handled, and the count of actual data bytes in the field.
 
 The data request field may be nonexistent (zero length) in certain kind of requests, in this case the server does not require any additional information. The function code alone specifies the action."""@en ;

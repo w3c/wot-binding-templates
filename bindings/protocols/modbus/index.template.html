@@ -261,6 +261,13 @@
             %s
           </tbody>
         </table>
+        <p class="note">
+          The address ranges indicated are based on the observations of the Modbus community and are not part of the
+          official Modbus specification. While you can use any address within the 0-65535 range, it is recommended for
+          new devices to adhere to these ranges for better compatibility with existing Modbus devices and systems. A WoT
+          Consumer application should not assume that a specific address range is used for a particular type of register
+          or coil, and should always use the Thing Description as the source of truth.
+        </p>
       </section>
       <section id="payloaddatatype">
         <h3>Payload DataType</h3>

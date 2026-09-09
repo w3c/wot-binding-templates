@@ -7,9 +7,9 @@ prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
 prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-prefix binding: <https://www.w3.org/2019/wot/binding#> 
-prefix hctl: <https://www.w3.org/2019/wot/hypermedia#> 
-prefix : <http://w3c.github.io/wot-binding-templates/mappings#>
+prefix binding: <https://www.w3.org/2019/wot/binding#>
+prefix hctl: <https://www.w3.org/2019/wot/hypermedia#>
+prefix : <https://w3c.github.io/wot-binding-templates/mappings#>
 
 
 template :mqtt {
@@ -23,7 +23,7 @@ template :mqtt {
          st:call-template(:topicFilter, ?mqttBase, ?prefix)
          st:call-template(:defaultMappings, ?mqttBase, ?prefix)
     }
-    
+
 }  where {
      ?mappings a owl:Ontology ;
         owl:imports ?mqttBase .
@@ -60,14 +60,14 @@ template :formTermsM(?ns ?prefix){
         sh:targetClass hctl:Form ;
         sh:order 1 ;
         sh:property ?property.
-    
+
     ?property sh:path ?term .
     ?term rdfs:comment ?desc .
     optional {
-        ?property sh:minCount ?count 
+        ?property sh:minCount ?count
     }
     optional {
-        ?property sh:maxCount ?max 
+        ?property sh:maxCount ?max
     }
     optional {
         ?property sh:class ?type
@@ -75,11 +75,11 @@ template :formTermsM(?ns ?prefix){
     optional {
         ?property sh:datatype ?type
     }
-    
+
     BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
     BIND ( IF (BOUND (?max), ?max, 0 )  as ?max  )
-   
-} 
+
+}
 
 template :defaultMappings(?ns ?prefix){
     format {
@@ -99,15 +99,15 @@ template :defaultMappings(?ns ?prefix){
         sh:order ?index ;
         sh:property ?operationProperty;
         sh:property ?defaultValueProperty.
-   
+
    ?operationProperty sh:path hctl:hasOperationType;
         sh:hasValue ?operation.
-					  
+
    ?defaultValueProperty  sh:path ?function;
         sh:defaultValue ?default.
-   
+
     filter( ?index > 1 )
-    
+
 }order by ?index
 
 template :controlpackets(?ns ?prefix){
@@ -124,7 +124,7 @@ template :controlpackets(?ns ?prefix){
 } where {
     ?packet rdfs:subClassOf ?controlPacket;
         rdfs:comment ?description.
-    
+
     bind(IRI(CONCAT(STR( ?ns),"#ControlPacket")) as ?controlPacket)
 }
 
@@ -145,7 +145,7 @@ template :qos(?ns ?prefix){
     ?qos rdfs:subClassOf ?QualityOfService;
         rdfs:label ?label;
         rdfs:comment ?description.
-    
+
     bind(IRI(CONCAT(STR( ?ns),"#QualityOfService")) as ?QualityOfService)
     bind(IRI(CONCAT(STR( ?ns),"/qualitfyOfService")) as ?qosNs)
 }
@@ -159,7 +159,7 @@ template :qosDescription(?ns ?prefix){
     }
 } where {
     ?QualityOfService rdfs:comment ?description.
-    
+
     bind(IRI(CONCAT(STR( ?ns),"#QualityOfService")) as ?QualityOfService)
 }
 
@@ -172,7 +172,7 @@ template :topicName(?ns ?prefix){
     }
 } where {
     ?topicName rdfs:comment ?description.
-    
+
     bind(IRI(CONCAT(STR( ?ns),"#TopicName")) as ?topicName)
 }
 template :topicFilter(?ns ?prefix){
@@ -184,7 +184,7 @@ template :topicFilter(?ns ?prefix){
     }
 } where {
     ?topicFilter rdfs:comment ?description.
-    
+
     bind(IRI(CONCAT(STR( ?ns),"#TopicFilter")) as ?topicFilter)
 }
 
@@ -202,7 +202,7 @@ template :fromTermToJSONLD(?ns ?prefix ?term){
             jsonld:iri ?term ;
             jsonld:term ?mappedTerm;
     }
-    
+
     BIND ( BOUND (?mappedTerm) as ?isJSONLD )
     BIND ( IF (BOUND (?mappedTerm), ?mappedTerm, ?term )  as ?printTerm  )
 }

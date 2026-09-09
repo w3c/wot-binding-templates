@@ -224,7 +224,7 @@
           Per default, the [[WOT-THING-DESCRIPTION11]] supports the <a>Protocol Binding</a> based on HTTP by including
           the HTTP RDF vocabulary definitions from <em>HTTP Vocabulary in RDF 1.0</em> [[?HTTP-in-RDF10]]. This
           vocabulary can be directly used within TD instances by the use of the prefix <code>htv</code>, which points to
-          <code>https://www.w3.org/2011/http#</code>.
+          <code>http://www.w3.org/2011/http#</code>.
         </p>
 
         <p>
@@ -297,7 +297,7 @@
         <pre class="example" id="binding-http-usage-1" title="TD with HTTP vocabulary included in @context">
 {
   "@context": ["https://www.w3.org/ns/wot-next/td",
-    {"htv":"https://www.w3.org/2011/http#"}
+    {"htv":"http://www.w3.org/2011/http#"}
   ],
   "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
   "title": "MyLampThing",
@@ -487,7 +487,7 @@
           <pre class="json">
 {
     "@context": ["https://www.w3.org/ns/wot-next/td", {
-        "htv": "https://www.w3.org/2011/http#"
+        "htv": "http://www.w3.org/2011/http#"
     }],
     "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
     "title": "MyLampThing",
@@ -576,7 +576,7 @@
           <pre class="json">
 {
     "@context": ["https://www.w3.org/ns/wot-next/td", {
-        "htv": "https://www.w3.org/2011/http#"
+        "htv": "http://www.w3.org/2011/http#"
     }],
     "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
     "title": "MyLampThing",

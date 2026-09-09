@@ -77,11 +77,10 @@
           },
           "WOT-BINDING-REGISTRY": {
             title: "Web of Things (WoT) Binding Registry",
-            // href: "https://www.w3.org/TR/wot-binding-registry/",
-            href: "https://w3c.github.io/wot-binding-registry/",
+            href: "https://www.w3.org/TR/wot-binding-registry/",
             authors: ["Ege Korkan"],
             publisher: "W3C",
-            date: "TODO" //TODO: Add publication date
+            date: "November 2025"
           }
         }
       };
@@ -304,7 +303,7 @@
                 "subscribeevent",
                 "unsubscribeevent"
             ],
-            "mqv:filter": "thing1/events/overheating" 
+            "mqv:filter": "thing1/events/overheating"
         }
       </pre>
       <p>
@@ -317,7 +316,7 @@
             "href": "mqtt://broker.com:1883",
             "op": [
                 "invokeaction"
-            ], 
+            ],
             "mqv:topic": "application/devices/thing1/program/commands/reset"
         }
       </pre>
@@ -331,7 +330,7 @@
             "href": "mqtt://broker.com:1883",
             "op": [
                 "writeproperty"
-            ], 
+            ],
             "mqv:retain" : true,
             "mqv:topic": "application/devices/thing1/properties/test"
         },
@@ -357,7 +356,7 @@
                   "href": "mqtt://broker.com:1883",
                   "op": [
                       "observeallproperties"
-                  ], 
+                  ],
                   "mqv:filter": "application/devices/thing1/properties/#"
               }
       </pre>
@@ -371,8 +370,8 @@
                   "href": "mqtt://broker.com:1883",
                   "op": [
                       "writeproperty"
-                  ], 
-                  "mqv:qos": "1", 
+                  ],
+                  "mqv:qos": "1",
                   "mqv:retain" : true,
                   "mqv:topic": "application/devices/thing1/properties/test"
               },
@@ -381,8 +380,8 @@
                   "op": [
                       "readproperty",
                       "observeproperty"
-                  ], 
-                  "mqv:qos": "1", 
+                  ],
+                  "mqv:qos": "1",
                   "mqv:retain" : true,
                   "mqv:filter": "application/devices/thing1/properties/test"
               }]

@@ -478,7 +478,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                    :Function ;
           :readFrom :Coil ;
           :hasCodeNumber 1 ;
-          rdfs:comment "Read a single coil (i.e. boolean/bit access) value. Usually in the address range 00001-09999"@en ;
+          rdfs:comment "Read a single coil (i.e. boolean/bit access) value. Conventionally in the address range 00001-09999"@en ;
           rdfs:label "Read Single Coil"@en .
 
 
@@ -495,7 +495,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                             :Function ;
                    :readFrom :DiscreteInput ;
                    :hasCodeNumber 2 ;
-                   rdfs:comment "Read Physical Discrete Inputs (bit access). Usually in the address range 10001-19999"@en ;
+                   rdfs:comment "Read Physical Discrete Inputs (bit access). Conventionally in the address range 10001-19999"@en ;
                    rdfs:label "Read Discrete Inputs"@en .
 
 
@@ -504,7 +504,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                :Function ;
                       :readFrom :HoldingRegister ;
                       :hasCodeNumber 3 ;
-                      rdfs:comment "Read Multiple Holding Registers (16 bit access). Usually in the address range 40001-49999"@en ;
+                      rdfs:comment "Read Multiple Holding Registers (16 bit access). Conventionally in the address range 40001-49999"@en ;
                       rdfs:label "Read Multiple Holding Registers"@en .
 
 
@@ -513,7 +513,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                              :Function ;
                     :readFrom :InputRegister ;
                     :hasCodeNumber 4 ;
-                    rdfs:comment "Read Multiple Physical Input Registers (16 bits). Usually in the address range 30001-39999"@en ;
+                    rdfs:comment "Read Multiple Physical Input Registers (16 bits). Conventionally in the address range 30001-39999"@en ;
                     rdfs:label "Read Multiple Input Registers"@en .
 
 
@@ -522,7 +522,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                              :Function ;
                     :writesOn :Coil ;
                     :hasCodeNumber 15 ;
-                    rdfs:comment "Write Multiple Physical Coils (internal bits). Usually in the address range 00001-09999"@en ;
+                    rdfs:comment "Write Multiple Physical Coils (internal bits). Conventionally in the address range 00001-09999"@en ;
                     rdfs:label "Write Multiple Coils"@en .
 
 
@@ -531,7 +531,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                         :Function ;
                                :writesOn :HoldingRegister ;
                                :hasCodeNumber 16 ;
-                               rdfs:comment "Write Multiple Holding Registers (output registers, 16 bit). Usually in the address range 40001-49999"@en ;
+                               rdfs:comment "Write Multiple Holding Registers (output registers, 16 bit). Conventionally in the address range 40001-49999"@en ;
                                rdfs:label "Write Multiple Holding Registers"@en .
 
 
@@ -540,7 +540,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                           :Function ;
                  :writesOn :Coil ;
                  :hasCodeNumber 5 ;
-                 rdfs:comment "Write Single Physical Coil (internal bit). Usually in the address range 00001-09999"@en ;
+                 rdfs:comment "Write Single Physical Coil (internal bit). Conventionally in the address range 00001-09999"@en ;
                  rdfs:label "Write Single Coil"@en .
 
 
@@ -549,7 +549,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                      :Function ;
                             :writesOn :HoldingRegister ;
                             :hasCodeNumber 6 ;
-                            rdfs:comment "Write Single HoldingRegister (internal bits). Usually in the address range 40001-49999"@en ;
+                            rdfs:comment "Write Single HoldingRegister (internal bits). Conventionally in the address range 40001-49999"@en ;
                             rdfs:label "Write Single Holding Register"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#readFileRecord

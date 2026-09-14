@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "anyOf": [
+    {
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
+    }
+  ],
+  "definitions": {
+    "eipPrimitiveType": {
+      "type": "string",
+      "enum": [
+        "xsd:BOOL",
+        "xsd:SINT",
+        "xsd:INT",
+        "xsd:DINT",
+        "xsd:LINT",
+        "xsd:USINT",
+        "xsd:UINT",
+        "xsd:UDINT",
+        "xsd:ULINT",
+        "xsd:REAL",
+        "xsd:LREAL",
+        "xsd:STRING"
+      ]
+    },
+    "structureDefinition": {
+      "type": "object",
+      "properties": {
+        "typeName": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fieldDefinition"
+          }
+        }
+      },
+      "required": ["typeName", "fields"]
+    },
+    "fieldDefinition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/eipPrimitiveType"
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "description": {
+          "type": "string"
+        },
+        "eip:structureDefinition": {
+          "$ref": "#/definitions/structureDefinition"
+        }
+      },
+      "required": ["name", "offset"],
+      "oneOf": [
+        {
+          "required": ["type"],
+          "not": {
+            "required": ["eip:structureDefinition"]
+          }
+        },
+        {
+          "required": ["eip:structureDefinition"],
+          "not": {
+            "required": ["type"]
+          }
+        }
+      ]
+    },
+    "ethernetipForm": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["readproperty", "writeproperty", "observeproperty"]
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/eipPrimitiveType"
+        },
+        "pollingTime": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eip:structureDefinition": {
+          "$ref": "#/definitions/structureDefinition"
+        }
+      },
+      "required": ["href", "op"],
+      "not": {
+        "required": ["type", "eip:structureDefinition"]
+      }
+    },
+    "affordance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ethernetipForm"
+            }
+          }
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "properties": {
+          "eip": {
+            "type": "string",
+            "enum": ["https://www.w3.org/2019/wot/eip", "https://www.w3.org/2026/wot/eip"]
+          }
+        }
+      }
+    },
+    "base": {
+      "type": "string",
+      "pattern": "^eip://"
+    },
+    "properties": {
+      "$ref": "#/definitions/affordance"
+    }
+  }
+}

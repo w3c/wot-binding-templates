@@ -6,5 +6,5 @@
 /bindings/protocols/modbus/ @relu91
 /bindings/protocols/mqtt/ @egekorkan @mjkoster @relu91
 /bindings/protocols/profinet/ @Kaz040
-/bindings/protocols/lorawan/ @barnstee
+/bindings/protocols/lorawan/ @barnstee @Hao-Siemens
 /index.html @egekorkan @mjkoster

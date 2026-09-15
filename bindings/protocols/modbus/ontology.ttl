@@ -478,7 +478,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                    :Function ;
           :readFrom :Coil ;
           :hasCodeNumber 1 ;
-          rdfs:comment "Read a single coil (i.e. boolean/bit access) value. Conventionally in the address range 00001-09999"@en ;
+          rdfs:comment "Read a single coil (i.e., boolean/bit access) value. Conventionally in the address range 00001-09999"@en ;
           rdfs:label "Read Single Coil"@en .
 
 

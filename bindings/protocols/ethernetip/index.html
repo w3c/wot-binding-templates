@@ -1,0 +1,735 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt",
+            company: "Microsoft",
+            companyURL: "https://www.microsoft.com"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/ethernetip/",
+        shortName: "wot-ethernetip-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "November 2025"
+          },
+          "CIP": {
+            title: "The Common Industrial Protocol (CIP) and the Family of CIP Networks",
+            href: "https://www.odva.org/technology-standards/key-technologies/common-industrial-protocol-cip/",
+            publisher: "ODVA",
+            date: "2023"
+          },
+          "ETHERNET-IP": {
+            title: "EtherNet/IP Adaptation of CIP, Volume 2",
+            publisher: "ODVA",
+            date: "2023"
+          },
+          "LIBPLCTAG": {
+            title: "libplctag - a library for accessing PLC tags",
+            href: "https://github.com/libplctag/libplctag",
+            publisher: "libplctag project"
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "EtherNet/IP JSON Schema",
+                href: "ethernetip.schema.json"
+              }
+            ]
+          }
+        ]
+      };
+    </script>
+    <title>Web of Things (WoT) EtherNet/IP Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        This Web of Things (WoT) protocol binding provides guidance for describing assets that leverage the ODVA
+        EtherNet/IP protocol, with an initial focus on Rockwell Automation Logix-family programmable controllers
+        accessed through symbolic tags.
+      </p>
+      <p>The binding defines:</p>
+      <ul>
+        <li>the <code>eip</code> URI scheme used to identify an EtherNet/IP endpoint;</li>
+        <li>symbolic tag addressing in WoT Forms;</li>
+        <li>primitive Logix data types;</li>
+        <li>polling behavior for observed properties;</li>
+        <li>structured tag and User-Defined Type (UDT) descriptions, including nested structures; and</li>
+        <li>mappings between WoT property operations and EtherNet/IP tag access.</li>
+      </ul>
+      <p>This protocol binding is not an ODVA specification, or a Rockwell Automation specification.</p>
+    </section>
+
+    <section id="sotd">
+      <p><em>This document is a work in progress.</em></p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        EtherNet/IP is an industrial communication protocol that applies the Common Industrial Protocol (CIP) [[CIP]]
+        over standard Ethernet and IP networking. Programmable controllers commonly expose controller-scoped and
+        program-scoped variables as symbolic tags. A client reads or writes a tag by identifying the controller and the
+        symbolic tag path, together with enough type information to encode or decode its value.
+      </p>
+      <p>
+        A Thing Description [[WOT-THING-DESCRIPTION]] can describe these tags as WoT Properties. The Thing Description
+        supplies the endpoint, tag address, supported WoT operations, data type, polling interval, and, for structured
+        tags, the field layout needed by an implementation.
+      </p>
+      <p>
+        The initial scope of this binding is explicit, non-cyclic tag access to Rockwell Logix-family controllers. The
+        following topics are outside the initial scope:
+      </p>
+      <ul>
+        <li>implicit I/O connections and cyclic producer/consumer data;</li>
+        <li>CIP Safety, CIP Motion, and CIP Sync;</li>
+        <li>device profiles and Assembly Object mappings;</li>
+        <li>arbitrary CIP class, instance, and attribute paths;</li>
+        <li>alarms and events as WoT Event affordances;</li>
+        <li>controller program download or modification; and</li>
+        <li>normative discovery behavior.</li>
+      </ul>
+    </section>
+
+    <section id="conformance">
+      <p>
+        A Thing Description conforms to this binding when all Forms using the <code>eip</code> scheme follow the
+        normative requirements in this document.
+      </p>
+      <p>An implementation conforms to this binding when it:</p>
+      <ol>
+        <li>recognizes the <code>eip</code> URI scheme;</li>
+        <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
+        <li>supports the operation mappings it advertises;</li>
+        <li>interprets the declared EtherNet/IP data type correctly; and</li>
+        <li>interprets structured definitions recursively when <code>eip:structureDefinition</code> is present.</li>
+      </ol>
+      <p>
+        The primitive type and polling interval use the unprefixed Form members <code>type</code> and
+        <code>pollingTime</code> and consumers implementing this binding MUST accept those names.
+      </p>
+    </section>
+
+    <section id="uri-scheme">
+      <h2>URI Scheme and Addressing</h2>
+
+      <section id="endpoint-uri">
+        <h3>Endpoint URI</h3>
+        <p>An EtherNet/IP endpoint is identified by an <code>eip</code> URI:</p>
+        <pre class="example" title="EtherNet/IP endpoint URI">
+eip://host[:port]
+        </pre>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <code>host</code> is an IPv4 address, IPv6 literal, or DNS name of the controller or communication module;
+          </li>
+          <li>
+            <code>port</code> is optional; when omitted, an implementation uses the EtherNet/IP default
+            explicit-messaging port configured by that implementation.
+          </li>
+        </ul>
+        <pre class="example" title="Endpoint example">
+eip://192.168.0.10
+        </pre>
+        <p>
+          A Thing Description SHOULD place the controller endpoint in <code>base</code> and use relative tag references
+          in individual Forms.
+        </p>
+      </section>
+
+      <section id="symbolic-tag-reference">
+        <h3>Symbolic Tag Reference</h3>
+        <p>The resolved Form target identifies a Logix symbolic tag. The initial binding uses the following shape:</p>
+        <pre class="example" title="Symbolic tag reference">
+eip://host[:port]/tag-path[?element-index]
+        </pre>
+        <p>The <code>tag-path</code> is the controller's symbolic tag expression. Examples include:</p>
+        <pre class="example" title="Tag path examples">
+MotorSpeed
+Program:Packaging.Counter
+Mixer.Status.Running
+Recipe[3].SetPoint
+        </pre>
+        <p>
+          The optional query component identifies an array element. <code>?0</code> describes a scalar or first element.
+          Consumers MUST accept this representation. Authors SHOULD omit the query component when no array element needs
+          to be selected.
+        </p>
+        <pre class="example json" title="Relative Form target">
+{
+  "href": "MotorSpeed?0"
+}
+        </pre>
+        <p>
+          When the Thing Description contains <code>"base": "eip://192.168.0.10/"</code>, the resolved target is
+          <code>eip://192.168.0.10/MotorSpeed?0</code>.
+        </p>
+      </section>
+
+      <section id="route-path">
+        <h3>Route Path</h3>
+        <p>
+          The Logix route path <code>1,0</code> represents a controller reached through the local backplane route. This
+          draft does not define a route-path vocabulary term. Implementations requiring configurable CIP routing MAY
+          define an extension such as <code>eip:path</code>, but such an extension is outside the current interoperable
+          profile.
+        </p>
+      </section>
+    </section>
+
+    <section id="vocabulary">
+      <h2>EtherNet/IP Vocabulary</h2>
+      <p>The examples use the prefix <code>eip</code> for the provisional namespace:</p>
+      <pre class="example json" title="Vocabulary prefix">
+{
+  "eip": "https://www.w3.org/2026/wot/eip"
+}
+      </pre>
+      <p>The namespace URI is provisional. It does not imply that a vocabulary is published at that location.</p>
+
+      <section id="form-terms">
+        <h3>Form Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>href</code></td>
+              <td>Symbolic tag reference, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>URI reference</td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>Array containing supported operations</td>
+            </tr>
+            <tr>
+              <td><code>type</code></td>
+              <td>EtherNet/IP/Logix primitive type used to encode and decode the tag value.</td>
+              <td>required for primitive tags</td>
+              <td>One value from <a href="#primitive-data-types">Primitive Data Types</a></td>
+            </tr>
+            <tr>
+              <td><code>pollingTime</code></td>
+              <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
+              <td>optional</td>
+              <td>Non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>eip:structureDefinition</code></td>
+              <td>Recursive definition of a structured Logix tag or UDT.</td>
+              <td>required for structured tags</td>
+              <td>Object defined in <a href="#structured-type-definition">Structured Type Definition</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Form MUST NOT contain both a primitive <code>type</code> and an <code>eip:structureDefinition</code>.
+          Primitive tags use <code>type</code>, while UDT tags use <code>eip:structureDefinition</code>.
+        </p>
+      </section>
+
+      <section id="primitive-data-types">
+        <h3>Primitive Data Types</h3>
+        <p>The binding uses XML Schema-style compact identifiers for Logix primitive types.</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Logix type</th>
+              <th>WoT Data Schema recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>xsd:BOOL</code></td>
+              <td>Boolean</td>
+              <td><code>boolean</code></td>
+            </tr>
+            <tr>
+              <td><code>xsd:SINT</code></td>
+              <td>Signed 8-bit integer</td>
+              <td><code>integer</code>, minimum -128, maximum 127</td>
+            </tr>
+            <tr>
+              <td><code>xsd:INT</code></td>
+              <td>Signed 16-bit integer</td>
+              <td><code>integer</code>, minimum -32768, maximum 32767</td>
+            </tr>
+            <tr>
+              <td><code>xsd:DINT</code></td>
+              <td>Signed 32-bit integer</td>
+              <td><code>integer</code>, minimum -2147483648, maximum 2147483647</td>
+            </tr>
+            <tr>
+              <td><code>xsd:LINT</code></td>
+              <td>Signed 64-bit integer</td>
+              <td><code>integer</code></td>
+            </tr>
+            <tr>
+              <td><code>xsd:USINT</code></td>
+              <td>Unsigned 8-bit integer</td>
+              <td><code>integer</code>, minimum 0, maximum 255</td>
+            </tr>
+            <tr>
+              <td><code>xsd:UINT</code></td>
+              <td>Unsigned 16-bit integer</td>
+              <td><code>integer</code>, minimum 0, maximum 65535</td>
+            </tr>
+            <tr>
+              <td><code>xsd:UDINT</code></td>
+              <td>Unsigned 32-bit integer</td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>xsd:ULINT</code></td>
+              <td>Unsigned 64-bit integer</td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>xsd:REAL</code></td>
+              <td>IEEE 754 single-precision floating point</td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>xsd:LREAL</code></td>
+              <td>IEEE 754 double-precision floating point</td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>xsd:STRING</code></td>
+              <td>Logix string value</td>
+              <td><code>string</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Implementations MUST reject an unsupported type rather than silently decode it as another type.</p>
+      </section>
+
+      <section id="structured-type-definition">
+        <h3>Structured Type Definition</h3>
+        <p><code>eip:structureDefinition</code> describes a Logix UDT and has the following members:</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>typeName</code></td>
+              <td>Controller-defined name of the UDT.</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>fields</code></td>
+              <td>Ordered field definitions.</td>
+              <td>required</td>
+              <td>array of field-definition objects</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Each field-definition object has the following members:</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>name</code></td>
+              <td>Field name in the UDT.</td>
+              <td>required</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>type</code></td>
+              <td>Primitive type from <a href="#primitive-data-types">Primitive Data Types</a>.</td>
+              <td>required for primitive fields</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>offset</code></td>
+              <td>Byte offset of the field in the encoded structure.</td>
+              <td>required</td>
+              <td>non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>Human-readable description of the field.</td>
+              <td>optional</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>eip:structureDefinition</code></td>
+              <td>Nested UDT definition.</td>
+              <td>required for nested UDT fields</td>
+              <td>structure-definition object</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A field MUST use either <code>type</code> for a primitive field or <code>eip:structureDefinition</code> for a
+          nested UDT field. A consumer MUST process nested structure definitions recursively.
+        </p>
+        <pre class="example json" title="Structure definition">
+{
+  "eip:structureDefinition": {
+    "typeName": "MotorStatus",
+    "fields": [
+      {
+        "name": "Running",
+        "type": "xsd:BOOL",
+        "offset": 0,
+        "description": "Indicates whether the motor is running"
+      },
+      {
+        "name": "Speed",
+        "type": "xsd:REAL",
+        "offset": 4,
+        "description": "Actual motor speed"
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="operation-mappings">
+      <h2>Operation Mappings</h2>
+
+      <section id="default-mappings">
+        <h3>Default Mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>EtherNet/IP behavior</th>
+              <th>Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>
+                Read the symbolic tag and decode the returned value according to <code>type</code> or
+                <code>eip:structureDefinition</code>.
+              </td>
+              <td>The Form MUST identify a readable tag.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>
+                Encode the supplied value according to <code>type</code> or <code>eip:structureDefinition</code> and
+                write it to the symbolic tag.
+              </td>
+              <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td>
+                Repeatedly read the tag and notify the Consumer when a sample is available or its value changes,
+                according to implementation behavior.
+              </td>
+              <td>
+                <code>observable</code> SHOULD be <code>true</code>; <code>pollingTime</code> controls the requested
+                interval.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The initial binding does not define a native EtherNet/IP subscription mechanism. An implementation MAY realize
+          <code>observeproperty</code> by polling. It SHOULD use <code>pollingTime</code> when supplied and MAY enforce
+          a minimum interval to protect the controller and network.
+        </p>
+      </section>
+
+      <section id="action-event-mappings">
+        <h3>Action and Event Mappings</h3>
+        <p>No default mapping is defined for:</p>
+        <ul>
+          <li><code>invokeaction</code>;</li>
+          <li><code>subscribeevent</code>;</li>
+          <li><code>unsubscribeevent</code>; or</li>
+          <li>WoT Event affordances.</li>
+        </ul>
+        <p>
+          A Thing Description conforming to the profile MUST NOT advertise those operations on an <code>eip</code> Form
+          unless it also declares and documents an additional binding extension.
+        </p>
+      </section>
+
+      <section id="read-write-only">
+        <h3>Read-only and Write-only Properties</h3>
+        <ul>
+          <li>
+            If a tag is not writable, its Property affordance MUST set <code>readOnly</code> to <code>true</code> and
+            MUST NOT advertise <code>writeproperty</code>.
+          </li>
+          <li>
+            If a tag is not readable, its Property affordance SHOULD set <code>writeOnly</code> to <code>true</code> and
+            MUST NOT advertise <code>readproperty</code> or <code>observeproperty</code>.
+          </li>
+          <li>
+            If a tag supports polling, its Property affordance SHOULD set <code>observable</code> to <code>true</code>.
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section id="payload-mapping">
+      <h2>Payload Mapping</h2>
+
+      <section id="primitive-values">
+        <h3>Primitive Values</h3>
+        <p>
+          Primitive values are represented at the WoT Consumer boundary as the JSON value compatible with the Property's
+          WoT Data Schema. The binding implementation is responsible for converting between that value and the
+          corresponding Logix wire representation.
+        </p>
+        <p>
+          A consumer MUST use both the WoT Data Schema and the Form's Logix <code>type</code>. The WoT Data Schema
+          describes the application-facing value, while the Form term identifies the controller representation.
+        </p>
+      </section>
+
+      <section id="structured-values">
+        <h3>Structured Values</h3>
+        <p>
+          A structured Logix tag is represented to the WoT Consumer as a JSON object. Field names in the object
+          correspond to the <code>name</code> members in <code>eip:structureDefinition.fields</code>.
+        </p>
+        <pre class="example json" title="Application-facing value">
+{
+  "Running": true,
+  "Speed": 1450.5
+}
+        </pre>
+        <p>
+          The binding implementation uses each field's <code>offset</code> and primitive or nested type definition to
+          decode and encode the controller value.
+        </p>
+      </section>
+
+      <section id="arrays">
+        <h3>Arrays</h3>
+        <p>
+          Array elements are exposed through the Form <code>href</code>. This binding does not define a complete
+          interoperable array model, including dimensions, bounds, bulk reads, or slicing.
+        </p>
+      </section>
+    </section>
+
+    <section id="security-considerations" class="informative">
+      <h2>Security Considerations</h2>
+      <p>
+        EtherNet/IP controllers and communication modules differ in the security services they expose. A Thing
+        Description MUST accurately describe the security applied to the interaction endpoint.
+      </p>
+      <p>
+        A binding implementation MUST NOT infer that <code>nosec</code> authorizes access. Authorization remains a
+        deployment responsibility.
+      </p>
+    </section>
+
+    <section id="examples" class="informative">
+      <h2>Examples</h2>
+
+      <section id="example-primitive-tag">
+        <h3>Primitive Tag</h3>
+        <pre class="example json" title="Primitive tag Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "eip": "https://www.w3.org/2019/wot/eip",
+      "xsd": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "id": "urn:example:logix:controller1",
+  "title": "Logix Controller 1",
+  "base": "eip://192.168.0.10/",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "MotorSpeed": {
+      "title": "Motor speed",
+      "type": "number",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "MotorSpeed?0",
+          "op": ["readproperty", "observeproperty", "writeproperty"],
+          "type": "xsd:REAL",
+          "pollingTime": 1000
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-read-only-tag">
+        <h3>Read-only Integer Tag</h3>
+        <pre class="example json" title="Read-only integer tag">
+{
+  "Counter": {
+    "type": "integer",
+    "readOnly": true,
+    "observable": true,
+    "forms": [
+      {
+        "href": "Program:Packaging.Counter?0",
+        "op": ["readproperty", "observeproperty"],
+        "type": "xsd:DINT",
+        "pollingTime": 2000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-structured-tag">
+        <h3>Structured Tag with Nested UDT</h3>
+        <pre class="example json" title="Structured tag with nested UDT">
+{
+  "properties": {
+    "LineState": {
+      "type": "object",
+      "readOnly": false,
+      "observable": true,
+      "properties": {
+        "Running": { "type": "boolean" },
+        "Speed": { "type": "number" },
+        "Drive": {
+          "type": "object",
+          "properties": {
+            "Current": { "type": "number" },
+            "FaultCode": { "type": "integer" }
+          }
+        }
+      },
+      "forms": [
+        {
+          "href": "LineState",
+          "op": ["readproperty", "observeproperty", "writeproperty"],
+          "pollingTime": 1000,
+          "eip:structureDefinition": {
+            "typeName": "LineStateType",
+            "fields": [
+              {
+                "name": "Running",
+                "type": "xsd:BOOL",
+                "offset": 0
+              },
+              {
+                "name": "Speed",
+                "type": "xsd:REAL",
+                "offset": 4
+              },
+              {
+                "name": "Drive",
+                "offset": 8,
+                "eip:structureDefinition": {
+                  "typeName": "DriveStateType",
+                  "fields": [
+                    {
+                      "name": "Current",
+                      "type": "xsd:REAL",
+                      "offset": 0
+                    },
+                    {
+                      "name": "FaultCode",
+                      "type": "xsd:DINT",
+                      "offset": 4
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="implementation-notes" class="informative">
+      <h2>Implementation Notes</h2>
+      <p>The OPC Foundation's UA Edge Translator reference implementation currently:</p>
+      <ul>
+        <li>registers the protocol scheme as <code>eip</code>;</li>
+        <li>identifies its provisional WoT binding URI as <code>https://www.w3.org/2019/wot/eip</code>;</li>
+        <li>uses symbolic tags through the open-source <code>libplctag</code> library [[LIBPLCTAG]];</li>
+        <li>uses a Logix route path of <code>1,0</code>;</li>
+        <li>supports controller discovery through the EtherNet/IP <code>ListIdentity</code> broadcast; and</li>
+        <li>reads controller tag metadata to generate Property affordances.</li>
+      </ul>
+    </section>
+  </body>
+</html>

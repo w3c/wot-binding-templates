@@ -8,7 +8,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix schema: <http://schema.org/> .
+@prefix schema: <https://schema.org/> .
 @prefix binding: <https://www.w3.org/2019/wot/binding#> .
 @base <https://www.w3.org/2019/wot/modbus> .
 
@@ -46,7 +46,7 @@ vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
 vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 
 
-###  http://schema.org/name
+###  https://schema.org/name
 schema:name rdf:type owl:AnnotationProperty .
 
 

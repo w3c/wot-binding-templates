@@ -6,7 +6,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix schema: <http://schema.org/> .
+@prefix schema: <https://schema.org/> .
 @base <https://www.w3.org/2019/wot/mqtt> .
 
 
@@ -43,7 +43,7 @@ _:genid4 rdf:type schema:Organization ;
 ###  https://www.w3.org/2019/wot/mqtt#sendsControlPacket
 :sendsControlPacket rdf:type owl:ObjectProperty ;
     rdfs:label "sendsControlPacket"@en ;
-    rdfs:comment """In MQTT protocol clients sends <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#control-packet'>control packet</a>s between each other using and intermediary called Server (or broker). 
+    rdfs:comment """In MQTT protocol clients sends <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#control-packet'>control packet</a>s between each other using and intermediary called Server (or broker).
     This property describes the action of sending a <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#control-packet'>ControlPacket</a> in a <a href='https://w3c.github.io/wot-binding-templates/ontology/mqtt#network-connection'>NetworkConnection</a>"""@en ;
     rdfs:range :ControlPacket ;
     rdfs:domain :Client .
@@ -169,7 +169,7 @@ _:genid4 rdf:type schema:Organization ;
                    owl:equivalentClass [ a owl:Class ;
                                          owl:oneOf ( <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#0>
                                                      <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#1>
-                                                     <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#2> ) ] ; 
+                                                     <https://www.w3.org/2019/wot/mqtt/qualitfyOfService#2> ) ] ;
                    rdfs:comment "MQTT delivers Application Messages according to the Quality of Service (QoS) levels defined in this ontology."@en ;
                    rdfs:isDefinedBy <https://www.w3.org/2019/wot/mqtt> ;
                    rdfs:label "QualityOfService"@en ;

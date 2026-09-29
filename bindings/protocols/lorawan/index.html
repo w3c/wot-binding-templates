@@ -919,10 +919,98 @@ op-target   = "uplink" / "downlink"
           </tr>
           <tr>
             <td><code>lorav:derived</code></td>
-            <td>Descriptor for a value computed from already-decoded values rather than read from the wire.</td>
+            <td>
+              Descriptor for values computed from decoded values or constants. Use
+              <code>lorav:wireType</code> <code>"number"</code> when no payload bytes are consumed.
+            </td>
           </tr>
         </tbody>
       </table>
+
+      <h4>Derived Values (<code>lorav:derived</code>)</h4>
+      <p>
+        Some values are never transmitted directly. The payload carries one or more raw readings, and device
+        documentation defines arithmetic to derive the value that users need. Such a value consumes zero payload bytes,
+        represented by <code>lorav:wireType</code> = <code>"number"</code>.
+      </p>
+      <p>
+        <code>transform</code> is the exception: it post-processes a value that was read from the wire, so it appears
+        alongside a real locator such as <code>lorav:byteOffset</code> and a non-<code>number</code>
+        <code>lorav:wireType</code>. If <code>lorav:derived</code> only carries <code>transform</code>, keep the wire
+        type of the source value; if it carries <code>ref</code>, <code>polynomial</code>, <code>compute</code>, or
+        <code>guard</code>, use <code>"number"</code>.
+      </p>
+      <p><code>lorav:derived</code> is one object with up to five keys. They are interpreted in this order:</p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>ref</code></td>
+            <td>Input value, written as <code>$name</code> of another event.</td>
+          </tr>
+          <tr>
+            <td><code>polynomial</code></td>
+            <td>Coefficients <code>[c0, c1, c2, ...]</code> applied as <code>c0 + c1*x + c2*x^2 + ...</code>.</td>
+          </tr>
+          <tr>
+            <td><code>compute</code></td>
+            <td>Binary operation <code>{ "op": "div", "a": ..., "b": ... }</code> over values or constants.</td>
+          </tr>
+          <tr>
+            <td><code>guard</code></td>
+            <td>
+              Preconditions <code>{ "when": [...], "else": v }</code>; when a check fails, the fallback
+              <code>else</code> value is used.
+            </td>
+          </tr>
+          <tr>
+            <td><code>transform</code></td>
+            <td>
+              Ordered post-processing steps, each of <code>add</code>, <code>div</code>, <code>mult</code>, or
+              <code>round</code>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <pre class="example" title="Derived value from a polynomial fit"><code>{
+  "volumetricWaterContent": {
+    "data": { "type": "number" },
+    "forms": [{
+      "href": "uplink",
+      "lorav:wireType": "number",
+      "lorav:derived": {
+        "ref": "$dielectricPermittivity",
+        "polynomial": [4.3e-06, -0.00055, 0.0292, -0.053]
+      }
+    }]
+  }
+}</code></pre>
+
+      <pre class="example" title="Derived ratio with guarded division"><code>{
+  "lorav:derived": {
+    "compute": { "op": "div", "a": "$reflectedRadiation", "b": "$incomingRadiation" },
+    "guard": {
+      "when": [
+        { "field": "$incomingRadiation", "gt": 0 },
+        { "field": "$reflectedRadiation", "gte": 0 }
+      ],
+      "else": 0
+    }
+  }
+}</code></pre>
+
+      <p>
+        Before version 0.3.0, these were separate sibling terms (<code>lorav:ref</code>,
+        <code>lorav:polynomial</code>, <code>lorav:compute</code>, <code>lorav:guard</code>,
+        <code>lorav:transform</code>). Grouping them under <code>lorav:derived</code> makes explicit that the value is
+        computed, not read from payload bytes.
+      </p>
       <p>
         Value semantics should stay in the event <code>data</code> schema. Use TD core terms such as <code>unit</code>,
         <code>minimum</code>, <code>maximum</code>, and <code>enum</code> rather than creating duplicate binding terms.

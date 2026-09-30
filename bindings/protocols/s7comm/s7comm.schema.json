@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "anyOf": [
+    {
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
+    }
+  ],
+  "definitions": {
+    "s7PrimitiveType": {
+      "type": "string",
+      "enum": [
+        "s7v:BOOL",
+        "s7v:BYTE",
+        "s7v:WORD",
+        "s7v:DWORD",
+        "s7v:LWORD",
+        "s7v:SINT",
+        "s7v:USINT",
+        "s7v:INT",
+        "s7v:UINT",
+        "s7v:DINT",
+        "s7v:UDINT",
+        "s7v:LINT",
+        "s7v:ULINT",
+        "s7v:REAL",
+        "s7v:LREAL",
+        "s7v:CHAR",
+        "s7v:WCHAR",
+        "s7v:STRING",
+        "s7v:WSTRING",
+        "s7v:DATE",
+        "s7v:TIME",
+        "s7v:LTIME",
+        "s7v:TOD",
+        "s7v:LTOD",
+        "s7v:DT",
+        "s7v:LDT",
+        "s7v:DTL",
+        "s7v:S5TIME"
+      ]
+    },
+    "s7MemoryArea": {
+      "type": "string",
+      "enum": ["I", "Q", "M", "DB", "DBI", "C", "T", "D", "LD"]
+    },
+    "s7commForm": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["readproperty", "writeproperty", "observeproperty"]
+          }
+        },
+        "type": {
+          "$ref": "#/definitions/s7PrimitiveType"
+        },
+        "pollingTime": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "s7v:timeout": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "s7v:scale": {
+          "type": "number"
+        },
+        "s7v:offset": {
+          "type": "number"
+        },
+        "s7v:area": {
+          "$ref": "#/definitions/s7MemoryArea"
+        },
+        "s7v:dbNumber": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "s7v:byteOffset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "s7v:bitOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "s7v:length": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": ["href", "op", "type"],
+      "if": {
+        "properties": {
+          "s7v:area": {
+            "const": "DB"
+          }
+        },
+        "required": ["s7v:area"]
+      },
+      "then": {
+        "required": ["s7v:dbNumber"]
+      }
+    },
+    "affordance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/s7commForm"
+            }
+          }
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "properties": {
+          "s7v": {
+            "type": "string",
+            "enum": ["https://www.w3.org/2026/wot/s7comm"]
+          }
+        }
+      }
+    },
+    "base": {
+      "type": "string",
+      "pattern": "^s7://"
+    },
+    "s7v:controller": {
+      "type": "string",
+      "enum": ["ANY", "S7_200", "S7_200_SMART", "S7_300", "S7_400", "S7_1200", "S7_1500", "LOGO"]
+    },
+    "s7v:localTsap": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "s7v:remoteTsap": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "s7v:pduSize": {
+      "type": "integer",
+      "minimum": 128
+    },
+    "properties": {
+      "$ref": "#/definitions/affordance"
+    }
+  }
+}

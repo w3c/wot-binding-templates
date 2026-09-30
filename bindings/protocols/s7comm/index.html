@@ -1,0 +1,1133 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt",
+            company: "Microsoft",
+            companyURL: "https://www.microsoft.com"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/s7comm/",
+        shortName: "wot-s7comm-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "November 2025"
+          },
+          "PLC4X-S7": {
+            title: "Apache PLC4X, S7 (Step7) driver documentation, version 1.0.0",
+            href: "https://plc4x.apache.org/plc4x/latest/users/protocols/s7.html",
+            publisher: "The Apache Software Foundation"
+          },
+          "UA-EDGETRANSLATOR-S7": {
+            title: "OPC Foundation UA Edge Translator, Siemens S7 protocol driver",
+            href: "https://github.com/OPCFoundation/UA-EdgeTranslator/tree/main/ProtocolDrivers/Siemens",
+            publisher: "OPC Foundation"
+          },
+          "RFC1006": {
+            title: "ISO Transport Service on top of the TCP, Version: 3",
+            href: "https://www.rfc-editor.org/rfc/rfc1006",
+            publisher: "IETF",
+            date: "May 1987"
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "S7Comm JSON Schema",
+                href: "s7comm.schema.json"
+              }
+            ]
+          }
+        ]
+      };
+    </script>
+    <title>Web of Things (WoT) S7Comm Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p class="note" title="Scope of this initial version">
+        This initial version of the binding focuses exclusively on variable data access, that is, reading and writing
+        individual memory locations of Siemens SIMATIC S7 controllers with the S7Comm protocol carried over ISO-on-TCP
+        [[RFC1006]]. It follows the two open implementations surveyed for it, the Siemens driver of the OPC Foundation
+        UA Edge Translator [[UA-EDGETRANSLATOR-S7]] and the S7 driver of Apache PLC4X [[PLC4X-S7]]. Alarm and event
+        services, cyclic push subscriptions, and diagnostics are expected to be covered by future versions.
+      </p>
+      <p>
+        This Web of Things (WoT) protocol binding provides guidance for describing assets that are accessed with the
+        Siemens S7Comm protocol, covering the S7-300, S7-400, S7-1200, and S7-1500 controller families as well as the
+        S7-200 and LOGO! devices through a small set of connection conventions.
+      </p>
+      <p>The binding defines:</p>
+      <ul>
+        <li>the <code>s7</code> URI scheme used to identify a controller, including rack and slot;</li>
+        <li>the controller family and the connection parameters a Consumer needs before it can address a variable;</li>
+        <li>memory-area addressing in WoT Forms, both as a TIA Portal-style address and as explicit Form terms;</li>
+        <li>the S7 data types and their encoding;</li>
+        <li>polling behavior, timeouts, and linear value conversion for observed properties; and</li>
+        <li>mappings between WoT property operations and S7 read and write services.</li>
+      </ul>
+      <p>This protocol binding is not a Siemens specification.</p>
+    </section>
+
+    <section id="sotd">
+      <p><em>This document is a work in progress.</em></p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        S7Comm is the protocol that Siemens SIMATIC S7 controllers use for programming and data access. It is carried by
+        the ISO Transport Service on top of TCP [[RFC1006]], commonly called ISO-on-TCP or COTP, on TCP port 102. A
+        client addresses a value by naming a memory area of the controller, a byte offset inside that area, and, for
+        single bits, a bit offset, together with the data type needed to encode or decode the value.
+      </p>
+      <p>
+        Unlike controllers that expose named tags, an S7 controller does not usually publish its symbol table over
+        S7Comm. The address is therefore taken from the engineering project, most commonly by copying the address out of
+        TIA Portal or STEP 7. A Thing Description [[WOT-THING-DESCRIPTION]] carries that address, the data type, and the
+        connection parameters, which is exactly the information a Consumer cannot obtain from the device itself.
+      </p>
+      <p>The following topics are outside the initial scope:</p>
+      <ul>
+        <li>alarm and event services, including <code>ALARM_S</code> and <code>ALARM_8</code>;</li>
+        <li>cyclic (<code>CYC</code>) push subscriptions;</li>
+        <li>SZL/SSL diagnostics and controller status (RUN/STOP) events;</li>
+        <li>the S7CommPlus protocol variant used for optimized blocks of the S7-1200 and S7-1500 families;</li>
+        <li>block upload, download, or any modification of the controller program;</li>
+        <li>PROFINET DCP discovery; and</li>
+        <li>symbol table upload.</li>
+      </ul>
+    </section>
+
+    <section id="conformance">
+      <p>
+        A Thing Description conforms to this binding when all Forms using the <code>s7</code> scheme follow the
+        normative requirements in this document.
+      </p>
+      <p>An implementation conforms to this binding when it:</p>
+      <ol>
+        <li>recognizes the <code>s7</code> URI scheme;</li>
+        <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
+        <li>uses the rack and slot of the endpoint URI to establish the connection;</li>
+        <li>supports the operation mappings it advertises; and</li>
+        <li>interprets the declared S7 data type correctly.</li>
+      </ol>
+      <p>
+        The polling interval uses the unprefixed Form member <code>pollingTime</code> and Consumers implementing this
+        binding MUST accept that name.
+      </p>
+    </section>
+
+    <section id="uri-scheme">
+      <h2>URI Scheme and Addressing</h2>
+
+      <section id="endpoint-uri">
+        <h3>Endpoint URI</h3>
+        <p>An S7 endpoint is identified by an <code>s7</code> URI:</p>
+        <pre class="nohighlight">
+s7-URI = "s7://" host [ ":" port ] "/" rack "," slot
+        </pre>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <code>host</code> is an IPv4 address, IPv6 literal, or DNS name of the controller or of the communication
+            processor in front of it;
+          </li>
+          <li>
+            <code>port</code> is optional; when omitted, an implementation uses the ISO-on-TCP port 102 [[RFC1006]].
+            Authors SHOULD omit it, because most S7 stacks do not allow the port to be changed;
+          </li>
+          <li>
+            <code>rack</code> and <code>slot</code> identify the CPU within the addressed station. When they are
+            omitted, an implementation MUST assume rack <code>0</code> and slot <code>1</code>.
+          </li>
+        </ul>
+        <p>
+          Rack and slot are part of the interoperable profile because a connection cannot be established without them,
+          and because their correct values differ per controller family: a CPU of an S7-1200 or S7-1500 is commonly
+          reached at rack 0, slot 1, while an S7-300 or S7-400 CPU is commonly reached at rack 0, slot 2 and can sit in
+          any other slot of its rack. A Thing Description that omits them is not portable between Consumers.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Endpoint</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>s7://192.168.0.10/0,1</code></td>
+              <td>CPU in rack 0, slot 1, typical for S7-1200 and S7-1500</td>
+            </tr>
+            <tr>
+              <td><code>s7://192.168.0.10/0,2</code></td>
+              <td>CPU in rack 0, slot 2, typical for S7-300 and S7-400</td>
+            </tr>
+            <tr>
+              <td><code>s7://192.168.0.10/1,3</code></td>
+              <td>CPU in rack 1, slot 3, reached through the communication processor at the given address</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Thing Description SHOULD place the endpoint, including rack and slot, in <code>base</code> and use relative
+          addresses in individual Forms.
+        </p>
+        <pre class="example json" title="Endpoint in base">
+{
+  "base": "s7://192.168.0.10/0,1/",
+  "s7v:controller": "S7_1500"
+}
+        </pre>
+      </section>
+
+      <section id="controller-family">
+        <h3>Controller Family</h3>
+        <p>
+          The S7 families differ in the data types they support, in the memory areas they expose, and in the way a
+          connection is established. Some devices, in particular the S7-200, the S7-200 Smart, and LOGO!, do not answer
+          the identification request that implementations use to detect the family, so the family has to be stated in
+          the Thing Description.
+        </p>
+        <p>
+          A Thing Description carrying <code>s7</code> Forms SHOULD declare the controller family at the top level with
+          <code>s7v:controller</code>. When the term is absent, an implementation MAY detect the family from the device.
+          The value is one of <code>ANY</code>, <code>S7_200</code>, <code>S7_200_SMART</code>, <code>S7_300</code>,
+          <code>S7_400</code>, <code>S7_1200</code>, <code>S7_1500</code>, or <code>LOGO</code>.
+        </p>
+        <p>
+          The S7-200, the S7-200 Smart, and LOGO! additionally require explicit Transport Service Access Points instead
+          of rack and slot addressing. A Thing Description for those devices MUST declare
+          <code>s7v:localTsap</code> and <code>s7v:remoteTsap</code>; both are <code>512</code>, that is
+          <code>0x0200</code>, for the S7-200 family. When a non-zero TSAP is given, it overrides the rack and slot of
+          the endpoint URI.
+        </p>
+        <p class="note">
+          On an S7-200 the <code>V</code> variable memory of the Siemens tooling, such as <code>VW310</code>, is an
+          alias for data block 1, so <code>VW310</code> is addressed as <code>%DB1.DBW310:INT</code> in this binding.
+        </p>
+      </section>
+
+      <section id="variable-address">
+        <h3>Variable Address</h3>
+        <p>The resolved Form target identifies one variable in the controller memory:</p>
+        <pre class="nohighlight">
+s7-address-URI = s7-URI "/" address
+address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
+               / "%DB" db-number "." "DB" short-code byte-offset [ "." bit-offset ] ":" data-type
+        </pre>
+        <p>
+          The <code>address</code> is the address notation of the Siemens engineering tools, so that it can be copied
+          from TIA Portal, and it is the notation that the surveyed implementations parse [[PLC4X-S7]]. Because the
+          percent sign is reserved in URIs, it MUST be percent-encoded as <code>%25</code>, see
+          <a href="#reserved-characters">Reserved Characters</a>.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>%I0.3:BOOL</code></td>
+              <td>Bit 3 of input byte 0</td>
+            </tr>
+            <tr>
+              <td><code>%Q1.0:BOOL</code></td>
+              <td>Bit 0 of output byte 1</td>
+            </tr>
+            <tr>
+              <td><code>%M100:DINT</code></td>
+              <td>32-bit signed integer at flag or marker byte 100</td>
+            </tr>
+            <tr>
+              <td><code>%DB1.DBX0.3:BOOL</code></td>
+              <td>Bit 3 of byte 0 of data block 1</td>
+            </tr>
+            <tr>
+              <td><code>%DB1.DBW20:INT</code></td>
+              <td>16-bit signed integer at byte 20 of data block 1</td>
+            </tr>
+            <tr>
+              <td><code>%DB5:10:INT</code></td>
+              <td>The same shape in the short data block notation</td>
+            </tr>
+            <tr>
+              <td><code>%DB1.DB0:STRING(80)</code></td>
+              <td>String of up to 80 characters at byte 0 of data block 1</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Form addresses a single value. Reading a range of elements with one Form, such as
+          <code>%DB1.DBB0[0..9]:BYTE</code> in [[PLC4X-S7]], is out of scope for this version of the binding.
+        </p>
+        <pre class="example json" title="Relative Form target">
+{
+  "href": "%25DB1.DBW20:INT"
+}
+        </pre>
+        <p>
+          When the Thing Description contains <code>"base": "s7://192.168.0.10/0,1/"</code>, the resolved target is
+          <code>s7://192.168.0.10/0,1/%25DB1.DBW20:INT</code>.
+        </p>
+      </section>
+
+      <section id="explicit-address-terms">
+        <h3>Explicit Address Terms</h3>
+        <p>
+          A Form MAY instead describe the address with the explicit terms <code>s7v:area</code>,
+          <code>s7v:dbNumber</code>, <code>s7v:byteOffset</code>, <code>s7v:bitOffset</code>, and
+          <code>s7v:length</code>. This is the shape that the UA Edge Translator driver consumes
+          [[UA-EDGETRANSLATOR-S7]], and it avoids parsing a Siemens-specific string in Consumers that generate Thing
+          Descriptions from an engineering export.
+        </p>
+        <p>
+          When the explicit terms are present, they take precedence over the address in <code>href</code>, and the
+          <code>href</code> then only identifies the Form target. A Consumer MUST reject a Form in which both forms of
+          addressing are present and describe different locations. Every Form MUST carry at least one of the two.
+        </p>
+        <pre class="example json" title="Explicit address terms">
+{
+  "href": "TankLevel",
+  "op": ["readproperty"],
+  "type": "s7v:INT",
+  "s7v:area": "DB",
+  "s7v:dbNumber": 1,
+  "s7v:byteOffset": 20
+}
+        </pre>
+      </section>
+
+      <section id="reserved-characters">
+        <h3>Reserved Characters</h3>
+        <p>
+          S7 addresses contain characters that are reserved in URIs [[RFC3986]]. Authors MUST percent-encode them, in
+          particular <code>%</code> as <code>%25</code>, <code>[</code> as <code>%5B</code>, <code>]</code> as
+          <code>%5D</code>, <code>?</code> as <code>%3F</code>, and <code>#</code> as <code>%23</code>. Because the
+          address is a single path segment, <code>/</code> MUST be percent-encoded as <code>%2F</code>.
+        </p>
+        <p>
+          The characters <code>:</code>, <code>.</code>, <code>,</code>, <code>(</code>, and <code>)</code> are allowed
+          in a non-initial path segment and therefore need not be percent-encoded. An implementation MUST percent-decode
+          the address before it is used.
+        </p>
+        <pre class="example" title="Percent-encoded address">
+s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
+        </pre>
+      </section>
+    </section>
+
+    <section id="vocabulary">
+      <h2>S7Comm Vocabulary</h2>
+      <p>
+        The examples use the prefix <code>s7v</code> for the provisional namespace. The prefix intentionally differs
+        from the <code>s7</code> URI scheme name so that vocabulary terms are not confused with the scheme.
+      </p>
+      <pre class="example json" title="Vocabulary prefix">
+{
+  "s7v": "https://www.w3.org/2026/wot/s7comm"
+}
+      </pre>
+      <p>The namespace URI is provisional. It does not imply that a vocabulary is published at that location.</p>
+
+      <section id="thing-terms">
+        <h3>Thing Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>s7v:controller</code></td>
+              <td>Controller family, see <a href="#controller-family">Controller Family</a>.</td>
+              <td>optional</td>
+              <td>
+                <code>ANY</code>, <code>S7_200</code>, <code>S7_200_SMART</code>, <code>S7_300</code>,
+                <code>S7_400</code>, <code>S7_1200</code>, <code>S7_1500</code>, or <code>LOGO</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>s7v:localTsap</code></td>
+              <td>Local Transport Service Access Point of the connection.</td>
+              <td>required for <code>S7_200</code>, <code>S7_200_SMART</code>, and <code>LOGO</code></td>
+              <td>Non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:remoteTsap</code></td>
+              <td>Remote Transport Service Access Point of the connection.</td>
+              <td>required for <code>S7_200</code>, <code>S7_200_SMART</code>, and <code>LOGO</code></td>
+              <td>Non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:pduSize</code></td>
+              <td>
+                Maximum size of an S7 data packet in bytes. The controller can negotiate a smaller value, which limits
+                how much data one request can transfer.
+              </td>
+              <td>optional</td>
+              <td>Integer, at least 128</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="form-terms">
+        <h3>Form Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>href</code></td>
+              <td>Variable address, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>URI reference</td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>Array containing supported operations</td>
+            </tr>
+            <tr>
+              <td><code>type</code></td>
+              <td>S7 data type used to encode and decode the value.</td>
+              <td>required</td>
+              <td>One value from <a href="#data-types">Data Types</a></td>
+            </tr>
+            <tr>
+              <td><code>pollingTime</code></td>
+              <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
+              <td>optional</td>
+              <td>Non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:timeout</code></td>
+              <td>Maximum time to wait for the controller response, in milliseconds.</td>
+              <td>optional</td>
+              <td>Non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:area</code></td>
+              <td>Memory area, see <a href="#memory-areas">Memory Areas</a>.</td>
+              <td>optional</td>
+              <td>Memory area code</td>
+            </tr>
+            <tr>
+              <td><code>s7v:dbNumber</code></td>
+              <td>Number of the data block.</td>
+              <td>required when <code>s7v:area</code> is <code>DB</code> or <code>DBI</code></td>
+              <td>Positive integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:byteOffset</code></td>
+              <td>Byte offset of the value inside the memory area.</td>
+              <td>required when <code>s7v:area</code> is present</td>
+              <td>Non-negative integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:bitOffset</code></td>
+              <td>Bit position inside the byte identified by <code>s7v:byteOffset</code>.</td>
+              <td>required for <code>s7v:BOOL</code> values addressed with the explicit terms</td>
+              <td>Integer from 0 to 7</td>
+            </tr>
+            <tr>
+              <td><code>s7v:length</code></td>
+              <td>
+                Maximum number of characters of a <code>s7v:STRING</code> or <code>s7v:WSTRING</code> value, or the
+                number of bytes to transfer for a value of variable size.
+              </td>
+              <td>optional, default 254 for strings</td>
+              <td>Positive integer</td>
+            </tr>
+            <tr>
+              <td><code>s7v:scale</code></td>
+              <td>
+                Factor applied to the controller value to obtain the application-facing value, see
+                <a href="#value-conversion">Value Conversion</a>.
+              </td>
+              <td>optional, default <code>1</code></td>
+              <td>Number</td>
+            </tr>
+            <tr>
+              <td><code>s7v:offset</code></td>
+              <td>
+                Summand applied after <code>s7v:scale</code>, see <a href="#value-conversion">Value Conversion</a>.
+              </td>
+              <td>optional, default <code>0</code></td>
+              <td>Number</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="memory-areas">
+        <h3>Memory Areas</h3>
+        <p>
+          The memory area determines which part of the controller memory the byte offset refers to. Not every family
+          exposes every area.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Address letter</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>I</code></td>
+              <td>Inputs</td>
+              <td><code>%I</code>, also written <code>%E</code> in German projects</td>
+              <td>Process image of the digital and analog inputs</td>
+            </tr>
+            <tr>
+              <td><code>Q</code></td>
+              <td>Outputs</td>
+              <td><code>%Q</code>, also written <code>%A</code> in German projects</td>
+              <td>Process image of the digital and analog outputs</td>
+            </tr>
+            <tr>
+              <td><code>M</code></td>
+              <td>Flags or markers</td>
+              <td><code>%M</code></td>
+              <td>Bit memory of the controller program</td>
+            </tr>
+            <tr>
+              <td><code>DB</code></td>
+              <td>Data blocks</td>
+              <td><code>%DB</code><em>n</em></td>
+              <td>User-defined data, addressed by data block number and byte offset</td>
+            </tr>
+            <tr>
+              <td><code>DBI</code></td>
+              <td>Instance data blocks</td>
+              <td><code>%DBI</code><em>n</em></td>
+              <td>Instance data of a function block</td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td>Counters</td>
+              <td><code>%C</code>, also written <code>%Z</code> in German projects</td>
+              <td>Counter values, on the S7-300 and S7-400 families</td>
+            </tr>
+            <tr>
+              <td><code>T</code></td>
+              <td>Timers</td>
+              <td><code>%T</code></td>
+              <td>Timer values, on the S7-300 and S7-400 families</td>
+            </tr>
+            <tr>
+              <td><code>D</code></td>
+              <td>Direct peripheral access</td>
+              <td><code>%D</code></td>
+              <td>Peripheral inputs and outputs, bypassing the process image</td>
+            </tr>
+            <tr>
+              <td><code>LD</code></td>
+              <td>Local data</td>
+              <td><code>%LD</code></td>
+              <td>Local data of the currently executing block</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          An implementation MUST reject an address whose memory area it does not support rather than reading a different
+          area.
+        </p>
+      </section>
+
+      <section id="data-types">
+        <h3>Data Types</h3>
+        <p>
+          The binding identifies S7 data types with terms from the S7Comm vocabulary. The short code is the letter used
+          inside a data block address, for example the <code>W</code> of <code>%DB1.DBW20</code>. The XML Schema column
+          lists the closest built-in datatype [[XMLSCHEMA11-2]], and the last column gives the recommended WoT Data
+          Schema.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Short code and size</th>
+              <th>Closest XML Schema datatype</th>
+              <th>WoT Data Schema recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>s7v:BOOL</code></td>
+              <td><code>X</code>, 1 bit</td>
+              <td><code>xsd:boolean</code></td>
+              <td><code>boolean</code></td>
+            </tr>
+            <tr>
+              <td><code>s7v:BYTE</code></td>
+              <td><code>B</code>, 1 byte</td>
+              <td><code>xsd:unsignedByte</code></td>
+              <td><code>integer</code>, minimum 0, maximum 255</td>
+            </tr>
+            <tr>
+              <td><code>s7v:WORD</code></td>
+              <td><code>W</code>, 2 bytes</td>
+              <td><code>xsd:unsignedShort</code></td>
+              <td><code>integer</code>, minimum 0, maximum 65535</td>
+            </tr>
+            <tr>
+              <td><code>s7v:DWORD</code></td>
+              <td><code>D</code>, 4 bytes</td>
+              <td><code>xsd:unsignedInt</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>s7v:LWORD</code></td>
+              <td><code>X</code>, 8 bytes, S7-1500 only</td>
+              <td><code>xsd:unsignedLong</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>s7v:SINT</code></td>
+              <td><code>B</code>, 1 byte, S7-1200 and S7-1500</td>
+              <td><code>xsd:byte</code></td>
+              <td><code>integer</code>, minimum -128, maximum 127</td>
+            </tr>
+            <tr>
+              <td><code>s7v:USINT</code></td>
+              <td><code>B</code>, 1 byte, S7-1200 and S7-1500</td>
+              <td><code>xsd:unsignedByte</code></td>
+              <td><code>integer</code>, minimum 0, maximum 255</td>
+            </tr>
+            <tr>
+              <td><code>s7v:INT</code></td>
+              <td><code>W</code>, 2 bytes</td>
+              <td><code>xsd:short</code></td>
+              <td><code>integer</code>, minimum -32768, maximum 32767</td>
+            </tr>
+            <tr>
+              <td><code>s7v:UINT</code></td>
+              <td><code>W</code>, 2 bytes, S7-1200 and S7-1500</td>
+              <td><code>xsd:unsignedShort</code></td>
+              <td><code>integer</code>, minimum 0, maximum 65535</td>
+            </tr>
+            <tr>
+              <td><code>s7v:DINT</code></td>
+              <td><code>D</code>, 4 bytes</td>
+              <td><code>xsd:int</code></td>
+              <td><code>integer</code>, minimum -2147483648, maximum 2147483647</td>
+            </tr>
+            <tr>
+              <td><code>s7v:UDINT</code></td>
+              <td><code>D</code>, 4 bytes, S7-1200 and S7-1500</td>
+              <td><code>xsd:unsignedInt</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>s7v:LINT</code></td>
+              <td><code>X</code>, 8 bytes, S7-1500 only</td>
+              <td><code>xsd:long</code></td>
+              <td><code>integer</code></td>
+            </tr>
+            <tr>
+              <td><code>s7v:ULINT</code></td>
+              <td><code>X</code>, 8 bytes, S7-1500 only</td>
+              <td><code>xsd:unsignedLong</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>s7v:REAL</code></td>
+              <td><code>D</code>, 4 bytes</td>
+              <td><code>xsd:float</code></td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>s7v:LREAL</code></td>
+              <td><code>X</code>, 8 bytes, S7-1200 and S7-1500</td>
+              <td><code>xsd:double</code></td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>s7v:CHAR</code></td>
+              <td><code>B</code>, 1 byte</td>
+              <td><code>xsd:string</code></td>
+              <td><code>string</code>, one character</td>
+            </tr>
+            <tr>
+              <td><code>s7v:WCHAR</code></td>
+              <td><code>W</code>, 2 bytes, S7-1200 and S7-1500</td>
+              <td><code>xsd:string</code></td>
+              <td><code>string</code>, one character</td>
+            </tr>
+            <tr>
+              <td><code>s7v:STRING</code></td>
+              <td><code>B</code>, 2 header bytes plus the declared length</td>
+              <td><code>xsd:string</code></td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>s7v:WSTRING</code></td>
+              <td><code>W</code>, 4 header bytes plus twice the declared length, S7-1200 and S7-1500</td>
+              <td><code>xsd:string</code></td>
+              <td><code>string</code></td>
+            </tr>
+            <tr>
+              <td><code>s7v:DATE</code></td>
+              <td><code>W</code>, 2 bytes, days since 1990-01-01</td>
+              <td><code>xsd:date</code></td>
+              <td><code>string</code>, ISO 8601 date</td>
+            </tr>
+            <tr>
+              <td><code>s7v:TIME</code></td>
+              <td><code>D</code>, 4 bytes, milliseconds</td>
+              <td><code>xsd:duration</code></td>
+              <td><code>string</code>, ISO 8601 duration</td>
+            </tr>
+            <tr>
+              <td><code>s7v:LTIME</code></td>
+              <td><code>X</code>, 8 bytes, nanoseconds, S7-1500 only</td>
+              <td><code>xsd:duration</code></td>
+              <td><code>string</code>, ISO 8601 duration</td>
+            </tr>
+            <tr>
+              <td><code>s7v:TOD</code></td>
+              <td><code>D</code>, 4 bytes, milliseconds since midnight</td>
+              <td><code>xsd:time</code></td>
+              <td><code>string</code>, ISO 8601 time</td>
+            </tr>
+            <tr>
+              <td><code>s7v:LTOD</code></td>
+              <td><code>X</code>, 8 bytes, nanoseconds since midnight, S7-1500 only</td>
+              <td><code>xsd:time</code></td>
+              <td><code>string</code>, ISO 8601 time</td>
+            </tr>
+            <tr>
+              <td><code>s7v:DT</code></td>
+              <td><code>B</code>, 8 bytes, BCD-coded date and time</td>
+              <td><code>xsd:dateTime</code></td>
+              <td><code>string</code>, ISO 8601 date and time</td>
+            </tr>
+            <tr>
+              <td><code>s7v:LDT</code></td>
+              <td><code>X</code>, 8 bytes, nanoseconds since 1970-01-01, S7-1500 only</td>
+              <td><code>xsd:dateTime</code></td>
+              <td><code>string</code>, ISO 8601 date and time</td>
+            </tr>
+            <tr>
+              <td><code>s7v:DTL</code></td>
+              <td><code>B</code>, 12 bytes, structured date and time, S7-1200 and S7-1500</td>
+              <td><code>xsd:dateTime</code></td>
+              <td><code>string</code>, ISO 8601 date and time</td>
+            </tr>
+            <tr>
+              <td><code>s7v:S5TIME</code></td>
+              <td><code>W</code>, 2 bytes, BCD time base and value, S7-300 and S7-400</td>
+              <td><code>xsd:duration</code></td>
+              <td><code>string</code>, ISO 8601 duration</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          All multi-byte values are transferred in big-endian byte order, which is the byte order of the S7 controller
+          families. A <code>s7v:BOOL</code> value is read and written as a single bit and therefore needs a bit offset,
+          either in the address or in <code>s7v:bitOffset</code>.
+        </p>
+        <p>
+          A <code>s7v:STRING</code> value starts with two bytes that hold the declared maximum length and the current
+          length, followed by the characters. An implementation MUST use the current length when decoding and MUST set
+          it when encoding, and MUST NOT write more characters than the declared maximum length. A
+          <code>s7v:WSTRING</code> value uses the same layout with two words instead of two bytes and two bytes per
+          character.
+        </p>
+        <p>Implementations MUST reject an unsupported type rather than silently decode it as another type.</p>
+      </section>
+
+      <section id="value-conversion">
+        <h3>Value Conversion</h3>
+        <p>
+          S7 programs frequently keep scaled integers, for example a temperature in tenths of a degree in an
+          <code>s7v:INT</code> variable, or a raw analog value between 0 and 27648. A Form MAY therefore carry
+          <code>s7v:scale</code> and <code>s7v:offset</code>.
+        </p>
+        <p>
+          When reading, a Consumer computes the application-facing value as
+          <code>value = raw &times; s7v:scale + s7v:offset</code>, and when writing it applies the inverse,
+          <code>raw = (value &minus; s7v:offset) / s7v:scale</code>, rounding to the nearest representable value of the
+          declared <code>type</code>. These are the same two terms, with the same semantics, as in the Modbus and
+          EtherNet/IP bindings, so that an author learns one rule for all three.
+        </p>
+        <pre class="example json" title="Analog input scaled to degrees Celsius">
+{
+  "href": "%25IW64:INT",
+  "op": ["readproperty"],
+  "type": "s7v:INT",
+  "s7v:scale": 0.0036169,
+  "s7v:offset": -50
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="operation-mappings">
+      <h2>Operation Mappings</h2>
+
+      <section id="default-mappings">
+        <h3>Default Mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>S7Comm behavior</th>
+              <th>Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>
+                Send an S7 Read Variable request for the addressed memory area, byte offset, and length, and decode the
+                returned bytes according to <code>type</code>.
+              </td>
+              <td>The Form MUST identify a readable area.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>
+                Encode the supplied value according to <code>type</code> and send it with an S7 Write Variable request.
+                A <code>s7v:BOOL</code> value is written as a single bit, so that the neighboring bits of the byte are
+                not affected.
+              </td>
+              <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td>
+                Repeatedly read the variable and notify the Consumer when a sample is available or its value changes,
+                according to implementation behavior.
+              </td>
+              <td>
+                <code>observable</code> SHOULD be <code>true</code>; <code>pollingTime</code> controls the requested
+                interval.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          This version of the binding does not use the cyclic push service of the S7-300 and S7-400 families, which is
+          not available on the S7-1200 and S7-1500 families [[PLC4X-S7]]. An implementation realizes
+          <code>observeproperty</code> by polling, SHOULD use <code>pollingTime</code> when supplied, and MAY enforce a
+          minimum interval to protect the controller and network.
+        </p>
+        <p>
+          An implementation MAY combine the reads of several Forms of the same endpoint into a single request, as long
+          as the request stays within the negotiated PDU size. Values larger than the PDU size MUST be transferred in
+          several requests.
+        </p>
+      </section>
+
+      <section id="action-event-mappings">
+        <h3>Action and Event Mappings</h3>
+        <p>No default mapping is defined for:</p>
+        <ul>
+          <li><code>invokeaction</code>;</li>
+          <li><code>subscribeevent</code>;</li>
+          <li><code>unsubscribeevent</code>; or</li>
+          <li>WoT Event affordances.</li>
+        </ul>
+        <p>
+          A Thing Description conforming to this binding MUST NOT advertise those operations on an <code>s7</code> Form
+          unless it also declares and documents an additional binding extension. The alarm services of the S7-300 and
+          S7-400 families are the natural basis for a future Event mapping.
+        </p>
+      </section>
+    </section>
+
+    <section id="payload-mapping">
+      <h2>Payload Mapping</h2>
+      <p>
+        Values are represented at the WoT Consumer boundary as the JSON value compatible with the Property's WoT Data
+        Schema. The binding implementation converts between that value and the S7 wire representation, applying
+        <a href="#value-conversion">Value Conversion</a> when it is declared.
+      </p>
+      <p>
+        A Consumer MUST use both the WoT Data Schema and the Form's S7 <code>type</code>. The WoT Data Schema describes
+        the application-facing value, while the Form term identifies the controller representation.
+      </p>
+      <p>
+        This version of the binding does not describe the layout of a user-defined structure inside a data block. A
+        structured value is described by one Form per member, each addressing its own byte offset, which is the access
+        method that both surveyed implementations support.
+      </p>
+    </section>
+
+    <section id="security-considerations" class="informative">
+      <h2>Security Considerations</h2>
+      <p>
+        S7Comm, as used by this binding, provides no authentication, no authorization, and no confidentiality. A request
+        carries no credential, and the payload travels in clear text over ISO-on-TCP. Any station that can reach TCP
+        port 102 of the controller can read and write the memory areas that the controller exposes.
+      </p>
+      <p>
+        Controllers offer protection mechanisms outside the protocol data exchange. S7-300 and S7-400 CPUs support
+        protection levels with a password that can make the CPU read-only or block access entirely. S7-1200 and S7-1500
+        CPUs add configurable access levels, the option to disable the PUT/GET communication that this binding relies
+        on, and, on recent firmware, encrypted communication for the engineering connection. These are configured in the
+        engineering project, not in the Thing Description.
+      </p>
+      <p>
+        A Thing Description MUST accurately describe the security applied to the interaction endpoint. Because the
+        protocol itself carries no credential, a Thing Description for a plain S7Comm endpoint uses the
+        <code>nosec</code> security scheme. A binding implementation MUST NOT infer that <code>nosec</code> authorizes
+        access; controllers are expected to be operated on a protected network segment, and authorization remains a
+        deployment responsibility.
+      </p>
+    </section>
+
+    <section id="examples" class="informative">
+      <h2>Examples</h2>
+
+      <section id="example-data-block">
+        <h3>Data Block Variable</h3>
+        <pre class="example json" title="S7-1500 Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "s7v": "https://www.w3.org/2026/wot/s7comm"
+    }
+  ],
+  "id": "urn:example:s7:line1",
+  "title": "Filling Line 1",
+  "base": "s7://192.168.0.10/0,1/",
+  "s7v:controller": "S7_1500",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "FillLevel": {
+      "title": "Fill level",
+      "type": "number",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "%25DB1.DBD20:REAL",
+          "op": ["readproperty", "observeproperty", "writeproperty"],
+          "type": "s7v:REAL",
+          "pollingTime": 1000,
+          "s7v:timeout": 2000
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-bit">
+        <h3>Read-only Input Bit</h3>
+        <pre class="example json" title="Input bit">
+{
+  "EmergencyStop": {
+    "type": "boolean",
+    "readOnly": true,
+    "observable": true,
+    "forms": [
+      {
+        "href": "%25I0.3:BOOL",
+        "op": ["readproperty", "observeproperty"],
+        "type": "s7v:BOOL",
+        "pollingTime": 500
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-explicit-terms">
+        <h3>Explicit Address Terms with Scaling</h3>
+        <pre class="example json" title="Explicit address terms">
+{
+  "TankTemperature": {
+    "type": "number",
+    "readOnly": true,
+    "observable": true,
+    "forms": [
+      {
+        "href": "TankTemperature",
+        "op": ["readproperty", "observeproperty"],
+        "type": "s7v:INT",
+        "s7v:area": "DB",
+        "s7v:dbNumber": 12,
+        "s7v:byteOffset": 4,
+        "s7v:scale": 0.1,
+        "pollingTime": 5000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-string">
+        <h3>String in a Data Block</h3>
+        <pre class="example json" title="String value">
+{
+  "BatchId": {
+    "type": "string",
+    "readOnly": true,
+    "forms": [
+      {
+        "href": "%25DB1.DB100:STRING(20)",
+        "op": ["readproperty"],
+        "type": "s7v:STRING",
+        "s7v:length": 20
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-s7-200">
+        <h3>S7-200 with Explicit TSAPs</h3>
+        <pre class="example json" title="S7-200 Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "s7v": "https://www.w3.org/2026/wot/s7comm"
+    }
+  ],
+  "id": "urn:example:s7:pump-skid",
+  "title": "Pump Skid",
+  "base": "s7://192.168.12.100/0,0/",
+  "s7v:controller": "S7_200",
+  "s7v:localTsap": 512,
+  "s7v:remoteTsap": 512,
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "PumpSpeed": {
+      "title": "Pump speed",
+      "type": "integer",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "%25DB1.DBW310:INT",
+          "op": ["readproperty", "observeproperty"],
+          "type": "s7v:INT",
+          "pollingTime": 2000
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="implementation-notes" class="informative">
+      <h2>Implementation Notes</h2>
+      <p>This binding was derived from two open-source implementations.</p>
+      <p>The Siemens driver of the OPC Foundation UA Edge Translator [[UA-EDGETRANSLATOR-S7]] currently:</p>
+      <ul>
+        <li>
+          connects over ISO-on-TCP with a fixed port 102 and an explicit rack and slot, defaulting to rack 0, slot 1;
+        </li>
+        <li>
+          describes a variable with the Form members <code>s7:target</code>, <code>s7:dbnumber</code>,
+          <code>s7:start</code>, <code>s7:pos</code>, <code>s7:size</code>, and <code>s7:maxlen</code>, which correspond
+          to <code>s7v:area</code>, <code>s7v:dbNumber</code>, <code>s7v:byteOffset</code>, <code>s7v:bitOffset</code>,
+          and <code>s7v:length</code> of this binding;
+        </li>
+        <li>
+          uses the area codes <code>DB</code>, <code>MB</code>, <code>EB</code>, <code>AB</code>, <code>TM</code>, and
+          <code>CT</code>, which correspond to <code>DB</code>, <code>M</code>, <code>I</code>, <code>Q</code>,
+          <code>T</code>, and <code>C</code>;
+        </li>
+        <li>
+          carries the canonical Siemens type name in <code>s7:s7type</code>, with the same set of names that this
+          binding uses in <code>type</code>; and
+        </li>
+        <li>reads a <code>BOOL</code> as a single bit at the absolute bit address, and every other type byte-wise.</li>
+      </ul>
+      <p>The S7 driver of Apache PLC4X [[PLC4X-S7]] currently:</p>
+      <ul>
+        <li>
+          uses the connection string <code>s7://{host}?{options}</code>, with <code>cotp.remote-rack</code>,
+          <code>cotp.remote-slot</code>, <code>cotp.local-tsap</code>, <code>cotp.remote-tsap</code>,
+          <code>controller-type</code>, <code>pdu-size</code>, and <code>read-timeout-ms</code> among the options, all
+          of which this binding expresses in the endpoint URI or in the vocabulary;
+        </li>
+        <li>addresses variables with the TIA Portal notation that this binding adopts for <code>href</code>;</li>
+        <li>supports reading ranges of elements, which this binding leaves out of scope; and</li>
+        <li>
+          supports cyclic and alarm subscriptions and memory-area browsing on the S7-300 and S7-400 families, which this
+          binding leaves out of scope.
+        </li>
+      </ul>
+      <p>
+        Both implementations use the <code>s7</code> prefix for their vocabulary terms. This binding uses
+        <code>s7v</code> so that the terms are not confused with the <code>s7</code> URI scheme.
+      </p>
+    </section>
+  </body>
+</html>

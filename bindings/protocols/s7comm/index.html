@@ -158,7 +158,7 @@
         <h3>Endpoint URI</h3>
         <p>An S7 endpoint is identified by an <code>s7</code> URI:</p>
         <pre class="nohighlight">
-s7-URI = "s7://" host [ ":" port ] "/" rack "," slot
+s7-URI = "s7://" host [ ":" port ] [ "/" rack "," slot ] [ "/" ]
         </pre>
         <p>Where:</p>
         <ul>
@@ -205,7 +205,8 @@ s7-URI = "s7://" host [ ":" port ] "/" rack "," slot
         </table>
         <p>
           A Thing Description SHOULD place the endpoint, including rack and slot, in <code>base</code> and use relative
-          addresses in individual Forms.
+          addresses in individual Forms. Such a <code>base</code> MUST end with <code>/</code>; otherwise reference
+          resolution [[RFC3986]] replaces the rack and slot with the address.
         </p>
         <pre class="example json" title="Endpoint in base">
 {
@@ -232,9 +233,11 @@ s7-URI = "s7://" host [ ":" port ] "/" rack "," slot
         <p>
           The S7-200, the S7-200 Smart, and LOGO! additionally require explicit Transport Service Access Points instead
           of rack and slot addressing. A Thing Description for those devices MUST declare
-          <code>s7v:localTsap</code> and <code>s7v:remoteTsap</code>; both are <code>512</code>, that is
-          <code>0x0200</code>, for the S7-200 family. When a non-zero TSAP is given, it overrides the rack and slot of
-          the endpoint URI.
+          <code>s7v:localTsap</code> and <code>s7v:remoteTsap</code>. The TSAPs are connection configuration values of
+          the individual device, not constants of the family, and authors MUST take them from the device configuration;
+          a Consumer MUST NOT substitute a default. For example, <code>0x0200</code> (<code>512</code>) for both TSAPs
+          is a common configuration of an S7-200, and LOGO! devices commonly use different local and remote values. When
+          a non-zero TSAP is given, it overrides the rack and slot of the endpoint URI.
         </p>
         <p class="note">
           On an S7-200 the <code>V</code> variable memory of the Siemens tooling, such as <code>VW310</code>, is an
@@ -249,11 +252,16 @@ s7-URI = "s7://" host [ ":" port ] "/" rack "," slot
 s7-address-URI = s7-URI "/" address
 address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
                / "%DB" db-number "." "DB" short-code byte-offset [ "." bit-offset ] ":" data-type
+               / "%DB" db-number ":" byte-offset [ "." bit-offset ] ":" data-type
+data-type      = type-name [ "(" length ")" ]
+short-code     = "X" / "B" / "W" / "D"
         </pre>
         <p>
           The <code>address</code> is the address notation of the Siemens engineering tools, so that it can be copied
-          from TIA Portal, and it is the notation that the surveyed implementations parse [[PLC4X-S7]]. Because the
-          percent sign is reserved in URIs, it MUST be percent-encoded as <code>%25</code>, see
+          from TIA Portal, and it is the notation that the surveyed implementations parse [[PLC4X-S7]]. The third
+          alternative is the short data block notation, which is handled identically to the second. The optional
+          <code>length</code> declares the maximum length of a <code>STRING</code> or <code>WSTRING</code> value.
+          Because the percent sign is reserved in URIs, it MUST be percent-encoded as <code>%25</code>, see
           <a href="#reserved-characters">Reserved Characters</a>.
         </p>
         <table class="def">
@@ -289,7 +297,7 @@ address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
               <td>The same shape in the short data block notation</td>
             </tr>
             <tr>
-              <td><code>%DB1.DB0:STRING(80)</code></td>
+              <td><code>%DB1.DBB0:STRING(80)</code></td>
               <td>String of up to 80 characters at byte 0 of data block 1</td>
             </tr>
           </tbody>
@@ -300,7 +308,7 @@ address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
         </p>
         <pre class="example json" title="Relative Form target">
 {
-  "href": "%25DB1.DBW20:INT"
+  "href": "./%25DB1.DBW20:INT"
 }
         </pre>
         <p>
@@ -344,9 +352,15 @@ address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
           address is a single path segment, <code>/</code> MUST be percent-encoded as <code>%2F</code>.
         </p>
         <p>
-          The characters <code>:</code>, <code>.</code>, <code>,</code>, <code>(</code>, and <code>)</code> are allowed
-          in a non-initial path segment and therefore need not be percent-encoded. An implementation MUST percent-decode
-          the address before it is used.
+          Every address contains a colon before the data type. A colon is not allowed in the first segment of a relative
+          reference [[RFC3986]], so a relative <code>href</code> carrying an address MUST start with <code>./</code>, as
+          in <code>./%25DB1.DBW20:INT</code>. Absolute <code>s7</code> URIs need no prefix, because the address is then
+          a non-initial path segment in which <code>:</code>, <code>.</code>, <code>,</code>, <code>(</code>, and
+          <code>)</code> are allowed without encoding.
+        </p>
+        <p>
+          Reference resolution removes the leading <code>./</code>. An implementation MUST percent-decode the address of
+          the resolved URI before it is used.
         </p>
         <pre class="example" title="Percent-encoded address">
 s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
@@ -495,7 +509,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
                 <a href="#value-conversion">Value Conversion</a>.
               </td>
               <td>optional, default <code>1</code></td>
-              <td>Number</td>
+              <td>Non-zero number</td>
             </tr>
             <tr>
               <td><code>s7v:offset</code></td>
@@ -795,7 +809,9 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         <p>
           S7 programs frequently keep scaled integers, for example a temperature in tenths of a degree in an
           <code>s7v:INT</code> variable, or a raw analog value between 0 and 27648. A Form MAY therefore carry
-          <code>s7v:scale</code> and <code>s7v:offset</code>.
+          <code>s7v:scale</code> and <code>s7v:offset</code>. The value of <code>s7v:scale</code> MUST NOT be zero,
+          because a zero factor loses the raw value on reads and makes the inverse conversion on writes undefined; a
+          Consumer MUST reject a Form with a zero <code>s7v:scale</code>.
         </p>
         <p>
           When reading, a Consumer computes the application-facing value as
@@ -806,7 +822,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         </p>
         <pre class="example json" title="Analog input scaled to degrees Celsius">
 {
-  "href": "%25IW64:INT",
+  "href": "./%25IW64:INT",
   "op": ["readproperty"],
   "type": "s7v:INT",
   "s7v:scale": 0.0036169,
@@ -962,7 +978,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       "observable": true,
       "forms": [
         {
-          "href": "%25DB1.DBD20:REAL",
+          "href": "./%25DB1.DBD20:REAL",
           "op": ["readproperty", "observeproperty", "writeproperty"],
           "type": "s7v:REAL",
           "pollingTime": 1000,
@@ -985,7 +1001,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
     "observable": true,
     "forms": [
       {
-        "href": "%25I0.3:BOOL",
+        "href": "./%25I0.3:BOOL",
         "op": ["readproperty", "observeproperty"],
         "type": "s7v:BOOL",
         "pollingTime": 500
@@ -1030,7 +1046,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
     "readOnly": true,
     "forms": [
       {
-        "href": "%25DB1.DB100:STRING(20)",
+        "href": "./%25DB1.DBB100:STRING(20)",
         "op": ["readproperty"],
         "type": "s7v:STRING",
         "s7v:length": 20
@@ -1071,7 +1087,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       "observable": true,
       "forms": [
         {
-          "href": "%25DB1.DBW310:INT",
+          "href": "./%25DB1.DBW310:INT",
           "op": ["readproperty", "observeproperty"],
           "type": "s7v:INT",
           "pollingTime": 2000

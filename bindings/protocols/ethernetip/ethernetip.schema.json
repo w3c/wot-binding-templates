@@ -120,7 +120,10 @@
           "minimum": 0
         },
         "eipv:scale": {
-          "type": "number"
+          "type": "number",
+          "not": {
+            "const": 0
+          }
         },
         "eipv:offset": {
           "type": "number"
@@ -134,7 +137,37 @@
         "required": ["type", "eipv:structureDefinition"]
       }
     },
-    "affordance": {
+    "absoluteEipForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "pattern": "^eip://"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/ethernetipForm"
+      }
+    },
+    "relativeForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "not": {
+              "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
+            }
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/ethernetipForm"
+      }
+    },
+    "absoluteEipAffordances": {
       "type": "object",
       "additionalProperties": {
         "type": "object",
@@ -142,9 +175,61 @@
           "forms": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ethernetipForm"
+              "$ref": "#/definitions/absoluteEipForm"
             }
           }
+        }
+      }
+    },
+    "relativeAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/relativeForm"
+            }
+          }
+        }
+      }
+    },
+    "absoluteEipForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/absoluteEipForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/absoluteEipAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/absoluteEipAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/absoluteEipAffordances"
+        }
+      }
+    },
+    "relativeForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relativeForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/relativeAffordances"
         }
       }
     }
@@ -155,24 +240,37 @@
       "type": "array",
       "contains": {
         "type": "object",
+        "required": ["eipv"],
         "properties": {
           "eipv": {
             "type": "string",
-            "enum": ["https://www.w3.org/2019/wot/eip", "https://www.w3.org/2026/wot/eip"]
+            "const": "https://www.w3.org/2026/wot/eip"
           }
         }
       }
     },
-    "base": {
-      "type": "string",
-      "pattern": "^eip://"
-    },
     "eipv:controller": {
       "type": "string",
       "enum": ["ControlLogix", "CompactLogix", "MicroLogix", "SLC500", "PLC5", "Micro800", "Omron"]
-    },
-    "properties": {
-      "$ref": "#/definitions/affordance"
     }
-  }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/absoluteEipForms"
+    },
+    {
+      "if": {
+        "required": ["base"],
+        "properties": {
+          "base": {
+            "type": "string",
+            "pattern": "^eip://"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/relativeForms"
+      }
+    }
+  ]
 }

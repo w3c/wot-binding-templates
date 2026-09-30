@@ -89,9 +89,10 @@
         individual controller variables with CIP explicit messaging. Its primary target are Rockwell Automation Logix
         5000 family controllers, whose controller-scoped and program-scoped symbolic tags are accessed as described in
         the Logix 5000 Controllers Data Access programming manual [[1756-PM020]]. Controllers that use PCCC file
-        addresses, such as MicroLogix, SLC 500, and PLC-5, are covered by the addressing and vocabulary rules of this
-        binding, but their encodings are not described here in the same detail. Other EtherNet/IP devices, services, and
-        access methods are expected to be covered by future versions.
+        addresses, such as MicroLogix, SLC 500, and PLC-5, are covered by the addressing, vocabulary, and operation
+        mapping rules of this binding at the level of the PCCC commands used, but their payload encodings are not
+        described here in the same detail. Other EtherNet/IP devices, services, and access methods are expected to be
+        covered by future versions.
       </p>
       <p>
         This Web of Things (WoT) protocol binding provides guidance for describing assets that leverage the ODVA
@@ -172,7 +173,7 @@
         <h3>Endpoint URI</h3>
         <p>An EtherNet/IP endpoint is identified by an <code>eip</code> URI:</p>
         <pre class="nohighlight">
-eip-URI    = "eip://" host [ ":" port ] "/" route-path
+eip-URI    = "eip://" host [ ":" port ] [ "/" route-path ] [ "/" ]
 route-path = segment *( "," segment )
         </pre>
         <p>Where:</p>
@@ -181,8 +182,8 @@ route-path = segment *( "," segment )
             <code>host</code> is an IPv4 address, IPv6 literal, or DNS name of the controller or communication module;
           </li>
           <li>
-            <code>port</code> is optional; when omitted, an implementation uses the EtherNet/IP default
-            explicit-messaging port configured by that implementation;
+            <code>port</code> is optional; when omitted, an implementation MUST use TCP port <code>44818</code>, the
+            port registered for EtherNet/IP explicit messaging;
           </li>
           <li>
             <code>route-path</code> is the CIP route from the communication module to the controller, expressed as the
@@ -221,7 +222,8 @@ route-path = segment *( "," segment )
         </table>
         <p>
           A Thing Description SHOULD place the controller endpoint, including the route path, in <code>base</code> and
-          use relative tag references in individual Forms.
+          use relative tag references in individual Forms. Such a <code>base</code> MUST end with <code>/</code>;
+          otherwise reference resolution [[RFC3986]] replaces the route path with the tag path.
         </p>
         <pre class="example json" title="Endpoint in base">
 {
@@ -287,8 +289,9 @@ route-path = segment *( "," segment )
           The symbolic addressing rules in <a href="#symbolic-tag-reference">Symbolic Tag Reference</a> apply to the
           controller families that use Logix symbolic tags. For the families that use PCCC file addresses, the
           <code>tag-path</code> is the file address as written in the controller programming software, for example
-          <code>N7:1</code> for an integer file element or <code>B3:0/3</code> for a bit. Percent-encoding applies as
-          described in <a href="#reserved-characters">Reserved Characters</a>.
+          <code>N7:1</code> for an integer file element or <code>B3:0/3</code> for a bit. Percent-encoding and the
+          relative-reference rule apply as described in <a href="#reserved-characters">Reserved Characters</a>, so these
+          addresses appear in <code>href</code> as <code>./N7:1</code> and <code>./B3:0%2F3</code>.
         </p>
       </section>
 
@@ -344,9 +347,9 @@ eip-tag-URI = eip-URI "/" tag-path [ "?offset=" byte-offset ]
           the tag path. The tag path MUST be percent-decoded first, see
           <a href="#reserved-characters">Reserved Characters</a>.
         </p>
-        <pre class="example" title="Tag path examples">
+        <pre class="example" title="Tag paths as written in href">
 MotorSpeed
-Program:Packaging.Counter
+./Program:Packaging.Counter
 Mixer.Status.Running
 Recipe%5B3%5D.SetPoint
         </pre>
@@ -397,9 +400,17 @@ Recipe%5B3%5D.SetPoint
           tag name.
         </p>
         <p>
-          The characters <code>:</code> and <code>.</code> are allowed in a non-initial path segment and therefore need
-          not be percent-encoded. An implementation MUST percent-decode the tag path before it is used as a symbolic tag
-          expression.
+          A colon in the first segment of a relative reference is not allowed by [[RFC3986]]: a relative
+          <code>href</code> such as <code>Program:Packaging.Counter</code> or <code>N7:1</code> would be parsed as an
+          absolute URI with the scheme <code>Program</code> or <code>N7</code> and would not resolve against the
+          <code>eip</code> base. A relative <code>href</code> whose tag path contains a colon MUST therefore either
+          start with <code>./</code>, as in <code>./Program:Packaging.Counter</code>, or percent-encode the colon as
+          <code>%3A</code>, as in <code>Program%3APackaging.Counter</code>. Authors SHOULD use the <code>./</code> form.
+          Absolute <code>eip</code> URIs need neither, because the colon then appears in a non-initial path segment.
+        </p>
+        <p>
+          The character <code>.</code> needs no encoding, and reference resolution removes the leading <code>./</code>.
+          An implementation MUST percent-decode the tag path of the resolved URI before it is used as a tag expression.
         </p>
         <pre class="example" title="Percent-encoded array tag path">
 eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
@@ -497,7 +508,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
                 <a href="#value-conversion">Value Conversion</a>.
               </td>
               <td>optional, default <code>1</code></td>
-              <td>Number</td>
+              <td>Non-zero number</td>
             </tr>
             <tr>
               <td><code>eipv:offset</code></td>
@@ -530,6 +541,9 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           Logix tags usually hold engineering values, so no conversion is needed. MicroLogix and SLC integer files and
           many Logix programs nevertheless keep scaled integers, for example a temperature in tenths of a degree in an
           <code>eipv:INT</code> tag. A Form MAY therefore carry <code>eipv:scale</code> and <code>eipv:offset</code>.
+          The value of <code>eipv:scale</code> MUST NOT be zero, because a zero factor loses the raw value on reads and
+          makes the inverse conversion on writes undefined; a Consumer MUST reject a Form with a zero
+          <code>eipv:scale</code>.
         </p>
         <p>
           When reading, a Consumer computes the application-facing value as
@@ -845,11 +859,19 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
 
       <section id="default-mappings">
         <h3>Default Mappings</h3>
+        <p>
+          The CIP services used depend on the controller family. The families <code>ControlLogix</code>,
+          <code>CompactLogix</code>, <code>Micro800</code>, and <code>Omron</code> support the symbolic Tag services of
+          [[1756-PM020]]. The families <code>MicroLogix</code>, <code>SLC500</code>, and <code>PLC5</code> do not; they
+          are accessed by sending PCCC commands inside the Execute PCCC service (<code>0x4B</code>) of the PCCC Object
+          (class <code>0x67</code>). An implementation MUST NOT send a symbolic Tag service to a PCCC family.
+        </p>
         <table class="def">
           <thead>
             <tr>
               <th>WoT operation</th>
-              <th>EtherNet/IP behavior</th>
+              <th>Symbolic families</th>
+              <th>PCCC families</th>
               <th>Requirements</th>
             </tr>
           </thead>
@@ -861,7 +883,13 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
                 when the value does not fit into a single reply, to the symbolic tag and decode the returned value
                 according to <code>type</code> or <code>eipv:structureDefinition</code> [[1756-PM020]].
               </td>
-              <td>The Form MUST identify a readable tag.</td>
+              <td>
+                Send a PCCC Protected Typed Logical Read with three address fields (command <code>0x0F</code>, function
+                <code>0xA2</code>) for <code>MicroLogix</code> and <code>SLC500</code>, or a PCCC Typed Read (command
+                <code>0x0F</code>, function <code>0x68</code>) for <code>PLC5</code>, addressing the file, element, and
+                sub-element of the file address, and decode the returned value according to <code>type</code>.
+              </td>
+              <td>The Form MUST identify a readable tag or file element.</td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
@@ -870,13 +898,19 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
                 send it with a CIP Write Tag service (<code>0x4D</code>), or a Write Tag Fragmented service
                 (<code>0x53</code>) when the value does not fit into a single request [[1756-PM020]].
               </td>
+              <td>
+                Encode the supplied value according to <code>type</code> and send it with a PCCC Protected Typed Logical
+                Write with three address fields (function <code>0xAA</code>), or with mask (function <code>0xAB</code>)
+                for a single bit, for <code>MicroLogix</code> and <code>SLC500</code>, or with a PCCC Typed Write
+                (function <code>0x67</code>) for <code>PLC5</code>.
+              </td>
               <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
             </tr>
             <tr>
               <td><code>observeproperty</code></td>
-              <td>
-                Repeatedly read the tag and notify the Consumer when a sample is available or its value changes,
-                according to implementation behavior.
+              <td colspan="2">
+                Repeatedly read the tag or file element as for <code>readproperty</code> and notify the Consumer when a
+                sample is available or its value changes, according to implementation behavior.
               </td>
               <td>
                 <code>observable</code> SHOULD be <code>true</code>; <code>pollingTime</code> controls the requested
@@ -885,6 +919,9 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
             </tr>
           </tbody>
         </table>
+        <p>
+          <code>eipv:structureDefinition</code> and the <code>?offset=</code> query apply to the symbolic families only.
+        </p>
         <p>
           The initial binding does not define a native EtherNet/IP subscription mechanism. An implementation MAY realize
           <code>observeproperty</code> by polling. It SHOULD use <code>pollingTime</code> when supplied and MAY enforce
@@ -1023,7 +1060,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
   "@context": [
     "https://www.w3.org/2022/wot/td/v1.1",
     {
-      "eipv": "https://www.w3.org/2019/wot/eip"
+      "eipv": "https://www.w3.org/2026/wot/eip"
     }
   ],
   "id": "urn:example:logix:controller1",
@@ -1067,7 +1104,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
     "observable": true,
     "forms": [
       {
-        "href": "Program:Packaging.Counter",
+        "href": "./Program:Packaging.Counter",
         "op": ["readproperty", "observeproperty"],
         "type": "eipv:DINT",
         "pollingTime": 2000
@@ -1085,7 +1122,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
   "@context": [
     "https://www.w3.org/2022/wot/td/v1.1",
     {
-      "eipv": "https://www.w3.org/2019/wot/eip"
+      "eipv": "https://www.w3.org/2026/wot/eip"
     }
   ],
   "id": "urn:example:micrologix:line2",
@@ -1106,7 +1143,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
       "observable": true,
       "forms": [
         {
-          "href": "N7:1",
+          "href": "./N7:1",
           "op": ["readproperty", "observeproperty"],
           "type": "eipv:INT",
           "eipv:scale": 0.1,

@@ -379,7 +379,9 @@ Recipe%5B3%5D.SetPoint
         </p>
         <pre class="example json" title="Relative Form target">
 {
-  "href": "MotorSpeed"
+  "href": "MotorSpeed",
+  "op": ["readproperty"],
+  "eipv:type": "eipv:REAL"
 }
         </pre>
         <p>
@@ -454,8 +456,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               </td>
               <td>optional, default <code>ControlLogix</code></td>
               <td>
-                <code>ControlLogix</code>, <code>CompactLogix</code>, <code>MicroLogix</code>, <code>SLC500</code>,
-                <code>PLC5</code>, <code>Micro800</code>, or <code>Omron</code>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#controller-family">Controller Family</a>)
               </td>
             </tr>
           </tbody>
@@ -478,31 +480,55 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               <td><code>href</code></td>
               <td>Symbolic tag reference, resolved against <code>base</code> when relative.</td>
               <td>required</td>
-              <td>URI reference</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>op</code></td>
               <td>WoT operations supported by the Form.</td>
               <td>required</td>
-              <td>Array containing supported operations</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>eipv:type</code></td>
               <td>EtherNet/IP/Logix primitive type used to encode and decode the tag value.</td>
               <td>required for primitive tags</td>
-              <td>One value from <a href="#primitive-data-types">Primitive Data Types</a></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#primitive-data-types">Primitive Data Types</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:service</code></td>
+              <td>
+                Name of the CIP service used to perform the operations of the Form, analogous to
+                <code>htv:methodName</code> in the HTTP binding, see <a href="#service-names">Service Names</a>.
+              </td>
+              <td>optional, default as in <a href="#service-names">Service Names</a></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#service-names">Service Names</a>)
+              </td>
             </tr>
             <tr>
               <td><code>eipv:pollingTime</code></td>
               <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
               <td>optional</td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>eipv:timeout</code></td>
               <td>Maximum time to wait for the controller response, in milliseconds.</td>
               <td>optional</td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>eipv:scale</code></td>
@@ -511,7 +537,10 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
                 <a href="#value-conversion">Value Conversion</a>.
               </td>
               <td>optional, default <code>1</code></td>
-              <td>Non-zero number</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#double"><code>double</code></a
+                >, not zero
+              </td>
             </tr>
             <tr>
               <td><code>eipv:offset</code></td>
@@ -519,13 +548,15 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
                 Summand applied after <code>eipv:scale</code>, see <a href="#value-conversion">Value Conversion</a>.
               </td>
               <td>optional, default <code>0</code></td>
-              <td>Number</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#double"><code>double</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>eipv:structureDefinition</code></td>
               <td>Recursive definition of a structured Logix tag or UDT.</td>
               <td>optional</td>
-              <td>Object defined in <a href="#structured-type-definition">Structured Type Definition</a></td>
+              <td><a href="#structured-type-definition">StructureDefinition</a></td>
             </tr>
           </tbody>
         </table>
@@ -569,17 +600,15 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         <h3>Primitive Data Types</h3>
         <p>
           The binding identifies Logix primitive types with terms from the EtherNet/IP vocabulary. The type names are
-          the CIP and Logix type names defined in [[1756-PM020]]; they are not XML Schema datatypes. The second column
-          gives the CIP data type code that a controller returns in the response of a Read Tag service and that a client
-          sends in a Write Tag service. The third column lists the closest XML Schema built-in datatype
-          [[XMLSCHEMA11-2]] for authors who need one, and the fourth column gives the recommended WoT Data Schema.
+          the CIP and Logix type names defined in [[1756-PM020]]. The second column gives the CIP data type code that a
+          controller returns in the response of a Read Tag service and that a client sends in a Write Tag service, and
+          the third column gives the recommended WoT Data Schema.
         </p>
         <table class="def">
           <thead>
             <tr>
               <th>Value</th>
               <th>Logix type and CIP type code</th>
-              <th>Closest XML Schema datatype</th>
               <th>WoT Data Schema recommendation</th>
             </tr>
           </thead>
@@ -587,97 +616,81 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
             <tr>
               <td><code>eipv:BOOL</code></td>
               <td>Boolean, <code>0xC1</code></td>
-              <td><code>xsd:boolean</code></td>
               <td><code>boolean</code></td>
             </tr>
             <tr>
               <td><code>eipv:SINT</code></td>
               <td>Signed 8-bit integer, <code>0xC2</code></td>
-              <td><code>xsd:byte</code></td>
               <td><code>integer</code>, minimum -128, maximum 127</td>
             </tr>
             <tr>
               <td><code>eipv:INT</code></td>
               <td>Signed 16-bit integer, <code>0xC3</code></td>
-              <td><code>xsd:short</code></td>
               <td><code>integer</code>, minimum -32768, maximum 32767</td>
             </tr>
             <tr>
               <td><code>eipv:DINT</code></td>
               <td>Signed 32-bit integer, <code>0xC4</code></td>
-              <td><code>xsd:int</code></td>
               <td><code>integer</code>, minimum -2147483648, maximum 2147483647</td>
             </tr>
             <tr>
               <td><code>eipv:LINT</code></td>
               <td>Signed 64-bit integer, <code>0xC5</code></td>
-              <td><code>xsd:long</code></td>
               <td><code>integer</code></td>
             </tr>
             <tr>
               <td><code>eipv:USINT</code></td>
               <td>Unsigned 8-bit integer, <code>0xC6</code></td>
-              <td><code>xsd:unsignedByte</code></td>
               <td><code>integer</code>, minimum 0, maximum 255</td>
             </tr>
             <tr>
               <td><code>eipv:UINT</code></td>
               <td>Unsigned 16-bit integer, <code>0xC7</code></td>
-              <td><code>xsd:unsignedShort</code></td>
               <td><code>integer</code>, minimum 0, maximum 65535</td>
             </tr>
             <tr>
               <td><code>eipv:UDINT</code></td>
               <td>Unsigned 32-bit integer, <code>0xC8</code></td>
-              <td><code>xsd:unsignedInt</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>eipv:ULINT</code></td>
               <td>Unsigned 64-bit integer, <code>0xC9</code></td>
-              <td><code>xsd:unsignedLong</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>eipv:REAL</code></td>
               <td>IEEE 754 single-precision floating point, <code>0xCA</code></td>
-              <td><code>xsd:float</code></td>
               <td><code>number</code></td>
             </tr>
             <tr>
               <td><code>eipv:LREAL</code></td>
               <td>IEEE 754 double-precision floating point, <code>0xCB</code></td>
-              <td><code>xsd:double</code></td>
               <td><code>number</code></td>
             </tr>
             <tr>
               <td><code>eipv:BYTE</code></td>
               <td>8-bit string, <code>0xD1</code></td>
-              <td><code>xsd:unsignedByte</code></td>
               <td><code>integer</code>, minimum 0, maximum 255</td>
             </tr>
             <tr>
               <td><code>eipv:WORD</code></td>
               <td>16-bit string, <code>0xD2</code></td>
-              <td><code>xsd:unsignedShort</code></td>
               <td><code>integer</code>, minimum 0, maximum 65535</td>
             </tr>
             <tr>
               <td><code>eipv:DWORD</code></td>
               <td>32-bit string, <code>0xD3</code></td>
-              <td><code>xsd:unsignedInt</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>eipv:LWORD</code></td>
               <td>64-bit string, <code>0xD4</code></td>
-              <td><code>xsd:unsignedLong</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>eipv:STRING</code></td>
               <td>Predefined Logix <code>STRING</code> structure, transferred as a structure (<code>0xA0</code>)</td>
-              <td><code>xsd:string</code></td>
               <td><code>string</code></td>
             </tr>
           </tbody>
@@ -722,16 +735,18 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           </thead>
           <tbody>
             <tr>
-              <td><code>typeName</code></td>
+              <td><code>eipv:typeName</code></td>
               <td>Controller-defined name of the UDT.</td>
               <td>required</td>
-              <td>string</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
             </tr>
             <tr>
-              <td><code>fields</code></td>
+              <td><code>eipv:fields</code></td>
               <td>Ordered field definitions.</td>
               <td>required</td>
-              <td>array of field-definition objects</td>
+              <td>Array of <a href="#structured-type-definition">FieldDefinition</a></td>
             </tr>
           </tbody>
         </table>
@@ -747,46 +762,66 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           </thead>
           <tbody>
             <tr>
-              <td><code>name</code></td>
+              <td><code>eipv:name</code></td>
               <td>Field name in the UDT.</td>
               <td>required</td>
-              <td>string</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
             </tr>
             <tr>
-              <td><code>type</code></td>
+              <td><code>eipv:type</code></td>
               <td>Primitive type from <a href="#primitive-data-types">Primitive Data Types</a>.</td>
               <td>required for primitive fields</td>
-              <td>string</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#primitive-data-types">Primitive Data Types</a>)
+              </td>
             </tr>
             <tr>
-              <td><code>offset</code></td>
+              <td><code>eipv:byteOffset</code></td>
               <td>Byte offset of the field in the encoded structure.</td>
               <td>required</td>
-              <td>non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
             </tr>
             <tr>
-              <td><code>bitOffset</code></td>
-              <td>Bit position of a <code>eipv:BOOL</code> field inside the byte identified by <code>offset</code>.</td>
+              <td><code>eipv:bitOffset</code></td>
+              <td>
+                Bit position of a <code>eipv:BOOL</code> field inside the byte identified by
+                <code>eipv:byteOffset</code>.
+              </td>
               <td>required for <code>eipv:BOOL</code> fields</td>
-              <td>integer from 0 to 7</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"
+                  ><code>unsignedByte</code></a
+                >, from 0 to 7
+              </td>
             </tr>
             <tr>
               <td><code>description</code></td>
-              <td>Human-readable description of the field.</td>
+              <td>
+                Human-readable description of the field. This is the <code>description</code> term of the TD core
+                vocabulary [[WOT-THING-DESCRIPTION]] and is therefore not prefixed.
+              </td>
               <td>optional</td>
-              <td>string</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>eipv:structureDefinition</code></td>
               <td>Nested UDT definition.</td>
               <td>required for nested UDT fields</td>
-              <td>structure-definition object</td>
+              <td><a href="#structured-type-definition">StructureDefinition</a></td>
             </tr>
           </tbody>
         </table>
         <p>
-          A field MUST use either <code>type</code> for a primitive field or <code>eipv:structureDefinition</code> for a
-          nested UDT field. A consumer MUST process nested structure definitions recursively.
+          A field MUST use either <code>eipv:type</code> for a primitive field or
+          <code>eipv:structureDefinition</code> for a nested UDT field. A consumer MUST process nested structure
+          definitions recursively.
         </p>
         <p>
           The offsets MUST describe the layout that the controller uses on the wire, as documented in [[1756-PM020]]. In
@@ -800,7 +835,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           </li>
           <li>
             consecutive <code>BOOL</code> members are packed into the bits of a single byte or word, so that
-            <code>offset</code> alone does not identify such a member and <code>bitOffset</code> MUST be given;
+            <code>eipv:byteOffset</code> alone does not identify such a member and <code>eipv:bitOffset</code> MUST be
+            given;
           </li>
           <li>
             a nested structure member starts at the alignment required by its own largest member, and its field offsets
@@ -815,19 +851,19 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         <pre class="example json" title="Structure definition">
 {
   "eipv:structureDefinition": {
-    "typeName": "MotorStatus",
-    "fields": [
+    "eipv:typeName": "MotorStatus",
+    "eipv:fields": [
       {
-        "name": "Running",
-        "type": "eipv:BOOL",
-        "offset": 0,
-        "bitOffset": 0,
+        "eipv:name": "Running",
+        "eipv:type": "eipv:BOOL",
+        "eipv:byteOffset": 0,
+        "eipv:bitOffset": 0,
         "description": "Indicates whether the motor is running"
       },
       {
-        "name": "Speed",
-        "type": "eipv:REAL",
-        "offset": 4,
+        "eipv:name": "Speed",
+        "eipv:type": "eipv:REAL",
+        "eipv:byteOffset": 4,
         "description": "Actual motor speed"
       }
     ]
@@ -935,6 +971,85 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         </p>
       </section>
 
+      <section id="service-names">
+        <h3>Service Names</h3>
+        <p>
+          A Form MAY name the CIP service that performs its operations with <code>eipv:service</code>, in the same way
+          that <code>htv:methodName</code> names the HTTP method in the HTTP binding. When the term is absent, a
+          Consumer uses the default service for the operation and controller family given below.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>CIP service</th>
+              <th>Controller families</th>
+              <th>Default for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ReadTag</code></td>
+              <td>Read Tag, <code>0x4C</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td><code>readproperty</code>, <code>observeproperty</code></td>
+            </tr>
+            <tr>
+              <td><code>ReadTagFragmented</code></td>
+              <td>Read Tag Fragmented, <code>0x52</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td>none</td>
+            </tr>
+            <tr>
+              <td><code>WriteTag</code></td>
+              <td>Write Tag, <code>0x4D</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td><code>writeproperty</code></td>
+            </tr>
+            <tr>
+              <td><code>WriteTagFragmented</code></td>
+              <td>Write Tag Fragmented, <code>0x53</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td>none</td>
+            </tr>
+            <tr>
+              <td><code>ExecutePCCC</code></td>
+              <td>Execute PCCC, <code>0x4B</code>, of the PCCC Object, class <code>0x67</code></td>
+              <td>PCCC</td>
+              <td><code>readproperty</code>, <code>writeproperty</code>, <code>observeproperty</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The read services MUST only be used with <code>readproperty</code> and <code>observeproperty</code>, and the
+          write services only with <code>writeproperty</code>. A Form that names a read or write service therefore
+          carries only the matching operations, and a property that is both readable and writable then uses one Form per
+          service, as in the HTTP binding. A Consumer MUST reject a Form that names a service which the declared
+          controller family does not support.
+        </p>
+        <p>
+          When <code>ReadTag</code> or <code>WriteTag</code> is used, either explicitly or by default, an implementation
+          MAY switch to the corresponding fragmented service when the value does not fit into a single message. Naming a
+          fragmented service requests fragmented transfer from the first message on.
+        </p>
+        <pre class="example json" title="One Form per service">
+{
+  "forms": [
+    {
+      "href": "Recipe",
+      "op": ["readproperty", "observeproperty"],
+      "eipv:service": "ReadTagFragmented"
+    },
+    {
+      "href": "Recipe",
+      "op": ["writeproperty"],
+      "eipv:service": "WriteTagFragmented"
+    }
+  ]
+}
+        </pre>
+      </section>
+
       <section id="action-event-mappings">
         <h3>Action and Event Mappings</h3>
         <p>No default mapping is defined for:</p>
@@ -971,7 +1086,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         <h3>Structured Values</h3>
         <p>
           A structured Logix tag is represented to the WoT Consumer as a JSON object. Field names in the object
-          correspond to the <code>name</code> members in <code>eipv:structureDefinition.fields</code>.
+          correspond to the <code>eipv:name</code> members in <code>eipv:fields</code> of
+          <code>eipv:structureDefinition</code>.
         </p>
         <pre class="example json" title="Application-facing value">
 {
@@ -980,8 +1096,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
 }
         </pre>
         <p>
-          The binding implementation uses each field's <code>offset</code>, its <code>bitOffset</code> for packed
-          <code>eipv:BOOL</code> members, and its primitive or nested type definition to decode and encode the
+          The binding implementation uses each field's <code>eipv:byteOffset</code>, its <code>eipv:bitOffset</code> for
+          packed <code>eipv:BOOL</code> members, and its primitive or nested type definition to decode and encode the
           controller value. When writing a structured tag, the implementation MUST preserve the bytes that no field
           covers, such as alignment padding, which requires reading the tag before writing it back.
         </p>
@@ -1187,34 +1303,34 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           "op": ["readproperty", "observeproperty", "writeproperty"],
           "eipv:pollingTime": 1000,
           "eipv:structureDefinition": {
-            "typeName": "LineStateType",
-            "fields": [
+            "eipv:typeName": "LineStateType",
+            "eipv:fields": [
               {
-                "name": "Running",
-                "type": "eipv:BOOL",
-                "offset": 0,
-                "bitOffset": 0
+                "eipv:name": "Running",
+                "eipv:type": "eipv:BOOL",
+                "eipv:byteOffset": 0,
+                "eipv:bitOffset": 0
               },
               {
-                "name": "Speed",
-                "type": "eipv:REAL",
-                "offset": 4
+                "eipv:name": "Speed",
+                "eipv:type": "eipv:REAL",
+                "eipv:byteOffset": 4
               },
               {
-                "name": "Drive",
-                "offset": 8,
+                "eipv:name": "Drive",
+                "eipv:byteOffset": 8,
                 "eipv:structureDefinition": {
-                  "typeName": "DriveStateType",
-                  "fields": [
+                  "eipv:typeName": "DriveStateType",
+                  "eipv:fields": [
                     {
-                      "name": "Current",
-                      "type": "eipv:REAL",
-                      "offset": 0
+                      "eipv:name": "Current",
+                      "eipv:type": "eipv:REAL",
+                      "eipv:byteOffset": 0
                     },
                     {
-                      "name": "FaultCode",
-                      "type": "eipv:DINT",
-                      "offset": 4
+                      "eipv:name": "FaultCode",
+                      "eipv:type": "eipv:DINT",
+                      "eipv:byteOffset": 4
                     }
                   ]
                 }

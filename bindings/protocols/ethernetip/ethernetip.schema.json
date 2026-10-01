@@ -30,32 +30,32 @@
     "structureDefinition": {
       "type": "object",
       "properties": {
-        "typeName": {
+        "eipv:typeName": {
           "type": "string"
         },
-        "fields": {
+        "eipv:fields": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/fieldDefinition"
           }
         }
       },
-      "required": ["typeName", "fields"]
+      "required": ["eipv:typeName", "eipv:fields"]
     },
     "fieldDefinition": {
       "type": "object",
       "properties": {
-        "name": {
+        "eipv:name": {
           "type": "string"
         },
-        "type": {
+        "eipv:type": {
           "$ref": "#/definitions/eipPrimitiveType"
         },
-        "offset": {
+        "eipv:byteOffset": {
           "type": "integer",
           "minimum": 0
         },
-        "bitOffset": {
+        "eipv:bitOffset": {
           "type": "integer",
           "minimum": 0,
           "maximum": 7
@@ -67,21 +67,21 @@
           "$ref": "#/definitions/structureDefinition"
         }
       },
-      "required": ["name", "offset"],
+      "required": ["eipv:name", "eipv:byteOffset"],
       "if": {
         "properties": {
-          "type": {
+          "eipv:type": {
             "const": "eipv:BOOL"
           }
         },
-        "required": ["type"]
+        "required": ["eipv:type"]
       },
       "then": {
-        "required": ["bitOffset"]
+        "required": ["eipv:bitOffset"]
       },
       "oneOf": [
         {
-          "required": ["type"],
+          "required": ["eipv:type"],
           "not": {
             "required": ["eipv:structureDefinition"]
           }
@@ -89,7 +89,7 @@
         {
           "required": ["eipv:structureDefinition"],
           "not": {
-            "required": ["type"]
+            "required": ["eipv:type"]
           }
         }
       ]
@@ -110,6 +110,10 @@
         },
         "eipv:type": {
           "$ref": "#/definitions/eipPrimitiveType"
+        },
+        "eipv:service": {
+          "type": "string",
+          "enum": ["ReadTag", "ReadTagFragmented", "WriteTag", "WriteTagFragmented", "ExecutePCCC"]
         },
         "eipv:pollingTime": {
           "type": "integer",
@@ -135,7 +139,47 @@
       "required": ["href", "op"],
       "not": {
         "required": ["eipv:type", "eipv:structureDefinition"]
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["eipv:service"],
+            "properties": {
+              "eipv:service": {
+                "enum": ["ReadTag", "ReadTagFragmented"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "items": {
+                  "enum": ["readproperty", "observeproperty"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["eipv:service"],
+            "properties": {
+              "eipv:service": {
+                "enum": ["WriteTag", "WriteTagFragmented"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "items": {
+                  "const": "writeproperty"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "absoluteEipForm": {
       "if": {

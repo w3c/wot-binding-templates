@@ -312,7 +312,9 @@ short-code     = "X" / "B" / "W" / "D"
         </p>
         <pre class="example json" title="Relative Form target">
 {
-  "href": "./%25DB1.DBW20:INT"
+  "href": "./%25DB1.DBW20:INT",
+  "op": ["readproperty"],
+  "s7v:type": "s7v:INT"
 }
         </pre>
         <p>
@@ -402,21 +404,29 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
               <td>Controller family, see <a href="#controller-family">Controller Family</a>.</td>
               <td>optional</td>
               <td>
-                <code>ANY</code>, <code>S7_200</code>, <code>S7_200_SMART</code>, <code>S7_300</code>,
-                <code>S7_400</code>, <code>S7_1200</code>, <code>S7_1500</code>, or <code>LOGO</code>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#controller-family">Controller Family</a>)
               </td>
             </tr>
             <tr>
               <td><code>s7v:localTsap</code></td>
               <td>Local Transport Service Access Point of the connection.</td>
               <td>required for <code>S7_200</code>, <code>S7_200_SMART</code>, and <code>LOGO</code></td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"
+                  ><code>unsignedShort</code></a
+                >
+              </td>
             </tr>
             <tr>
               <td><code>s7v:remoteTsap</code></td>
               <td>Remote Transport Service Access Point of the connection.</td>
               <td>required for <code>S7_200</code>, <code>S7_200_SMART</code>, and <code>LOGO</code></td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"
+                  ><code>unsignedShort</code></a
+                >
+              </td>
             </tr>
             <tr>
               <td><code>s7v:pduSize</code></td>
@@ -425,7 +435,11 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
                 how much data one request can transfer.
               </td>
               <td>optional</td>
-              <td>Integer, at least 128</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedShort"
+                  ><code>unsignedShort</code></a
+                >, at least 128
+              </td>
             </tr>
           </tbody>
         </table>
@@ -447,55 +461,92 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
               <td><code>href</code></td>
               <td>Variable address, resolved against <code>base</code> when relative.</td>
               <td>required</td>
-              <td>URI reference</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>op</code></td>
               <td>WoT operations supported by the Form.</td>
               <td>required</td>
-              <td>Array containing supported operations</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>s7v:type</code></td>
               <td>S7 data type used to encode and decode the value.</td>
               <td>required</td>
-              <td>One value from <a href="#data-types">Data Types</a></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#data-types">Data Types</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>s7v:service</code></td>
+              <td>
+                Name of the S7Comm function used to perform the operations of the Form, analogous to
+                <code>htv:methodName</code> in the HTTP binding, see <a href="#service-names">Service Names</a>.
+              </td>
+              <td>optional, default as in <a href="#service-names">Service Names</a></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#service-names">Service Names</a>)
+              </td>
             </tr>
             <tr>
               <td><code>s7v:pollingTime</code></td>
               <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
               <td>optional</td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>s7v:timeout</code></td>
               <td>Maximum time to wait for the controller response, in milliseconds.</td>
               <td>optional</td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>s7v:area</code></td>
               <td>Memory area, see <a href="#memory-areas">Memory Areas</a>.</td>
               <td>optional</td>
-              <td>Memory area code</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the codes in <a href="#memory-areas">Memory Areas</a>)
+              </td>
             </tr>
             <tr>
               <td><code>s7v:dbNumber</code></td>
               <td>Number of the data block.</td>
               <td>required when <code>s7v:area</code> is <code>DB</code> or <code>DBI</code></td>
-              <td>Positive integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#positiveInteger"
+                  ><code>positiveInteger</code></a
+                >
+              </td>
             </tr>
             <tr>
               <td><code>s7v:byteOffset</code></td>
               <td>Byte offset of the value inside the memory area.</td>
               <td>required when <code>s7v:area</code> is present</td>
-              <td>Non-negative integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
             </tr>
             <tr>
               <td><code>s7v:bitOffset</code></td>
               <td>Bit position inside the byte identified by <code>s7v:byteOffset</code>.</td>
               <td>required for <code>s7v:BOOL</code> values addressed with the explicit terms</td>
-              <td>Integer from 0 to 7</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"
+                  ><code>unsignedByte</code></a
+                >, from 0 to 7
+              </td>
             </tr>
             <tr>
               <td><code>s7v:length</code></td>
@@ -504,7 +555,11 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
                 number of bytes to transfer for a value of variable size.
               </td>
               <td>optional, default 254 for strings</td>
-              <td>Positive integer</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#positiveInteger"
+                  ><code>positiveInteger</code></a
+                >
+              </td>
             </tr>
             <tr>
               <td><code>s7v:scale</code></td>
@@ -513,7 +568,10 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
                 <a href="#value-conversion">Value Conversion</a>.
               </td>
               <td>optional, default <code>1</code></td>
-              <td>Non-zero number</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#double"><code>double</code></a
+                >, not zero
+              </td>
             </tr>
             <tr>
               <td><code>s7v:offset</code></td>
@@ -521,7 +579,9 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
                 Summand applied after <code>s7v:scale</code>, see <a href="#value-conversion">Value Conversion</a>.
               </td>
               <td>optional, default <code>0</code></td>
-              <td>Number</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#double"><code>double</code></a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -609,16 +669,14 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         <h3>Data Types</h3>
         <p>
           The binding identifies S7 data types with terms from the S7Comm vocabulary. The short code is the letter used
-          inside a data block address, for example the <code>W</code> of <code>%DB1.DBW20</code>. The XML Schema column
-          lists the closest built-in datatype [[XMLSCHEMA11-2]], and the last column gives the recommended WoT Data
-          Schema.
+          inside a data block address, for example the <code>W</code> of <code>%DB1.DBW20</code>. The last column gives
+          the recommended WoT Data Schema.
         </p>
         <table class="def">
           <thead>
             <tr>
               <th>Value</th>
               <th>Short code and size</th>
-              <th>Closest XML Schema datatype</th>
               <th>WoT Data Schema recommendation</th>
             </tr>
           </thead>
@@ -626,169 +684,141 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
             <tr>
               <td><code>s7v:BOOL</code></td>
               <td><code>X</code>, 1 bit</td>
-              <td><code>xsd:boolean</code></td>
               <td><code>boolean</code></td>
             </tr>
             <tr>
               <td><code>s7v:BYTE</code></td>
               <td><code>B</code>, 1 byte</td>
-              <td><code>xsd:unsignedByte</code></td>
               <td><code>integer</code>, minimum 0, maximum 255</td>
             </tr>
             <tr>
               <td><code>s7v:WORD</code></td>
               <td><code>W</code>, 2 bytes</td>
-              <td><code>xsd:unsignedShort</code></td>
               <td><code>integer</code>, minimum 0, maximum 65535</td>
             </tr>
             <tr>
               <td><code>s7v:DWORD</code></td>
               <td><code>D</code>, 4 bytes</td>
-              <td><code>xsd:unsignedInt</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>s7v:LWORD</code></td>
               <td><code>X</code>, 8 bytes, S7-1500 only</td>
-              <td><code>xsd:unsignedLong</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>s7v:SINT</code></td>
               <td><code>B</code>, 1 byte, S7-1200 and S7-1500</td>
-              <td><code>xsd:byte</code></td>
               <td><code>integer</code>, minimum -128, maximum 127</td>
             </tr>
             <tr>
               <td><code>s7v:USINT</code></td>
               <td><code>B</code>, 1 byte, S7-1200 and S7-1500</td>
-              <td><code>xsd:unsignedByte</code></td>
               <td><code>integer</code>, minimum 0, maximum 255</td>
             </tr>
             <tr>
               <td><code>s7v:INT</code></td>
               <td><code>W</code>, 2 bytes</td>
-              <td><code>xsd:short</code></td>
               <td><code>integer</code>, minimum -32768, maximum 32767</td>
             </tr>
             <tr>
               <td><code>s7v:UINT</code></td>
               <td><code>W</code>, 2 bytes, S7-1200 and S7-1500</td>
-              <td><code>xsd:unsignedShort</code></td>
               <td><code>integer</code>, minimum 0, maximum 65535</td>
             </tr>
             <tr>
               <td><code>s7v:DINT</code></td>
               <td><code>D</code>, 4 bytes</td>
-              <td><code>xsd:int</code></td>
               <td><code>integer</code>, minimum -2147483648, maximum 2147483647</td>
             </tr>
             <tr>
               <td><code>s7v:UDINT</code></td>
               <td><code>D</code>, 4 bytes, S7-1200 and S7-1500</td>
-              <td><code>xsd:unsignedInt</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>s7v:LINT</code></td>
               <td><code>X</code>, 8 bytes, S7-1500 only</td>
-              <td><code>xsd:long</code></td>
               <td><code>integer</code></td>
             </tr>
             <tr>
               <td><code>s7v:ULINT</code></td>
               <td><code>X</code>, 8 bytes, S7-1500 only</td>
-              <td><code>xsd:unsignedLong</code></td>
               <td><code>integer</code>, minimum 0</td>
             </tr>
             <tr>
               <td><code>s7v:REAL</code></td>
               <td><code>D</code>, 4 bytes</td>
-              <td><code>xsd:float</code></td>
               <td><code>number</code></td>
             </tr>
             <tr>
               <td><code>s7v:LREAL</code></td>
               <td><code>X</code>, 8 bytes, S7-1200 and S7-1500</td>
-              <td><code>xsd:double</code></td>
               <td><code>number</code></td>
             </tr>
             <tr>
               <td><code>s7v:CHAR</code></td>
               <td><code>B</code>, 1 byte</td>
-              <td><code>xsd:string</code></td>
               <td><code>string</code>, one character</td>
             </tr>
             <tr>
               <td><code>s7v:WCHAR</code></td>
               <td><code>W</code>, 2 bytes, S7-1200 and S7-1500</td>
-              <td><code>xsd:string</code></td>
               <td><code>string</code>, one character</td>
             </tr>
             <tr>
               <td><code>s7v:STRING</code></td>
               <td><code>B</code>, 2 header bytes plus the declared length</td>
-              <td><code>xsd:string</code></td>
               <td><code>string</code></td>
             </tr>
             <tr>
               <td><code>s7v:WSTRING</code></td>
               <td><code>W</code>, 4 header bytes plus twice the declared length, S7-1200 and S7-1500</td>
-              <td><code>xsd:string</code></td>
               <td><code>string</code></td>
             </tr>
             <tr>
               <td><code>s7v:DATE</code></td>
               <td><code>W</code>, 2 bytes, days since 1990-01-01</td>
-              <td><code>xsd:date</code></td>
               <td><code>string</code>, ISO 8601 date</td>
             </tr>
             <tr>
               <td><code>s7v:TIME</code></td>
               <td><code>D</code>, 4 bytes, milliseconds</td>
-              <td><code>xsd:duration</code></td>
               <td><code>string</code>, ISO 8601 duration</td>
             </tr>
             <tr>
               <td><code>s7v:LTIME</code></td>
               <td><code>X</code>, 8 bytes, nanoseconds, S7-1500 only</td>
-              <td><code>xsd:duration</code></td>
               <td><code>string</code>, ISO 8601 duration</td>
             </tr>
             <tr>
               <td><code>s7v:TOD</code></td>
               <td><code>D</code>, 4 bytes, milliseconds since midnight</td>
-              <td><code>xsd:time</code></td>
               <td><code>string</code>, ISO 8601 time</td>
             </tr>
             <tr>
               <td><code>s7v:LTOD</code></td>
               <td><code>X</code>, 8 bytes, nanoseconds since midnight, S7-1500 only</td>
-              <td><code>xsd:time</code></td>
               <td><code>string</code>, ISO 8601 time</td>
             </tr>
             <tr>
               <td><code>s7v:DT</code></td>
               <td><code>B</code>, 8 bytes, BCD-coded date and time</td>
-              <td><code>xsd:dateTime</code></td>
               <td><code>string</code>, ISO 8601 date and time</td>
             </tr>
             <tr>
               <td><code>s7v:LDT</code></td>
               <td><code>X</code>, 8 bytes, nanoseconds since 1970-01-01, S7-1500 only</td>
-              <td><code>xsd:dateTime</code></td>
               <td><code>string</code>, ISO 8601 date and time</td>
             </tr>
             <tr>
               <td><code>s7v:DTL</code></td>
               <td><code>B</code>, 12 bytes, structured date and time, S7-1200 and S7-1500</td>
-              <td><code>xsd:dateTime</code></td>
               <td><code>string</code>, ISO 8601 date and time</td>
             </tr>
             <tr>
               <td><code>s7v:S5TIME</code></td>
               <td><code>W</code>, 2 bytes, BCD time base and value, S7-300 and S7-400</td>
-              <td><code>xsd:duration</code></td>
               <td><code>string</code>, ISO 8601 duration</td>
             </tr>
           </tbody>
@@ -891,6 +921,60 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
           as the request stays within the negotiated PDU size. Values larger than the PDU size MUST be transferred in
           several requests.
         </p>
+      </section>
+
+      <section id="service-names">
+        <h3>Service Names</h3>
+        <p>
+          A Form MAY name the S7Comm function that performs its operations with <code>s7v:service</code>, in the same
+          way that <code>htv:methodName</code> names the HTTP method in the HTTP binding. When the term is absent, a
+          Consumer uses the default function for the operation given below.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>S7Comm function</th>
+              <th>Default for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ReadVariable</code></td>
+              <td>Read Variable, job function code <code>0x04</code></td>
+              <td><code>readproperty</code>, <code>observeproperty</code></td>
+            </tr>
+            <tr>
+              <td><code>WriteVariable</code></td>
+              <td>Write Variable, job function code <code>0x05</code></td>
+              <td><code>writeproperty</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <code>ReadVariable</code> MUST only be used with <code>readproperty</code> and <code>observeproperty</code>,
+          and <code>WriteVariable</code> only with <code>writeproperty</code>. A Form that names a function therefore
+          carries only the matching operations, and a property that is both readable and writable then uses one Form per
+          function, as in the HTTP binding.
+        </p>
+        <pre class="example json" title="One Form per function">
+{
+  "forms": [
+    {
+      "href": "./%25DB1.DBD20:REAL",
+      "op": ["readproperty", "observeproperty"],
+      "s7v:type": "s7v:REAL",
+      "s7v:service": "ReadVariable"
+    },
+    {
+      "href": "./%25DB1.DBD20:REAL",
+      "op": ["writeproperty"],
+      "s7v:type": "s7v:REAL",
+      "s7v:service": "WriteVariable"
+    }
+  ]
+}
+        </pre>
       </section>
 
       <section id="action-event-mappings">

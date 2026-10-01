@@ -60,6 +60,10 @@
         "s7v:type": {
           "$ref": "#/definitions/s7PrimitiveType"
         },
+        "s7v:service": {
+          "type": "string",
+          "enum": ["ReadVariable", "WriteVariable"]
+        },
         "s7v:pollingTime": {
           "type": "integer",
           "minimum": 0
@@ -146,6 +150,44 @@
           },
           "then": {
             "required": ["s7v:bitOffset"]
+          }
+        },
+        {
+          "if": {
+            "required": ["s7v:service"],
+            "properties": {
+              "s7v:service": {
+                "const": "ReadVariable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "items": {
+                  "enum": ["readproperty", "observeproperty"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["s7v:service"],
+            "properties": {
+              "s7v:service": {
+                "const": "WriteVariable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "items": {
+                  "const": "writeproperty"
+                }
+              }
+            }
           }
         }
       ]

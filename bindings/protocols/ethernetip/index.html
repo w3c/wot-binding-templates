@@ -1,0 +1,1378 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt",
+            company: "Microsoft",
+            companyURL: "https://www.microsoft.com"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/ethernetip/",
+        shortName: "wot-ethernetip-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "November 2025"
+          },
+          "1756-PM020": {
+            title: "Logix 5000 Controllers Data Access, Programming Manual, publication 1756-PM020",
+            href: "https://literature.rockwellautomation.com/idc/groups/literature/documents/pm/1756-pm020_-en-p.pdf",
+            publisher: "Rockwell Automation"
+          },
+          "CIP": {
+            title: "The Common Industrial Protocol (CIP) and the Family of CIP Networks",
+            href: "https://www.odva.org/technology-standards/key-technologies/common-industrial-protocol-cip/",
+            publisher: "ODVA",
+            date: "2023"
+          },
+          "ETHERNET-IP": {
+            title: "EtherNet/IP Adaptation of CIP, Volume 2",
+            publisher: "ODVA",
+            date: "2023"
+          },
+          "CIP-SECURITY": {
+            title: "CIP Security, Volume 8 of the CIP Networks Library",
+            href: "https://www.odva.org/technology-standards/distinct-cip-services/cip-security/",
+            publisher: "ODVA",
+            date: "2023"
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "EtherNet/IP JSON Schema",
+                href: "ethernetip.schema.json"
+              }
+            ]
+          }
+        ]
+      };
+    </script>
+    <title>Web of Things (WoT) EtherNet/IP Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        This Web of Things (WoT) protocol binding EtherNet/IP protocol, with an initial focus on Rockwell Automation
+        Logix-family programmable controllers accessed through symbolic tags [[1756-PM020]].
+      </p>
+      <p>The binding defines:</p>
+      <ul>
+        <li>the <code>eip</code> URI scheme used to identify an EtherNet/IP endpoint, including the CIP route path;</li>
+        <li>the controller family that determines the tag address grammar;</li>
+        <li>symbolic tag addressing in WoT Forms;</li>
+        <li>primitive Logix data types;</li>
+        <li>polling behavior, timeouts, and linear value conversion for observed properties;</li>
+        <li>structured tag and User-Defined Type (UDT) descriptions, including nested structures; and</li>
+        <li>mappings between WoT property operations and EtherNet/IP tag access.</li>
+      </ul>
+      <p>This protocol binding is not an ODVA specification, or a Rockwell Automation specification.</p>
+    </section>
+
+    <section id="sotd">
+      <p><em>This document is a work in progress.</em></p>
+      <p>
+        This initial version of the binding focuses exclusively on tag data access, that is, reading and writing
+        individual controller variables with CIP explicit messaging. Its primary target are Rockwell Automation Logix
+        5000 family controllers, whose controller-scoped and program-scoped symbolic tags are accessed as described in
+        the Logix 5000 Controllers Data Access programming manual [[1756-PM020]]. Controllers that use PCCC file
+        addresses, such as MicroLogix, SLC 500, and PLC-5, are covered by the addressing, vocabulary, and operation
+        mapping rules of this binding at the level of the PCCC commands used, but their payload encodings are not
+        described here in the same detail. Other EtherNet/IP devices, services, and access methods are expected to be
+        covered by future versions.
+      </p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        EtherNet/IP is an industrial communication protocol that applies the Common Industrial Protocol (CIP) [[CIP]]
+        over standard Ethernet and IP networking. Logix 5000 controllers expose controller-scoped and program-scoped
+        variables as symbolic tags and make them available to external clients through the CIP Read Tag, Read Tag
+        Fragmented, Write Tag, and Write Tag Fragmented services of the Symbol Object, as specified in [[1756-PM020]]. A
+        client reads or writes a tag by identifying the controller and the symbolic tag path, together with enough type
+        information to encode or decode its value.
+      </p>
+      <p>
+        A Thing Description [[WOT-THING-DESCRIPTION]] can describe these tags as WoT Properties. The Thing Description
+        supplies the endpoint, tag address, supported WoT operations, data type, polling interval, and, for structured
+        tags, the field layout needed by an implementation.
+      </p>
+      <p>
+        The initial scope of this binding is explicit, non-cyclic tag access, primarily to Rockwell Logix-family
+        controllers and, through the controller family term, to the PCCC-addressed controllers listed in
+        <a href="#controller-family">Controller Family</a>. The following topics are outside the initial scope:
+      </p>
+      <ul>
+        <li>implicit I/O connections and cyclic producer/consumer data;</li>
+        <li>CIP Safety, CIP Motion, and CIP Sync;</li>
+        <li>device profiles and Assembly Object mappings;</li>
+        <li>arbitrary CIP class, instance, and attribute paths;</li>
+        <li>alarms and events as WoT Event affordances;</li>
+        <li>controller program download or modification; and</li>
+        <li>normative discovery behavior.</li>
+      </ul>
+    </section>
+
+    <section id="conformance">
+      <p>
+        A Thing Description conforms to this binding when all Forms using the <code>eip</code> scheme follow the
+        normative requirements in this document.
+      </p>
+      <p>An implementation conforms to this binding when it:</p>
+      <ol>
+        <li>recognizes the <code>eip</code> URI scheme;</li>
+        <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
+        <li>supports the operation mappings it advertises;</li>
+        <li>interprets the declared EtherNet/IP data type correctly; and</li>
+        <li>interprets structured definitions recursively when <code>eipv:structureDefinition</code> is present.</li>
+      </ol>
+      <p>
+        The <dfn>interoperable profile</dfn> of this binding is the subset of its URI components, vocabulary terms, and
+        behaviors that every conforming Consumer MUST support. A Thing Description that uses only the interoperable
+        profile therefore works with every conforming Consumer, while anything outside it, such as a binding extension,
+        is only understood by Consumers that implement that extension. Unless a section states otherwise, all URI
+        components, vocabulary terms, and operation mappings defined normatively in this document belong to the
+        interoperable profile.
+      </p>
+    </section>
+
+    <section id="uri-scheme">
+      <h2>URI Scheme and Addressing</h2>
+
+      <section id="endpoint-uri">
+        <h3>Endpoint URI</h3>
+        <p>An EtherNet/IP endpoint is identified by an <code>eip</code> URI:</p>
+        <pre class="nohighlight">
+eip-URI    = "eip://" host [ ":" port ] [ "/" route-path ] [ "/" ]
+route-path = segment *( "," segment )
+        </pre>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <code>host</code> is an IPv4 address, IPv6 literal, or DNS name of the controller or communication module;
+          </li>
+          <li>
+            <code>port</code> is optional; when omitted, an implementation MUST use TCP port <code>44818</code>, the
+            port registered for EtherNet/IP explicit messaging;
+          </li>
+          <li>
+            <code>route-path</code> is the CIP route from the communication module to the controller, expressed as the
+            comma-separated sequence of port and address segments used by CIP connection paths. When the route path is
+            omitted, an implementation MUST assume <code>1,0</code>, which is the backplane port followed by slot 0.
+          </li>
+        </ul>
+        <p>
+          The route path is part of the [=interoperable profile=] because it is required to open a connection. The value
+          <code>1,0</code> only addresses a controller in slot 0 of the chassis that the communication module belongs
+          to. A ControlLogix controller in another slot, a CompactLogix controller, or a controller reached through a
+          further Ethernet module needs a different route, and a Thing Description that omits it is not portable between
+          Consumers. Route paths MAY contain several hops, including Ethernet hops with embedded IP addresses.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Endpoint</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>eip://192.168.0.10/1,0</code></td>
+              <td>Controller in slot 0, reached over the backplane of the addressed module</td>
+            </tr>
+            <tr>
+              <td><code>eip://192.168.0.10/1,3</code></td>
+              <td>Controller in slot 3 of the same chassis</td>
+            </tr>
+            <tr>
+              <td><code>eip://192.168.0.10/1,4,2,192.168.1.20,1,0</code></td>
+              <td>Controller in slot 0 of a remote chassis, reached through an Ethernet module in slot 4</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Thing Description SHOULD place the controller endpoint, including the route path, in <code>base</code> and
+          use relative tag references in individual Forms. Such a <code>base</code> MUST end with <code>/</code>;
+          otherwise reference resolution [[RFC3986]] replaces the route path with the tag path.
+        </p>
+        <pre class="example json" title="Endpoint in base">
+{
+  "base": "eip://192.168.0.10/1,0/",
+  "eipv:controller": "ControlLogix"
+}
+        </pre>
+      </section>
+
+      <section id="controller-family">
+        <h3>Controller Family</h3>
+        <p>
+          Controllers that speak EtherNet/IP do not share a single tag address grammar or CIP encoding. Logix 5000
+          controllers use symbolic tags [[1756-PM020]], while MicroLogix, SLC 500, and PLC-5 controllers use file-style
+          addresses such as <code>N7:1</code> or <code>B3:0/3</code> carried over PCCC, and Micro800 and third-party
+          controllers differ again. A Consumer therefore MUST know the controller family before it can encode a request,
+          which is why the family is part of the [=interoperable profile=].
+        </p>
+        <p>
+          A Thing Description carrying <code>eip</code> Forms SHOULD declare the controller family at the top level with
+          <code>eipv:controller</code>. When the term is absent, an implementation MUST assume
+          <code>ControlLogix</code>. The value is one of:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Address grammar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ControlLogix</code></td>
+              <td>Logix symbolic tags</td>
+            </tr>
+            <tr>
+              <td><code>CompactLogix</code></td>
+              <td>Logix symbolic tags</td>
+            </tr>
+            <tr>
+              <td><code>Micro800</code></td>
+              <td>Logix symbolic tags</td>
+            </tr>
+            <tr>
+              <td><code>MicroLogix</code></td>
+              <td>PCCC file addresses</td>
+            </tr>
+            <tr>
+              <td><code>SLC500</code></td>
+              <td>PCCC file addresses</td>
+            </tr>
+            <tr>
+              <td><code>PLC5</code></td>
+              <td>PCCC file addresses</td>
+            </tr>
+            <tr>
+              <td><code>Omron</code></td>
+              <td>Omron NJ/NX symbolic tags</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The symbolic addressing rules in <a href="#symbolic-tag-reference">Symbolic Tag Reference</a> apply to the
+          controller families that use Logix symbolic tags. For the families that use PCCC file addresses, the
+          <code>tag-path</code> is the file address as written in the controller programming software, for example
+          <code>N7:1</code> for an integer file element or <code>B3:0/3</code> for a bit. Percent-encoding and the
+          relative-reference rule apply as described in <a href="#reserved-characters">Reserved Characters</a>, so these
+          addresses appear in <code>href</code> as <code>./N7:1</code> and <code>./B3:0%2F3</code>.
+        </p>
+      </section>
+
+      <section id="symbolic-tag-reference">
+        <h3>Symbolic Tag Reference</h3>
+        <p>The resolved Form target identifies a Logix symbolic tag. The initial binding uses the following shape:</p>
+        <pre class="nohighlight">
+eip-tag-URI = eip-URI "/" tag-path [ "?offset=" byte-offset ]
+        </pre>
+        <p>
+          The <code>tag-path</code> is the controller's symbolic tag expression, using the symbolic addressing syntax
+          defined for Logix 5000 controllers in [[1756-PM020]]. The following forms are supported:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Form</th>
+              <th>Meaning</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>TagName</code></td>
+              <td>Controller-scoped tag</td>
+              <td><code>MotorSpeed</code></td>
+            </tr>
+            <tr>
+              <td><code>Program:ProgramName.TagName</code></td>
+              <td>Program-scoped tag</td>
+              <td><code>Program:Packaging.Counter</code></td>
+            </tr>
+            <tr>
+              <td><code>TagName.MemberName</code></td>
+              <td>Member of a structured tag or UDT, repeated for nested structures</td>
+              <td><code>Mixer.Status.Running</code></td>
+            </tr>
+            <tr>
+              <td><code>TagName[index]</code></td>
+              <td>Array element; one subscript per dimension, separated by commas, for up to three dimensions</td>
+              <td><code>Recipe[3].SetPoint</code>, <code>Grid[1,2]</code></td>
+            </tr>
+            <tr>
+              <td><code>TagName.bit</code></td>
+              <td>Bit of an integer tag</td>
+              <td><code>StatusWord.3</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Tag names are case-insensitive in the controller, but an implementation MUST transmit the tag path as written,
+          because the ANSI Extended Symbol Segments of the CIP request are built directly from the symbolic elements of
+          the tag path. The tag path MUST be percent-decoded first, see
+          <a href="#reserved-characters">Reserved Characters</a>.
+        </p>
+        <pre class="example" title="Tag paths as written in href">
+MotorSpeed
+./Program:Packaging.Counter
+Mixer.Status.Running
+Recipe%5B3%5D.SetPoint
+        </pre>
+        <p>
+          The <code>tag-path</code> MUST be the fully qualified tag path, so that array elements, structure members, and
+          bits are selected by the syntax above rather than by a query component. This is the form that both
+          symbolic-tag implementations surveyed for this binding execute directly.
+        </p>
+        <p>
+          The optional <code>offset</code> query parameter selects a raw <em>byte</em> offset into the value of the
+          addressed tag, for the cases where a tag has no member syntax for the value of interest, such as the
+          connection status tags of a communication module. Its value is a non-negative integer counted in bytes, not in
+          array elements, and an implementation MUST reject a Form whose offset exceeds the length of the tag. Authors
+          SHOULD NOT use it for array or member access.
+        </p>
+        <p class="note">
+          Earlier drafts allowed a bare <code>?N</code> query component. It was ambiguous, because it was specified as
+          an array element index but implemented as a byte offset, so it has been replaced by the explicit
+          <code>?offset=</code> form.
+        </p>
+        <p>
+          Reading a range of array elements with a single Form, such as the first four elements of an array, is out of
+          scope for this version of the binding. A Form addresses either a single element or a whole tag.
+        </p>
+        <pre class="example json" title="Relative Form target">
+{
+  "href": "MotorSpeed",
+  "op": ["readproperty"],
+  "eipv:type": "eipv:REAL"
+}
+        </pre>
+        <p>
+          When the Thing Description contains <code>"base": "eip://192.168.0.10/1,0/"</code>, the resolved target is
+          <code>eip://192.168.0.10/1,0/MotorSpeed</code>.
+        </p>
+      </section>
+
+      <section id="reserved-characters">
+        <h3>Reserved Characters</h3>
+        <p>
+          Logix symbolic tag expressions can contain characters that are reserved in URIs [[RFC3986]], in particular
+          <code>:</code> in program-scoped tag names such as <code>Program:Packaging.Counter</code> and
+          <code>[</code> and <code>]</code> in array subscripts such as <code>Recipe[3].SetPoint</code>.
+        </p>
+        <p>
+          Authors MUST percent-encode any character of a tag path that is not allowed in the path component of a URI
+          reference, and in particular MUST percent-encode <code>[</code> as <code>%5B</code>, <code>]</code> as
+          <code>%5D</code>, <code>?</code> as <code>%3F</code>, and <code>#</code> as <code>%23</code>. Because the tag
+          path is a single path segment, <code>/</code> MUST be percent-encoded as <code>%2F</code> when it is part of a
+          tag name.
+        </p>
+        <p>
+          A colon in the first segment of a relative reference is not allowed by [[RFC3986]]: a relative
+          <code>href</code> such as <code>Program:Packaging.Counter</code> or <code>N7:1</code> would be parsed as an
+          absolute URI with the scheme <code>Program</code> or <code>N7</code> and would not resolve against the
+          <code>eip</code> base. A relative <code>href</code> whose tag path contains a colon MUST therefore either
+          start with <code>./</code>, as in <code>./Program:Packaging.Counter</code>, or percent-encode the colon as
+          <code>%3A</code>, as in <code>Program%3APackaging.Counter</code>. Authors SHOULD use the <code>./</code> form.
+          Absolute <code>eip</code> URIs need neither, because the colon then appears in a non-initial path segment.
+        </p>
+        <p>
+          The character <code>.</code> needs no encoding, and reference resolution removes the leading <code>./</code>.
+          An implementation MUST percent-decode the tag path of the resolved URI before it is used as a tag expression.
+        </p>
+        <pre class="example" title="Percent-encoded array tag path">
+eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
+        </pre>
+      </section>
+    </section>
+
+    <section id="vocabulary">
+      <h2>EtherNet/IP Vocabulary</h2>
+      <p>
+        The examples use the prefix <code>eipv</code> for the provisional namespace. The prefix intentionally differs
+        from the <code>eip</code> URI scheme name so that vocabulary terms are not confused with the scheme.
+      </p>
+      <pre class="example json" title="Vocabulary prefix">
+{
+  "eipv": "https://www.w3.org/2026/wot/eip"
+}
+      </pre>
+      <p>The namespace URI is provisional. It does not imply that a vocabulary is published at that location.</p>
+
+      <section id="thing-terms">
+        <h3>Thing Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>eipv:controller</code></td>
+              <td>
+                Controller family that determines the tag address grammar and the CIP encoding, see
+                <a href="#controller-family">Controller Family</a>.
+              </td>
+              <td>optional, default <code>ControlLogix</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#controller-family">Controller Family</a>)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="form-terms">
+        <h3>Form Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>href</code></td>
+              <td>Symbolic tag reference, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:type</code></td>
+              <td>EtherNet/IP/Logix primitive type used to encode and decode the tag value.</td>
+              <td>required for primitive tags</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#primitive-data-types">Primitive Data Types</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:service</code></td>
+              <td>
+                Name of the CIP service used to perform the operations of the Form, analogous to
+                <code>htv:methodName</code> in the HTTP binding, see <a href="#service-names">Service Names</a>.
+              </td>
+              <td>optional, default as in <a href="#service-names">Service Names</a></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#service-names">Service Names</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:pollingTime</code></td>
+              <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:timeout</code></td>
+              <td>Maximum time to wait for the controller response, in milliseconds.</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:scale</code></td>
+              <td>
+                Factor applied to the controller value to obtain the application-facing value, see
+                <a href="#value-conversion">Value Conversion</a>.
+              </td>
+              <td>optional, default <code>1</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#double"><code>double</code></a
+                >, not zero
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:offset</code></td>
+              <td>
+                Summand applied after <code>eipv:scale</code>, see <a href="#value-conversion">Value Conversion</a>.
+              </td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#double"><code>double</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:structureDefinition</code></td>
+              <td>Recursive definition of a structured Logix tag or UDT.</td>
+              <td>optional</td>
+              <td><a href="#structured-type-definition">StructureDefinition</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Form MUST NOT contain both a primitive <code>eipv:type</code> and an <code>eipv:structureDefinition</code>.
+          Primitive tags use <code>eipv:type</code>, while structured tags either use
+          <code>eipv:structureDefinition</code> or carry neither term and are decoded from the definition that the
+          Consumer obtains from the controller, see
+          <a href="#structure-definition-precedence">Structure Definition Precedence</a>.
+        </p>
+      </section>
+
+      <section id="value-conversion">
+        <h3>Value Conversion</h3>
+        <p>
+          Logix tags usually hold engineering values, so no conversion is needed. MicroLogix and SLC integer files and
+          many Logix programs nevertheless keep scaled integers, for example a temperature in tenths of a degree in an
+          <code>eipv:INT</code> tag. A Form MAY therefore carry <code>eipv:scale</code> and <code>eipv:offset</code>.
+          The value of <code>eipv:scale</code> MUST NOT be zero, because a zero factor loses the raw value on reads and
+          makes the inverse conversion on writes undefined; a Consumer MUST reject a Form with a zero
+          <code>eipv:scale</code>.
+        </p>
+        <p>
+          When reading, a Consumer computes the application-facing value as
+          <code>value = raw &times; eipv:scale + eipv:offset</code>, and when writing it applies the inverse,
+          <code>raw = (value &minus; eipv:offset) / eipv:scale</code>, rounding to the nearest representable value of
+          the declared <code>eipv:type</code>. These are the same two terms, with the same semantics, as in the Modbus
+          binding, so that an author learns one rule for both.
+        </p>
+        <pre class="example json" title="Temperature in tenths of a degree">
+{
+  "href": "TankTemp",
+  "op": ["readproperty"],
+  "eipv:type": "eipv:INT",
+  "eipv:scale": 0.1
+}
+        </pre>
+      </section>
+
+      <section id="primitive-data-types">
+        <h3>Primitive Data Types</h3>
+        <p>
+          The binding identifies Logix primitive types with terms from the EtherNet/IP vocabulary. The type names are
+          the CIP and Logix type names defined in [[1756-PM020]]. The second column gives the CIP data type code that a
+          controller returns in the response of a Read Tag service and that a client sends in a Write Tag service, and
+          the third column gives the recommended WoT Data Schema.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Logix type and CIP type code</th>
+              <th>WoT Data Schema recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>eipv:BOOL</code></td>
+              <td>Boolean, <code>0xC1</code></td>
+              <td><code>boolean</code></td>
+            </tr>
+            <tr>
+              <td><code>eipv:SINT</code></td>
+              <td>Signed 8-bit integer, <code>0xC2</code></td>
+              <td><code>integer</code>, minimum -128, maximum 127</td>
+            </tr>
+            <tr>
+              <td><code>eipv:INT</code></td>
+              <td>Signed 16-bit integer, <code>0xC3</code></td>
+              <td><code>integer</code>, minimum -32768, maximum 32767</td>
+            </tr>
+            <tr>
+              <td><code>eipv:DINT</code></td>
+              <td>Signed 32-bit integer, <code>0xC4</code></td>
+              <td><code>integer</code>, minimum -2147483648, maximum 2147483647</td>
+            </tr>
+            <tr>
+              <td><code>eipv:LINT</code></td>
+              <td>Signed 64-bit integer, <code>0xC5</code></td>
+              <td><code>integer</code></td>
+            </tr>
+            <tr>
+              <td><code>eipv:USINT</code></td>
+              <td>Unsigned 8-bit integer, <code>0xC6</code></td>
+              <td><code>integer</code>, minimum 0, maximum 255</td>
+            </tr>
+            <tr>
+              <td><code>eipv:UINT</code></td>
+              <td>Unsigned 16-bit integer, <code>0xC7</code></td>
+              <td><code>integer</code>, minimum 0, maximum 65535</td>
+            </tr>
+            <tr>
+              <td><code>eipv:UDINT</code></td>
+              <td>Unsigned 32-bit integer, <code>0xC8</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>eipv:ULINT</code></td>
+              <td>Unsigned 64-bit integer, <code>0xC9</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>eipv:REAL</code></td>
+              <td>IEEE 754 single-precision floating point, <code>0xCA</code></td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>eipv:LREAL</code></td>
+              <td>IEEE 754 double-precision floating point, <code>0xCB</code></td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>eipv:BYTE</code></td>
+              <td>8-bit string, <code>0xD1</code></td>
+              <td><code>integer</code>, minimum 0, maximum 255</td>
+            </tr>
+            <tr>
+              <td><code>eipv:WORD</code></td>
+              <td>16-bit string, <code>0xD2</code></td>
+              <td><code>integer</code>, minimum 0, maximum 65535</td>
+            </tr>
+            <tr>
+              <td><code>eipv:DWORD</code></td>
+              <td>32-bit string, <code>0xD3</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>eipv:LWORD</code></td>
+              <td>64-bit string, <code>0xD4</code></td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>eipv:STRING</code></td>
+              <td>Predefined Logix <code>STRING</code> structure, transferred as a structure (<code>0xA0</code>)</td>
+              <td><code>string</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The bit-string types <code>eipv:BYTE</code>, <code>eipv:WORD</code>, <code>eipv:DWORD</code>, and
+          <code>eipv:LWORD</code> hold collections of bits rather than numbers; they are the storage behind
+          <code>BOOL</code> arrays and appear in status words of Add-On Instructions. They are transferred with the same
+          width as the corresponding unsigned integer type, so a Consumer that has no distinct representation for bit
+          strings MAY expose them as unsigned integers.
+        </p>
+        <p>
+          All primitive values are transferred in little-endian byte order. A <code>eipv:BOOL</code> value is
+          transferred in a single byte whose least significant bit carries the value, while a <code>BOOL</code> member
+          of a structure is packed into a bit of an enclosing byte or word, see
+          <a href="#structured-type-definition">Structured Type Definition</a>.
+        </p>
+        <p>
+          The predefined <code>STRING</code> type is a structure consisting of a <code>DINT</code> member
+          <code>LEN</code> that holds the number of valid characters, followed by a <code>SINT</code> array member
+          <code>DATA</code> that holds the characters [[1756-PM020]]. An implementation decoding
+          <code>eipv:STRING</code> MUST use <code>LEN</code> to determine the number of characters and MUST set
+          <code>LEN</code> when encoding. Controllers also support user-defined string types with a different
+          <code>DATA</code> length; those follow the same layout.
+        </p>
+        <p>Implementations MUST reject an unsupported type rather than silently decode it as another type.</p>
+      </section>
+
+      <section id="structured-type-definition">
+        <h3>Structured Type Definition</h3>
+        <p>
+          <code>eipv:structureDefinition</code> is an optional description of a Logix UDT and has the following members:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>eipv:typeName</code></td>
+              <td>Controller-defined name of the UDT.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:fields</code></td>
+              <td>Ordered field definitions.</td>
+              <td>required</td>
+              <td>Array of <a href="#structured-type-definition">FieldDefinition</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Each field-definition object has the following members:</p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>eipv:name</code></td>
+              <td>Field name in the UDT.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:type</code></td>
+              <td>Primitive type from <a href="#primitive-data-types">Primitive Data Types</a>.</td>
+              <td>required for primitive fields</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#primitive-data-types">Primitive Data Types</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:byteOffset</code></td>
+              <td>Byte offset of the field in the encoded structure.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:bitOffset</code></td>
+              <td>
+                Bit position of a <code>eipv:BOOL</code> field inside the byte identified by
+                <code>eipv:byteOffset</code>.
+              </td>
+              <td>required for <code>eipv:BOOL</code> fields</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedByte"
+                  ><code>unsignedByte</code></a
+                >, from 0 to 7
+              </td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>
+                Human-readable description of the field. This is the <code>description</code> term of the TD core
+                vocabulary [[WOT-THING-DESCRIPTION]] and is therefore not prefixed.
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:structureDefinition</code></td>
+              <td>Nested UDT definition.</td>
+              <td>required for nested UDT fields</td>
+              <td><a href="#structured-type-definition">StructureDefinition</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A field MUST use either <code>eipv:type</code> for a primitive field or
+          <code>eipv:structureDefinition</code> for a nested UDT field. A consumer MUST process nested structure
+          definitions recursively.
+        </p>
+        <p>
+          The offsets MUST describe the layout that the controller uses on the wire, as documented in [[1756-PM020]]. In
+          particular:
+        </p>
+        <ul>
+          <li>
+            members are aligned on a boundary that matches their size, so a <code>DINT</code> or
+            <code>REAL</code> member starts on a 4-byte boundary and a <code>LINT</code> or <code>LREAL</code> member
+            starts on an 8-byte boundary, which means that padding bytes can appear between members;
+          </li>
+          <li>
+            consecutive <code>BOOL</code> members are packed into the bits of a single byte or word, so that
+            <code>eipv:byteOffset</code> alone does not identify such a member and <code>eipv:bitOffset</code> MUST be
+            given;
+          </li>
+          <li>
+            a nested structure member starts at the alignment required by its own largest member, and its field offsets
+            are relative to the start of that nested structure; and
+          </li>
+          <li>the overall structure length is padded to its alignment.</li>
+        </ul>
+        <p>
+          Because the controller reports this layout through its template and symbol metadata, authors SHOULD generate
+          the structure definition from the controller rather than by hand.
+        </p>
+        <pre class="example json" title="Structure definition">
+{
+  "eipv:structureDefinition": {
+    "eipv:typeName": "MotorStatus",
+    "eipv:fields": [
+      {
+        "eipv:name": "Running",
+        "eipv:type": "eipv:BOOL",
+        "eipv:byteOffset": 0,
+        "eipv:bitOffset": 0,
+        "description": "Indicates whether the motor is running"
+      },
+      {
+        "eipv:name": "Speed",
+        "eipv:type": "eipv:REAL",
+        "eipv:byteOffset": 4,
+        "description": "Actual motor speed"
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="structure-definition-precedence">
+        <h3>Structure Definition Precedence</h3>
+        <p>
+          Logix controllers are browsable: a Consumer can read the tag list and the template of a UDT from the
+          controller and derive the layout at runtime. An embedded <code>eipv:structureDefinition</code> can go stale
+          after a program download and then decodes wrong values silently, with no error for the application to catch.
+        </p>
+        <p>
+          A Consumer that can obtain the definition from the controller SHOULD prefer the live definition over
+          <code>eipv:structureDefinition</code>, and SHOULD warn when the two differ. The embedded definition is
+          intended for offline authoring and for targets that cannot be browsed.
+        </p>
+        <p>
+          A Form addressing a structured tag MAY therefore omit <code>eipv:structureDefinition</code> and name the tag
+          only. A Consumer that can neither browse the controller nor decode a whole structure MUST use Forms whose
+          <code>href</code> addresses individual members, for example <code>LineState.Drive.Current</code>; member paths
+          are the one form of UDT access that every surveyed implementation can execute.
+        </p>
+      </section>
+    </section>
+
+    <section id="operation-mappings">
+      <h2>Operation Mappings</h2>
+
+      <section id="default-mappings">
+        <h3>Default Mappings</h3>
+        <p>
+          The CIP services used depend on the controller family. The families <code>ControlLogix</code>,
+          <code>CompactLogix</code>, <code>Micro800</code>, and <code>Omron</code> support the symbolic Tag services of
+          [[1756-PM020]]. The families <code>MicroLogix</code>, <code>SLC500</code>, and <code>PLC5</code> do not; they
+          are accessed by sending PCCC commands inside the Execute PCCC service (<code>0x4B</code>) of the PCCC Object
+          (class <code>0x67</code>). An implementation MUST NOT send a symbolic Tag service to a PCCC family.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>Symbolic families</th>
+              <th>PCCC families</th>
+              <th>Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>
+                Send a CIP Read Tag service (<code>0x4C</code>), or a Read Tag Fragmented service (<code>0x52</code>)
+                when the value does not fit into a single reply, to the symbolic tag and decode the returned value
+                according to <code>eipv:type</code> or <code>eipv:structureDefinition</code> [[1756-PM020]].
+              </td>
+              <td>
+                Send a PCCC Protected Typed Logical Read with three address fields (command <code>0x0F</code>, function
+                <code>0xA2</code>) for <code>MicroLogix</code> and <code>SLC500</code>, or a PCCC Typed Read (command
+                <code>0x0F</code>, function <code>0x68</code>) for <code>PLC5</code>, addressing the file, element, and
+                sub-element of the file address, and decode the returned value according to <code>eipv:type</code>.
+              </td>
+              <td>The Form MUST identify a readable tag or file element.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>
+                Encode the supplied value according to <code>eipv:type</code> or
+                <code>eipv:structureDefinition</code> and send it with a CIP Write Tag service (<code>0x4D</code>), or a
+                Write Tag Fragmented service (<code>0x53</code>) when the value does not fit into a single request
+                [[1756-PM020]].
+              </td>
+              <td>
+                Encode the supplied value according to <code>eipv:type</code> and send it with a PCCC Protected Typed
+                Logical Write with three address fields (function <code>0xAA</code>), or with mask (function
+                <code>0xAB</code>) for a single bit, for <code>MicroLogix</code> and <code>SLC500</code>, or with a PCCC
+                Typed Write (function <code>0x67</code>) for <code>PLC5</code>.
+              </td>
+              <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td colspan="2">
+                Repeatedly read the tag or file element as for <code>readproperty</code> and notify the Consumer when a
+                sample is available or its value changes, according to implementation behavior.
+              </td>
+              <td>
+                <code>observable</code> SHOULD be <code>true</code>; <code>eipv:pollingTime</code> controls the
+                requested interval.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <code>eipv:structureDefinition</code> and the <code>?offset=</code> query apply to the symbolic families only.
+        </p>
+        <p>
+          The initial binding does not define a native EtherNet/IP subscription mechanism. An implementation MAY realize
+          <code>observeproperty</code> by polling. It SHOULD use <code>eipv:pollingTime</code> when supplied and MAY
+          enforce a minimum interval to protect the controller and network. An implementation MAY combine the reads of
+          several Forms of the same endpoint into a single CIP Multiple Service Packet request (<code>0x0A</code>)
+          [[1756-PM020]] to reduce the load on the controller.
+        </p>
+      </section>
+
+      <section id="service-names">
+        <h3>Service Names</h3>
+        <p>
+          A Form MAY name the CIP service that performs its operations with <code>eipv:service</code>, in the same way
+          that <code>htv:methodName</code> names the HTTP method in the HTTP binding. When the term is absent, a
+          Consumer uses the default service for the operation and controller family given below.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>CIP service</th>
+              <th>Controller families</th>
+              <th>Default for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ReadTag</code></td>
+              <td>Read Tag, <code>0x4C</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td><code>readproperty</code>, <code>observeproperty</code></td>
+            </tr>
+            <tr>
+              <td><code>ReadTagFragmented</code></td>
+              <td>Read Tag Fragmented, <code>0x52</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td>none</td>
+            </tr>
+            <tr>
+              <td><code>WriteTag</code></td>
+              <td>Write Tag, <code>0x4D</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td><code>writeproperty</code></td>
+            </tr>
+            <tr>
+              <td><code>WriteTagFragmented</code></td>
+              <td>Write Tag Fragmented, <code>0x53</code> [[1756-PM020]]</td>
+              <td>symbolic</td>
+              <td>none</td>
+            </tr>
+            <tr>
+              <td><code>ExecutePCCC</code></td>
+              <td>Execute PCCC, <code>0x4B</code>, of the PCCC Object, class <code>0x67</code></td>
+              <td>PCCC</td>
+              <td><code>readproperty</code>, <code>writeproperty</code>, <code>observeproperty</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The read services MUST only be used with <code>readproperty</code> and <code>observeproperty</code>, and the
+          write services only with <code>writeproperty</code>. A Form that names a read or write service therefore
+          carries only the matching operations, and a property that is both readable and writable then uses one Form per
+          service, as in the HTTP binding. A Consumer MUST reject a Form that names a service which the declared
+          controller family does not support.
+        </p>
+        <p>
+          When <code>ReadTag</code> or <code>WriteTag</code> is used, either explicitly or by default, an implementation
+          MAY switch to the corresponding fragmented service when the value does not fit into a single message. Naming a
+          fragmented service requests fragmented transfer from the first message on.
+        </p>
+        <pre class="example json" title="One Form per service">
+{
+  "forms": [
+    {
+      "href": "Recipe",
+      "op": ["readproperty", "observeproperty"],
+      "eipv:service": "ReadTagFragmented"
+    },
+    {
+      "href": "Recipe",
+      "op": ["writeproperty"],
+      "eipv:service": "WriteTagFragmented"
+    }
+  ]
+}
+        </pre>
+      </section>
+
+      <section id="action-event-mappings">
+        <h3>Action and Event Mappings</h3>
+        <p>No default mapping is defined for:</p>
+        <ul>
+          <li><code>invokeaction</code>;</li>
+          <li><code>subscribeevent</code>;</li>
+          <li><code>unsubscribeevent</code>; or</li>
+          <li>WoT Event affordances.</li>
+        </ul>
+        <p>
+          A Thing Description conforming to the profile MUST NOT advertise those operations on an <code>eip</code> Form
+          unless it also declares and documents an additional binding extension.
+        </p>
+      </section>
+    </section>
+
+    <section id="payload-mapping">
+      <h2>Payload Mapping</h2>
+
+      <section id="primitive-values">
+        <h3>Primitive Values</h3>
+        <p>
+          Primitive values are represented at the WoT Consumer boundary as the JSON value compatible with the Property's
+          WoT Data Schema. The binding implementation is responsible for converting between that value and the
+          corresponding Logix wire representation.
+        </p>
+        <p>
+          A consumer MUST use both the WoT Data Schema and the Form's Logix <code>eipv:type</code>. The WoT Data Schema
+          describes the application-facing value, while the Form term identifies the controller representation.
+        </p>
+      </section>
+
+      <section id="structured-values">
+        <h3>Structured Values</h3>
+        <p>
+          A structured Logix tag is represented to the WoT Consumer as a JSON object. Field names in the object
+          correspond to the <code>eipv:name</code> members in <code>eipv:fields</code> of
+          <code>eipv:structureDefinition</code>.
+        </p>
+        <pre class="example json" title="Application-facing value">
+{
+  "Running": true,
+  "Speed": 1450.5
+}
+        </pre>
+        <p>
+          The binding implementation uses each field's <code>eipv:byteOffset</code>, its <code>eipv:bitOffset</code> for
+          packed <code>eipv:BOOL</code> members, and its primitive or nested type definition to decode and encode the
+          controller value. When writing a structured tag, the implementation MUST preserve the bytes that no field
+          covers, such as alignment padding, which requires reading the tag before writing it back.
+        </p>
+      </section>
+
+      <section id="arrays">
+        <h3>Arrays</h3>
+        <p>
+          Array elements are exposed through the Form <code>href</code>, using the Logix subscript syntax of
+          [[1756-PM020]], which supports up to three dimensions. A Form addressing a single element is decoded like a
+          scalar of the same type.
+        </p>
+        <p>
+          This binding does not define a complete interoperable array model, including dimensions, bounds, bulk reads of
+          multiple elements, or slicing. An implementation that reads more than one element at a time does so with the
+          element count of the CIP Read Tag service and the offset of the Read Tag Fragmented service [[1756-PM020]],
+          which this version of the binding does not describe in the Thing Description.
+        </p>
+      </section>
+    </section>
+
+    <section id="security-considerations" class="informative">
+      <h2>Security Considerations</h2>
+      <p>
+        EtherNet/IP controllers and communication modules differ in the security services they expose. A Thing
+        Description MUST accurately describe the security applied to the interaction endpoint.
+      </p>
+      <p>
+        ODVA specifies security services for CIP and EtherNet/IP in CIP Security [[CIP-SECURITY]], published as Volume 8
+        of the CIP Networks Library. The following profiles are relevant to explicit messaging as used by this binding:
+      </p>
+      <ul>
+        <li>
+          the EtherNet/IP Confidentiality Profile, which protects explicit messaging with TLS (for TCP) and DTLS (for
+          UDP), providing endpoint authentication, message integrity, and encryption;
+        </li>
+        <li>
+          the EtherNet/IP IEEE 802.1X Profile, which provides device-level network access control and device identity;
+        </li>
+        <li>
+          the CIP Authorization Profile, which uses JSON Web Tokens to authorize access to CIP objects and services; and
+        </li>
+        <li>
+          the CIP User Authentication Profile, which authenticates users and issues the tokens consumed by the CIP
+          Authorization Profile.
+        </li>
+      </ul>
+      <p>
+        These services are implemented by shipping products, including Rockwell Automation Logix-family controllers and
+        their EtherNet/IP communication modules. Support depends on the product family and firmware revision, so an
+        implementation cannot assume that a given controller offers them.
+      </p>
+      <p>
+        When an endpoint is protected by the EtherNet/IP Confidentiality Profile, the Thing Description SHOULD describe
+        the corresponding credentials with a WoT security scheme that matches the deployed configuration, for example a
+        certificate-based scheme for TLS mutual authentication, or a token-based scheme when the CIP Authorization
+        Profile is used. The examples in this document use <code>nosec</code> only because they describe controllers
+        that are deployed without CIP Security; <code>nosec</code> MUST NOT be used to describe a CIP Security-protected
+        endpoint.
+      </p>
+      <p>
+        A binding implementation MUST NOT infer that <code>nosec</code> authorizes access. Authorization remains a
+        deployment responsibility.
+      </p>
+      <p class="note" title="Open issue">
+        This binding does not yet define vocabulary terms for selecting CIP Security profiles or for carrying
+        profile-specific parameters in a Form. The mapping between the CIP Security profiles listed above and the WoT
+        security schemes is expected to be refined as implementation experience with CIP Security-enabled controllers is
+        collected.
+      </p>
+    </section>
+
+    <section id="examples" class="informative">
+      <h2>Examples</h2>
+
+      <section id="example-primitive-tag">
+        <h3>Primitive Tag</h3>
+        <pre class="example json" title="Primitive tag Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "eipv": "https://www.w3.org/2026/wot/eip"
+    }
+  ],
+  "id": "urn:example:logix:controller1",
+  "title": "Logix Controller 1",
+  "base": "eip://192.168.0.10/1,0/",
+  "eipv:controller": "ControlLogix",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "MotorSpeed": {
+      "title": "Motor speed",
+      "type": "number",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "MotorSpeed",
+          "op": ["readproperty", "observeproperty", "writeproperty"],
+          "eipv:type": "eipv:REAL",
+          "eipv:pollingTime": 1000,
+          "eipv:timeout": 2000
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-read-only-tag">
+        <h3>Read-only Integer Tag</h3>
+        <pre class="example json" title="Read-only integer tag">
+{
+  "Counter": {
+    "type": "integer",
+    "readOnly": true,
+    "observable": true,
+    "forms": [
+      {
+        "href": "./Program:Packaging.Counter",
+        "op": ["readproperty", "observeproperty"],
+        "eipv:type": "eipv:DINT",
+        "eipv:pollingTime": 2000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-pccc-tag">
+        <h3>MicroLogix Integer File with Scaling</h3>
+        <pre class="example json" title="MicroLogix Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "eipv": "https://www.w3.org/2026/wot/eip"
+    }
+  ],
+  "id": "urn:example:micrologix:line2",
+  "title": "MicroLogix Line 2",
+  "base": "eip://192.168.0.24/1,0/",
+  "eipv:controller": "MicroLogix",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "TankTemperature": {
+      "title": "Tank temperature",
+      "type": "number",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "./N7:1",
+          "op": ["readproperty", "observeproperty"],
+          "eipv:type": "eipv:INT",
+          "eipv:scale": 0.1,
+          "eipv:pollingTime": 5000,
+          "eipv:timeout": 3000
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-structured-tag">
+        <h3>Structured Tag with Nested UDT</h3>
+        <pre class="example json" title="Structured tag with nested UDT">
+{
+  "properties": {
+    "LineState": {
+      "type": "object",
+      "readOnly": false,
+      "observable": true,
+      "properties": {
+        "Running": { "type": "boolean" },
+        "Speed": { "type": "number" },
+        "Drive": {
+          "type": "object",
+          "properties": {
+            "Current": { "type": "number" },
+            "FaultCode": { "type": "integer" }
+          }
+        }
+      },
+      "forms": [
+        {
+          "href": "LineState",
+          "op": ["readproperty", "observeproperty", "writeproperty"],
+          "eipv:pollingTime": 1000,
+          "eipv:structureDefinition": {
+            "eipv:typeName": "LineStateType",
+            "eipv:fields": [
+              {
+                "eipv:name": "Running",
+                "eipv:type": "eipv:BOOL",
+                "eipv:byteOffset": 0,
+                "eipv:bitOffset": 0
+              },
+              {
+                "eipv:name": "Speed",
+                "eipv:type": "eipv:REAL",
+                "eipv:byteOffset": 4
+              },
+              {
+                "eipv:name": "Drive",
+                "eipv:byteOffset": 8,
+                "eipv:structureDefinition": {
+                  "eipv:typeName": "DriveStateType",
+                  "eipv:fields": [
+                    {
+                      "eipv:name": "Current",
+                      "eipv:type": "eipv:REAL",
+                      "eipv:byteOffset": 0
+                    },
+                    {
+                      "eipv:name": "FaultCode",
+                      "eipv:type": "eipv:DINT",
+                      "eipv:byteOffset": 4
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="implementation-notes" class="informative">
+      <h2>Implementation Notes</h2>
+      <p>
+        This binding was compared against two implementations built on the open-source <code>libplctag</code> library,
+        the OPC Foundation's UA Edge Translator and DIME, and against the <code>eip</code>, <code>logix</code>, and
+        <code>ab-eth</code> drivers of Apache PLC4X. The UA Edge Translator implementation currently:
+      </p>
+      <ul>
+        <li>registers the protocol scheme as <code>eip</code>;</li>
+        <li>identifies its provisional WoT binding URI as <code>https://www.w3.org/2019/wot/eip</code>;</li>
+        <li>
+          accesses symbolic tags with the CIP Read Tag, Read Tag Fragmented, Write Tag, and Write Tag Fragmented
+          services described in [[1756-PM020]];
+        </li>
+        <li>
+          hardcodes the route path <code>1,0</code> and the <code>ControlLogix</code> controller family, and therefore
+          needs to adopt the <code>base</code> route path and <code>eipv:controller</code> of this binding to reach
+          controllers in other slots, chassis, or families;
+        </li>
+        <li>supports controller discovery through the EtherNet/IP <code>ListIdentity</code> broadcast; and</li>
+        <li>reads controller tag metadata to generate Property affordances.</li>
+      </ul>
+      <p>
+        Apache PLC4X carries the route as a connection option and selects the controller family by driver, addresses
+        array elements and UDT members with qualified tag paths, has no tag browsing or whole-UDT decoding, and exposes
+        a request timeout. The addressing and vocabulary decisions of this binding follow that shared behavior.
+      </p>
+    </section>
+  </body>
+</html>

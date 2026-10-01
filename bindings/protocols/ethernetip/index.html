@@ -583,8 +583,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           When reading, a Consumer computes the application-facing value as
           <code>value = raw &times; eipv:scale + eipv:offset</code>, and when writing it applies the inverse,
           <code>raw = (value &minus; eipv:offset) / eipv:scale</code>, rounding to the nearest representable value of
-          the declared <code>eipv:type</code>. These are the same two terms, with the same semantics, as in the Modbus
-          binding, so that an author learns one rule for both.
+          the declared <code>eipv:type</code>. The same rule is proposed for the other industrial protocol bindings, so
+          that an author learns one rule for all of them.
         </p>
         <pre class="example json" title="Temperature in tenths of a degree">
 {

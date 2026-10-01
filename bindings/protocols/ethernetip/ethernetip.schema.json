@@ -108,10 +108,10 @@
             "enum": ["readproperty", "writeproperty", "observeproperty"]
           }
         },
-        "type": {
+        "eipv:type": {
           "$ref": "#/definitions/eipPrimitiveType"
         },
-        "pollingTime": {
+        "eipv:pollingTime": {
           "type": "integer",
           "minimum": 0
         },
@@ -134,7 +134,7 @@
       },
       "required": ["href", "op"],
       "not": {
-        "required": ["type", "eipv:structureDefinition"]
+        "required": ["eipv:type", "eipv:structureDefinition"]
       }
     },
     "absoluteEipForm": {

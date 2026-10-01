@@ -57,10 +57,10 @@
             "enum": ["readproperty", "writeproperty", "observeproperty"]
           }
         },
-        "type": {
+        "s7v:type": {
           "$ref": "#/definitions/s7PrimitiveType"
         },
-        "pollingTime": {
+        "s7v:pollingTime": {
           "type": "integer",
           "minimum": 0
         },
@@ -98,7 +98,7 @@
           "minimum": 1
         }
       },
-      "required": ["href", "op", "type"],
+      "required": ["href", "op", "s7v:type"],
       "anyOf": [
         {
           "description": "Address-bearing href in the TIA Portal notation, with the percent sign encoded.",
@@ -137,9 +137,9 @@
         },
         {
           "if": {
-            "required": ["s7v:area", "type"],
+            "required": ["s7v:area", "s7v:type"],
             "properties": {
-              "type": {
+              "s7v:type": {
                 "const": "s7v:BOOL"
               }
             }

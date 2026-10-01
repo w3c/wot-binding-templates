@@ -78,17 +78,10 @@
 
   <body>
     <section id="abstract">
-      <p class="note" title="Scope of this initial version">
-        This initial version of the binding focuses exclusively on variable data access, that is, reading and writing
-        individual memory locations of Siemens SIMATIC S7 controllers with the S7Comm protocol carried over ISO-on-TCP
-        [[RFC1006]]. It follows the two open implementations surveyed for it, the Siemens driver of the OPC Foundation
-        UA Edge Translator [[UA-EDGETRANSLATOR-S7]] and the S7 driver of Apache PLC4X [[PLC4X-S7]]. Alarm and event
-        services, cyclic push subscriptions, and diagnostics are expected to be covered by future versions.
-      </p>
       <p>
-        This Web of Things (WoT) protocol binding provides guidance for describing assets that are accessed with the
-        Siemens S7Comm protocol, covering the S7-300, S7-400, S7-1200, and S7-1500 controller families as well as the
-        S7-200 and LOGO! devices through a small set of connection conventions.
+        This Web of Things (WoT) protocol binding provides guidance Siemens S7Comm protocol, covering the S7-300,
+        S7-400, S7-1200, and S7-1500 controller families as well as the S7-200 and LOGO! devices through a small set of
+        connection conventions.
       </p>
       <p>The binding defines:</p>
       <ul>
@@ -104,6 +97,13 @@
 
     <section id="sotd">
       <p><em>This document is a work in progress.</em></p>
+      <p>
+        This initial version of the binding focuses exclusively on variable data access, that is, reading and writing
+        individual memory locations of Siemens SIMATIC S7 controllers with the S7Comm protocol carried over ISO-on-TCP
+        [[RFC1006]]. It follows the two open implementations surveyed for it, the Siemens driver of the OPC Foundation
+        UA Edge Translator [[UA-EDGETRANSLATOR-S7]] and the S7 driver of Apache PLC4X [[PLC4X-S7]]. Alarm and event
+        services, cyclic push subscriptions, and diagnostics are expected to be covered by future versions.
+      </p>
     </section>
 
     <section id="introduction">
@@ -146,8 +146,12 @@
         <li>interprets the declared S7 data type correctly.</li>
       </ol>
       <p>
-        The polling interval uses the unprefixed Form member <code>pollingTime</code> and Consumers implementing this
-        binding MUST accept that name.
+        The <dfn>interoperable profile</dfn> of this binding is the subset of its URI components, vocabulary terms, and
+        behaviors that every conforming Consumer MUST support. A Thing Description that uses only the interoperable
+        profile therefore works with every conforming Consumer, while anything outside it, such as a binding extension,
+        is only understood by Consumers that implement that extension. Unless a section states otherwise, all URI
+        components, vocabulary terms, and operation mappings defined normatively in this document belong to the
+        interoperable profile.
       </p>
     </section>
 
@@ -176,10 +180,10 @@ s7-URI = "s7://" host [ ":" port ] [ "/" rack "," slot ] [ "/" ]
           </li>
         </ul>
         <p>
-          Rack and slot are part of the interoperable profile because a connection cannot be established without them,
-          and because their correct values differ per controller family: a CPU of an S7-1200 or S7-1500 is commonly
-          reached at rack 0, slot 1, while an S7-300 or S7-400 CPU is commonly reached at rack 0, slot 2 and can sit in
-          any other slot of its rack. A Thing Description that omits them is not portable between Consumers.
+          Rack and slot are part of the [=interoperable profile=] and because their correct values differ per controller
+          family: a CPU of an S7-1200 or S7-1500 is commonly reached at rack 0, slot 1, while an S7-300 or S7-400 CPU is
+          commonly reached at rack 0, slot 2 and can sit in any other slot of its rack. A Thing Description that omits
+          them is not portable between Consumers.
         </p>
         <table class="def">
           <thead>
@@ -335,7 +339,7 @@ short-code     = "X" / "B" / "W" / "D"
 {
   "href": "TankLevel",
   "op": ["readproperty"],
-  "type": "s7v:INT",
+  "s7v:type": "s7v:INT",
   "s7v:area": "DB",
   "s7v:dbNumber": 1,
   "s7v:byteOffset": 20
@@ -452,13 +456,13 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
               <td>Array containing supported operations</td>
             </tr>
             <tr>
-              <td><code>type</code></td>
+              <td><code>s7v:type</code></td>
               <td>S7 data type used to encode and decode the value.</td>
               <td>required</td>
               <td>One value from <a href="#data-types">Data Types</a></td>
             </tr>
             <tr>
-              <td><code>pollingTime</code></td>
+              <td><code>s7v:pollingTime</code></td>
               <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
               <td>optional</td>
               <td>Non-negative integer</td>
@@ -817,14 +821,14 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
           When reading, a Consumer computes the application-facing value as
           <code>value = raw &times; s7v:scale + s7v:offset</code>, and when writing it applies the inverse,
           <code>raw = (value &minus; s7v:offset) / s7v:scale</code>, rounding to the nearest representable value of the
-          declared <code>type</code>. These are the same two terms, with the same semantics, as in the Modbus and
+          declared <code>s7v:type</code>. These are the same two terms, with the same semantics, as in the Modbus and
           EtherNet/IP bindings, so that an author learns one rule for all three.
         </p>
         <pre class="example json" title="Analog input scaled to degrees Celsius">
 {
   "href": "./%25IW64:INT",
   "op": ["readproperty"],
-  "type": "s7v:INT",
+  "s7v:type": "s7v:INT",
   "s7v:scale": 0.0036169,
   "s7v:offset": -50
 }
@@ -850,16 +854,16 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
               <td><code>readproperty</code></td>
               <td>
                 Send an S7 Read Variable request for the addressed memory area, byte offset, and length, and decode the
-                returned bytes according to <code>type</code>.
+                returned bytes according to <code>s7v:type</code>.
               </td>
               <td>The Form MUST identify a readable area.</td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
               <td>
-                Encode the supplied value according to <code>type</code> and send it with an S7 Write Variable request.
-                A <code>s7v:BOOL</code> value is written as a single bit, so that the neighboring bits of the byte are
-                not affected.
+                Encode the supplied value according to <code>s7v:type</code> and send it with an S7 Write Variable
+                request. A <code>s7v:BOOL</code> value is written as a single bit, so that the neighboring bits of the
+                byte are not affected.
               </td>
               <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
             </tr>
@@ -870,7 +874,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
                 according to implementation behavior.
               </td>
               <td>
-                <code>observable</code> SHOULD be <code>true</code>; <code>pollingTime</code> controls the requested
+                <code>observable</code> SHOULD be <code>true</code>; <code>s7v:pollingTime</code> controls the requested
                 interval.
               </td>
             </tr>
@@ -879,8 +883,8 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         <p>
           This version of the binding does not use the cyclic push service of the S7-300 and S7-400 families, which is
           not available on the S7-1200 and S7-1500 families [[PLC4X-S7]]. An implementation realizes
-          <code>observeproperty</code> by polling, SHOULD use <code>pollingTime</code> when supplied, and MAY enforce a
-          minimum interval to protect the controller and network.
+          <code>observeproperty</code> by polling, SHOULD use <code>s7v:pollingTime</code> when supplied, and MAY
+          enforce a minimum interval to protect the controller and network.
         </p>
         <p>
           An implementation MAY combine the reads of several Forms of the same endpoint into a single request, as long
@@ -914,8 +918,8 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         <a href="#value-conversion">Value Conversion</a> when it is declared.
       </p>
       <p>
-        A Consumer MUST use both the WoT Data Schema and the Form's S7 <code>type</code>. The WoT Data Schema describes
-        the application-facing value, while the Form term identifies the controller representation.
+        A Consumer MUST use both the WoT Data Schema and the Form's S7 <code>s7v:type</code>. The WoT Data Schema
+        describes the application-facing value, while the Form term identifies the controller representation.
       </p>
       <p>
         This version of the binding does not describe the layout of a user-defined structure inside a data block. A
@@ -980,8 +984,8 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         {
           "href": "./%25DB1.DBD20:REAL",
           "op": ["readproperty", "observeproperty", "writeproperty"],
-          "type": "s7v:REAL",
-          "pollingTime": 1000,
+          "s7v:type": "s7v:REAL",
+          "s7v:pollingTime": 1000,
           "s7v:timeout": 2000
         }
       ]
@@ -1003,8 +1007,8 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "./%25I0.3:BOOL",
         "op": ["readproperty", "observeproperty"],
-        "type": "s7v:BOOL",
-        "pollingTime": 500
+        "s7v:type": "s7v:BOOL",
+        "s7v:pollingTime": 500
       }
     ]
   }
@@ -1024,12 +1028,12 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "TankTemperature",
         "op": ["readproperty", "observeproperty"],
-        "type": "s7v:INT",
+        "s7v:type": "s7v:INT",
         "s7v:area": "DB",
         "s7v:dbNumber": 12,
         "s7v:byteOffset": 4,
         "s7v:scale": 0.1,
-        "pollingTime": 5000
+        "s7v:pollingTime": 5000
       }
     ]
   }
@@ -1048,7 +1052,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "./%25DB1.DBB100:STRING(20)",
         "op": ["readproperty"],
-        "type": "s7v:STRING",
+        "s7v:type": "s7v:STRING",
         "s7v:length": 20
       }
     ]
@@ -1089,8 +1093,8 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         {
           "href": "./%25DB1.DBW310:INT",
           "op": ["readproperty", "observeproperty"],
-          "type": "s7v:INT",
-          "pollingTime": 2000
+          "s7v:type": "s7v:INT",
+          "s7v:pollingTime": 2000
         }
       ]
     }
@@ -1121,7 +1125,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         </li>
         <li>
           carries the canonical Siemens type name in <code>s7:s7type</code>, with the same set of names that this
-          binding uses in <code>type</code>; and
+          binding uses in <code>s7v:type</code>; and
         </li>
         <li>reads a <code>BOOL</code> as a single bit at the absolute bit address, and every other type byte-wise.</li>
       </ul>

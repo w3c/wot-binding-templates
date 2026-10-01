@@ -84,20 +84,9 @@
 
   <body>
     <section id="abstract">
-      <p class="note" title="Scope of this initial version">
-        This initial version of the binding focuses exclusively on tag data access, that is, reading and writing
-        individual controller variables with CIP explicit messaging. Its primary target are Rockwell Automation Logix
-        5000 family controllers, whose controller-scoped and program-scoped symbolic tags are accessed as described in
-        the Logix 5000 Controllers Data Access programming manual [[1756-PM020]]. Controllers that use PCCC file
-        addresses, such as MicroLogix, SLC 500, and PLC-5, are covered by the addressing, vocabulary, and operation
-        mapping rules of this binding at the level of the PCCC commands used, but their payload encodings are not
-        described here in the same detail. Other EtherNet/IP devices, services, and access methods are expected to be
-        covered by future versions.
-      </p>
       <p>
-        This Web of Things (WoT) protocol binding provides guidance for describing assets that leverage the ODVA
-        EtherNet/IP protocol, with an initial focus on Rockwell Automation Logix-family programmable controllers
-        accessed through symbolic tags [[1756-PM020]].
+        This Web of Things (WoT) protocol binding EtherNet/IP protocol, with an initial focus on Rockwell Automation
+        Logix-family programmable controllers accessed through symbolic tags [[1756-PM020]].
       </p>
       <p>The binding defines:</p>
       <ul>
@@ -114,6 +103,16 @@
 
     <section id="sotd">
       <p><em>This document is a work in progress.</em></p>
+      <p>
+        This initial version of the binding focuses exclusively on tag data access, that is, reading and writing
+        individual controller variables with CIP explicit messaging. Its primary target are Rockwell Automation Logix
+        5000 family controllers, whose controller-scoped and program-scoped symbolic tags are accessed as described in
+        the Logix 5000 Controllers Data Access programming manual [[1756-PM020]]. Controllers that use PCCC file
+        addresses, such as MicroLogix, SLC 500, and PLC-5, are covered by the addressing, vocabulary, and operation
+        mapping rules of this binding at the level of the PCCC commands used, but their payload encodings are not
+        described here in the same detail. Other EtherNet/IP devices, services, and access methods are expected to be
+        covered by future versions.
+      </p>
     </section>
 
     <section id="introduction">
@@ -161,8 +160,12 @@
         <li>interprets structured definitions recursively when <code>eipv:structureDefinition</code> is present.</li>
       </ol>
       <p>
-        The primitive type and polling interval use the unprefixed Form members <code>type</code> and
-        <code>pollingTime</code> and consumers implementing this binding MUST accept those names.
+        The <dfn>interoperable profile</dfn> of this binding is the subset of its URI components, vocabulary terms, and
+        behaviors that every conforming Consumer MUST support. A Thing Description that uses only the interoperable
+        profile therefore works with every conforming Consumer, while anything outside it, such as a binding extension,
+        is only understood by Consumers that implement that extension. Unless a section states otherwise, all URI
+        components, vocabulary terms, and operation mappings defined normatively in this document belong to the
+        interoperable profile.
       </p>
     </section>
 
@@ -192,7 +195,7 @@ route-path = segment *( "," segment )
           </li>
         </ul>
         <p>
-          The route path is part of the interoperable profile because it is required to open a connection. The value
+          The route path is part of the [=interoperable profile=] because it is required to open a connection. The value
           <code>1,0</code> only addresses a controller in slot 0 of the chassis that the communication module belongs
           to. A ControlLogix controller in another slot, a CompactLogix controller, or a controller reached through a
           further Ethernet module needs a different route, and a Thing Description that omits it is not portable between
@@ -240,7 +243,7 @@ route-path = segment *( "," segment )
           controllers use symbolic tags [[1756-PM020]], while MicroLogix, SLC 500, and PLC-5 controllers use file-style
           addresses such as <code>N7:1</code> or <code>B3:0/3</code> carried over PCCC, and Micro800 and third-party
           controllers differ again. A Consumer therefore MUST know the controller family before it can encode a request,
-          which is why the family is part of the interoperable profile.
+          which is why the family is part of the [=interoperable profile=].
         </p>
         <p>
           A Thing Description carrying <code>eip</code> Forms SHOULD declare the controller family at the top level with
@@ -484,13 +487,13 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               <td>Array containing supported operations</td>
             </tr>
             <tr>
-              <td><code>type</code></td>
+              <td><code>eipv:type</code></td>
               <td>EtherNet/IP/Logix primitive type used to encode and decode the tag value.</td>
               <td>required for primitive tags</td>
               <td>One value from <a href="#primitive-data-types">Primitive Data Types</a></td>
             </tr>
             <tr>
-              <td><code>pollingTime</code></td>
+              <td><code>eipv:pollingTime</code></td>
               <td>Requested polling interval for <code>observeproperty</code>, in milliseconds.</td>
               <td>optional</td>
               <td>Non-negative integer</td>
@@ -527,8 +530,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           </tbody>
         </table>
         <p>
-          A Form MUST NOT contain both a primitive <code>type</code> and an <code>eipv:structureDefinition</code>.
-          Primitive tags use <code>type</code>, while structured tags either use
+          A Form MUST NOT contain both a primitive <code>eipv:type</code> and an <code>eipv:structureDefinition</code>.
+          Primitive tags use <code>eipv:type</code>, while structured tags either use
           <code>eipv:structureDefinition</code> or carry neither term and are decoded from the definition that the
           Consumer obtains from the controller, see
           <a href="#structure-definition-precedence">Structure Definition Precedence</a>.
@@ -549,14 +552,14 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           When reading, a Consumer computes the application-facing value as
           <code>value = raw &times; eipv:scale + eipv:offset</code>, and when writing it applies the inverse,
           <code>raw = (value &minus; eipv:offset) / eipv:scale</code>, rounding to the nearest representable value of
-          the declared <code>type</code>. These are the same two terms, with the same semantics, as in the Modbus
+          the declared <code>eipv:type</code>. These are the same two terms, with the same semantics, as in the Modbus
           binding, so that an author learns one rule for both.
         </p>
         <pre class="example json" title="Temperature in tenths of a degree">
 {
   "href": "TankTemp",
   "op": ["readproperty"],
-  "type": "eipv:INT",
+  "eipv:type": "eipv:INT",
   "eipv:scale": 0.1
 }
         </pre>
@@ -881,28 +884,29 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               <td>
                 Send a CIP Read Tag service (<code>0x4C</code>), or a Read Tag Fragmented service (<code>0x52</code>)
                 when the value does not fit into a single reply, to the symbolic tag and decode the returned value
-                according to <code>type</code> or <code>eipv:structureDefinition</code> [[1756-PM020]].
+                according to <code>eipv:type</code> or <code>eipv:structureDefinition</code> [[1756-PM020]].
               </td>
               <td>
                 Send a PCCC Protected Typed Logical Read with three address fields (command <code>0x0F</code>, function
                 <code>0xA2</code>) for <code>MicroLogix</code> and <code>SLC500</code>, or a PCCC Typed Read (command
                 <code>0x0F</code>, function <code>0x68</code>) for <code>PLC5</code>, addressing the file, element, and
-                sub-element of the file address, and decode the returned value according to <code>type</code>.
+                sub-element of the file address, and decode the returned value according to <code>eipv:type</code>.
               </td>
               <td>The Form MUST identify a readable tag or file element.</td>
             </tr>
             <tr>
               <td><code>writeproperty</code></td>
               <td>
-                Encode the supplied value according to <code>type</code> or <code>eipv:structureDefinition</code> and
-                send it with a CIP Write Tag service (<code>0x4D</code>), or a Write Tag Fragmented service
-                (<code>0x53</code>) when the value does not fit into a single request [[1756-PM020]].
+                Encode the supplied value according to <code>eipv:type</code> or
+                <code>eipv:structureDefinition</code> and send it with a CIP Write Tag service (<code>0x4D</code>), or a
+                Write Tag Fragmented service (<code>0x53</code>) when the value does not fit into a single request
+                [[1756-PM020]].
               </td>
               <td>
-                Encode the supplied value according to <code>type</code> and send it with a PCCC Protected Typed Logical
-                Write with three address fields (function <code>0xAA</code>), or with mask (function <code>0xAB</code>)
-                for a single bit, for <code>MicroLogix</code> and <code>SLC500</code>, or with a PCCC Typed Write
-                (function <code>0x67</code>) for <code>PLC5</code>.
+                Encode the supplied value according to <code>eipv:type</code> and send it with a PCCC Protected Typed
+                Logical Write with three address fields (function <code>0xAA</code>), or with mask (function
+                <code>0xAB</code>) for a single bit, for <code>MicroLogix</code> and <code>SLC500</code>, or with a PCCC
+                Typed Write (function <code>0x67</code>) for <code>PLC5</code>.
               </td>
               <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
             </tr>
@@ -913,8 +917,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
                 sample is available or its value changes, according to implementation behavior.
               </td>
               <td>
-                <code>observable</code> SHOULD be <code>true</code>; <code>pollingTime</code> controls the requested
-                interval.
+                <code>observable</code> SHOULD be <code>true</code>; <code>eipv:pollingTime</code> controls the
+                requested interval.
               </td>
             </tr>
           </tbody>
@@ -924,9 +928,9 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         </p>
         <p>
           The initial binding does not define a native EtherNet/IP subscription mechanism. An implementation MAY realize
-          <code>observeproperty</code> by polling. It SHOULD use <code>pollingTime</code> when supplied and MAY enforce
-          a minimum interval to protect the controller and network. An implementation MAY combine the reads of several
-          Forms of the same endpoint into a single CIP Multiple Service Packet request (<code>0x0A</code>)
+          <code>observeproperty</code> by polling. It SHOULD use <code>eipv:pollingTime</code> when supplied and MAY
+          enforce a minimum interval to protect the controller and network. An implementation MAY combine the reads of
+          several Forms of the same endpoint into a single CIP Multiple Service Packet request (<code>0x0A</code>)
           [[1756-PM020]] to reduce the load on the controller.
         </p>
       </section>
@@ -958,7 +962,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           corresponding Logix wire representation.
         </p>
         <p>
-          A consumer MUST use both the WoT Data Schema and the Form's Logix <code>type</code>. The WoT Data Schema
+          A consumer MUST use both the WoT Data Schema and the Form's Logix <code>eipv:type</code>. The WoT Data Schema
           describes the application-facing value, while the Form term identifies the controller representation.
         </p>
       </section>
@@ -1083,8 +1087,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         {
           "href": "MotorSpeed",
           "op": ["readproperty", "observeproperty", "writeproperty"],
-          "type": "eipv:REAL",
-          "pollingTime": 1000,
+          "eipv:type": "eipv:REAL",
+          "eipv:pollingTime": 1000,
           "eipv:timeout": 2000
         }
       ]
@@ -1106,8 +1110,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
       {
         "href": "./Program:Packaging.Counter",
         "op": ["readproperty", "observeproperty"],
-        "type": "eipv:DINT",
-        "pollingTime": 2000
+        "eipv:type": "eipv:DINT",
+        "eipv:pollingTime": 2000
       }
     ]
   }
@@ -1145,9 +1149,9 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         {
           "href": "./N7:1",
           "op": ["readproperty", "observeproperty"],
-          "type": "eipv:INT",
+          "eipv:type": "eipv:INT",
           "eipv:scale": 0.1,
-          "pollingTime": 5000,
+          "eipv:pollingTime": 5000,
           "eipv:timeout": 3000
         }
       ]
@@ -1181,7 +1185,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         {
           "href": "LineState",
           "op": ["readproperty", "observeproperty", "writeproperty"],
-          "pollingTime": 1000,
+          "eipv:pollingTime": 1000,
           "eipv:structureDefinition": {
             "typeName": "LineStateType",
             "fields": [

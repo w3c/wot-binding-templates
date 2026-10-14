@@ -374,8 +374,8 @@ Recipe%5B3%5D.SetPoint
           <code>?offset=</code> form.
         </p>
         <p>
-          Reading a range of array elements with a single Form, such as the first four elements of an array, is out of
-          scope for this version of the binding. A Form addresses either a single element or a whole tag.
+          A Form addresses a single element, a whole tag, or, with <code>eipv:dimensions</code> and
+          <code>eipv:elementCount</code>, a contiguous range of array elements, see <a href="#arrays">Arrays</a>.
         </p>
         <pre class="example json" title="Relative Form target">
 {
@@ -557,6 +557,34 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               <td>Recursive definition of a structured Logix tag or UDT.</td>
               <td>optional</td>
               <td><a href="#structured-type-definition">StructureDefinition</a></td>
+            </tr>
+            <tr>
+              <td><code>eipv:dimensions</code></td>
+              <td>
+                Declared dimensions of the array tag, outermost first. Present when the Form transfers several elements
+                of <code>eipv:type</code> instead of one value, see <a href="#arrays">Arrays</a>.
+              </td>
+              <td>optional</td>
+              <td>
+                Array of 1 to 3
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a
+                >, each at least 1
+              </td>
+            </tr>
+            <tr>
+              <td><code>eipv:elementCount</code></td>
+              <td>
+                Number of elements transferred, starting at the element that <code>href</code> addresses. This is the
+                element count of the CIP Read Tag and Write Tag services, see <a href="#arrays">Arrays</a>.
+              </td>
+              <td>
+                optional, default the product of <code>eipv:dimensions</code>; requires <code>eipv:dimensions</code>
+              </td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a
+                >, from 1 to the product of
+                <code>eipv:dimensions</code>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -960,7 +988,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           </tbody>
         </table>
         <p>
-          <code>eipv:structureDefinition</code> and the <code>?offset=</code> query apply to the symbolic families only.
+          <code>eipv:structureDefinition</code>, <code>eipv:dimensions</code>, <code>eipv:elementCount</code>, and the
+          <code>?offset=</code> query apply to the symbolic families only.
         </p>
         <p>
           The initial binding does not define a native EtherNet/IP subscription mechanism. An implementation MAY realize
@@ -1106,16 +1135,118 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
       <section id="arrays">
         <h3>Arrays</h3>
         <p>
-          Array elements are exposed through the Form <code>href</code>, using the Logix subscript syntax of
-          [[1756-PM020]], which supports up to three dimensions. A Form addressing a single element is decoded like a
-          scalar of the same type.
+          Array elements are addressed through the Form <code>href</code>, using the Logix subscript syntax of
+          [[1756-PM020]], which supports up to three dimensions. A Form addressing a single element without
+          <code>eipv:dimensions</code> is decoded like a scalar of the same type.
         </p>
         <p>
-          This binding does not define a complete interoperable array model, including dimensions, bounds, bulk reads of
-          multiple elements, or slicing. An implementation that reads more than one element at a time does so with the
-          element count of the CIP Read Tag service and the offset of the Read Tag Fragmented service [[1756-PM020]],
-          which this version of the binding does not describe in the Thing Description.
+          A Form transfers several elements in one request when it carries <code>eipv:dimensions</code>, optionally
+          together with <code>eipv:elementCount</code>. The CIP Read Tag and Write Tag services then use the element
+          count of the request [[1756-PM020]] instead of transferring one value. The following rules apply:
         </p>
+        <ul>
+          <li>
+            The <code>href</code> addresses the first element transferred: the whole tag, such as <code>Levels</code>,
+            means element 0, and an element reference, such as <code>Levels%5B3%5D</code>, means a range starting at
+            element 3. The tag path grammar and the percent-encoding rules apply unchanged.
+          </li>
+          <li>
+            <code>eipv:elementCount</code> MUST NOT be used without <code>eipv:dimensions</code>. When it is absent, the
+            number of elements transferred is the product of <code>eipv:dimensions</code>. It MUST NOT exceed that
+            product.
+          </li>
+          <li>
+            A Form with <code>eipv:dimensions</code> MUST carry <code>eipv:type</code>, which names the element type,
+            and MUST NOT carry <code>eipv:structureDefinition</code>.
+          </li>
+          <li>
+            The element types <code>eipv:BOOL</code> and <code>eipv:STRING</code> MUST NOT be used with
+            <code>eipv:dimensions</code>. Logix stores <code>BOOL</code> arrays as packed bit strings in
+            <code>DINT</code> words, which authors describe with <code>eipv:DWORD</code>, and <code>STRING</code>
+            arrays carry a structure per element.
+          </li>
+          <li>
+            Elements are transferred in little-endian byte order, back to back without padding, in row-major order with
+            the last dimension varying fastest. This is how Logix lays out arrays of atomic types and how the element
+            count of the CIP Read Tag service reads them.
+          </li>
+          <li>
+            A multi-dimensional array is transferred and exposed as a flat, one-dimensional array of
+            <code>eipv:elementCount</code> elements; <code>eipv:dimensions</code> keeps the shape for Consumers that
+            need it.
+          </li>
+          <li><code>eipv:scale</code> and <code>eipv:offset</code> apply to each element.</li>
+          <li>
+            <code>readproperty</code> returns all transferred elements. A <code>writeproperty</code> request MUST supply
+            exactly <code>eipv:elementCount</code> elements, and an implementation MUST preserve the bytes of the tag
+            outside the written elements.
+          </li>
+          <li>
+            The <code>?offset=</code> query parameter still selects a byte offset into the addressed tag and is applied
+            before the first element.
+          </li>
+        </ul>
+        <p>
+          The Property uses the WoT <code>array</code> data schema. Its <code>items</code> is the data schema that
+          <a href="#primitive-data-types">Primitive Data Types</a> recommends for the element type, and both
+          <code>minItems</code> and <code>maxItems</code> equal <code>eipv:elementCount</code>.
+        </p>
+        <pre class="example json" title="Whole array tag">
+{
+  "AlarmRC": {
+    "type": "array",
+    "items": { "type": "integer", "minimum": -2147483648, "maximum": 2147483647 },
+    "minItems": 10,
+    "maxItems": 10,
+    "forms": [
+      {
+        "href": "./Program:Mixer.AlarmRC",
+        "op": ["readproperty", "observeproperty", "writeproperty"],
+        "eipv:type": "eipv:DINT",
+        "eipv:dimensions": [10],
+        "eipv:pollingTime": 1000
+      }
+    ]
+  }
+}
+        </pre>
+        <pre class="example json" title="Range of four elements starting at element 2">
+{
+  "href": "Recipe%5B2%5D",
+  "op": ["readproperty"],
+  "eipv:type": "eipv:REAL",
+  "eipv:dimensions": [10],
+  "eipv:elementCount": 4
+}
+        </pre>
+        <p>
+          Arrays of structures, array members of structures, and arrays of <code>BOOL</code> and <code>STRING</code> are
+          not described by this version of the binding.
+        </p>
+        <div class="issue" title="Open questions on the array model">
+          <ol>
+            <li>
+              Should a multi-dimensional array be exposed nested, as an array of arrays, instead of flat? Flat matches
+              the CIP transfer and a one-dimensional OPC UA Variable; nested matches the declaration.
+            </li>
+            <li>
+              Should <code>eipv:dimensions</code> also be allowed on structure fields, so that UDTs with array members
+              can be described? The layout rules would be the same.
+            </li>
+            <li>
+              Should arrays of structures be allowed, with <code>eipv:structureDefinition</code> describing the element?
+              The element stride would then be the padded structure size, which the definition does not carry.
+            </li>
+            <li>
+              Is <code>eipv:elementCount</code> needed at all, or is a range better expressed by the
+              <code>href</code> alone, with the count taken from <code>minItems</code> and <code>maxItems</code>?
+            </li>
+            <li>
+              Should <code>BOOL</code> arrays stay out of scope, with authors using <code>eipv:DWORD</code>, or should
+              the binding define a bit-array view?
+            </li>
+          </ol>
+        </div>
       </section>
     </section>
 
@@ -1365,8 +1496,15 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           needs to adopt the <code>base</code> route path and <code>eipv:controller</code> of this binding to reach
           controllers in other slots, chassis, or families;
         </li>
-        <li>supports controller discovery through the EtherNet/IP <code>ListIdentity</code> broadcast; and</li>
-        <li>reads controller tag metadata to generate Property affordances.</li>
+        <li>supports controller discovery through the EtherNet/IP <code>ListIdentity</code> broadcast;</li>
+        <li>reads controller tag metadata to generate Property affordances; and</li>
+        <li>
+          implements the array model of <a href="#arrays">Arrays</a>, including dimensions taken from the controller
+          symbol information and from Studio 5000 tag exports. On the sample export that ships with it, 57 of the 93
+          array tags (45 <code>DINT</code> and 12 <code>REAL</code>) become array Properties; the other 36 are arrays of
+          structures, which this version does not describe. The element-count transfer has so far been tested on encoded
+          buffers only, not against a controller.
+        </li>
       </ul>
       <p>
         Apache PLC4X carries the route as a connection option and selects the controller family by driver, addresses

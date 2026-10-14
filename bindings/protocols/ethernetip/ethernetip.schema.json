@@ -134,6 +134,19 @@
         },
         "eipv:structureDefinition": {
           "$ref": "#/definitions/structureDefinition"
+        },
+        "eipv:dimensions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "eipv:elementCount": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": ["href", "op"],
@@ -176,6 +189,37 @@
                   "const": "writeproperty"
                 }
               }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["eipv:elementCount"]
+          },
+          "then": {
+            "required": ["eipv:dimensions"]
+          }
+        },
+        {
+          "if": {
+            "required": ["eipv:dimensions"]
+          },
+          "then": {
+            "required": ["eipv:type"],
+            "not": {
+              "anyOf": [
+                {
+                  "required": ["eipv:structureDefinition"]
+                },
+                {
+                  "required": ["eipv:type"],
+                  "properties": {
+                    "eipv:type": {
+                      "enum": ["eipv:BOOL", "eipv:STRING"]
+                    }
+                  }
+                }
+              ]
             }
           }
         }

@@ -38,6 +38,10 @@
           "items": {
             "$ref": "#/definitions/fieldDefinition"
           }
+        },
+        "eipv:byteSize": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": ["eipv:typeName", "eipv:fields"]
@@ -65,6 +69,15 @@
         },
         "eipv:structureDefinition": {
           "$ref": "#/definitions/structureDefinition"
+        },
+        "eipv:dimensions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "maxItems": 3
         }
       },
       "required": ["eipv:name", "eipv:byteOffset"],
@@ -78,6 +91,20 @@
       },
       "then": {
         "required": ["eipv:bitOffset"]
+      },
+      "dependentSchemas": {
+        "eipv:dimensions": {
+          "properties": {
+            "eipv:type": {
+              "not": {
+                "enum": ["eipv:BOOL", "eipv:STRING"]
+              }
+            },
+            "eipv:structureDefinition": {
+              "required": ["eipv:byteSize"]
+            }
+          }
+        }
       },
       "oneOf": [
         {
@@ -205,22 +232,29 @@
             "required": ["eipv:dimensions"]
           },
           "then": {
-            "required": ["eipv:type"],
-            "not": {
-              "anyOf": [
-                {
-                  "required": ["eipv:structureDefinition"]
-                },
-                {
-                  "required": ["eipv:type"],
-                  "properties": {
-                    "eipv:type": {
+            "oneOf": [
+              {
+                "required": ["eipv:type"],
+                "properties": {
+                  "eipv:type": {
+                    "not": {
                       "enum": ["eipv:BOOL", "eipv:STRING"]
                     }
                   }
                 }
-              ]
-            }
+              },
+              {
+                "required": ["eipv:structureDefinition"],
+                "properties": {
+                  "eipv:structureDefinition": {
+                    "required": ["eipv:byteSize"]
+                  }
+                },
+                "not": {
+                  "anyOf": [{ "required": ["eipv:scale"] }, { "required": ["eipv:offset"] }]
+                }
+              }
+            ]
           }
         }
       ]

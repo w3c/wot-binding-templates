@@ -562,7 +562,8 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               <td><code>eipv:dimensions</code></td>
               <td>
                 Declared dimensions of the array tag, outermost first. Present when the Form transfers several elements
-                of <code>eipv:type</code> instead of one value, see <a href="#arrays">Arrays</a>.
+                of <code>eipv:type</code> or <code>eipv:structureDefinition</code> instead of one value, see
+                <a href="#arrays">Arrays</a>.
               </td>
               <td>optional</td>
               <td>
@@ -776,6 +777,18 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               <td>required</td>
               <td>Array of <a href="#structured-type-definition">FieldDefinition</a></td>
             </tr>
+            <tr>
+              <td><code>eipv:byteSize</code></td>
+              <td>
+                Size in bytes of one instance of the UDT, including trailing padding. This is the element stride of an
+                array of the UDT, see <a href="#arrays">Arrays</a>.
+              </td>
+              <td>required when the structure is the element type of an array</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a
+                >, at least 1
+              </td>
+            </tr>
           </tbody>
         </table>
         <p>Each field-definition object has the following members:</p>
@@ -828,6 +841,20 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
               </td>
             </tr>
             <tr>
+              <td><code>eipv:dimensions</code></td>
+              <td>
+                Declared dimensions of an array member, outermost first. The field then holds the product of the
+                dimensions of elements of <code>eipv:type</code> or <code>eipv:structureDefinition</code>, see
+                <a href="#arrays">Arrays</a>.
+              </td>
+              <td>optional</td>
+              <td>
+                Array of 1 to 3
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a
+                >, each at least 1
+              </td>
+            </tr>
+            <tr>
               <td><code>description</code></td>
               <td>
                 Human-readable description of the field. This is the <code>description</code> term of the TD core
@@ -850,6 +877,15 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           A field MUST use either <code>eipv:type</code> for a primitive field or
           <code>eipv:structureDefinition</code> for a nested UDT field. A consumer MUST process nested structure
           definitions recursively.
+        </p>
+        <p>
+          A field with <code>eipv:dimensions</code> describes an array member of the UDT. Its element type is given by
+          <code>eipv:type</code> or by an <code>eipv:structureDefinition</code> that carries
+          <code>eipv:byteSize</code>. The element types <code>eipv:BOOL</code> and
+          <code>eipv:STRING</code> MUST NOT be used with <code>eipv:dimensions</code>, for the reasons given in
+          <a href="#arrays">Arrays</a>. <code>eipv:byteOffset</code> identifies the first element, and the elements
+          follow the layout rules of <a href="#arrays">Arrays</a>. The member is exposed as a flat JSON array holding
+          the product of <code>eipv:dimensions</code> elements.
         </p>
         <p>
           The offsets MUST describe the layout that the controller uses on the wire, as documented in [[1756-PM020]]. In
@@ -1156,8 +1192,9 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
             product.
           </li>
           <li>
-            A Form with <code>eipv:dimensions</code> MUST carry <code>eipv:type</code>, which names the element type,
-            and MUST NOT carry <code>eipv:structureDefinition</code>.
+            A Form with <code>eipv:dimensions</code> MUST name the element type, either with <code>eipv:type</code> for
+            an array of atomic types or with an <code>eipv:structureDefinition</code> that carries
+            <code>eipv:byteSize</code> for an array of structures.
           </li>
           <li>
             The element types <code>eipv:BOOL</code> and <code>eipv:STRING</code> MUST NOT be used with
@@ -1166,20 +1203,27 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
             arrays carry a structure per element.
           </li>
           <li>
-            Elements are transferred in little-endian byte order, back to back without padding, in row-major order with
-            the last dimension varying fastest. This is how Logix lays out arrays of atomic types and how the element
-            count of the CIP Read Tag service reads them.
+            Elements are transferred in little-endian byte order, in row-major order with the last dimension varying
+            fastest. Elements of atomic types follow each other without padding. Each element of an array of
+            structures occupies <code>eipv:byteSize</code> bytes, so element <var>i</var> starts at byte
+            <var>i</var> &times; <code>eipv:byteSize</code>, and its fields are decoded relative to that start. This is
+            how Logix lays out arrays and how the element count of the CIP Read Tag service reads them.
           </li>
           <li>
             A multi-dimensional array is transferred and exposed as a flat, one-dimensional array of
             <code>eipv:elementCount</code> elements; <code>eipv:dimensions</code> keeps the shape for Consumers that
-            need it.
+            need it. A nested representation is not used because a range can start in the middle of a row, for
+            example four elements starting at <code>[0,2]</code> of a <code>[3,3]</code> array, and because the flat
+            form matches the CIP transfer and a one-dimensional OPC UA Variable.
           </li>
-          <li><code>eipv:scale</code> and <code>eipv:offset</code> apply to each element.</li>
+          <li>
+            <code>eipv:scale</code> and <code>eipv:offset</code> apply to each element and MUST NOT be used with an
+            array of structures.
+          </li>
           <li>
             <code>readproperty</code> returns all transferred elements. A <code>writeproperty</code> request MUST supply
             exactly <code>eipv:elementCount</code> elements, and an implementation MUST preserve the bytes of the tag
-            outside the written elements.
+            outside the written elements, including the padding inside and between structure elements.
           </li>
           <li>
             The <code>?offset=</code> query parameter still selects a byte offset into the addressed tag and is applied
@@ -1188,7 +1232,9 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         </ul>
         <p>
           The Property uses the WoT <code>array</code> data schema. Its <code>items</code> is the data schema that
-          <a href="#primitive-data-types">Primitive Data Types</a> recommends for the element type, and both
+          <a href="#primitive-data-types">Primitive Data Types</a> recommends for the element type, or an
+          <code>object</code> schema as in <a href="#structured-values">Structured Values</a> for an array of
+          structures, and both
           <code>minItems</code> and <code>maxItems</code> equal <code>eipv:elementCount</code>.
         </p>
         <pre class="example json" title="Whole array tag">
@@ -1219,34 +1265,26 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
   "eipv:elementCount": 4
 }
         </pre>
+        <pre class="example json" title="Array of structures">
+{
+  "href": "Motors",
+  "op": ["readproperty"],
+  "eipv:dimensions": [8],
+  "eipv:structureDefinition": {
+    "eipv:typeName": "MotorStatus",
+    "eipv:byteSize": 8,
+    "eipv:fields": [
+      { "eipv:name": "Running", "eipv:type": "eipv:BOOL", "eipv:byteOffset": 0, "eipv:bitOffset": 0 },
+      { "eipv:name": "Speed", "eipv:type": "eipv:REAL", "eipv:byteOffset": 4 }
+    ]
+  }
+}
+        </pre>
         <p>
-          Arrays of structures, array members of structures, and arrays of <code>BOOL</code> and <code>STRING</code> are
-          not described by this version of the binding.
+          Array members of structures are described by <code>eipv:dimensions</code> on the field definition, see
+          <a href="#structured-type-definition">Structured Type Definition</a>. Arrays of <code>BOOL</code> and
+          <code>STRING</code> are not described by this version of the binding.
         </p>
-        <div class="issue" title="Open questions on the array model">
-          <ol>
-            <li>
-              Should a multi-dimensional array be exposed nested, as an array of arrays, instead of flat? Flat matches
-              the CIP transfer and a one-dimensional OPC UA Variable; nested matches the declaration.
-            </li>
-            <li>
-              Should <code>eipv:dimensions</code> also be allowed on structure fields, so that UDTs with array members
-              can be described? The layout rules would be the same.
-            </li>
-            <li>
-              Should arrays of structures be allowed, with <code>eipv:structureDefinition</code> describing the element?
-              The element stride would then be the padded structure size, which the definition does not carry.
-            </li>
-            <li>
-              Is <code>eipv:elementCount</code> needed at all, or is a range better expressed by the
-              <code>href</code> alone, with the count taken from <code>minItems</code> and <code>maxItems</code>?
-            </li>
-            <li>
-              Should <code>BOOL</code> arrays stay out of scope, with authors using <code>eipv:DWORD</code>, or should
-              the binding define a bit-array view?
-            </li>
-          </ol>
-        </div>
       </section>
     </section>
 

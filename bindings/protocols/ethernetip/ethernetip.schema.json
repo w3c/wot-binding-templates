@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "anyOf": [
+    {
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
+    }
+  ],
+  "definitions": {
+    "eipPrimitiveType": {
+      "type": "string",
+      "enum": [
+        "eipv:BOOL",
+        "eipv:SINT",
+        "eipv:INT",
+        "eipv:DINT",
+        "eipv:LINT",
+        "eipv:USINT",
+        "eipv:UINT",
+        "eipv:UDINT",
+        "eipv:ULINT",
+        "eipv:REAL",
+        "eipv:LREAL",
+        "eipv:BYTE",
+        "eipv:WORD",
+        "eipv:DWORD",
+        "eipv:LWORD",
+        "eipv:STRING"
+      ]
+    },
+    "structureDefinition": {
+      "type": "object",
+      "properties": {
+        "eipv:typeName": {
+          "type": "string"
+        },
+        "eipv:fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/fieldDefinition"
+          }
+        }
+      },
+      "required": ["eipv:typeName", "eipv:fields"]
+    },
+    "fieldDefinition": {
+      "type": "object",
+      "properties": {
+        "eipv:name": {
+          "type": "string"
+        },
+        "eipv:type": {
+          "$ref": "#/definitions/eipPrimitiveType"
+        },
+        "eipv:byteOffset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eipv:bitOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "description": {
+          "type": "string"
+        },
+        "eipv:structureDefinition": {
+          "$ref": "#/definitions/structureDefinition"
+        }
+      },
+      "required": ["eipv:name", "eipv:byteOffset"],
+      "if": {
+        "properties": {
+          "eipv:type": {
+            "const": "eipv:BOOL"
+          }
+        },
+        "required": ["eipv:type"]
+      },
+      "then": {
+        "required": ["eipv:bitOffset"]
+      },
+      "oneOf": [
+        {
+          "required": ["eipv:type"],
+          "not": {
+            "required": ["eipv:structureDefinition"]
+          }
+        },
+        {
+          "required": ["eipv:structureDefinition"],
+          "not": {
+            "required": ["eipv:type"]
+          }
+        }
+      ]
+    },
+    "ethernetipForm": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["readproperty", "writeproperty", "observeproperty"]
+          }
+        },
+        "eipv:type": {
+          "$ref": "#/definitions/eipPrimitiveType"
+        },
+        "eipv:service": {
+          "type": "string",
+          "enum": ["ReadTag", "ReadTagFragmented", "WriteTag", "WriteTagFragmented", "ExecutePCCC"]
+        },
+        "eipv:pollingTime": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eipv:timeout": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eipv:scale": {
+          "type": "number",
+          "not": {
+            "const": 0
+          }
+        },
+        "eipv:offset": {
+          "type": "number"
+        },
+        "eipv:structureDefinition": {
+          "$ref": "#/definitions/structureDefinition"
+        }
+      },
+      "required": ["href", "op"],
+      "not": {
+        "required": ["eipv:type", "eipv:structureDefinition"]
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["eipv:service"],
+            "properties": {
+              "eipv:service": {
+                "enum": ["ReadTag", "ReadTagFragmented"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "items": {
+                  "enum": ["readproperty", "observeproperty"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["eipv:service"],
+            "properties": {
+              "eipv:service": {
+                "enum": ["WriteTag", "WriteTagFragmented"]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "items": {
+                  "const": "writeproperty"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "absoluteEipForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "pattern": "^eip://"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/ethernetipForm"
+      }
+    },
+    "relativeForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "not": {
+              "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
+            }
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/ethernetipForm"
+      }
+    },
+    "absoluteEipAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/absoluteEipForm"
+            }
+          }
+        }
+      }
+    },
+    "relativeAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/relativeForm"
+            }
+          }
+        }
+      }
+    },
+    "absoluteEipForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/absoluteEipForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/absoluteEipAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/absoluteEipAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/absoluteEipAffordances"
+        }
+      }
+    },
+    "relativeForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relativeForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/relativeAffordances"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "required": ["eipv"],
+        "properties": {
+          "eipv": {
+            "type": "string",
+            "const": "https://www.w3.org/2026/wot/eip"
+          }
+        }
+      }
+    },
+    "eipv:controller": {
+      "type": "string",
+      "enum": ["ControlLogix", "CompactLogix", "MicroLogix", "SLC500", "PLC5", "Micro800", "Omron"]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/absoluteEipForms"
+    },
+    {
+      "if": {
+        "required": ["base"],
+        "properties": {
+          "base": {
+            "type": "string",
+            "pattern": "^eip://"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/relativeForms"
+      }
+    }
+  ]
+}

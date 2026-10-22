@@ -212,7 +212,7 @@
                         <td><code>profv:slot</code></td>
                         <td>Specifies the location where the IO device is plugged in to.</td>
                         <td>required</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></td>
 
                     <tr>
 
@@ -223,7 +223,7 @@
                         <td>Provides the interface for the parameter to read/write. A slot can contain one or more
                             subslots</td>
                         <td>required</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></td>
 
                     <tr>
 
@@ -234,7 +234,7 @@
                         <td>An identifier that uniquely points to a resource within slot/subslot combination of a
                             PROFINET IO device</td>
                         <td>required</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></td>
 
                     <tr>
 
@@ -244,7 +244,7 @@
                         <td>Used to provide additional addressing to differentiate profile parameters. If the term is
                             not provided, the TD processor treats it as the default of <code>zero</code>.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></td>
 
                     <tr>
 
@@ -253,7 +253,7 @@
                         <td>used in application and network optimization to appropriately define the specific data
                             length of resource payload.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></td>
 
                     <tr>
 
@@ -301,6 +301,7 @@
                     <tr>
                         <td><code>profv:method</code></td>
                         <td>Indicates operation to perform on defined affordance.</td>
+                        <td>optional</td>
                         <td><a href="http://www.w3.org/2001/XMLSchema#string">string</a>
                             <p>(one of "READ", "WRITE")</p>
                         </td>
@@ -315,17 +316,17 @@
                             be interrupted, it is recommended to keep this polling rate above the IO device's send clock
                             time.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></td>
 
 
                     <tr>
 
                     <tr>
                         <td><code>profv:timeout</code></td>
-                        <td>PROFINET response maximum waiting time. Defines how long the runtime should wait to receive
+                        <td>PROFINET response maximum waiting time in milliseconds. Defines how long the runtime should wait to receive
                             a reply from the device.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></td>
 
 
                     <tr>
@@ -335,7 +336,7 @@
                         <td>For <code>object</code> type properties. Used to identify the starting point within a byte
                             stream payload that represents a property.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></td>
 
                     <tr>
 
@@ -345,7 +346,7 @@
                         <td>For <code>object</code> type properties. Used to identify the byte length of a property from
                             the byte stream payload</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></td>
 
                     <tr>
 
@@ -355,7 +356,7 @@
                         <td>For <code>object</code> type properties. Used to identify the starting point within a bit
                             stream payload that represents a property.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a></td>
 
                     <tr>
 
@@ -366,7 +367,7 @@
                         <td>For <code>object</code> type properties. Used to identify the bit length of a property from
                             the bit stream payload</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a></td>
 
                     <tr>
 
@@ -454,49 +455,49 @@
                         <td>Integer8</td>
                         <td>1</td>
                         <td>2</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Integer16</td>
                         <td>2</td>
                         <td>3</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Integer32</td>
                         <td>4</td>
                         <td>4</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unsigned8</td>
                         <td>1</td>
                         <td>5</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unsigned16</td>
                         <td>2</td>
                         <td>6</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unsigned32</td>
                         <td>4</td>
                         <td>7</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unsigned64</td>
                         <td>8</td>
                         <td>56</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
@@ -515,35 +516,35 @@
 
                     <tr>
                         <td>VisibleString</td>
-                        <td>profv:datalength</td>
+                        <td>profv:datalength or profv:byteLength</td>
                         <td>9</td>
                         <td>String</td>
                     <tr>
 
                     <tr>
                         <td>OctetString</td>
-                        <td>profv:datalength</td>
+                        <td>profv:datalength or profv:byteLength</td>
                         <td>10</td>
                         <td>String</td>
                     <tr>
 
                     <tr>
                         <td>UnicodeString8</td>
-                        <td>profv:datalegth</td>
+                        <td>profv:datalength or profv:byteLength</td>
                         <td>40</td>
                         <td>String</td>
                     <tr>
 
                     <tr>
                         <td>61131_STRING</td>
-                        <td>profv:datalegth</td>
+                        <td>profv:datalength or profv:byteLength</td>
                         <td>41</td>
                         <td>String</td>
                     <tr>
 
                     <tr>
                         <td>61131_WSTRING</td>
-                        <td>profv:datalegth</td>
+                        <td>profv:datalength or profv:byteLength</td>
                         <td>42</td>
                         <td>String</td>
                     <tr>
@@ -566,21 +567,21 @@
                         <td>TimeStampDifferenceShort</td>
                         <td>8</td>
                         <td>62</td>
-                        <td>Integer</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unsigned8+Unsigned8</td>
                         <td>2</td>
                         <td>102</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Float32+Unsigned8</td>
                         <td>5</td>
                         <td>101</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
@@ -594,26 +595,26 @@
                         <td>Unsigned8_S</td>
                         <td>1</td>
                         <td>106</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unsigned16_S</td>
                         <td>2</td>
                         <td>104</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Integer16_S</td>
                         <td>2</td>
                         <td>105</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>OctetString_S</td>
-                        <td>profv:datalegth</td>
+                        <td>profv:datalength or profv:byteLength</td>
                         <td>107</td>
                         <td>String</td>
                     <tr>
@@ -622,14 +623,14 @@
                         <td>N2</td>
                         <td>2</td>
                         <td>113</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>N4</td>
                         <td>4</td>
                         <td>114</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
@@ -650,70 +651,70 @@
                         <td>R2</td>
                         <td>2</td>
                         <td>117</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>T2</td>
                         <td>2</td>
                         <td>118</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>T4</td>
                         <td>4</td>
                         <td>119</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>D2</td>
                         <td>2</td>
                         <td>120</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>E2</td>
                         <td>2</td>
                         <td>121</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>C4</td>
                         <td>4</td>
                         <td>122</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>X2</td>
                         <td>2</td>
                         <td>123</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>X4</td>
                         <td>4</td>
                         <td>124</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Unipolat2.16</td>
                         <td>2</td>
                         <td>125</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                     <tr>
                         <td>Float64</td>
                         <td>8</td>
                         <td>15</td>
-                        <td>Integer or Number</td>
+                        <td>Number</td>
                     <tr>
 
                 </tbody>
@@ -746,7 +747,7 @@
                         <td>For <code>object</code> type properties. Used to identify the starting point within a byte
                             stream payload that represents a property.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedInt">unsignedInt</a></td>
 
                     <tr>
 
@@ -756,7 +757,7 @@
                         <td>For <code>object</code> type properties. Used to identify the byte length of a property from
                             the byte stream payload</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedShort">unsignedShort</a></td>
 
                     <tr>
 
@@ -766,7 +767,7 @@
                         <td>For <code>object</code> type properties. Used to identify the starting point within a bit
                             stream payload that represents a property.</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a></td>
 
                     <tr>
 
@@ -777,7 +778,7 @@
                         <td>For <code>object</code> type properties. Used to identify the bit length of a property from
                             the bit stream payload</td>
                         <td>optional</td>
-                        <td><a href="http://www.w3.org/2001/XMLSchema#integer">integer</a></td>
+                        <td><a href="http://www.w3.org/2001/XMLSchema#unsignedByte">unsignedByte</a></td>
 
                     <tr>
 

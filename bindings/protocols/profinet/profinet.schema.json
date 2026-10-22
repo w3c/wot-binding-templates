@@ -6,6 +6,24 @@
         }
     ],
     "definitions": {
+         "EnumeratedValue": {
+            "type": "object",
+            "properties": {
+                "profv:encodedPayload": {
+                "oneOf": [
+                    { "type": "number" },
+                    { "type": "boolean" }
+                ]
+                },
+                "profv:decodedPayload": {
+                "oneOf": [
+                    { "type": "string" },
+                    { "type": "number" },
+                    { "type": "boolean" }
+                ]
+                }
+            }
+        },
         "profinetForm": {
             "type": "object",
             "properties": {
@@ -157,31 +175,9 @@
                         },
                         "profv:enumeratedValue": {
                             "type": "array",
-                            "allOf": {
-                                "profv:encodedPayload": {
-                                    "anyOf": [
-                                        {
-                                            "type": "boolean"
-                                        },
-                                        {
-                                            "type": "number"
-                                        }
-                                    ]
-                                },
-                                "profv:decodedPayload": {
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "boolean"
-                                        },
-                                        {
-                                            "type": "number"
-                                        }
-                                    ]
+                            "items": {
+                                        "$ref": "#/definitions/EnumeratedValue"
                                 }
-                            }
                         }
                     }
                 }
@@ -201,6 +197,7 @@
                 }
             }
         }
+       
     },
     "type": "object",
     "properties": {

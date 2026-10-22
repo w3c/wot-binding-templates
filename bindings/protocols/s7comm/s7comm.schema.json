@@ -46,6 +46,17 @@
     "s7commForm": {
       "type": "object",
       "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["readproperty", "writeproperty", "observeproperty"]
+          }
+        },
         "s7v:type": {
           "$ref": "#/definitions/s7PrimitiveType"
         },

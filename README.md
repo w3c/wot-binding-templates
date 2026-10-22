@@ -47,6 +47,7 @@ This is done through additional descriptive vocabularies, Thing Models and examp
   - [PROFINET Binding Template](https://w3c.github.io/wot-binding-templates/bindings/protocols/profinet/index.html)
   - [S7Comm Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/s7comm/index.html)
   - [EtherNet/IP Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/ethernetip/index.html)
+  - [S7Comm Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/s7comm/index.html)
   - [LoRaWAN Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan/index.html)
   - [XML Binding](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
 

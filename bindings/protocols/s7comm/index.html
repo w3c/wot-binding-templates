@@ -458,6 +458,23 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
           </thead>
           <tbody>
             <tr>
+              <td><code>href</code></td>
+              <td>Variable address, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
               <td><code>s7v:type</code></td>
               <td>S7 data type used to encode and decode the value.</td>
               <td>required</td>
@@ -834,8 +851,8 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
           When reading, a Consumer computes the application-facing value as
           <code>value = raw &times; s7v:scale + s7v:offset</code>, and when writing it applies the inverse,
           <code>raw = (value &minus; s7v:offset) / s7v:scale</code>, rounding to the nearest representable value of the
-          declared <code>s7v:type</code>. The same rule is proposed for the other industrial protocol bindings, so that
-          an author learns one rule for all of them.
+          declared <code>s7v:type</code>. These are the same two terms, with the same semantics, as in the Modbus and
+          EtherNet/IP bindings, so that an author learns one rule for all three.
         </p>
         <pre class="example json" title="Analog input scaled to degrees Celsius">
 {
@@ -851,60 +868,6 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
 
     <section id="operation-mappings">
       <h2>Operation Mappings</h2>
-
-      <section id="service-names">
-        <h3>Service Names</h3>
-        <p>
-          A Form MAY name the S7Comm function that performs its operations with <code>s7v:service</code>, in the same
-          way that <code>htv:methodName</code> names the HTTP method in the HTTP binding. When the term is absent, a
-          Consumer uses the default function for the operation given below.
-        </p>
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Value</th>
-              <th>S7Comm function</th>
-              <th>Default for</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>ReadVariable</code></td>
-              <td>Read Variable, job function code <code>0x04</code></td>
-              <td><code>readproperty</code>, <code>observeproperty</code></td>
-            </tr>
-            <tr>
-              <td><code>WriteVariable</code></td>
-              <td>Write Variable, job function code <code>0x05</code></td>
-              <td><code>writeproperty</code></td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          <code>ReadVariable</code> MUST only be used with <code>readproperty</code> and <code>observeproperty</code>,
-          and <code>WriteVariable</code> only with <code>writeproperty</code>. A Form that names a function therefore
-          carries only the matching operations, and a property that is both readable and writable then uses one Form per
-          function, as in the HTTP binding.
-        </p>
-        <pre class="example json" title="One Form per function">
-{
-  "forms": [
-    {
-      "href": "./%25DB1.DBD20:REAL",
-      "op": ["readproperty", "observeproperty"],
-      "s7v:type": "s7v:REAL",
-      "s7v:service": "ReadVariable"
-    },
-    {
-      "href": "./%25DB1.DBD20:REAL",
-      "op": ["writeproperty"],
-      "s7v:type": "s7v:REAL",
-      "s7v:service": "WriteVariable"
-    }
-  ]
-}
-        </pre>
-      </section>
 
       <section id="default-mappings">
         <h3>Default Mappings</h3>
@@ -958,6 +921,60 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
           as the request stays within the negotiated PDU size. Values larger than the PDU size MUST be transferred in
           several requests.
         </p>
+      </section>
+
+      <section id="service-names">
+        <h3>Service Names</h3>
+        <p>
+          A Form MAY name the S7Comm function that performs its operations with <code>s7v:service</code>, in the same
+          way that <code>htv:methodName</code> names the HTTP method in the HTTP binding. When the term is absent, a
+          Consumer uses the default function for the operation given below.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>S7Comm function</th>
+              <th>Default for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ReadVariable</code></td>
+              <td>Read Variable, job function code <code>0x04</code></td>
+              <td><code>readproperty</code>, <code>observeproperty</code></td>
+            </tr>
+            <tr>
+              <td><code>WriteVariable</code></td>
+              <td>Write Variable, job function code <code>0x05</code></td>
+              <td><code>writeproperty</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <code>ReadVariable</code> MUST only be used with <code>readproperty</code> and <code>observeproperty</code>,
+          and <code>WriteVariable</code> only with <code>writeproperty</code>. A Form that names a function therefore
+          carries only the matching operations, and a property that is both readable and writable then uses one Form per
+          function, as in the HTTP binding.
+        </p>
+        <pre class="example json" title="One Form per function">
+{
+  "forms": [
+    {
+      "href": "./%25DB1.DBD20:REAL",
+      "op": ["readproperty", "observeproperty"],
+      "s7v:type": "s7v:REAL",
+      "s7v:service": "ReadVariable"
+    },
+    {
+      "href": "./%25DB1.DBD20:REAL",
+      "op": ["writeproperty"],
+      "s7v:type": "s7v:REAL",
+      "s7v:service": "WriteVariable"
+    }
+  ]
+}
+        </pre>
       </section>
 
       <section id="action-event-mappings">

@@ -38,6 +38,10 @@
           "items": {
             "$ref": "#/definitions/fieldDefinition"
           }
+        },
+        "eipv:byteSize": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": ["eipv:typeName", "eipv:fields"]
@@ -65,6 +69,15 @@
         },
         "eipv:structureDefinition": {
           "$ref": "#/definitions/structureDefinition"
+        },
+        "eipv:dimensions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "maxItems": 3
         }
       },
       "required": ["eipv:name", "eipv:byteOffset"],
@@ -78,6 +91,20 @@
       },
       "then": {
         "required": ["eipv:bitOffset"]
+      },
+      "dependentSchemas": {
+        "eipv:dimensions": {
+          "properties": {
+            "eipv:type": {
+              "not": {
+                "enum": ["eipv:BOOL", "eipv:STRING"]
+              }
+            },
+            "eipv:structureDefinition": {
+              "required": ["eipv:byteSize"]
+            }
+          }
+        }
       },
       "oneOf": [
         {
@@ -134,6 +161,19 @@
         },
         "eipv:structureDefinition": {
           "$ref": "#/definitions/structureDefinition"
+        },
+        "eipv:dimensions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "eipv:elementCount": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": ["href", "op"],
@@ -177,6 +217,44 @@
                 }
               }
             }
+          }
+        },
+        {
+          "if": {
+            "required": ["eipv:elementCount"]
+          },
+          "then": {
+            "required": ["eipv:dimensions"]
+          }
+        },
+        {
+          "if": {
+            "required": ["eipv:dimensions"]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "required": ["eipv:type"],
+                "properties": {
+                  "eipv:type": {
+                    "not": {
+                      "enum": ["eipv:BOOL", "eipv:STRING"]
+                    }
+                  }
+                }
+              },
+              {
+                "required": ["eipv:structureDefinition"],
+                "properties": {
+                  "eipv:structureDefinition": {
+                    "required": ["eipv:byteSize"]
+                  }
+                },
+                "not": {
+                  "anyOf": [{ "required": ["eipv:scale"] }, { "required": ["eipv:offset"] }]
+                }
+              }
+            ]
           }
         }
       ]

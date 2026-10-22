@@ -852,60 +852,6 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
     <section id="operation-mappings">
       <h2>Operation Mappings</h2>
 
-      <section id="default-mappings">
-        <h3>Default Mappings</h3>
-        <table class="def">
-          <thead>
-            <tr>
-              <th>WoT operation</th>
-              <th>S7Comm behavior</th>
-              <th>Requirements</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>readproperty</code></td>
-              <td>
-                Send an S7 Read Variable request for the addressed memory area, byte offset, and length, and decode the
-                returned bytes according to <code>s7v:type</code>.
-              </td>
-              <td>The Form MUST identify a readable area.</td>
-            </tr>
-            <tr>
-              <td><code>writeproperty</code></td>
-              <td>
-                Encode the supplied value according to <code>s7v:type</code> and send it with an S7 Write Variable
-                request. A <code>s7v:BOOL</code> value is written as a single bit, so that the neighboring bits of the
-                byte are not affected.
-              </td>
-              <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
-            </tr>
-            <tr>
-              <td><code>observeproperty</code></td>
-              <td>
-                Repeatedly read the variable and notify the Consumer when a sample is available or its value changes,
-                according to implementation behavior.
-              </td>
-              <td>
-                <code>observable</code> SHOULD be <code>true</code>; <code>s7v:pollingTime</code> controls the requested
-                interval.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          This version of the binding does not use the cyclic push service of the S7-300 and S7-400 families, which is
-          not available on the S7-1200 and S7-1500 families [[PLC4X-S7]]. An implementation realizes
-          <code>observeproperty</code> by polling, SHOULD use <code>s7v:pollingTime</code> when supplied, and MAY
-          enforce a minimum interval to protect the controller and network.
-        </p>
-        <p>
-          An implementation MAY combine the reads of several Forms of the same endpoint into a single request, as long
-          as the request stays within the negotiated PDU size. Values larger than the PDU size MUST be transferred in
-          several requests.
-        </p>
-      </section>
-
       <section id="service-names">
         <h3>Service Names</h3>
         <p>
@@ -958,6 +904,60 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
   ]
 }
         </pre>
+      </section>
+
+      <section id="default-mappings">
+        <h3>Default Mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>S7Comm behavior</th>
+              <th>Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>
+                Send an S7 Read Variable request for the addressed memory area, byte offset, and length, and decode the
+                returned bytes according to <code>s7v:type</code>.
+              </td>
+              <td>The Form MUST identify a readable area.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>
+                Encode the supplied value according to <code>s7v:type</code> and send it with an S7 Write Variable
+                request. A <code>s7v:BOOL</code> value is written as a single bit, so that the neighboring bits of the
+                byte are not affected.
+              </td>
+              <td>The property MUST NOT be declared <code>readOnly: true</code>.</td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td>
+                Repeatedly read the variable and notify the Consumer when a sample is available or its value changes,
+                according to implementation behavior.
+              </td>
+              <td>
+                <code>observable</code> SHOULD be <code>true</code>; <code>s7v:pollingTime</code> controls the requested
+                interval.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          This version of the binding does not use the cyclic push service of the S7-300 and S7-400 families, which is
+          not available on the S7-1200 and S7-1500 families [[PLC4X-S7]]. An implementation realizes
+          <code>observeproperty</code> by polling, SHOULD use <code>s7v:pollingTime</code> when supplied, and MAY
+          enforce a minimum interval to protect the controller and network.
+        </p>
+        <p>
+          An implementation MAY combine the reads of several Forms of the same endpoint into a single request, as long
+          as the request stays within the negotiated PDU size. Values larger than the PDU size MUST be transferred in
+          several requests.
+        </p>
       </section>
 
       <section id="action-event-mappings">

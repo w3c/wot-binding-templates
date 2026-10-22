@@ -880,12 +880,12 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         </p>
         <p>
           A field with <code>eipv:dimensions</code> describes an array member of the UDT. Its element type is given by
-          <code>eipv:type</code> or by an <code>eipv:structureDefinition</code> that carries
-          <code>eipv:byteSize</code>. The element types <code>eipv:BOOL</code> and
-          <code>eipv:STRING</code> MUST NOT be used with <code>eipv:dimensions</code>, for the reasons given in
-          <a href="#arrays">Arrays</a>. <code>eipv:byteOffset</code> identifies the first element, and the elements
-          follow the layout rules of <a href="#arrays">Arrays</a>. The member is exposed as a flat JSON array holding
-          the product of <code>eipv:dimensions</code> elements.
+          <code>eipv:type</code> or by an <code>eipv:structureDefinition</code> that carries <code>eipv:byteSize</code>.
+          The element types <code>eipv:BOOL</code> and <code>eipv:STRING</code> MUST NOT be used with
+          <code>eipv:dimensions</code>, for the reasons given in <a href="#arrays">Arrays</a>.
+          <code>eipv:byteOffset</code> identifies the first element, and the elements follow the layout rules of
+          <a href="#arrays">Arrays</a>. The member is exposed as a flat JSON array holding the product of
+          <code>eipv:dimensions</code> elements.
         </p>
         <p>
           The offsets MUST describe the layout that the controller uses on the wire, as documented in [[1756-PM020]]. In
@@ -1204,17 +1204,17 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           </li>
           <li>
             Elements are transferred in little-endian byte order, in row-major order with the last dimension varying
-            fastest. Elements of atomic types follow each other without padding. Each element of an array of
-            structures occupies <code>eipv:byteSize</code> bytes, so element <var>i</var> starts at byte
-            <var>i</var> &times; <code>eipv:byteSize</code>, and its fields are decoded relative to that start. This is
-            how Logix lays out arrays and how the element count of the CIP Read Tag service reads them.
+            fastest. Elements of atomic types follow each other without padding. Each element of an array of structures
+            occupies <code>eipv:byteSize</code> bytes, so element <var>i</var> starts at byte <var>i</var> &times;
+            <code>eipv:byteSize</code>, and its fields are decoded relative to that start. This is how Logix lays out
+            arrays and how the element count of the CIP Read Tag service reads them.
           </li>
           <li>
             A multi-dimensional array is transferred and exposed as a flat, one-dimensional array of
             <code>eipv:elementCount</code> elements; <code>eipv:dimensions</code> keeps the shape for Consumers that
-            need it. A nested representation is not used because a range can start in the middle of a row, for
-            example four elements starting at <code>[0,2]</code> of a <code>[3,3]</code> array, and because the flat
-            form matches the CIP transfer and a one-dimensional OPC UA Variable.
+            need it. A nested representation is not used because a range can start in the middle of a row, for example
+            four elements starting at <code>[0,2]</code> of a <code>[3,3]</code> array, and because the flat form
+            matches the CIP transfer and a one-dimensional OPC UA Variable.
           </li>
           <li>
             <code>eipv:scale</code> and <code>eipv:offset</code> apply to each element and MUST NOT be used with an
@@ -1234,8 +1234,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
           The Property uses the WoT <code>array</code> data schema. Its <code>items</code> is the data schema that
           <a href="#primitive-data-types">Primitive Data Types</a> recommends for the element type, or an
           <code>object</code> schema as in <a href="#structured-values">Structured Values</a> for an array of
-          structures, and both
-          <code>minItems</code> and <code>maxItems</code> equal <code>eipv:elementCount</code>.
+          structures, and both <code>minItems</code> and <code>maxItems</code> equal <code>eipv:elementCount</code>.
         </p>
         <pre class="example json" title="Whole array tag">
 {

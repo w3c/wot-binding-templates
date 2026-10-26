@@ -167,8 +167,9 @@ s7-URI = "s7://" host [ ":" port ] [ "/" rack "," slot ] [ "/" ]
         <p>Where:</p>
         <ul>
           <li>
-            <code>host</code> is an IPv4 address, IPv6 literal, or DNS name of the controller or of the communication
-            processor in front of it;
+            <code>host</code> is an IPv4 address or a host name, such as <code>mydevice.local</code>, of the controller
+            or of the communication processor in front of it. IPv6 is not supported by S7 controllers and MUST NOT be
+            used;
           </li>
           <li>
             <code>port</code> is optional; when omitted, an implementation uses the ISO-on-TCP port 102 [[RFC1006]].
@@ -254,7 +255,7 @@ s7-URI = "s7://" host [ ":" port ] [ "/" rack "," slot ] [ "/" ]
         <p>The resolved Form target identifies one variable in the controller memory:</p>
         <pre class="nohighlight">
 s7-address-URI = s7-URI "/" address
-address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
+address        = "%" memory-area [ short-code ] byte-offset [ "." bit-offset ] ":" data-type
                / "%DB" db-number "." "DB" short-code byte-offset [ "." bit-offset ] ":" data-type
                / "%DB" db-number ":" byte-offset [ "." bit-offset ] ":" data-type
 data-type      = type-name [ "(" length ")" ]
@@ -263,7 +264,10 @@ short-code     = "X" / "B" / "W" / "D"
         <p>
           The <code>address</code> is the address notation of the Siemens engineering tools, so that it can be copied
           from TIA Portal, and it is the notation that the surveyed implementations parse [[PLC4X-S7]]. The third
-          alternative is the short data block notation, which is handled identically to the second. The optional
+          alternative is the short data block notation, which is handled identically to the second. As for data blocks,
+          the address of the other memory areas MAY carry a <code>short-code</code> after the area letter, as in
+          <code>%IX0.3</code> or <code>%MW100</code>; the address with and without the short code is handled
+          identically. The optional
           <code>length</code> declares the maximum length of a <code>STRING</code> or <code>WSTRING</code> value.
           Because the percent sign is reserved in URIs, it MUST be percent-encoded as <code>%25</code>, see
           <a href="#reserved-characters">Reserved Characters</a>.
@@ -279,6 +283,14 @@ short-code     = "X" / "B" / "W" / "D"
             <tr>
               <td><code>%I0.3:BOOL</code></td>
               <td>Bit 3 of input byte 0</td>
+            </tr>
+            <tr>
+              <td><code>%IX0.3:BOOL</code></td>
+              <td>The same bit with the short code, as for data blocks</td>
+            </tr>
+            <tr>
+              <td><code>%MW10:INT</code></td>
+              <td>16-bit signed integer at flag or marker byte 10</td>
             </tr>
             <tr>
               <td><code>%Q1.0:BOOL</code></td>
@@ -523,7 +535,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
             <tr>
               <td><code>s7v:dbNumber</code></td>
               <td>Number of the data block.</td>
-              <td>required when <code>s7v:area</code> is <code>DB</code> or <code>DBI</code></td>
+              <td>required when <code>s7v:area</code> is <code>DB</code></td>
               <td>
                 <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#positiveInteger"
                   ><code>positiveInteger</code></a
@@ -625,13 +637,10 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
               <td><code>DB</code></td>
               <td>Data blocks</td>
               <td><code>%DB</code><em>n</em></td>
-              <td>User-defined data, addressed by data block number and byte offset</td>
-            </tr>
-            <tr>
-              <td><code>DBI</code></td>
-              <td>Instance data blocks</td>
-              <td><code>%DBI</code><em>n</em></td>
-              <td>Instance data of a function block</td>
+              <td>
+                User-defined data, addressed by data block number and byte offset. Global and instance data blocks are
+                addressed with the same syntax.
+              </td>
             </tr>
             <tr>
               <td><code>C</code></td>

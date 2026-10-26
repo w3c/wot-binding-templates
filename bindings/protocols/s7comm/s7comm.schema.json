@@ -41,7 +41,7 @@
     },
     "s7MemoryArea": {
       "type": "string",
-      "DB", "C"
+      "enum": ["I", "Q", "M", "DB", "C", "T", "D", "LD"]
     },
     "s7commForm": {
       "type": "object",

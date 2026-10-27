@@ -41,7 +41,7 @@
     },
     "s7MemoryArea": {
       "type": "string",
-      "enum": ["I", "Q", "M", "DB", "DBI", "C", "T", "D", "LD"]
+      "enum": ["I", "Q", "M", "DB", "C", "T", "D", "LD"]
     },
     "s7commForm": {
       "type": "object",
@@ -131,7 +131,7 @@
             "required": ["s7v:area"],
             "properties": {
               "s7v:area": {
-                "enum": ["DB", "DBI"]
+                "const": "DB"
               }
             }
           },

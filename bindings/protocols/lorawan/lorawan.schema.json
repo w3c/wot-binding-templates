@@ -62,6 +62,9 @@
     "lorawanForm": {
       "type": "object",
       "properties": {
+        "contentType": {
+          "const": "application/octet-stream"
+        },
         "op": {
           "description": "Uplinks are pushed by the device on its own schedule and cannot be polled, so a LoRaWAN form only ever offers event subscription operations.",
           "oneOf": [
@@ -246,7 +249,7 @@
           "additionalProperties": false
         }
       },
-      "required": ["lorav:wireType"],
+      "required": ["contentType", "lorav:wireType"],
       "not": {
         "description": "Scaling is stated once, as either a multiplier or a divisor.",
         "required": ["lorav:multiplier", "lorav:divisor"]

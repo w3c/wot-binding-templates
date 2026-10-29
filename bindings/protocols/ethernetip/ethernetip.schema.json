@@ -128,6 +128,9 @@
           "type": "string",
           "format": "uri-reference"
         },
+        "contentType": {
+          "const": "application/octet-stream"
+        },
         "op": {
           "type": "array",
           "items": {
@@ -176,7 +179,7 @@
           "minimum": 1
         }
       },
-      "required": ["href", "op"],
+      "required": ["href", "op", "contentType"],
       "not": {
         "required": ["eipv:type", "eipv:structureDefinition"]
       },

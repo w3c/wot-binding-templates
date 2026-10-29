@@ -50,6 +50,9 @@
           "type": "string",
           "format": "uri-reference"
         },
+        "contentType": {
+          "const": "application/octet-stream"
+        },
         "op": {
           "type": "array",
           "items": {
@@ -102,7 +105,7 @@
           "minimum": 1
         }
       },
-      "required": ["href", "op", "s7v:type"],
+      "required": ["href", "op", "contentType", "s7v:type"],
       "anyOf": [
         {
           "description": "Address-bearing href in the TIA Portal notation, with the percent sign encoded.",

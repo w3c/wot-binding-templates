@@ -705,11 +705,24 @@ op-target   = "uplink" / "downlink"
     "temperature": {
       "forms": [{
         "href": "uplink",
-        "op": ["subscribeevent", "unsubscribeevent"]
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream"
       }]
     }
   }
 }</code></pre>
+
+      <section id="contenttype">
+        <h3>LoRaWAN <code>contentType</code></h3>
+        <p>
+          The application payload of a LoRaWAN end device is a device-specific sequence of bytes that is decoded with
+          the <code>lorav:</code> terms of the form. Since there is no generic structured encoding and to avoid falling
+          back to the
+          <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+          of <code>application/json</code>, <code>contentType</code> MUST always be set to
+          <code>application/octet-stream</code>.
+        </p>
+      </section>
     </section>
 
     <section id="lorawan-vocabulary">
@@ -746,6 +759,7 @@ op-target   = "uplink" / "downlink"
         {
           "href": "uplink",
           "op": ["subscribeevent", "unsubscribeevent"],
+          "contentType": "application/octet-stream",
           "lorav:byteOffset": 2,
           "lorav:wireType": "xsd:short",
           "lorav:endian": "big",
@@ -985,6 +999,7 @@ op-target   = "uplink" / "downlink"
     "data": { "type": "number" },
     "forms": [{
       "href": "uplink",
+      "contentType": "application/octet-stream",
       "lorav:wireType": "number",
       "lorav:derived": {
         "ref": "$dielectricPermittivity",
@@ -1167,6 +1182,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:byteOffset": 0,
         "lorav:wireType": "u8"
       }]
@@ -1176,6 +1192,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:byteOffset": 2,
         "lorav:wireType": "s16",
         "lorav:divisor": 10
@@ -1186,6 +1203,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:byteOffset": 4,
         "lorav:wireType": "u8"
       }]
@@ -1238,6 +1256,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:fPort": 6,
         "lorav:byteOffset": 2,
         "lorav:wireType": "u8",
@@ -1249,6 +1268,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:fPort": 6,
         "lorav:byteOffset": 3,
         "lorav:wireType": "u8",
@@ -1263,6 +1283,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:fPort": 6,
         "lorav:byteOffset": 4,
         "lorav:wireType": "s16",
@@ -1276,6 +1297,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:fPort": 6,
         "lorav:byteOffset": 6,
         "lorav:wireType": "u16",
@@ -1292,6 +1314,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:fPort": 7,
         "lorav:byteOffset": 2,
         "lorav:wireType": "u8",
@@ -1347,6 +1370,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [1, 117],
         "lorav:wireType": "u8"
       }]
@@ -1356,6 +1380,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [3, 103],
         "lorav:wireType": "s16",
         "lorav:endian": "little",
@@ -1367,6 +1392,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [4, 104],
         "lorav:wireType": "u8",
         "lorav:divisor": 2
@@ -1380,6 +1406,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [5, 0],
         "lorav:wireType": "u8",
         "lorav:valueMap": [
@@ -1435,6 +1462,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [1, 117],
         "lorav:wireType": "xsd:unsignedByte"
       }]
@@ -1444,6 +1472,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [3, 103],
         "lorav:wireType": "xsd:short",
         "lorav:endian": "little",
@@ -1455,6 +1484,7 @@ op-target   = "uplink" / "downlink"
       "forms": [{
         "href": "uplink",
         "op": ["subscribeevent", "unsubscribeevent"],
+        "contentType": "application/octet-stream",
         "lorav:tag": [4, 104],
         "lorav:wireType": "xsd:unsignedByte",
         "lorav:divisor": 2

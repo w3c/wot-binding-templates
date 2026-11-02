@@ -175,7 +175,8 @@
       <p>The following shows the typical structure of an URL of the PROFINET protocol:</p>
       <pre>
             profinet://{address}/{slot}/{subslot}/?api={api}&index={index}&datalength={datalength}
-        </pre>
+        </pre
+      >
 
       <p>Where:</p>
       <ul>
@@ -1120,7 +1121,8 @@
     "actions": {},
     "events": {}
 }
-        </pre>
+        </pre
+      >
       [[[#example-device-property]]] shows the minimal set of terms to read or write to a PROFINET device. Notice that
       the slot, subslot is contained in the href as the first and second elements of the URL path respectively. Also, as
       part of the PROFINET vocabulary is a polling mechanism (<code>profv:pollingTime</code>) can be used to set
@@ -1167,7 +1169,8 @@
         }
     }
 }
-        </pre>
+        </pre
+      >
       [[[#example-complex-datatype]]] shows how object type property is defined in TM form and its mappings. It also
       show how bit payload encodings and decodings are defined as enumeration.
       <pre id="example-complex-datatype" class="example" title="Read and write a PROFINET property object type">
@@ -1316,7 +1319,8 @@
         }
     }
 }
-        </pre>
+        </pre
+      >
     </section>
     <section class="appendix" id="abnf">
       <h2>PROFINET URL ABNF syntax</h2>
@@ -1329,7 +1333,8 @@
             api=1*DIGIT
             index=1*DIGIT
             datalength=4*DIGIT
-        </pre>
+        </pre
+      >
     </section>
   </body>
 </html>

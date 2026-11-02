@@ -13,7 +13,7 @@
           "const": "application/octet-stream"
         },
         "profv:pollingTime": {
-          "type": "number",
+          "type": "integer",
           "minimum": 0
         },
         "profv:method": {
@@ -74,43 +74,51 @@
           "type": "boolean"
         },
         "profv:timeout": {
-          "type": "number",
+          "type": "integer",
           "minimum": 0
         },
         "profv:byteOffset": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "maximum": 4294967295
         },
         "profv:byteLength": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 1,
+          "maximum": 65535
         },
         "profv:bitOffset": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "maximum": 7
         },
         "profv:bitLength": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 1,
+          "maximum": 7
         },
         "profv:payloadMapping": {
           "type": "object",
           "properties": {
             "profv:byteOffset": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 0,
+              "maximum": 4294967295
             },
             "profv:byteLength": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "maximum": 65535
             },
             "profv:bitOffset": {
               "type": "integer",
-              "minimum": 0
+              "minimum": 0,
+              "maximum": 7
             },
             "profv:bitLength": {
               "type": "integer",
-              "minimum": 1
+              "minimum": 1,
+              "maximum": 7
             },
             "profv:type": {
               "type": "string",
@@ -224,11 +232,13 @@
     },
     "profv:deviceId": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "maximum": 65535
     },
     "profv:vendorId": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "maximum": 65534
     },
     "properties": {
       "$ref": "#/definitions/affordance"

@@ -1081,6 +1081,16 @@
           </tbody>
         </table>
       </section>
+      <section id="contenttype">
+        <h3>PROFINET <code>contentType</code></h3>
+        <p>
+          The payload of a PROFINET device is always provided as a stream of bytes. Since there is no other option and
+          to avoid falling back to the
+          <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+          of <code>application/json</code>, <code>contentType</code> shall always be set to
+          <code>application/octet-stream</code>.
+        </p>
+      </section>
     </section>
     <section>
       <h2>Examples</h2>

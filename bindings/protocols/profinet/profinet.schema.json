@@ -191,7 +191,7 @@
           }
         }
       },
-       "required": ["contentType"]
+      "required": ["contentType"]
     },
     "affordance": {
       "type": "object",

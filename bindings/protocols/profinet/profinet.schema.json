@@ -9,6 +9,9 @@
     "profinetForm": {
       "type": "object",
       "properties": {
+        "contentType": {
+          "const": "application/octet-stream"
+        },
         "profv:pollingTime": {
           "type": "number",
           "minimum": 0
@@ -187,7 +190,8 @@
             }
           }
         }
-      }
+      },
+       "required": ["contentType"]
     },
     "affordance": {
       "type": "object",

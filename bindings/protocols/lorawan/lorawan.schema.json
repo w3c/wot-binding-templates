@@ -28,6 +28,11 @@
       "type": "string",
       "description": "LoRaWAN Network Server frequency plan identifier, e.g. 'EU_863_870_TTN'."
     },
+    "lorav:defaultEventingFrequencyMinutes": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Default interval, in minutes, between periodic uplinks sent by the device as configured out of the box."
+    },
     "lorav:payloadLayout": {
       "type": "string",
       "enum": ["fixed", "ports", "tlv", "ctv"],

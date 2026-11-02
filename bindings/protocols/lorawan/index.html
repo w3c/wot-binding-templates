@@ -799,6 +799,13 @@ op-target   = "uplink" / "downlink"
             <td><code>lorav:frequencyPlan</code></td>
             <td>Network-server frequency plan identifier.</td>
           </tr>
+          <tr>
+            <td><code>lorav:defaultEventingFrequencyMinutes</code></td>
+            <td>
+              Default interval, in minutes, between periodic uplinks as configured out of the box. The actual interval
+              may be changed by downlink configuration.
+            </td>
+          </tr>
         </tbody>
       </table>
       <p>
@@ -1161,6 +1168,7 @@ op-target   = "uplink" / "downlink"
   "lorav:region": "EU868",
   "lorav:frequencyPlan": "EU_863_870",
   "lorav:payloadLayout": "fixed",
+  "lorav:defaultEventingFrequencyMinutes": 10,
   "events": {
     "battery": {
       "data": { "type": "integer", "unit": "%", "minimum": 0, "maximum": 100 },

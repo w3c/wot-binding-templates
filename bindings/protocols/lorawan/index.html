@@ -1015,9 +1015,9 @@ op-target   = "uplink" / "downlink"
 }</code></pre>
 
       <p>
-        Before version 0.3.0, these were separate sibling terms (<code>lorav:ref</code>,
-        <code>lorav:polynomial</code>, <code>lorav:compute</code>, <code>lorav:guard</code>,
-        <code>lorav:transform</code>). Grouping them under <code>lorav:derived</code> makes explicit that the value is
+        Earlier drafts used separate sibling terms (<code>lorav:ref</code>, <code>lorav:polynomial</code>,
+        <code>lorav:compute</code>, <code>lorav:guard</code>, <code>lorav:transform</code>), withdrawn in
+        <a href="#changes-471"></a>. Grouping them under <code>lorav:derived</code> makes explicit that the value is
         computed, not read from payload bytes.
       </p>
       <p>
@@ -1061,72 +1061,10 @@ op-target   = "uplink" / "downlink"
         </tbody>
       </table>
 
-      <h3>Withdrawn Terms</h3>
       <p>
-        Older TDs may still contain pre-0.3 terms. They are kept in the ontology as deprecated IRIs for migration, but
-        new documents should use the replacements below.
+        Terms withdrawn in earlier revisions, and what to use instead, are listed in
+        <a href="#withdrawn-terms"></a>.
       </p>
-      <table class="def">
-        <thead>
-          <tr>
-            <th>Withdrawn term</th>
-            <th>Use instead</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>lorav:type</code></td>
-            <td><code>lorav:wireType</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:offset</code></td>
-            <td><code>lorav:addend</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:length</code></td>
-            <td><code>lorav:byteLength</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:enum</code></td>
-            <td><code>lorav:valueMap</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:presenceField</code>/<code>lorav:presenceBit</code></td>
-            <td><code>lorav:presentWhen</code> with <code>field</code>/<code>bit</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:switchField</code>/<code>lorav:switchValue</code></td>
-            <td><code>lorav:presentWhen</code> with <code>field</code>/<code>value</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:var</code></td>
-            <td><code>lorav:alias</code></td>
-          </tr>
-          <tr>
-            <td>
-              <code>lorav:ref</code>, <code>lorav:polynomial</code>, <code>lorav:compute</code>,
-              <code>lorav:guard</code>, <code>lorav:transform</code>
-            </td>
-            <td>keys inside <code>lorav:derived</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:validRange</code></td>
-            <td>TD core <code>minimum</code>/<code>maximum</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:unece</code></td>
-            <td>TD core <code>unit</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:brand</code>, <code>lorav:model</code></td>
-            <td><code>schema:manufacturer</code>, <code>schema:mpn</code></td>
-          </tr>
-          <tr>
-            <td><code>lorav:hardwareVersion</code>, <code>lorav:softwareVersion</code></td>
-            <td><code>schema:version</code>, <code>schema:softwareVersion</code></td>
-          </tr>
-        </tbody>
-      </table>
     </section>
 
     <section id="examples">
@@ -1504,6 +1442,142 @@ op-target   = "uplink" / "downlink"
         <li><a href="ontology.ttl">RDF vocabulary</a></li>
         <li><a href="ontology.html">Rendered ontology summary</a></li>
       </ul>
+    </section>
+
+    <section id="changes" class="appendix">
+      <h2>Recent Specification Changes</h2>
+      <p>
+        Changes are listed newest first and identified by the merge date and pull request number. Editorial changes are
+        not listed.
+      </p>
+
+      <section id="changes-506">
+        <h3>Changes in #506 (2 November 2026)</h3>
+        <ul>
+          <li>Added the Thing-level term <code>lorav:defaultEventingFrequencyMinutes</code>.</li>
+        </ul>
+        <p>
+          Pull request:
+          <a href="https://github.com/w3c/wot-binding-templates/pull/506">w3c/wot-binding-templates#506</a>.
+        </p>
+      </section>
+
+      <section id="changes-485">
+        <h3>Changes in #485 (16 September 2026)</h3>
+        <ul>
+          <li>Documented the keys of <code>lorav:derived</code> in more detail.</li>
+        </ul>
+        <p>
+          Pull request:
+          <a href="https://github.com/w3c/wot-binding-templates/pull/485">w3c/wot-binding-templates#485</a>.
+        </p>
+      </section>
+
+      <section id="changes-471">
+        <h3>Changes in #471 (29 August 2026)</h3>
+        <ul>
+          <li>Uplink values are modeled as <code>events</code> instead of <code>properties</code>.</li>
+          <li>
+            Published the JSON-LD context, JSON Schema, and RDF ontology under the namespace
+            <code>https://www.w3.org/2026/wot/lorawan#</code>.
+          </li>
+          <li>
+            Changed the URI format to <code>lorawan://&lt;host&gt;/&lt;devEUI&gt;/(uplink|downlink)</code>. OTAA keys
+            are no longer part of the URI and are declared as <code>apikey</code> security schemes instead.
+          </li>
+          <li>
+            Replaced <code>lorav:deviceEui</code> with <code>lorav:devEUI</code>,
+            <code>lorav:mostSignificantByte</code> with <code>lorav:endian</code>, and <code>lorav:appKey</code> with an
+            <code>apikey</code> security scheme.
+          </li>
+          <li>Withdrew the terms listed in <a href="#withdrawn-terms"></a>.</li>
+        </ul>
+        <p>
+          Pull request:
+          <a href="https://github.com/w3c/wot-binding-templates/pull/471">w3c/wot-binding-templates#471</a>.
+        </p>
+
+        <section id="withdrawn-terms">
+          <h4>Withdrawn Terms</h4>
+          <p>
+            These terms were used by earlier drafts. They are kept in <a href="ontology.ttl">ontology.ttl</a> with
+            <code>owl:deprecated true</code> for migration, but new documents should use the replacements below.
+          </p>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Withdrawn term</th>
+                <th>Use instead</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>lorav:type</code></td>
+                <td><code>lorav:wireType</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:offset</code></td>
+                <td><code>lorav:addend</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:length</code></td>
+                <td><code>lorav:byteLength</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:enum</code></td>
+                <td><code>lorav:valueMap</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:presenceField</code>/<code>lorav:presenceBit</code></td>
+                <td><code>lorav:presentWhen</code> with <code>field</code>/<code>bit</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:switchField</code>/<code>lorav:switchValue</code></td>
+                <td><code>lorav:presentWhen</code> with <code>field</code>/<code>value</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:var</code></td>
+                <td><code>lorav:alias</code></td>
+              </tr>
+              <tr>
+                <td>
+                  <code>lorav:ref</code>, <code>lorav:polynomial</code>, <code>lorav:compute</code>,
+                  <code>lorav:guard</code>, <code>lorav:transform</code>
+                </td>
+                <td>keys inside <code>lorav:derived</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:validRange</code></td>
+                <td>TD core <code>minimum</code>/<code>maximum</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:unece</code></td>
+                <td>TD core <code>unit</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:brand</code>, <code>lorav:model</code></td>
+                <td><code>schema:manufacturer</code>, <code>schema:mpn</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:hardwareVersion</code>, <code>lorav:softwareVersion</code></td>
+                <td><code>schema:version</code>, <code>schema:softwareVersion</code></td>
+              </tr>
+              <tr>
+                <td><code>lorav:endDeviceId</code></td>
+                <td>TD core <code>id</code>/<code>title</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section id="changes-458">
+        <h3>Initial Version in #458 (25 June 2026)</h3>
+        <p>
+          First version of the LoRaWAN binding. Pull request:
+          <a href="https://github.com/w3c/wot-binding-templates/pull/458">w3c/wot-binding-templates#458</a>.
+        </p>
+      </section>
     </section>
   </body>
 </html>

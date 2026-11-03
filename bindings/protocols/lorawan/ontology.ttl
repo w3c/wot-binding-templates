@@ -22,7 +22,8 @@
 lorav: a owl:Ontology ;
     rdfs:label "LoRaWAN Binding Vocabulary" ;
     rdfs:comment "Vocabulary for describing LoRaWAN payload bindings in WoT Thing Descriptions." ;
-    owl:versionInfo "0.3.0" .
+    owl:versionInfo "2026-11-02 (w3c/wot-binding-templates#506)" ;
+    rdfs:seeAlso <https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan/#changes> .
 
 # --- Thing-level terms -------------------------------------------------------
 

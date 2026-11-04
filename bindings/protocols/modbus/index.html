@@ -96,7 +96,7 @@
       <p>
         The Modbus is a data communication protocol originally developed by Modicon, which is now a part of Schneider
         Electric. The protocol was specifically designed for the remote management of the hardware devices in the
-        industrial environment. For this reason, it has a low level of abstraction and it has built in bit handling
+        industrial environment. For this reason, it has a low level of abstraction and it has built-in bit handling
         capabilities oriented to the direct control of the relays and generic contact statuses.
       </p>
       <p>
@@ -114,7 +114,7 @@
         over the Internet. Over the years, due to its simplicity and cost-effectiveness, the Modbus protocol has become
         a standard all over the world. This popularity, together with the advancement in microcontrollers and
         microprocessors, has led to a shift in how applications pack the information. Today, it is common to store and
-        read any type of data in the Holdings Registers, including bits, bytes, strings, floats, etc.
+        read any type of data in the Holding Registers, including bits, bytes, strings, floats, etc.
       </p>
       <p>
         Concretely, this document describes how WoT TDs can be used to describe devices that use the Modbus TCP
@@ -764,7 +764,7 @@
                     }
         </pre
       >
-      A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
+      A TD processor will interpret [[[#example-read-coil-entity]]] configuration as the following:
       <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
                             [{
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",

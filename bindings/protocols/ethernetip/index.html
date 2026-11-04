@@ -381,6 +381,7 @@ Recipe%5B3%5D.SetPoint
 {
   "href": "MotorSpeed",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "eipv:type": "eipv:REAL"
 }
         </pre>
@@ -619,6 +620,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
 {
   "href": "TankTemp",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "eipv:type": "eipv:INT",
   "eipv:scale": 0.1
 }
@@ -1103,11 +1105,13 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
     {
       "href": "Recipe",
       "op": ["readproperty", "observeproperty"],
+      "contentType": "application/octet-stream",
       "eipv:service": "ReadTagFragmented"
     },
     {
       "href": "Recipe",
       "op": ["writeproperty"],
+      "contentType": "application/octet-stream",
       "eipv:service": "WriteTagFragmented"
     }
   ]
@@ -1133,6 +1137,17 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
 
     <section id="payload-mapping">
       <h2>Payload Mapping</h2>
+
+      <section id="contenttype">
+        <h3>EtherNet/IP <code>contentType</code></h3>
+        <p>
+          EtherNet/IP transports tag values only in the binary CIP encoding of the controller. Since there is no other
+          option and to avoid falling back to the
+          <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+          of <code>application/json</code>, <code>contentType</code> MUST always be set to
+          <code>application/octet-stream</code>.
+        </p>
+      </section>
 
       <section id="primitive-values">
         <h3>Primitive Values</h3>
@@ -1247,6 +1262,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
       {
         "href": "./Program:Mixer.AlarmRC",
         "op": ["readproperty", "observeproperty", "writeproperty"],
+        "contentType": "application/octet-stream",
         "eipv:type": "eipv:DINT",
         "eipv:dimensions": [10],
         "eipv:pollingTime": 1000
@@ -1259,6 +1275,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
 {
   "href": "Recipe%5B2%5D",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "eipv:type": "eipv:REAL",
   "eipv:dimensions": [10],
   "eipv:elementCount": 4
@@ -1268,6 +1285,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
 {
   "href": "Motors",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "eipv:dimensions": [8],
   "eipv:structureDefinition": {
     "eipv:typeName": "MotorStatus",
@@ -1371,6 +1389,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         {
           "href": "MotorSpeed",
           "op": ["readproperty", "observeproperty", "writeproperty"],
+          "contentType": "application/octet-stream",
           "eipv:type": "eipv:REAL",
           "eipv:pollingTime": 1000,
           "eipv:timeout": 2000
@@ -1394,6 +1413,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
       {
         "href": "./Program:Packaging.Counter",
         "op": ["readproperty", "observeproperty"],
+        "contentType": "application/octet-stream",
         "eipv:type": "eipv:DINT",
         "eipv:pollingTime": 2000
       }
@@ -1433,6 +1453,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         {
           "href": "./N7:1",
           "op": ["readproperty", "observeproperty"],
+          "contentType": "application/octet-stream",
           "eipv:type": "eipv:INT",
           "eipv:scale": 0.1,
           "eipv:pollingTime": 5000,
@@ -1469,6 +1490,7 @@ eip://192.168.0.10/1,0/Recipe%5B3%5D.SetPoint
         {
           "href": "LineState",
           "op": ["readproperty", "observeproperty", "writeproperty"],
+          "contentType": "application/octet-stream",
           "eipv:pollingTime": 1000,
           "eipv:structureDefinition": {
             "eipv:typeName": "LineStateType",

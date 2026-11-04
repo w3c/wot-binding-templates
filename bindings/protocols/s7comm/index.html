@@ -325,6 +325,7 @@ short-code     = "X" / "B" / "W" / "D"
 {
   "href": "./%25DB1.DBW20:INT",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "s7v:type": "s7v:INT"
 }
         </pre>
@@ -352,6 +353,7 @@ short-code     = "X" / "B" / "W" / "D"
 {
   "href": "TankLevel",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "s7v:type": "s7v:INT",
   "s7v:area": "DB",
   "s7v:dbNumber": 1,
@@ -866,6 +868,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
 {
   "href": "./%25IW64:INT",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "s7v:type": "s7v:INT",
   "s7v:scale": 0.0036169,
   "s7v:offset": -50
@@ -971,12 +974,14 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
     {
       "href": "./%25DB1.DBD20:REAL",
       "op": ["readproperty", "observeproperty"],
+      "contentType": "application/octet-stream",
       "s7v:type": "s7v:REAL",
       "s7v:service": "ReadVariable"
     },
     {
       "href": "./%25DB1.DBD20:REAL",
       "op": ["writeproperty"],
+      "contentType": "application/octet-stream",
       "s7v:type": "s7v:REAL",
       "s7v:service": "WriteVariable"
     }
@@ -1018,6 +1023,17 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         structured value is described by one Form per member, each addressing its own byte offset, which is the access
         method that both surveyed implementations support.
       </p>
+
+      <section id="contenttype">
+        <h3>S7Comm <code>contentType</code></h3>
+        <p>
+          S7Comm transports variable values only in the binary representation of the controller memory, as described in
+          <a href="#data-types">Data Types</a>. Since there is no other option and to avoid falling back to the
+          <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+          of <code>application/json</code>, <code>contentType</code> MUST always be set to
+          <code>application/octet-stream</code>.
+        </p>
+      </section>
     </section>
 
     <section id="security-considerations" class="informative">
@@ -1076,6 +1092,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         {
           "href": "./%25DB1.DBD20:REAL",
           "op": ["readproperty", "observeproperty", "writeproperty"],
+          "contentType": "application/octet-stream",
           "s7v:type": "s7v:REAL",
           "s7v:pollingTime": 1000,
           "s7v:timeout": 2000
@@ -1099,6 +1116,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "./%25I0.3:BOOL",
         "op": ["readproperty", "observeproperty"],
+        "contentType": "application/octet-stream",
         "s7v:type": "s7v:BOOL",
         "s7v:pollingTime": 500
       }
@@ -1120,6 +1138,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "TankTemperature",
         "op": ["readproperty", "observeproperty"],
+        "contentType": "application/octet-stream",
         "s7v:type": "s7v:INT",
         "s7v:area": "DB",
         "s7v:dbNumber": 12,
@@ -1144,6 +1163,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "./%25DB1.DBB100:STRING(20)",
         "op": ["readproperty"],
+        "contentType": "application/octet-stream",
         "s7v:type": "s7v:STRING",
         "s7v:length": 20
       }
@@ -1185,6 +1205,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         {
           "href": "./%25DB1.DBW310:INT",
           "op": ["readproperty", "observeproperty"],
+          "contentType": "application/octet-stream",
           "s7v:type": "s7v:INT",
           "s7v:pollingTime": 2000
         }

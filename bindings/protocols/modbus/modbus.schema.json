@@ -9,7 +9,7 @@
     "modbusForm": {
       "type": "object",
       "properties": {
-        "modv:pollingTime": { "type": "number", "minimum": 0 },
+        "modv:pollingTime": { "type": "integer", "minimum": 0 },
         "modv:entity": {
           "type": "string",
           "enum": ["Coil", "DiscreteInput", "HoldingRegister", "InputRegister"]
@@ -18,6 +18,7 @@
           "type": "string",
           "enum": [
             "readCoil",
+            "readDeviceIdentification",
             "readDiscreteInput",
             "readHoldingRegisters",
             "readInputRegisters",
@@ -51,7 +52,7 @@
         "modv:mostSignificantByte": { "type": "boolean" },
         "modv:mostSignificantWord": { "type": "boolean" },
         "modv:zeroBasedAddressing": { "type": "boolean", "$comment": "Deprecated. Please refrain from using." },
-        "modv:timeout": { "type": "number", "minimum": 0 }
+        "modv:timeout": { "type": "integer", "minimum": 0 }
       }
     },
     "affordance": {
@@ -78,9 +79,10 @@
         "properties": {
           "modv": {
             "type": "string",
-            "enum": ["https://www.w3.org/2019/wot/modbus"]
+            "enum": ["https://www.w3.org/2019/wot/modbus#"]
           }
-        }
+        },
+        "required": ["modv"]
       }
     },
     "properties": {

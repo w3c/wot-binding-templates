@@ -4,11 +4,11 @@
         "modv":"https://www.w3.org/2019/wot/modbus#",
         "address": {
             "@id": "modv:hasAddress",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedShort"
         },
         "timeout" : {
             "@id": "modv:hasTimeout",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedInt"
         }, 
         "zeroBasedAddressing" : {
             "@id": "modv:hasZeroBasedAddressingFlag",
@@ -24,15 +24,15 @@
         }, 
         "quantity" : {
             "@id": "modv:hasQuantity",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedShort"
         }, 
         "pollingTime" : {
             "@id": "modv:hasPollingTime",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedInt"
         }, 
         "unitID": {
             "@id": "modv:hasUnitID",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedByte"
         },
         "entity" : {
             "@id": "modv:hasEntity",
@@ -50,14 +50,30 @@
         "DiscreteInput" : "modv:DiscreteInput",
         "HoldingRegister": "modv:HoldingRegister",
         "InputRegister": "modv:InputRegister",
-        "readCoil": "modv:ReadCoil",
-        "readDiscreteInput": "modv:ReadDiscreteInput",
-        "readHoldingRegister" : "modv:ReadHoldingRegister",
-        "readInputRegister": "modv:ReadInputRegister",
-        "writeSingleCoil": "modv:WriteSingleCoil",
-        "writeMultipleCoils": "modv:WriteMultipleCoils",
-        "writeMultipleHoldingRegister": "modv:WriteMultipleHoldingRegister",
-        "writeSingleHoldingRegister" : "modv:WriteSingleHoldingRegister",
-        "readFileRecord" : "modv:ReadFileRecord"
+        "readCoil": "modv:readCoil",
+        "readDiscreteInput": "modv:readDiscreteInput",
+        "readHoldingRegisters" : "modv:readHoldingRegisters",
+        "readInputRegisters": "modv:readInputRegisters",
+        "writeSingleCoil": "modv:writeSingleCoil",
+        "writeMultipleCoils": "modv:writeMultipleCoils",
+        "writeMultipleHoldingRegisters": "modv:writeMultipleHoldingRegisters",
+        "writeSingleHoldingRegister" : "modv:writeSingleHoldingRegister",
+        "readFileRecord" : "modv:readFileRecord",
+        "readDeviceIdentification": "modv:readDeviceIdentification",
+        "integer": "xsd:integer",
+        "boolean": "xsd:boolean",
+        "string": "xsd:string",
+        "float": "xsd:float",
+        "decimal": "xsd:decimal",
+        "byte": "xsd:byte",
+        "short": "xsd:short",
+        "int": "xsd:int",
+        "long": "xsd:long",
+        "unsignedByte": "xsd:unsignedByte",
+        "unsignedShort": "xsd:unsignedShort",
+        "unsignedInt": "xsd:unsignedInt",
+        "unsignedLong": "xsd:unsignedLong",
+        "double": "xsd:double",
+        "hexBinary": "xsd:hexBinary"
     }
 }

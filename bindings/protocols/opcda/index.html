@@ -123,7 +123,10 @@
           native subscriptions for observed properties, controlled by the update rate and percent deadband of an OPC
           group;
         </li>
-        <li>an optional payload that carries the OPC value, quality, and timestamp together;</li>
+        <li>
+          the quality and timestamp of every value, delivered as metadata that corresponds to an OPC UA status code and
+          source timestamp;
+        </li>
         <li>access to item properties and to the server status; and</li>
         <li>mappings between WoT property operations and the OPC DA interfaces.</li>
       </ul>
@@ -240,11 +243,6 @@
         hard to secure, and the DCOM hardening changes of recent Windows versions have broken many existing
         installations. Remote access to OPC Classic servers is instead commonly provided by OPC UA wrappers or
         tunnelling products that run next to the server.
-      </p>
-      <p>
-        A Thing Description that is consumed on another computer therefore describes the server through such a gateway
-        with a different protocol binding, or it is used by a Consumer, such as a WoT gateway, that runs on the server
-        computer and exposes the server's items again through a network protocol.
       </p>
     </section>
 
@@ -469,17 +467,6 @@ Area%201%2FBoiler%2FPressure
               <td>
                 <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#float"><code>float</code></a
                 >, from 0 to 100
-              </td>
-            </tr>
-            <tr>
-              <td><code>opcdav:vqt</code></td>
-              <td>
-                Selects the value, quality, and timestamp payload instead of the plain value, see
-                <a href="#vqt-values">Value, Quality, and Timestamp</a>.
-              </td>
-              <td>optional, default <code>false</code></td>
-              <td>
-                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
               </td>
             </tr>
             <tr>
@@ -757,9 +744,9 @@ Area%201%2FBoiler%2FPressure
         </table>
         <p>
           A Form that carries <code>opcdav:propertyId</code> MUST only contain the <code>readproperty</code> operation,
-          and MUST NOT carry <code>opcdav:vqt</code>, <code>opcdav:updateRate</code>, or <code>opcdav:deadband</code>.
-          The value of the property is converted as described in <a href="#data-types">Data Types</a>, using
-          <code>opcdav:type</code> when present.
+          and MUST NOT carry <code>opcdav:updateRate</code> or <code>opcdav:deadband</code>. The value of the property
+          is converted as described in <a href="#data-types">Data Types</a>, using <code>opcdav:type</code> when
+          present.
         </p>
       </section>
     </section>
@@ -801,13 +788,10 @@ Area%201%2FBoiler%2FPressure
             <tr>
               <td><code>writeproperty</code></td>
               <td>
-                Convert the supplied value and call <code>IOPCItemIO::WriteVQT</code>, setting the quality and timestamp
-                only when supplied in a <a href="#vqt-values">VQT payload</a>.
+                Convert the supplied value and call <code>IOPCItemIO::WriteVQT</code> without specifying a quality or
+                timestamp.
               </td>
-              <td>
-                Add the item to a group and call <code>IOPCSyncIO::Write</code> with the converted value. The Consumer
-                MUST reject a write that supplies a quality or timestamp.
-              </td>
+              <td>Add the item to a group and call <code>IOPCSyncIO::Write</code> with the converted value.</td>
               <td>
                 The item access rights MUST include <code>OPC_WRITEABLE</code>, and the property MUST NOT be declared
                 <code>readOnly: true</code>.
@@ -1025,84 +1009,79 @@ Area%201%2FBoiler%2FPressure
     <section id="payload-mapping">
       <h2>Payload Mapping</h2>
 
-      <section id="plain-values">
-        <h3>Plain Values</h3>
+      <section id="values">
+        <h3>Values</h3>
         <p>
-          By default, an item value is represented at the WoT Consumer boundary as the JSON value compatible with the
-          Property's WoT Data Schema, converted as described in <a href="#data-types">Data Types</a>. A Consumer MUST
-          use both the WoT Data Schema and <code>opcdav:type</code>: the WoT Data Schema describes the
-          application-facing value, while the Form term identifies the representation requested from the server.
+          An item value is represented at the WoT Consumer boundary as the JSON value compatible with the Property's WoT
+          Data Schema. The binding implementation is responsible for converting between that value and the
+          <code>VARIANT</code> exchanged with the server, as described in <a href="#data-types">Data Types</a>.
         </p>
         <p>
-          Every OPC DA value carries a quality, whose two most significant bits select <code>OPC_QUALITY_GOOD</code>,
-          <code>OPC_QUALITY_UNCERTAIN</code>, or <code>OPC_QUALITY_BAD</code>. Because a plain value cannot carry the
-          quality, the following rules apply:
+          A Consumer MUST use both the WoT Data Schema and <code>opcdav:type</code>. The WoT Data Schema describes the
+          application-facing value, while the Form term identifies the representation requested from the server.
+        </p>
+      </section>
+
+      <section id="quality-and-timestamp">
+        <h3>Quality and Timestamp</h3>
+        <p>
+          OPC DA returns every value together with a 16-bit quality and a UTC timestamp [[OPC-DA]]. They are metadata of
+          the value rather than part of the payload: the WoT Data Schema does not describe them, and a Consumer that
+          makes them available to the application does so alongside the value, through implementation-specific means.
+        </p>
+        <p>
+          This matches OPC UA, where the value of a Variable is accompanied by a status code and a source timestamp. A
+          Consumer that exposes the Property as an OPC UA Variable, for example in a gateway, SHOULD map them as
+          follows:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>OPC DA</th>
+              <th>OPC UA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>quality <code>OPC_QUALITY_GOOD</code></td>
+              <td>status code with severity Good</td>
+            </tr>
+            <tr>
+              <td>quality <code>OPC_QUALITY_UNCERTAIN</code></td>
+              <td>status code with severity Uncertain</td>
+            </tr>
+            <tr>
+              <td>quality <code>OPC_QUALITY_BAD</code></td>
+              <td>status code with severity Bad</td>
+            </tr>
+            <tr>
+              <td>limit bits low, high, and constant</td>
+              <td>limit bits Low, High, and Constant of the status code</td>
+            </tr>
+            <tr>
+              <td>timestamp</td>
+              <td><code>SourceTimestamp</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The two most significant bits of the quality select <code>OPC_QUALITY_GOOD</code>,
+          <code>OPC_QUALITY_UNCERTAIN</code>, or <code>OPC_QUALITY_BAD</code>. The following rules apply:
         </p>
         <ul>
           <li>A value with good quality is delivered as is.</li>
           <li>
             A value with uncertain quality is delivered, and the Consumer SHOULD make the quality available to the
-            application through implementation-specific means.
+            application.
           </li>
           <li>
-            A value with bad quality MUST NOT be delivered as a valid value. A <code>readproperty</code> operation MUST
-            fail, and a notification of an <code>observeproperty</code> operation MUST either be suppressed or be
-            reported to the application as an error.
+            A value with bad quality MUST NOT be delivered as a valid value. The Consumer either delivers it together
+            with its quality, for example as an OPC UA value with a Bad status code, or fails the
+            <code>readproperty</code> operation and suppresses or reports as an error the notification of an
+            <code>observeproperty</code> operation.
           </li>
         </ul>
-      </section>
-
-      <section id="vqt-values">
-        <h3>Value, Quality, and Timestamp</h3>
-        <p>
-          When <code>opcdav:vqt</code> is <code>true</code>, the value is represented as a JSON object with the
-          following members, so that the application receives the quality and timestamp of every value:
-        </p>
-        <table class="def">
-          <thead>
-            <tr>
-              <th>Member</th>
-              <th>Description</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>value</code></td>
-              <td>Item value, converted as described in <a href="#data-types">Data Types</a>.</td>
-              <td>JSON value, or <code>null</code> when the server returned <code>VT_EMPTY</code></td>
-            </tr>
-            <tr>
-              <td><code>quality</code></td>
-              <td>
-                OPC quality, including the quality, substatus, and limit bits of the 16-bit OPC quality word [[OPC-DA]].
-              </td>
-              <td>integer, from 0 to 65535</td>
-            </tr>
-            <tr>
-              <td><code>timestamp</code></td>
-              <td>Timestamp of the value, converted from the UTC <code>FILETIME</code> returned by the server.</td>
-              <td>[[RFC3339]] date-time in UTC</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          With this payload, values of every quality are delivered and the application evaluates the quality. The WoT
-          Data Schema of the Property MUST then describe the object, as shown in
-          <a href="#example-vqt">Value, Quality, and Timestamp Payload</a>.
-        </p>
-        <p>
-          When writing, <code>value</code> is required and <code>quality</code> and <code>timestamp</code> are optional.
-          An OPC DA 3.0 server receives the supplied members with <code>WriteVQT</code>; an older server cannot accept a
-          quality or timestamp, and the Consumer MUST reject such a write rather than silently drop them.
-        </p>
-        <pre class="example json" title="VQT payload">
-{
-  "value": 72.4,
-  "quality": 192,
-  "timestamp": "2026-11-17T07:42:10.125Z"
-}
-        </pre>
+        <p>When writing, only the value is supplied. The server sets the quality and timestamp of the written value.</p>
       </section>
     </section>
 
@@ -1255,33 +1234,6 @@ Area%201%2FBoiler%2FPressure
         </pre>
       </section>
 
-      <section id="example-vqt">
-        <h3>Value, Quality, and Timestamp Payload</h3>
-        <pre class="example json" title="VQT payload">
-{
-  "Level": {
-    "type": "object",
-    "readOnly": true,
-    "observable": true,
-    "properties": {
-      "value": { "type": "number" },
-      "quality": { "type": "integer", "minimum": 0, "maximum": 65535 },
-      "timestamp": { "type": "string", "format": "date-time" }
-    },
-    "forms": [
-      {
-        "href": "Tank3.Level",
-        "op": ["readproperty", "observeproperty", "unobserveproperty"],
-        "opcdav:type": "opcdav:VT_R4",
-        "opcdav:vqt": true,
-        "opcdav:updateRate": 2000
-      }
-    ]
-  }
-}
-        </pre>
-      </section>
-
       <section id="example-array-and-property">
         <h3>Array Item and Item Property</h3>
         <pre class="example json" title="Array item and engineering units">
@@ -1366,9 +1318,10 @@ Area%201%2FBoiler%2FPressure
           the server.
         </li>
         <li>
-          OPC UA wrappers of OPC DA servers typically expose each item as an OPC UA Variable, so the item IDs, data
-          types, and quality evaluated by this binding remain recognizable when a server is later accessed through such
-          a wrapper.
+          OPC UA wrappers of OPC DA servers typically expose each item as an OPC UA Variable. Because this binding
+          represents an item as a plain value with its quality and timestamp as metadata, a Thing Description maps
+          directly to such Variables, and the item IDs and data types remain recognizable when a server is later
+          accessed through a wrapper.
         </li>
       </ul>
     </section>

@@ -69,9 +69,6 @@
           "minimum": 0,
           "maximum": 100
         },
-        "opcdav:vqt": {
-          "type": "boolean"
-        },
         "opcdav:propertyId": {
           "type": "integer",
           "minimum": 1,
@@ -119,9 +116,6 @@
             },
             "not": {
               "anyOf": [
-                {
-                  "required": ["opcdav:vqt"]
-                },
                 {
                   "required": ["opcdav:updateRate"]
                 },

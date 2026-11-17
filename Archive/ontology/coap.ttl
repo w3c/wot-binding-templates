@@ -4,7 +4,7 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix schema: <http://schema.org/> .
+@prefix schema: <https://schema.org/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @base <https://www.w3.org/2019/wot/coap> .
@@ -67,7 +67,7 @@ _:ie a schema:Organization ;
               rdfs:isDefinedBy <> ;
               rdfs:label "responseCode"@en ;
               rdfs:comment "response code"@en ;
-              schema:domainIncludes :Response ;              
+              schema:domainIncludes :Response ;
               schema:rangeIncludes :ResponseCode .
 
 :methodName rdf:type owl:DatatypeProperty ;
@@ -138,117 +138,117 @@ _:ie a schema:Organization ;
         rdfs:label "POST" ;
         rdfs:comment "." .
 
-<#0.03> rdf:type owl:NamedIndividual, :MethodCode ; 
+<#0.03> rdf:type owl:NamedIndividual, :MethodCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "PUT" ;
         rdfs:comment "." .
 
-<#0.04> rdf:type owl:NamedIndividual, :MethodCode ; 
+<#0.04> rdf:type owl:NamedIndividual, :MethodCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "DELETE" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#2.01> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#2.01> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Created" ;
         rdfs:comment "." .
- 
-<#2.02> rdf:type owl:NamedIndividual, :ResponseCode ; 
+
+<#2.02> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Deleted" ;
         rdfs:comment "." .
 
-<#2.03> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#2.03> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Valid" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#2.04> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#2.04> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Changed" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#2.05> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#2.05> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Content" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.00> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.00> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Bad Request" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.01> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.01> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Unauthorized" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.02> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.02> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Bad Option" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.03> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.03> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Forbidden" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.04> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.04> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Not Found" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.05> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.05> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Method Not Allowed" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.06> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.06> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Not Acceptable" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.12> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.12> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Precondition Failed" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.13> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.13> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Request Entity Too Large" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#4.15> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#4.15> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Unsupported Content-Format" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#5.00> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#5.00> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Internal Server Error" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#5.01> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#5.01> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Not Implemented" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#5.02> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#5.02> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Bad Gateway" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#5.03> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#5.03> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Service Unavailable" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#5.04> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#5.04> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Gateway Timeout" ;
-        rdfs:comment "." . 
+        rdfs:comment "." .
 
-<#5.05> rdf:type owl:NamedIndividual, :ResponseCode ; 
+<#5.05> rdf:type owl:NamedIndividual, :ResponseCode ;
         rdfs:isDefinedBy <> ;
         rdfs:label "Proxying Not Supported" ;
         rdfs:comment "." .

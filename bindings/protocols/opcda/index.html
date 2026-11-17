@@ -52,11 +52,6 @@
             title: "[MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol",
             href: "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dcom/4a893f3d-bd29-48cd-9f43-d9777a4415b0",
             publisher: "Microsoft"
-          },
-          "KB5004442": {
-            title: "KB5004442: Manage changes for Windows DCOM Server Security Feature Bypass (CVE-2021-26414)",
-            href: "https://support.microsoft.com/en-us/topic/kb5004442-manage-changes-for-windows-dcom-server-security-feature-bypass-cve-2021-26414-f1400b52-c141-43d2-941e-37ed901c769c",
-            publisher: "Microsoft"
           }
         },
         otherLinks: [
@@ -110,11 +105,17 @@
     <section id="abstract">
       <p>
         This Web of Things (WoT) protocol binding describes how a Thing Description exposes the items of an OPC Data
-        Access (OPC DA) server [[OPC-DA]] [[OPC-DA-2]], one of the COM/DCOM-based OPC Classic specifications.
+        Access (OPC DA) server [[OPC-DA]] [[OPC-DA-2]], one of the COM-based OPC Classic specifications.
+      </p>
+      <p>
+        The binding is limited to local COM: the Consumer and the OPC DA server run on the same computer. Remote access
+        through Distributed COM (DCOM) is not supported, see <a href="#com-only">COM Only</a>.
       </p>
       <p>The binding defines:</p>
       <ul>
-        <li>the <code>opcda</code> URI scheme used to identify an OPC DA server and the items in its address space;</li>
+        <li>
+          the <code>opcda</code> URI scheme used to identify a local OPC DA server and the items in its address space;
+        </li>
         <li>item addressing in WoT Forms, including the optional access path;</li>
         <li>the requested data type of an item, based on the COM <code>VARTYPE</code> of the item value;</li>
         <li>cache and device reads, controlled by a maximum age;</li>
@@ -133,8 +134,8 @@
       <p><em>This document is a work in progress.</em></p>
       <p>
         This initial version of the binding covers reading, writing, and subscribing to the items of OPC DA 2.0 and 3.0
-        servers. Servers that implement only OPC DA 1.0a are covered for reads and writes. Historical data and alarms
-        are covered by the companion
+        servers through local COM. Servers that implement only OPC DA 1.0a are covered for reads and writes. DCOM is not
+        covered. Historical data and alarms are covered by the companion
         <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/">OPC HDA Binding</a> and
         <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/">OPC A&amp;E Binding</a>, which
         share the URI layout and security considerations of this document.
@@ -147,8 +148,9 @@
         OPC Data Access is the original OPC specification, published by the OPC Foundation and widely deployed in
         process and factory automation. An OPC DA server is a COM server that runs on a Microsoft Windows computer and
         gives clients access to current process values, called <em>items</em>, which it obtains from controllers, field
-        devices, or other data sources. Clients reach the server locally through COM or remotely through Distributed COM
-        (DCOM) [[MS-DCOM]].
+        devices, or other data sources. Clients on the same computer reach the server through COM. The OPC DA
+        specification also allows remote clients through Distributed COM (DCOM) [[MS-DCOM]], which this binding does not
+        support.
       </p>
       <p>
         Each item is identified by an <em>item ID</em>, a server-specific string such as
@@ -163,6 +165,7 @@
       </p>
       <p>The following topics are outside the initial scope:</p>
       <ul>
+        <li>remote access through DCOM, see <a href="#com-only">COM Only</a>;</li>
         <li>the OPC XML-DA web service specification;</li>
         <li>OPC Complex Data and OPC Data eXchange (DX);</li>
         <li>batched reads and writes across several Forms as a normative behavior;</li>
@@ -178,7 +181,7 @@
       </p>
       <p>An implementation conforms to this binding when it:</p>
       <ol>
-        <li>recognizes the <code>opcda</code> URI scheme;</li>
+        <li>recognizes the <code>opcda</code> URI scheme and rejects URIs that do not address the local computer;</li>
         <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
         <li>supports the operation mappings it advertises;</li>
         <li>converts between the OPC DA <code>VARIANT</code> value and the WoT Data Schema as specified; and</li>
@@ -205,13 +208,12 @@
         <li>
           A server is a COM class, identified by a class identifier (CLSID) and usually also by a programmatic
           identifier (ProgID) such as <code>Vendor.OPCServer.1</code>. A client creates the server object with
-          <code>CoCreateInstanceEx</code>, on the local computer or, through DCOM, on a remote computer.
+          <code>CoCreateInstance</code>. Most OPC servers are out-of-process servers, that is, separate executables that
+          COM starts on demand.
         </li>
         <li>
           Servers register themselves in component categories, for example <code>CATID_OPCDAServer20</code> and
-          <code>CATID_OPCDAServer30</code>. The OPC Server Enumerator (OPCEnum), installed with the OPC Core Components,
-          lets a remote client list the registered servers and translate a ProgID into a CLSID through
-          <code>IOPCServerList2</code> [[OPC-COMMON]].
+          <code>CATID_OPCDAServer30</code>, which lets a client list the OPC DA servers installed on the computer.
         </li>
         <li>
           All OPC Classic servers implement <code>IOPCCommon</code> and announce an orderly shutdown through the
@@ -219,9 +221,31 @@
         </li>
         <li>
           Callbacks, such as data change notifications, are delivered over COM connection points, so the server calls
-          back into the client process. Over DCOM this requires both computers to accept calls from each other.
+          back into the client process.
         </li>
       </ul>
+    </section>
+
+    <section id="com-only">
+      <h2>COM Only</h2>
+      <p>
+        This binding, like its companion OPC HDA and OPC A&amp;E bindings, only covers access to an OPC Classic server
+        through local COM. The Consumer MUST run on the same computer as the server. Access to a server on another
+        computer through DCOM [[MS-DCOM]] is outside the scope of this binding, and a Consumer MUST NOT use DCOM to
+        realize an <code>opcda</code> Form.
+      </p>
+      <p>
+        This is a deliberate limitation. Although the OPC Classic specifications allow DCOM, it is generally not used in
+        industry today: it requires complex and fragile firewall and permission configuration, its dynamic ports are
+        hard to secure, and the DCOM hardening changes of recent Windows versions have broken many existing
+        installations. Remote access to OPC Classic servers is instead commonly provided by OPC UA wrappers or
+        tunnelling products that run next to the server.
+      </p>
+      <p>
+        A Thing Description that is consumed on another computer therefore describes the server through such a gateway
+        with a different protocol binding, or it is used by a Consumer, such as a WoT gateway, that runs on the server
+        computer and exposes the server's items again through a network protocol.
+      </p>
     </section>
 
     <section id="uri-scheme">
@@ -231,14 +255,15 @@
         <h3>Server URI</h3>
         <p>An OPC DA server is identified by an <code>opcda</code> URI:</p>
         <pre class="nohighlight">
-opcda-URI = "opcda://" host "/" server-id "/"
+opcda-URI = "opcda://localhost/" server-id "/"
 server-id = progid / clsid
         </pre>
         <p>Where:</p>
         <ul>
           <li>
-            <code>host</code> is the DNS name, IPv4 address, or IPv6 literal of the computer that runs the server, or
-            <code>localhost</code> for a server on the same computer as the Consumer;
+            the host is always <code>localhost</code>, because the server runs on the same computer as the Consumer, see
+            <a href="#com-only">COM Only</a>. A Consumer MUST reject an <code>opcda</code> URI with any other host,
+            including an IP address of the local computer;
           </li>
           <li>
             <code>progid</code> is the ProgID of the server, for example <code>Vendor.OPCServer.1</code>, or its
@@ -252,16 +277,11 @@ server-id = progid / clsid
         </ul>
         <p>
           A ProgID consists of letters, digits, and periods only, and starts with a letter, so it cannot be mistaken for
-          a CLSID. When <code>server-id</code> is a ProgID and <code>host</code> is a remote computer, the Consumer MUST
-          translate it into a CLSID on that computer, for example with <code>IOPCServerList2::CLSIDFromProgID</code> of
-          the OPC Server Enumerator, because a ProgID is only registered on the computer where the server is installed.
-          A Thing Description SHOULD use the CLSID when the remote computer has no OPC Server Enumerator.
+          a CLSID. When <code>server-id</code> is a ProgID, the Consumer translates it into a CLSID with
+          <code>CLSIDFromProgID</code>. A Thing Description MAY use the CLSID to identify a specific server version
+          unambiguously.
         </p>
-        <p>
-          The URI MUST NOT contain a port. DCOM locates the server through the RPC endpoint mapper on TCP port
-          <code>135</code> and then communicates on a dynamically assigned port [[MS-DCOM]], so a port in the URI has no
-          meaning.
-        </p>
+        <p>The URI MUST NOT contain a port, user information, query, or fragment, because COM uses none of them.</p>
         <p>
           A Thing Description SHOULD place the server URI in <code>base</code> and use relative item references in
           individual Forms. The <code>base</code> MUST end with <code>/</code>; otherwise reference resolution
@@ -269,14 +289,14 @@ server-id = progid / clsid
         </p>
         <pre class="example json" title="Server in base">
 {
-  "base": "opcda://scada01.example.com/Vendor.OPCServer.1/"
+  "base": "opcda://localhost/Vendor.OPCServer.1/"
 }
         </pre>
         <p class="note">
           The scheme names <code>opcda</code>, <code>opchda</code>, and <code>opcae</code> and the
           <code>host/ProgID</code> path follow the URL convention of the OPC Foundation's OPC .NET API. That convention
-          also allows a CLSID path segment after the ProgID. This binding does not, because the path segment after the
-          server identifier carries the item ID.
+          also allows a remote host and a CLSID path segment after the ProgID. This binding allows neither: the host is
+          always <code>localhost</code>, and the path segment after the server identifier carries the item ID.
         </p>
       </section>
 
@@ -306,8 +326,8 @@ opcda-item-URI = opcda-URI [ item-id ]
         </pre>
         <p>
           When the Thing Description contains
-          <code>"base": "opcda://scada01.example.com/Vendor.OPCServer.1/"</code>, the resolved target is
-          <code>opcda://scada01.example.com/Vendor.OPCServer.1/Channel1.Device1.Temperature</code>.
+          <code>"base": "opcda://localhost/Vendor.OPCServer.1/"</code>, the resolved target is
+          <code>opcda://localhost/Vendor.OPCServer.1/Channel1.Device1.Temperature</code>.
         </p>
         <p>
           Some servers additionally use an <em>access path</em>, a hint that selects the communication path to the data
@@ -1121,25 +1141,23 @@ Area%201%2FBoiler%2FPressure
     <section id="security-considerations" class="informative">
       <h2>Security Considerations</h2>
       <p>
-        OPC DA relies on the security of COM and DCOM [[MS-DCOM]]. A Thing Description MUST accurately describe the
-        security applied to the interaction endpoint.
+        Because this binding only uses local COM, no OPC DA traffic leaves the computer, and the binding exposes no
+        network endpoint of its own. A Thing Description MUST accurately describe the security applied to the
+        interaction endpoint.
       </p>
       <ul>
         <li>
-          DCOM authenticates the client with Windows authentication, negotiated between Kerberos and NTLM, and checks
-          the launch, activation, and access permissions configured for the server. Credentials are those of the
-          Consumer's Windows account, or explicit credentials supplied through the COM security APIs.
+          COM checks the launch, activation, and access permissions configured for the server against the Windows
+          account under which the Consumer process runs. The Consumer supplies no credentials of its own; its
+          authorization is determined entirely by that account.
         </li>
         <li>
-          Since the DCOM hardening changes of [[KB5004442]], enforced from March 2023, Windows rejects remote activation
-          requests below the authentication level <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code>. A Consumer SHOULD use
-          <code>RPC_C_AUTHN_LEVEL_PKT_PRIVACY</code>, which also encrypts the traffic, and MUST use at least
-          <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code> for remote servers.
+          A Consumer SHOULD run under a dedicated account with only the COM permissions it needs, rather than under an
+          administrative account, and the server SHOULD grant access only to the accounts that need it.
         </li>
         <li>
-          Data change notifications and shutdown requests are calls from the server into the Consumer. The Consumer
-          process therefore accepts incoming DCOM calls, and it SHOULD restrict them to the account of the server rather
-          than allowing anonymous or unauthenticated callers.
+          Data change notifications and shutdown requests are calls from the server process into the Consumer process. A
+          Consumer SHOULD restrict incoming COM calls to the account of the server.
         </li>
         <li>
           Some servers additionally implement the OPC Security interfaces [[OPC-SECURITY]], which allow a client to log
@@ -1147,19 +1165,23 @@ Area%201%2FBoiler%2FPressure
         </li>
       </ul>
       <p>
-        Because the security parameters of DCOM are negotiated by the underlying protocols at runtime, a Thing
-        Description SHOULD describe an <code>opcda</code> endpoint with the <code>auto</code> security scheme of
-        [[WOT-THING-DESCRIPTION]], as the examples in this document do. <code>nosec</code> MUST NOT be used for a remote
-        server, because DCOM always authenticates remote callers.
+        Because the Consumer does not supply any security information to access the server, a Thing Description SHOULD
+        describe an <code>opcda</code> endpoint with the <code>nosec</code> security scheme of
+        [[WOT-THING-DESCRIPTION]], as the examples in this document do. This does not mean that access is unrestricted:
+        the operating system and the server still enforce the permissions described above.
+      </p>
+      <p>
+        A Consumer that exposes OPC DA items to other computers, for example as a WoT gateway, makes them reachable
+        through a network protocol. Such a Consumer becomes responsible for authenticating and authorizing remote
+        clients, because the server sees every request as coming from the Consumer's account.
       </p>
       <p>
         A binding implementation MUST NOT infer that a successful connection authorizes every operation. The server
         enforces item access rights, and it can reject a write with <code>OPC_E_BADRIGHTS</code> for the current user.
       </p>
       <p class="note" title="Open issue">
-        This binding does not yet define security scheme terms for selecting the DCOM authentication level and
-        impersonation level, or for passing explicit Windows or OPC Security credentials. These are expected to be added
-        once implementation experience is collected.
+        This binding does not yet define security scheme terms for passing OPC Security credentials. These are expected
+        to be added once implementation experience is collected.
       </p>
     </section>
 
@@ -1178,13 +1200,13 @@ Area%201%2FBoiler%2FPressure
   ],
   "id": "urn:example:opcda:line1",
   "title": "Line 1 OPC DA Server",
-  "base": "opcda://scada01.example.com/Vendor.OPCServer.1/",
+  "base": "opcda://localhost/Vendor.OPCServer.1/",
   "securityDefinitions": {
-    "auto_sc": {
-      "scheme": "auto"
+    "nosec_sc": {
+      "scheme": "nosec"
     }
   },
-  "security": ["auto_sc"],
+  "security": ["nosec_sc"],
   "properties": {
     "ReactorTemperature": {
       "title": "Reactor temperature",
@@ -1330,14 +1352,13 @@ Area%201%2FBoiler%2FPressure
       <h2>Implementation Notes</h2>
       <ul>
         <li>
-          OPC DA uses COM and is therefore native to Microsoft Windows. Consumers on other platforms need a DCOM
-          implementation of their own, or a gateway that exposes the server through another protocol, such as an OPC UA
-          wrapper of an OPC DA server.
+          OPC DA uses COM and is therefore native to Microsoft Windows. A Consumer implementing this binding runs on the
+          Windows computer of the server. Consumers on other computers or platforms access the server through a gateway
+          that exposes it through another protocol, such as an OPC UA wrapper of an OPC DA server.
         </li>
         <li>
-          Remote access requires the OPC proxy and stub libraries of the OPC Core Components on both computers, so that
-          the OPC interfaces can be marshalled, and the OPC Server Enumerator on the server computer for ProgID
-          resolution.
+          Out-of-process servers require the OPC proxy and stub libraries of the OPC Core Components, so that the OPC
+          interfaces can be marshalled between the Consumer and the server process.
         </li>
         <li>
           The URI scheme follows the URL convention of the OPC Foundation's OPC .NET API, which uses <code>opcda</code>,

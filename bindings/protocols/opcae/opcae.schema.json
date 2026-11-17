@@ -249,7 +249,18 @@
         }
       },
       "then": {
-        "$ref": "#/definitions/opcaeForm"
+        "allOf": [
+          {
+            "properties": {
+              "href": {
+                "pattern": "^opcae://localhost/[^/?#]+/[^?#]*$"
+              }
+            }
+          },
+          {
+            "$ref": "#/definitions/opcaeForm"
+          }
+        ]
       }
     },
     "relativeForm": {
@@ -373,7 +384,7 @@
           {
             "properties": {
               "base": {
-                "pattern": "^opcae://([^/:?#\\[\\]]+|\\[[0-9A-Fa-f:.]+\\])/[^/?#]+/$"
+                "pattern": "^opcae://localhost/[^/?#]+/$"
               }
             }
           },

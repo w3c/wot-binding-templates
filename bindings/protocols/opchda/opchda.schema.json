@@ -326,7 +326,18 @@
         }
       },
       "then": {
-        "$ref": "#/definitions/opchdaForm"
+        "allOf": [
+          {
+            "properties": {
+              "href": {
+                "pattern": "^opchda://localhost/[^/?#]+/[^?#]*$"
+              }
+            }
+          },
+          {
+            "$ref": "#/definitions/opchdaForm"
+          }
+        ]
       }
     },
     "relativeForm": {
@@ -450,7 +461,7 @@
           {
             "properties": {
               "base": {
-                "pattern": "^opchda://([^/:?#\\[\\]]+|\\[[0-9A-Fa-f:.]+\\])/[^/?#]+/$"
+                "pattern": "^opchda://localhost/[^/?#]+/$"
               }
             }
           },

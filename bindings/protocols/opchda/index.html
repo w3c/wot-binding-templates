@@ -51,11 +51,6 @@
             title: "[MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol",
             href: "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dcom/4a893f3d-bd29-48cd-9f43-d9777a4415b0",
             publisher: "Microsoft"
-          },
-          "KB5004442": {
-            title: "KB5004442: Manage changes for Windows DCOM Server Security Feature Bypass (CVE-2021-26414)",
-            href: "https://support.microsoft.com/en-us/topic/kb5004442-manage-changes-for-windows-dcom-server-security-feature-bypass-cve-2021-26414-f1400b52-c141-43d2-941e-37ed901c769c",
-            publisher: "Microsoft"
           }
         },
         otherLinks: [
@@ -109,12 +104,15 @@
     <section id="abstract">
       <p>
         This Web of Things (WoT) protocol binding describes how a Thing Description exposes the history of the items of
-        an OPC Historical Data Access (OPC HDA) server [[OPC-HDA]], one of the COM/DCOM-based OPC Classic
-        specifications.
+        an OPC Historical Data Access (OPC HDA) server [[OPC-HDA]], one of the COM-based OPC Classic specifications.
+      </p>
+      <p>
+        The binding is limited to local COM: the Consumer and the OPC HDA server run on the same computer. Remote access
+        through Distributed COM (DCOM) is not supported, see <a href="#com-only">COM Only</a>.
       </p>
       <p>The binding defines:</p>
       <ul>
-        <li>the <code>opchda</code> URI scheme used to identify an OPC HDA server and the items it historizes;</li>
+        <li>the <code>opchda</code> URI scheme used to identify a local OPC HDA server and the items it historizes;</li>
         <li>absolute and relative time ranges in WoT Forms, using the relative time syntax of OPC HDA;</li>
         <li>raw, processed, at-time, and modified history reads, and the aggregates used by processed reads;</li>
         <li>history updates, deletions, and annotations;</li>
@@ -129,8 +127,9 @@
       <p><em>This document is a work in progress.</em></p>
       <p>
         This initial version of the binding covers the synchronous read, update, and annotation interfaces and the
-        asynchronous advise operations of OPC HDA 1.20 servers. It shares the URI layout and security considerations of
-        the companion <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/">OPC DA Binding</a>
+        asynchronous advise operations of OPC HDA 1.20 servers through local COM; DCOM is not covered. It shares the URI
+        layout, the COM-only scope, and the security considerations of the companion
+        <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/">OPC DA Binding</a>
         [[WOT-OPCDA-BINDING]] and
         <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/">OPC A&amp;E Binding</a>.
       </p>
@@ -141,8 +140,9 @@
       <p>
         OPC Historical Data Access is the OPC Classic specification for process historians. An OPC HDA server is a COM
         server that runs on a Microsoft Windows computer and gives clients access to the archived values of
-        <em>items</em>, which it typically collects from OPC DA servers or directly from control systems. Clients reach
-        the server locally through COM or remotely through Distributed COM (DCOM) [[MS-DCOM]].
+        <em>items</em>, which it typically collects from OPC DA servers or directly from control systems. Clients on the
+        same computer reach the server through COM. The OPC HDA specification also allows remote clients through
+        Distributed COM (DCOM) [[MS-DCOM]], which this binding does not support.
       </p>
       <p>
         Each item is identified by an <em>item ID</em>, a server-specific string such as
@@ -160,6 +160,7 @@
       </p>
       <p>The following topics are outside the initial scope:</p>
       <ul>
+        <li>remote access through DCOM, see <a href="#com-only">COM Only</a>;</li>
         <li>the OPC XML-DA and OPC HDA XML web service specifications;</li>
         <li>the <code>IOPCHDA_Playback</code> interface;</li>
         <li>reading several items in one Form as a normative behavior;</li>
@@ -175,7 +176,7 @@
       </p>
       <p>An implementation conforms to this binding when it:</p>
       <ol>
-        <li>recognizes the <code>opchda</code> URI scheme;</li>
+        <li>recognizes the <code>opchda</code> URI scheme and rejects URIs that do not address the local computer;</li>
         <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
         <li>supports the operation mappings it advertises;</li>
         <li>converts between OPC HDA times and [[RFC3339]] date-time values as specified; and</li>
@@ -201,12 +202,12 @@
         <li>
           A server is a COM class, identified by a class identifier (CLSID) and usually also by a programmatic
           identifier (ProgID) such as <code>Vendor.OPCHDAServer.1</code>. A client creates the server object with
-          <code>CoCreateInstanceEx</code>, on the local computer or, through DCOM, on a remote computer.
+          <code>CoCreateInstance</code>. Most OPC servers are out-of-process servers, that is, separate executables that
+          COM starts on demand.
         </li>
         <li>
-          OPC HDA servers register themselves in the component category <code>CATID_OPCHDAServer10</code>. The OPC
-          Server Enumerator (OPCEnum), installed with the OPC Core Components, lets a remote client list the registered
-          servers and translate a ProgID into a CLSID through <code>IOPCServerList2</code> [[OPC-COMMON]].
+          OPC HDA servers register themselves in the component category <code>CATID_OPCHDAServer10</code>, which lets a
+          client list the OPC HDA servers installed on the computer.
         </li>
         <li>
           All OPC Classic servers implement <code>IOPCCommon</code> and announce an orderly shutdown through the
@@ -214,12 +215,32 @@
         </li>
         <li>
           Callbacks, such as the delivery of newly historized values, are made over COM connection points, so the server
-          calls back into the client process. Over DCOM this requires both computers to accept calls from each other.
+          calls back into the client process.
         </li>
       </ul>
       <p>
         In contrast to OPC DA, an OPC HDA client does not create groups. It obtains a <em>server handle</em> for each
         item ID with <code>IOPCHDA_Server::GetItemHandles</code> and passes the handles to the read and update methods.
+      </p>
+    </section>
+
+    <section id="com-only">
+      <h2>COM Only</h2>
+      <p>
+        This binding only covers access to an OPC HDA server through local COM. The Consumer MUST run on the same
+        computer as the server. Access to a server on another computer through DCOM [[MS-DCOM]] is outside the scope of
+        this binding, and a Consumer MUST NOT use DCOM to realize an <code>opchda</code> Form.
+      </p>
+      <p>
+        This is a deliberate limitation, shared with the companion OPC DA and OPC A&amp;E bindings. DCOM is generally
+        not used in industry today because of its complex firewall and permission configuration and its security issues;
+        remote access to OPC Classic servers is instead commonly provided by OPC UA wrappers or tunnelling products that
+        run next to the server. The rationale is described in more detail in [[WOT-OPCDA-BINDING]].
+      </p>
+      <p>
+        A Thing Description that is consumed on another computer therefore describes the historian through such a
+        gateway with a different protocol binding, or it is used by a Consumer, such as a WoT gateway, that runs on the
+        server computer and exposes the history again through a network protocol.
       </p>
     </section>
 
@@ -230,19 +251,19 @@
         <h3>Server URI</h3>
         <p>An OPC HDA server is identified by an <code>opchda</code> URI:</p>
         <pre class="nohighlight">
-opchda-URI = "opchda://" host "/" server-id "/"
+opchda-URI = "opchda://localhost/" server-id "/"
 server-id  = progid / clsid
         </pre>
         <p>
-          The components <code>host</code>, <code>progid</code>, and <code>clsid</code>, the resolution of a ProgID on a
-          remote computer, and the prohibition of a port are defined exactly as for the <code>opcda</code> URI in
-          [[WOT-OPCDA-BINDING]]. In particular, a Consumer MUST translate the ProgID of a remote server into a CLSID on
-          the remote computer, the URI MUST NOT contain a port, and the <code>base</code> of a Thing Description MUST
-          end with <code>/</code>.
+          The host, which is always <code>localhost</code>, and the components <code>progid</code> and
+          <code>clsid</code> are defined exactly as for the <code>opcda</code> URI in [[WOT-OPCDA-BINDING]]. In
+          particular, a Consumer MUST reject an <code>opchda</code> URI with any other host, the URI MUST NOT contain a
+          port, user information, query, or fragment, and the <code>base</code> of a Thing Description MUST end with
+          <code>/</code>.
         </p>
         <pre class="example json" title="Server in base">
 {
-  "base": "opchda://historian.example.com/Vendor.OPCHDAServer.1/"
+  "base": "opchda://localhost/Vendor.OPCHDAServer.1/"
 }
         </pre>
       </section>
@@ -1281,21 +1302,26 @@ unit          = "S" / "M" / "H" / "D" / "W" / "MO" / "Y"
     <section id="security-considerations" class="informative">
       <h2>Security Considerations</h2>
       <p>
-        OPC HDA relies on the security of COM and DCOM [[MS-DCOM]], exactly as OPC DA does. The security considerations
-        of [[WOT-OPCDA-BINDING]] apply unchanged, in particular:
+        OPC HDA relies on the security of local COM, exactly as OPC DA does. The security considerations of
+        [[WOT-OPCDA-BINDING]] apply unchanged, in particular:
       </p>
       <ul>
         <li>
-          a Consumer SHOULD use the authentication level <code>RPC_C_AUTHN_LEVEL_PKT_PRIVACY</code> and MUST use at
-          least <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code> for remote servers [[KB5004442]];
+          COM checks the launch, activation, and access permissions of the server against the Windows account of the
+          Consumer process, and a Consumer SHOULD run under a dedicated account with only the permissions it needs;
         </li>
         <li>
-          a Consumer that observes properties accepts incoming DCOM calls, and SHOULD restrict them to the account of
-          the server;
+          a Consumer that observes properties accepts incoming COM calls from the server process, and SHOULD restrict
+          them to the account of the server;
         </li>
         <li>
-          a Thing Description SHOULD describe an <code>opchda</code> endpoint with the <code>auto</code> security scheme
-          of [[WOT-THING-DESCRIPTION]], and <code>nosec</code> MUST NOT be used for a remote server; and
+          a Thing Description SHOULD describe an <code>opchda</code> endpoint with the <code>nosec</code> security
+          scheme of [[WOT-THING-DESCRIPTION]], because the Consumer supplies no security information, while the
+          operating system and the server still enforce their permissions;
+        </li>
+        <li>
+          a Consumer that exposes the history to other computers becomes responsible for authenticating and authorizing
+          remote clients; and
         </li>
         <li>servers can additionally implement the OPC Security interfaces [[OPC-SECURITY]].</li>
       </ul>
@@ -1312,8 +1338,8 @@ unit          = "S" / "M" / "H" / "D" / "W" / "MO" / "Y"
         it accumulates when continuing reads after <code>OPC_S_MOREDATA</code>.
       </p>
       <p class="note" title="Open issue">
-        As in [[WOT-OPCDA-BINDING]], this binding does not yet define security scheme terms for selecting the DCOM
-        authentication level and impersonation level, or for passing explicit Windows or OPC Security credentials.
+        As in [[WOT-OPCDA-BINDING]], this binding does not yet define security scheme terms for passing OPC Security
+        credentials.
       </p>
     </section>
 
@@ -1332,13 +1358,13 @@ unit          = "S" / "M" / "H" / "D" / "W" / "MO" / "Y"
   ],
   "id": "urn:example:opchda:plant1",
   "title": "Plant 1 Historian",
-  "base": "opchda://historian.example.com/Vendor.OPCHDAServer.1/",
+  "base": "opchda://localhost/Vendor.OPCHDAServer.1/",
   "securityDefinitions": {
-    "auto_sc": {
-      "scheme": "auto"
+    "nosec_sc": {
+      "scheme": "nosec"
     }
   },
-  "security": ["auto_sc"],
+  "security": ["nosec_sc"],
   "properties": {
     "FlowRateLastHour": {
       "title": "Flow rate during the last hour",
@@ -1518,13 +1544,13 @@ unit          = "S" / "M" / "H" / "D" / "W" / "MO" / "Y"
       <h2>Implementation Notes</h2>
       <ul>
         <li>
-          OPC HDA uses COM and is therefore native to Microsoft Windows. Consumers on other platforms need a DCOM
-          implementation of their own, or a gateway that exposes the server through another protocol, such as an OPC UA
-          wrapper of an OPC HDA server.
+          OPC HDA uses COM and is therefore native to Microsoft Windows. A Consumer implementing this binding runs on
+          the Windows computer of the server. Consumers on other computers or platforms access the server through a
+          gateway that exposes it through another protocol, such as an OPC UA wrapper of an OPC HDA server.
         </li>
         <li>
-          Remote access requires the OPC proxy and stub libraries of the OPC Core Components on both computers, and the
-          OPC Server Enumerator on the server computer for ProgID resolution.
+          Out-of-process servers require the OPC proxy and stub libraries of the OPC Core Components, so that the OPC
+          interfaces can be marshalled between the Consumer and the server process.
         </li>
         <li>
           Many products offer an OPC DA server and an OPC HDA server for the same item IDs. A Thing Description can then

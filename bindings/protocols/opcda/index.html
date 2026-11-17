@@ -48,6 +48,11 @@
             publisher: "OPC Foundation",
             date: "October 2000"
           },
+          "OPC-UA-PART8": {
+            title: "OPC Unified Architecture Part 8: Data Access",
+            href: "https://reference.opcfoundation.org/specs/OPC-10000-8",
+            publisher: "OPC Foundation"
+          },
           "MS-DCOM": {
             title: "[MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol",
             href: "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dcom/4a893f3d-bd29-48cd-9f43-d9777a4415b0",
@@ -1031,42 +1036,90 @@ Area%201%2FBoiler%2FPressure
         </p>
         <p>
           This matches OPC UA, where the value of a Variable is accompanied by a status code and a source timestamp. A
-          Consumer that exposes the Property as an OPC UA Variable, for example in a gateway, SHOULD map them as
-          follows:
+          Consumer that exposes the Property as an OPC UA Variable, for example in a gateway, SHOULD map the timestamp
+          to the <code>SourceTimestamp</code> and the quality to a status code as specified in Annex A of
+          [[OPC-UA-PART8]]. The quality and substatus bits of the quality (<code>quality &amp; 0xFC</code>) select the
+          status code as follows, and the limit bits low, high, and constant become the limit bits Low, High, and
+          Constant of the status code:
         </p>
         <table class="def">
           <thead>
             <tr>
-              <th>OPC DA</th>
-              <th>OPC UA</th>
+              <th>OPC DA quality</th>
+              <th>OPC UA status code</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>quality <code>OPC_QUALITY_GOOD</code></td>
-              <td>status code with severity Good</td>
+              <td><code>OPC_QUALITY_GOOD</code> (<code>0xC0</code>)</td>
+              <td><code>Good</code></td>
             </tr>
             <tr>
-              <td>quality <code>OPC_QUALITY_UNCERTAIN</code></td>
-              <td>status code with severity Uncertain</td>
+              <td><code>OPC_QUALITY_LOCAL_OVERRIDE</code> (<code>0xD8</code>)</td>
+              <td><code>GoodLocalOverride</code></td>
             </tr>
             <tr>
-              <td>quality <code>OPC_QUALITY_BAD</code></td>
-              <td>status code with severity Bad</td>
+              <td><code>OPC_QUALITY_UNCERTAIN</code> (<code>0x40</code>)</td>
+              <td><code>Uncertain</code></td>
             </tr>
             <tr>
-              <td>limit bits low, high, and constant</td>
-              <td>limit bits Low, High, and Constant of the status code</td>
+              <td><code>OPC_QUALITY_LAST_USABLE</code> (<code>0x44</code>)</td>
+              <td><code>UncertainLastUsableValue</code></td>
             </tr>
             <tr>
-              <td>timestamp</td>
-              <td><code>SourceTimestamp</code></td>
+              <td><code>OPC_QUALITY_SENSOR_CAL</code> (<code>0x50</code>)</td>
+              <td><code>UncertainSensorNotAccurate</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_EGU_EXCEEDED</code> (<code>0x54</code>)</td>
+              <td><code>UncertainEngineeringUnitsExceeded</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_SUB_NORMAL</code> (<code>0x58</code>)</td>
+              <td><code>UncertainSubNormal</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_BAD</code> (<code>0x00</code>)</td>
+              <td><code>Bad</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_CONFIG_ERROR</code> (<code>0x04</code>)</td>
+              <td><code>BadConfigurationError</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_NOT_CONNECTED</code> (<code>0x08</code>)</td>
+              <td><code>BadNotConnected</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_DEVICE_FAILURE</code> (<code>0x0C</code>)</td>
+              <td><code>BadDeviceFailure</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_SENSOR_FAILURE</code> (<code>0x10</code>)</td>
+              <td><code>BadSensorFailure</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_LAST_KNOWN</code> (<code>0x14</code>)</td>
+              <td><code>BadOutOfService</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_COMM_FAILURE</code> (<code>0x18</code>)</td>
+              <td><code>BadNoCommunication</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_OUT_OF_SERVICE</code> (<code>0x1C</code>)</td>
+              <td><code>BadOutOfService</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_QUALITY_WAITING_FOR_INITIAL_DATA</code> (<code>0x20</code>)</td>
+              <td><code>BadWaitingForInitialData</code></td>
             </tr>
           </tbody>
         </table>
         <p>
           The two most significant bits of the quality select <code>OPC_QUALITY_GOOD</code>,
-          <code>OPC_QUALITY_UNCERTAIN</code>, or <code>OPC_QUALITY_BAD</code>. The following rules apply:
+          <code>OPC_QUALITY_UNCERTAIN</code>, or <code>OPC_QUALITY_BAD</code>, and any substatus not listed above maps
+          to <code>Good</code>, <code>Uncertain</code>, or <code>Bad</code> accordingly. The following rules apply:
         </p>
         <ul>
           <li>A value with good quality is delivered as is.</li>

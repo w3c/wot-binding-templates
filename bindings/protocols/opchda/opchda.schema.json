@@ -6,68 +6,9 @@
     }
   ],
   "definitions": {
-    "opchdaTime": {
-      "type": "string",
-      "anyOf": [
-        {
-          "format": "date-time"
-        },
-        {
-          "pattern": "^(NOW|SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR)([+-]([0-9]+(MO|S|M|H|D|W|Y))+)*$"
-        }
-      ]
-    },
-    "opchdaAggregateName": {
-      "type": "string",
-      "enum": [
-        "interpolative",
-        "total",
-        "average",
-        "timeAverage",
-        "count",
-        "standardDeviation",
-        "minimumActualTime",
-        "minimum",
-        "maximumActualTime",
-        "maximum",
-        "start",
-        "end",
-        "delta",
-        "regressionSlope",
-        "regressionConstant",
-        "regressionDeviation",
-        "variance",
-        "range",
-        "durationGood",
-        "durationBad",
-        "percentGood",
-        "percentBad",
-        "worstQuality",
-        "annotations"
-      ]
-    },
-    "opchdaDataType": {
-      "type": "string",
-      "enum": [
-        "opchdav:VT_BOOL",
-        "opchdav:VT_I1",
-        "opchdav:VT_UI1",
-        "opchdav:VT_I2",
-        "opchdav:VT_UI2",
-        "opchdav:VT_I4",
-        "opchdav:VT_UI4",
-        "opchdav:VT_I8",
-        "opchdav:VT_UI8",
-        "opchdav:VT_R4",
-        "opchdav:VT_R8",
-        "opchdav:VT_CY",
-        "opchdav:VT_DATE",
-        "opchdav:VT_BSTR"
-      ]
-    },
     "opchdaOperation": {
       "type": "string",
-      "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty", "invokeaction"]
+      "enum": ["readproperty", "observeproperty", "unobserveproperty"]
     },
     "opchdaForm": {
       "type": "object",
@@ -89,230 +30,36 @@
             }
           ]
         },
-        "opchdav:method": {
-          "type": "string",
-          "enum": [
-            "ReadRaw",
-            "ReadProcessed",
-            "ReadAtTime",
-            "ReadModified",
-            "ReadAttribute",
-            "ReadAnnotations",
-            "Insert",
-            "Replace",
-            "InsertReplace",
-            "DeleteRaw",
-            "DeleteAtTime",
-            "InsertAnnotations",
-            "AdviseRaw",
-            "AdviseProcessed"
-          ]
-        },
-        "opchdav:startTime": {
-          "$ref": "#/definitions/opchdaTime"
-        },
-        "opchdav:endTime": {
-          "$ref": "#/definitions/opchdaTime"
-        },
-        "opchdav:numValues": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295
-        },
-        "opchdav:bounds": {
-          "type": "boolean"
-        },
-        "opchdav:aggregate": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/opchdaAggregateName"
-            },
-            {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 4294967295
-            }
-          ]
-        },
-        "opchdav:resampleInterval": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "opchdav:numIntervals": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 4294967295
-        },
         "opchdav:updateInterval": {
           "type": "integer",
           "minimum": 0
         },
-        "opchdav:attributeId": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 4294967295
-        },
-        "opchdav:type": {
-          "$ref": "#/definitions/opchdaDataType"
-        },
         "opchdav:timeout": {
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "maximum": 4294967295
         }
       },
       "required": ["href", "op"],
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "op": {
-                "anyOf": [
-                  {
-                    "const": "invokeaction"
-                  },
-                  {
-                    "type": "array",
-                    "contains": {
-                      "const": "invokeaction"
-                    }
-                  }
-                ]
+      "if": {
+        "properties": {
+          "op": {
+            "anyOf": [
+              {
+                "const": "observeproperty"
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "const": "observeproperty"
+                }
               }
-            }
-          },
-          "then": {
-            "required": ["opchdav:method"]
-          }
-        },
-        {
-          "if": {
-            "required": ["opchdav:method"],
-            "properties": {
-              "opchdav:method": {
-                "enum": ["ReadAtTime", "DeleteRaw", "DeleteAtTime", "InsertAnnotations"]
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/opchdaInvokeActionOnly"
-          }
-        },
-        {
-          "if": {
-            "required": ["opchdav:method"],
-            "properties": {
-              "opchdav:method": {
-                "enum": ["ReadRaw", "ReadProcessed", "ReadModified", "ReadAttribute", "ReadAnnotations"]
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "op": {
-                "oneOf": [
-                  {
-                    "enum": ["readproperty", "invokeaction"]
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "enum": ["readproperty", "invokeaction"]
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["opchdav:method"],
-            "properties": {
-              "opchdav:method": {
-                "enum": ["Insert", "Replace", "InsertReplace"]
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "op": {
-                "oneOf": [
-                  {
-                    "enum": ["writeproperty", "invokeaction"]
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "enum": ["writeproperty", "invokeaction"]
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["opchdav:method"],
-            "properties": {
-              "opchdav:method": {
-                "enum": ["AdviseRaw", "AdviseProcessed"]
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "op": {
-                "oneOf": [
-                  {
-                    "enum": ["observeproperty", "unobserveproperty"]
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "enum": ["observeproperty", "unobserveproperty"]
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["opchdav:method"],
-            "properties": {
-              "opchdav:method": {
-                "const": "AdviseProcessed"
-              }
-            }
-          },
-          "then": {
-            "required": ["opchdav:aggregate", "opchdav:resampleInterval"],
-            "properties": {
-              "opchdav:resampleInterval": {
-                "minimum": 1
-              }
-            }
+            ]
           }
         }
-      ]
-    },
-    "opchdaInvokeActionOnly": {
-      "properties": {
-        "op": {
-          "oneOf": [
-            {
-              "const": "invokeaction"
-            },
-            {
-              "type": "array",
-              "items": {
-                "const": "invokeaction"
-              }
-            }
-          ]
-        }
+      },
+      "then": {
+        "required": ["opchdav:updateInterval"]
       }
     },
     "absoluteOpchdaForm": {

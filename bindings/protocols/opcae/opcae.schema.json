@@ -18,7 +18,7 @@
     },
     "opcaeOperation": {
       "type": "string",
-      "enum": ["subscribeevent", "unsubscribeevent", "readproperty", "invokeaction"]
+      "enum": ["subscribeevent", "unsubscribeevent", "readproperty"]
     },
     "opcaeForm": {
       "type": "object",
@@ -103,140 +103,11 @@
         "opcaev:refresh": {
           "type": "boolean"
         },
-        "opcaev:method": {
-          "type": "string",
-          "enum": [
-            "GetConditionState",
-            "AckCondition",
-            "EnableConditionBySource",
-            "DisableConditionBySource",
-            "EnableConditionByArea",
-            "DisableConditionByArea"
-          ]
-        },
-        "opcaev:condition": {
-          "type": "string"
-        },
-        "opcaev:attributeIds": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/unsignedInt"
-          }
-        },
-        "opcaev:acknowledgerId": {
-          "type": "string",
-          "minLength": 1
-        },
         "opcaev:timeout": {
           "$ref": "#/definitions/unsignedInt"
         }
       },
-      "required": ["href", "op"],
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "op": {
-                "anyOf": [
-                  {
-                    "const": "invokeaction"
-                  },
-                  {
-                    "type": "array",
-                    "contains": {
-                      "const": "invokeaction"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "then": {
-            "required": ["opcaev:method"]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "op": {
-                "anyOf": [
-                  {
-                    "enum": ["subscribeevent", "unsubscribeevent"]
-                  },
-                  {
-                    "type": "array",
-                    "contains": {
-                      "enum": ["subscribeevent", "unsubscribeevent"]
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "then": {
-            "not": {
-              "required": ["opcaev:method"]
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["opcaev:method"],
-            "properties": {
-              "opcaev:method": {
-                "const": "GetConditionState"
-              }
-            }
-          },
-          "then": {
-            "required": ["opcaev:condition"],
-            "properties": {
-              "op": {
-                "oneOf": [
-                  {
-                    "const": "readproperty"
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "const": "readproperty"
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "required": ["opcaev:method"],
-            "properties": {
-              "opcaev:method": {
-                "not": {
-                  "const": "GetConditionState"
-                }
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "op": {
-                "oneOf": [
-                  {
-                    "const": "invokeaction"
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "const": "invokeaction"
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ]
+      "required": ["href", "op"]
     },
     "absoluteOpcaeForm": {
       "if": {

@@ -1,0 +1,1355 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt",
+            company: "Microsoft",
+            companyURL: "https://www.microsoft.com"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/",
+        shortName: "wot-opcda-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "November 2025"
+          },
+          "OPC-DA": {
+            title: "OPC Data Access Custom Interface Standard, Version 3.00",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/data-access/",
+            publisher: "OPC Foundation",
+            date: "March 2003"
+          },
+          "OPC-DA-2": {
+            title: "OPC Data Access Custom Interface Specification, Version 2.05a",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/data-access/",
+            publisher: "OPC Foundation",
+            date: "June 2002"
+          },
+          "OPC-COMMON": {
+            title: "OPC Common Definitions and Interfaces, Version 1.00",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/data-access/",
+            publisher: "OPC Foundation",
+            date: "October 1998"
+          },
+          "OPC-SECURITY": {
+            title: "OPC Security Custom Interface, Version 1.00",
+            publisher: "OPC Foundation",
+            date: "October 2000"
+          },
+          "MS-DCOM": {
+            title: "[MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol",
+            href: "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dcom/4a893f3d-bd29-48cd-9f43-d9777a4415b0",
+            publisher: "Microsoft"
+          },
+          "KB5004442": {
+            title: "KB5004442: Manage changes for Windows DCOM Server Security Feature Bypass (CVE-2021-26414)",
+            href: "https://support.microsoft.com/en-us/topic/kb5004442-manage-changes-for-windows-dcom-server-security-feature-bypass-cve-2021-26414-f1400b52-c141-43d2-941e-37ed901c769c",
+            publisher: "Microsoft"
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "Related OPC Classic Bindings",
+            data: [
+              {
+                value: "Web of Things (WoT) OPC HDA Binding",
+                href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/"
+              },
+              {
+                value: "Web of Things (WoT) OPC A&E Binding",
+                href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "OPC DA JSON Schema",
+                href: "opcda.schema.json"
+              }
+            ]
+          }
+        ]
+      };
+    </script>
+    <title>Web of Things (WoT) OPC DA Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        This Web of Things (WoT) protocol binding describes how a Thing Description exposes the items of an OPC Data
+        Access (OPC DA) server [[OPC-DA]] [[OPC-DA-2]], one of the COM/DCOM-based OPC Classic specifications.
+      </p>
+      <p>The binding defines:</p>
+      <ul>
+        <li>the <code>opcda</code> URI scheme used to identify an OPC DA server and the items in its address space;</li>
+        <li>item addressing in WoT Forms, including the optional access path;</li>
+        <li>the requested data type of an item, based on the COM <code>VARTYPE</code> of the item value;</li>
+        <li>cache and device reads, controlled by a maximum age;</li>
+        <li>
+          native subscriptions for observed properties, controlled by the update rate and percent deadband of an OPC
+          group;
+        </li>
+        <li>an optional payload that carries the OPC value, quality, and timestamp together;</li>
+        <li>access to item properties and to the server status; and</li>
+        <li>mappings between WoT property operations and the OPC DA interfaces.</li>
+      </ul>
+      <p>This protocol binding is not an OPC Foundation specification.</p>
+    </section>
+
+    <section id="sotd">
+      <p><em>This document is a work in progress.</em></p>
+      <p>
+        This initial version of the binding covers reading, writing, and subscribing to the items of OPC DA 2.0 and 3.0
+        servers. Servers that implement only OPC DA 1.0a are covered for reads and writes. Historical data and alarms
+        are covered by the companion
+        <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/">OPC HDA Binding</a> and
+        <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/">OPC A&amp;E Binding</a>, which
+        share the URI layout and security considerations of this document.
+      </p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        OPC Data Access is the original OPC specification, published by the OPC Foundation and widely deployed in
+        process and factory automation. An OPC DA server is a COM server that runs on a Microsoft Windows computer and
+        gives clients access to current process values, called <em>items</em>, which it obtains from controllers, field
+        devices, or other data sources. Clients reach the server locally through COM or remotely through Distributed COM
+        (DCOM) [[MS-DCOM]].
+      </p>
+      <p>
+        Each item is identified by an <em>item ID</em>, a server-specific string such as
+        <code>Channel1.Device1.Temperature</code>. A client reads or writes an item synchronously or asynchronously, and
+        subscribes to changes by adding the item to an <em>OPC group</em> that the server scans at a requested update
+        rate. Every item value is returned together with a <em>quality</em> and a <em>timestamp</em>.
+      </p>
+      <p>
+        A Thing Description [[WOT-THING-DESCRIPTION]] can describe OPC DA items as WoT Properties. The Thing Description
+        supplies the server, the item ID, the supported WoT operations, the requested data type, and the subscription
+        parameters that an implementation needs.
+      </p>
+      <p>The following topics are outside the initial scope:</p>
+      <ul>
+        <li>the OPC XML-DA web service specification;</li>
+        <li>OPC Complex Data and OPC Data eXchange (DX);</li>
+        <li>batched reads and writes across several Forms as a normative behavior;</li>
+        <li>server configuration, such as creating or deleting items in the server; and</li>
+        <li>normative discovery behavior.</li>
+      </ul>
+    </section>
+
+    <section id="conformance">
+      <p>
+        A Thing Description conforms to this binding when all Forms using the <code>opcda</code> scheme follow the
+        normative requirements in this document.
+      </p>
+      <p>An implementation conforms to this binding when it:</p>
+      <ol>
+        <li>recognizes the <code>opcda</code> URI scheme;</li>
+        <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
+        <li>supports the operation mappings it advertises;</li>
+        <li>converts between the OPC DA <code>VARIANT</code> value and the WoT Data Schema as specified; and</li>
+        <li>evaluates the OPC quality of every value it delivers.</li>
+      </ol>
+      <p>
+        The <dfn>interoperable profile</dfn> of this binding is the subset of its URI components, vocabulary terms, and
+        behaviors that every conforming Consumer MUST support. A Thing Description that uses only the interoperable
+        profile therefore works with every conforming Consumer, while anything outside it, such as a binding extension,
+        is only understood by Consumers that implement that extension. Unless a section states otherwise, all URI
+        components, vocabulary terms, and operation mappings defined normatively in this document belong to the
+        interoperable profile.
+      </p>
+    </section>
+
+    <section id="opc-classic-background" class="informative">
+      <h2>OPC Classic Background</h2>
+      <p>
+        OPC DA, OPC Historical Data Access (HDA), and OPC Alarms and Events (A&amp;E) are known together as
+        <em>OPC Classic</em>. They share the following foundations, which this binding and its companion bindings rely
+        on:
+      </p>
+      <ul>
+        <li>
+          A server is a COM class, identified by a class identifier (CLSID) and usually also by a programmatic
+          identifier (ProgID) such as <code>Vendor.OPCServer.1</code>. A client creates the server object with
+          <code>CoCreateInstanceEx</code>, on the local computer or, through DCOM, on a remote computer.
+        </li>
+        <li>
+          Servers register themselves in component categories, for example <code>CATID_OPCDAServer20</code> and
+          <code>CATID_OPCDAServer30</code>. The OPC Server Enumerator (OPCEnum), installed with the OPC Core Components,
+          lets a remote client list the registered servers and translate a ProgID into a CLSID through
+          <code>IOPCServerList2</code> [[OPC-COMMON]].
+        </li>
+        <li>
+          All OPC Classic servers implement <code>IOPCCommon</code> and announce an orderly shutdown through the
+          <code>IOPCShutdown</code> callback interface [[OPC-COMMON]].
+        </li>
+        <li>
+          Callbacks, such as data change notifications, are delivered over COM connection points, so the server calls
+          back into the client process. Over DCOM this requires both computers to accept calls from each other.
+        </li>
+      </ul>
+    </section>
+
+    <section id="uri-scheme">
+      <h2>URI Scheme and Addressing</h2>
+
+      <section id="endpoint-uri">
+        <h3>Server URI</h3>
+        <p>An OPC DA server is identified by an <code>opcda</code> URI:</p>
+        <pre class="nohighlight">
+opcda-URI = "opcda://" host "/" server-id "/"
+server-id = progid / clsid
+        </pre>
+        <p>Where:</p>
+        <ul>
+          <li>
+            <code>host</code> is the DNS name, IPv4 address, or IPv6 literal of the computer that runs the server, or
+            <code>localhost</code> for a server on the same computer as the Consumer;
+          </li>
+          <li>
+            <code>progid</code> is the ProgID of the server, for example <code>Vendor.OPCServer.1</code>, or its
+            version-independent ProgID; and
+          </li>
+          <li>
+            <code>clsid</code> is the CLSID of the server in its 36-character registry form without braces, for example
+            <code>F8582CF2-88FB-11D0-B850-00C0F0104305</code>. A Consumer MUST also accept the braced form, in which the
+            braces are percent-encoded as <code>%7B</code> and <code>%7D</code>.
+          </li>
+        </ul>
+        <p>
+          A ProgID consists of letters, digits, and periods only, and starts with a letter, so it cannot be mistaken for
+          a CLSID. When <code>server-id</code> is a ProgID and <code>host</code> is a remote computer, the Consumer MUST
+          translate it into a CLSID on that computer, for example with <code>IOPCServerList2::CLSIDFromProgID</code> of
+          the OPC Server Enumerator, because a ProgID is only registered on the computer where the server is installed.
+          A Thing Description SHOULD use the CLSID when the remote computer has no OPC Server Enumerator.
+        </p>
+        <p>
+          The URI MUST NOT contain a port. DCOM locates the server through the RPC endpoint mapper on TCP port
+          <code>135</code> and then communicates on a dynamically assigned port [[MS-DCOM]], so a port in the URI has no
+          meaning.
+        </p>
+        <p>
+          A Thing Description SHOULD place the server URI in <code>base</code> and use relative item references in
+          individual Forms. The <code>base</code> MUST end with <code>/</code>; otherwise reference resolution
+          [[RFC3986]] replaces the server identifier with the item ID.
+        </p>
+        <pre class="example json" title="Server in base">
+{
+  "base": "opcda://scada01.example.com/Vendor.OPCServer.1/"
+}
+        </pre>
+        <p class="note">
+          The scheme names <code>opcda</code>, <code>opchda</code>, and <code>opcae</code> and the
+          <code>host/ProgID</code> path follow the URL convention of the OPC Foundation's OPC .NET API. That convention
+          also allows a CLSID path segment after the ProgID. This binding does not, because the path segment after the
+          server identifier carries the item ID.
+        </p>
+      </section>
+
+      <section id="item-reference">
+        <h3>Item Reference</h3>
+        <p>The resolved Form target identifies an item of the server:</p>
+        <pre class="nohighlight">
+opcda-item-URI = opcda-URI [ item-id ]
+        </pre>
+        <p>
+          The <code>item-id</code> is the fully qualified item ID as defined by the server, for example
+          <code>Channel1.Device1.Temperature</code> or <code>Random.Int4</code>. Its syntax is server-specific: some
+          servers use <code>.</code> as a hierarchy separator, others use <code>/</code>, <code>\</code>, or
+          <code>:</code>, and item IDs can contain spaces. An implementation MUST pass the percent-decoded item ID to
+          the server exactly as written, because item IDs are opaque to the client and their case sensitivity is defined
+          by the server.
+        </p>
+        <p>
+          When the resolved target has no <code>item-id</code>, that is, when it equals the server URI, the Form
+          addresses the server object itself, see <a href="#server-status">Server Status</a>.
+        </p>
+        <pre class="example json" title="Relative Form target">
+{
+  "href": "Channel1.Device1.Temperature",
+  "op": ["readproperty"]
+}
+        </pre>
+        <p>
+          When the Thing Description contains
+          <code>"base": "opcda://scada01.example.com/Vendor.OPCServer.1/"</code>, the resolved target is
+          <code>opcda://scada01.example.com/Vendor.OPCServer.1/Channel1.Device1.Temperature</code>.
+        </p>
+        <p>
+          Some servers additionally use an <em>access path</em>, a hint that selects the communication path to the data
+          source. Because it is not part of the item identity in most servers, it is carried by the Form term
+          <code>opcdav:accessPath</code> rather than by the URI.
+        </p>
+      </section>
+
+      <section id="reserved-characters">
+        <h3>Reserved Characters</h3>
+        <p>
+          The item ID is a single path segment. Authors MUST percent-encode any character of an item ID that is not
+          allowed in a path segment [[RFC3986]], and in particular MUST percent-encode <code>/</code> as
+          <code>%2F</code>, <code>?</code> as <code>%3F</code>, <code>#</code> as <code>%23</code>, <code>%</code> as
+          <code>%25</code>, <code>[</code> as <code>%5B</code>, <code>]</code> as <code>%5D</code>, <code>\</code> as
+          <code>%5C</code>, and a space as <code>%20</code>.
+        </p>
+        <p>
+          A colon in the first segment of a relative reference is not allowed by [[RFC3986]]: a relative
+          <code>href</code> such as <code>PLC1:DB10.Speed</code> would be parsed as an absolute URI with the scheme
+          <code>PLC1</code>. A relative <code>href</code> whose item ID contains a colon MUST therefore either start
+          with <code>./</code>, as in <code>./PLC1:DB10.Speed</code>, or percent-encode the colon as <code>%3A</code>.
+          Authors SHOULD use the <code>./</code> form.
+        </p>
+        <p>
+          The character <code>.</code> needs no encoding. Reference resolution removes a leading <code>./</code>, and an
+          implementation MUST percent-decode the item ID of the resolved URI before passing it to the server.
+        </p>
+        <pre class="example" title="Item IDs as written in href">
+Channel1.Device1.Temperature
+./PLC1:DB10.Speed
+Area%201%2FBoiler%2FPressure
+        </pre>
+      </section>
+    </section>
+
+    <section id="vocabulary">
+      <h2>OPC DA Vocabulary</h2>
+      <p>
+        The examples use the prefix <code>opcdav</code> for the provisional namespace. The prefix intentionally differs
+        from the <code>opcda</code> URI scheme name so that vocabulary terms are not confused with the scheme.
+      </p>
+      <pre class="example json" title="Vocabulary prefix">
+{
+  "opcdav": "https://www.w3.org/2026/wot/opcda"
+}
+      </pre>
+      <p>The namespace URI is provisional. It does not imply that a vocabulary is published at that location.</p>
+
+      <section id="form-terms">
+        <h3>Form Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>href</code></td>
+              <td>Item reference, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:type</code></td>
+              <td>
+                Data type in which the Consumer requests the item value from the server, see
+                <a href="#data-types">Data Types</a>.
+              </td>
+              <td>optional, default is the canonical data type of the item</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#data-types">Data Types</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:array</code></td>
+              <td>
+                Indicates that the item value is a one-dimensional array whose elements have the type given by
+                <code>opcdav:type</code>.
+              </td>
+              <td>optional, default <code>false</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:accessPath</code></td>
+              <td>Access path of the item, passed to the server together with the item ID.</td>
+              <td>optional, default empty</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:maxAge</code></td>
+              <td>
+                Maximum age, in milliseconds, of a value returned by <code>readproperty</code>, see
+                <a href="#cache-and-device-reads">Cache and Device Reads</a>.
+              </td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:updateRate</code></td>
+              <td>
+                Requested update rate, in milliseconds, of the OPC group used for <code>observeproperty</code>, see
+                <a href="#subscriptions">Subscriptions</a>.
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:deadband</code></td>
+              <td>
+                Percent deadband applied to an analog item for <code>observeproperty</code>, see
+                <a href="#subscriptions">Subscriptions</a>.
+              </td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#float"><code>float</code></a
+                >, from 0 to 100
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:vqt</code></td>
+              <td>
+                Selects the value, quality, and timestamp payload instead of the plain value, see
+                <a href="#vqt-values">Value, Quality, and Timestamp</a>.
+              </td>
+              <td>optional, default <code>false</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:propertyId</code></td>
+              <td>
+                Identifier of an item property to read instead of the item value, see
+                <a href="#item-properties">Item Properties</a>.
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcdav:timeout</code></td>
+              <td>Maximum time to wait for the server response, in milliseconds.</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="data-types">
+        <h3>Data Types</h3>
+        <p>
+          OPC DA transfers item values as COM <code>VARIANT</code> values. Every item has a
+          <em>canonical data type</em>, the <code>VARTYPE</code> in which the server natively holds the value. A client
+          can request a different data type, which the server then converts to and from. The binding identifies the
+          requested data type with the following terms. The second column gives the <code>VARTYPE</code> and its numeric
+          value, and the third column gives the recommended WoT Data Schema.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>VARTYPE</th>
+              <th>WoT Data Schema recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>opcdav:VT_BOOL</code></td>
+              <td>Boolean, <code>VT_BOOL</code> (11)</td>
+              <td><code>boolean</code></td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_I1</code></td>
+              <td>Signed 8-bit integer, <code>VT_I1</code> (16)</td>
+              <td><code>integer</code>, minimum -128, maximum 127</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_UI1</code></td>
+              <td>Unsigned 8-bit integer, <code>VT_UI1</code> (17)</td>
+              <td><code>integer</code>, minimum 0, maximum 255</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_I2</code></td>
+              <td>Signed 16-bit integer, <code>VT_I2</code> (2)</td>
+              <td><code>integer</code>, minimum -32768, maximum 32767</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_UI2</code></td>
+              <td>Unsigned 16-bit integer, <code>VT_UI2</code> (18)</td>
+              <td><code>integer</code>, minimum 0, maximum 65535</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_I4</code></td>
+              <td>Signed 32-bit integer, <code>VT_I4</code> (3)</td>
+              <td><code>integer</code>, minimum -2147483648, maximum 2147483647</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_UI4</code></td>
+              <td>Unsigned 32-bit integer, <code>VT_UI4</code> (19)</td>
+              <td><code>integer</code>, minimum 0, maximum 4294967295</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_I8</code></td>
+              <td>Signed 64-bit integer, <code>VT_I8</code> (20)</td>
+              <td><code>integer</code></td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_UI8</code></td>
+              <td>Unsigned 64-bit integer, <code>VT_UI8</code> (21)</td>
+              <td><code>integer</code>, minimum 0</td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_R4</code></td>
+              <td>IEEE 754 single-precision floating point, <code>VT_R4</code> (4)</td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_R8</code></td>
+              <td>IEEE 754 double-precision floating point, <code>VT_R8</code> (5)</td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_CY</code></td>
+              <td>Currency, a 64-bit integer scaled by 10,000, <code>VT_CY</code> (6)</td>
+              <td><code>number</code></td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_DATE</code></td>
+              <td>OLE Automation date, <code>VT_DATE</code> (7)</td>
+              <td><code>string</code>, format <code>date-time</code></td>
+            </tr>
+            <tr>
+              <td><code>opcdav:VT_BSTR</code></td>
+              <td>Unicode string, <code>VT_BSTR</code> (8)</td>
+              <td><code>string</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          When <code>opcdav:type</code> is absent, the Consumer requests the canonical data type (<code>VT_EMPTY</code>)
+          and converts the returned value according to its actual <code>VARTYPE</code>. When <code>opcdav:type</code> is
+          present, the Consumer MUST request that type in the <code>vtRequestedDataType</code> member of the item
+          definition, or as the <code>VARTYPE</code> of the value it writes. A server that cannot convert the value to
+          the requested type fails the request with <code>OPC_E_BADTYPE</code>, which the Consumer MUST report as an
+          error.
+        </p>
+        <p>
+          When <code>opcdav:array</code> is <code>true</code>, the requested type is the combination of
+          <code>VT_ARRAY</code> with the element type given by <code>opcdav:type</code>, the value is a one-dimensional
+          <code>SAFEARRAY</code>, and it is represented as a JSON array whose elements follow the table above. A Form
+          that sets <code>opcdav:array</code> MUST also carry <code>opcdav:type</code>.
+        </p>
+        <p>The following conversion rules apply:</p>
+        <ul>
+          <li>
+            A <code>VT_BOOL</code> value is <code>VARIANT_TRUE</code> (-1) or <code>VARIANT_FALSE</code> (0). The
+            Consumer MUST map <code>VARIANT_TRUE</code> to <code>true</code> and MUST write <code>VARIANT_TRUE</code>,
+            not 1, for <code>true</code>.
+          </li>
+          <li>
+            A <code>VT_DATE</code> value, which counts days since 30 December 1899, carries no time zone. The Consumer
+            MUST interpret it in the time zone given by the item's time zone property (<code>108</code>) when the server
+            provides that property, and in UTC otherwise, and MUST represent it as a [[RFC3339]] date-time with the
+            corresponding offset.
+          </li>
+          <li>
+            A <code>VT_CY</code> value MUST be divided by 10,000 when reading and multiplied by 10,000 when writing.
+          </li>
+          <li>
+            JSON numbers cannot represent every 64-bit integer exactly. A Consumer that exposes <code>VT_I8</code> or
+            <code>VT_UI8</code> values beyond 2<sup>53</sup> SHOULD warn about the loss of precision.
+          </li>
+        </ul>
+        <p>Implementations MUST reject an unsupported type rather than silently decode it as another type.</p>
+      </section>
+
+      <section id="cache-and-device-reads">
+        <h3>Cache and Device Reads</h3>
+        <p>
+          An OPC DA server keeps a cache of the values of the items it scans and can also read a value directly from the
+          underlying device. Device reads are accurate but put load on the device and the communication link. The term
+          <code>opcdav:maxAge</code> states how old a value returned by <code>readproperty</code> may be:
+        </p>
+        <ul>
+          <li>The value <code>0</code>, the default, requests a device read.</li>
+          <li>
+            A positive value allows the server to return its cached value when that value is not older than
+            <code>opcdav:maxAge</code> milliseconds, and requires a device read otherwise.
+          </li>
+          <li>
+            The value <code>4294967295</code> (<code>0xFFFFFFFF</code>) requests the cached value regardless of its age.
+          </li>
+        </ul>
+        <p>
+          These are the semantics of the <code>dwMaxAge</code> parameter of OPC DA 3.0 [[OPC-DA]], so a Consumer
+          connected to an OPC DA 3.0 server passes the value unchanged. How a Consumer realizes them on older servers is
+          described in <a href="#default-mappings">Default Mappings</a>.
+        </p>
+      </section>
+
+      <section id="subscriptions">
+        <h3>Subscriptions</h3>
+        <p>
+          OPC DA servers notify clients of value changes. A client adds items to an <em>OPC group</em>, and the server
+          scans the active items of an active group at the group's update rate and sends a data change notification for
+          every item whose value or quality has changed. The Form terms <code>opcdav:updateRate</code> and
+          <code>opcdav:deadband</code> describe the group used for <code>observeproperty</code>.
+        </p>
+        <p>
+          <code>opcdav:updateRate</code> is the requested update rate of the group in milliseconds. The value
+          <code>0</code> requests the fastest practical rate of the server. When the term is absent, the Consumer
+          chooses the rate. The server MAY revise the requested rate, in which case it returns
+          <code>OPC_S_UNSUPPORTEDRATE</code> and the revised rate. A Consumer MUST accept a revised rate and MAY warn
+          about it.
+        </p>
+        <p>
+          <code>opcdav:deadband</code> is a percent deadband. It applies only to items whose engineering unit type is
+          analog (<code>OPC_ANALOG</code>); for those items the server suppresses a notification when the value has
+          changed by less than the given percentage of the engineering unit range, that is, of the difference between
+          the item's high and low engineering unit limits. For other items the server ignores the deadband.
+        </p>
+        <p>
+          A Consumer MAY place the items of several Forms with the same <code>opcdav:updateRate</code> into one group.
+          When those Forms have different <code>opcdav:deadband</code> values, the Consumer MUST either use separate
+          groups or, on an OPC DA 3.0 server, set the deadband of each item with
+          <code>IOPCItemDeadbandMgt::SetItemDeadband</code>.
+        </p>
+      </section>
+
+      <section id="item-properties">
+        <h3>Item Properties</h3>
+        <p>
+          Besides its value, every OPC DA item has <em>item properties</em> that describe it, identified by numeric
+          property identifiers. A Form that carries <code>opcdav:propertyId</code> reads the identified property of the
+          item instead of the item value. The following property identifiers are defined by [[OPC-DA]]; identifiers from
+          <code>5000</code> upward are vendor-specific.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Identifier</th>
+              <th>Property</th>
+              <th>Typical use in a Thing Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>1</code></td>
+              <td>Item canonical data type</td>
+              <td><code>opcdav:type</code> and the Data Schema <code>type</code></td>
+            </tr>
+            <tr>
+              <td><code>2</code>, <code>3</code>, <code>4</code></td>
+              <td>Item value, quality, and timestamp</td>
+              <td>none; use the item value instead</td>
+            </tr>
+            <tr>
+              <td><code>5</code></td>
+              <td>Item access rights (<code>OPC_READABLE</code> = 1, <code>OPC_WRITEABLE</code> = 2)</td>
+              <td><code>readOnly</code> and <code>writeOnly</code></td>
+            </tr>
+            <tr>
+              <td><code>6</code></td>
+              <td>Server scan rate</td>
+              <td><code>opcdav:updateRate</code></td>
+            </tr>
+            <tr>
+              <td><code>7</code>, <code>8</code></td>
+              <td>Engineering unit type and engineering unit information</td>
+              <td>applicability of <code>opcdav:deadband</code>; labels of enumerated items</td>
+            </tr>
+            <tr>
+              <td><code>100</code></td>
+              <td>Engineering units</td>
+              <td><code>unit</code></td>
+            </tr>
+            <tr>
+              <td><code>101</code></td>
+              <td>Item description</td>
+              <td><code>description</code></td>
+            </tr>
+            <tr>
+              <td><code>102</code>, <code>103</code></td>
+              <td>High and low engineering unit limits</td>
+              <td>range used for the percent deadband</td>
+            </tr>
+            <tr>
+              <td><code>104</code>, <code>105</code></td>
+              <td>High and low instrument range</td>
+              <td>range of the instrument</td>
+            </tr>
+            <tr>
+              <td><code>108</code></td>
+              <td>Item time zone</td>
+              <td>interpretation of <code>VT_DATE</code> values</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Form that carries <code>opcdav:propertyId</code> MUST only contain the <code>readproperty</code> operation,
+          and MUST NOT carry <code>opcdav:vqt</code>, <code>opcdav:updateRate</code>, or <code>opcdav:deadband</code>.
+          The value of the property is converted as described in <a href="#data-types">Data Types</a>, using
+          <code>opcdav:type</code> when present.
+        </p>
+      </section>
+    </section>
+
+    <section id="operation-mappings">
+      <h2>Operation Mappings</h2>
+
+      <section id="default-mappings">
+        <h3>Default Mappings</h3>
+        <p>
+          A Consumer determines the OPC DA version of a server by querying the server object for its interfaces:
+          <code>IOPCItemIO</code> indicates OPC DA 3.0, and a connection point for <code>IOPCDataCallback</code> on the
+          group object indicates OPC DA 2.0 or later. The mappings for Forms that address an item are:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>OPC DA 3.0</th>
+              <th>OPC DA 2.0 and 1.0a</th>
+              <th>Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>
+                Call <code>IOPCItemIO::Read</code> with the item ID and <code>opcdav:maxAge</code> as
+                <code>dwMaxAge</code>, and convert the returned value, quality, and timestamp.
+              </td>
+              <td>
+                Add the item to a group with <code>IOPCItemMgt::AddItems</code> and call
+                <code>IOPCSyncIO::Read</code> with <code>OPC_DS_DEVICE</code>. The Consumer MAY use
+                <code>OPC_DS_CACHE</code> instead when <code>opcdav:maxAge</code> is positive and the item is active in
+                an active group whose revised update rate does not exceed <code>opcdav:maxAge</code>.
+              </td>
+              <td>The item access rights MUST include <code>OPC_READABLE</code>.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>
+                Convert the supplied value and call <code>IOPCItemIO::WriteVQT</code>, setting the quality and timestamp
+                only when supplied in a <a href="#vqt-values">VQT payload</a>.
+              </td>
+              <td>
+                Add the item to a group and call <code>IOPCSyncIO::Write</code> with the converted value. The Consumer
+                MUST reject a write that supplies a quality or timestamp.
+              </td>
+              <td>
+                The item access rights MUST include <code>OPC_WRITEABLE</code>, and the property MUST NOT be declared
+                <code>readOnly: true</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td colspan="2">
+                Create a group with <code>IOPCServer::AddGroup</code>, passing <code>opcdav:updateRate</code> as the
+                requested update rate and <code>opcdav:deadband</code> as the percent deadband, add the item as an
+                active item, and register an <code>IOPCDataCallback</code> through the group's
+                <code>IConnectionPointContainer</code>. Every <code>OnDataChange</code> callback for the item is a
+                notification. The first notification after the item has been added carries its current value.
+              </td>
+              <td>
+                <code>observable</code> SHOULD be <code>true</code>. The server MUST implement OPC DA 2.0 or later.
+              </td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td colspan="2">
+                Remove the item from the group with <code>IOPCItemMgt::RemoveItems</code>. When the group has no
+                remaining items, unadvise the callback and remove the group with <code>IOPCServer::RemoveGroup</code>.
+              </td>
+              <td>None.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          In every item definition the Consumer MUST pass the item ID from the resolved <code>href</code>, the access
+          path from <code>opcdav:accessPath</code>, and the requested data type from <code>opcdav:type</code> and
+          <code>opcdav:array</code>. A Consumer MAY reuse groups and items across operations and Forms, and MAY combine
+          the items of several Forms of the same server into a single call, to reduce the load on the server.
+        </p>
+        <p>
+          Servers that implement only OPC DA 1.0a provide no <code>IOPCDataCallback</code> connection point. A Consumer
+          MAY realize <code>observeproperty</code> for them with the OPC DA 1.0a <code>IDataObject</code> advise
+          mechanism or by polling, but this is not part of the [=interoperable profile=].
+        </p>
+      </section>
+
+      <section id="item-property-mappings">
+        <h3>Item Property Mappings</h3>
+        <p>
+          A <code>readproperty</code> operation on a Form that carries <code>opcdav:propertyId</code> calls
+          <code>IOPCBrowse::GetProperties</code> on an OPC DA 3.0 server, or
+          <code>IOPCItemProperties::GetItemProperties</code> on an OPC DA 2.0 server, for the item ID and the given
+          property identifier, and converts the returned value. A server that does not know the property fails the
+          request with <code>OPC_E_INVALID_PID</code>, which the Consumer MUST report as an error.
+        </p>
+      </section>
+
+      <section id="server-status">
+        <h3>Server Status</h3>
+        <p>
+          A Form whose resolved target equals the server URI addresses the server object. Such a Form MUST only contain
+          the <code>readproperty</code> and <code>observeproperty</code> operations. <code>readproperty</code> calls
+          <code>IOPCServer::GetStatus</code> and returns an object with the following members:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th><code>OPCSERVERSTATUS</code> field</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>state</code></td>
+              <td><code>dwServerState</code></td>
+              <td>
+                One of <code>running</code>, <code>failed</code>, <code>noConfig</code>, <code>suspended</code>,
+                <code>test</code>, and <code>commFault</code>, for <code>OPC_STATUS_RUNNING</code> to
+                <code>OPC_STATUS_COMM_FAULT</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>startTime</code></td>
+              <td><code>ftStartTime</code></td>
+              <td>[[RFC3339]] date-time</td>
+            </tr>
+            <tr>
+              <td><code>currentTime</code></td>
+              <td><code>ftCurrentTime</code></td>
+              <td>[[RFC3339]] date-time</td>
+            </tr>
+            <tr>
+              <td><code>lastUpdateTime</code></td>
+              <td><code>ftLastUpdateTime</code></td>
+              <td>[[RFC3339]] date-time</td>
+            </tr>
+            <tr>
+              <td><code>groupCount</code></td>
+              <td><code>dwGroupCount</code></td>
+              <td>integer</td>
+            </tr>
+            <tr>
+              <td><code>bandWidth</code></td>
+              <td><code>dwBandWidth</code></td>
+              <td>integer</td>
+            </tr>
+            <tr>
+              <td><code>version</code></td>
+              <td><code>wMajorVersion</code>, <code>wMinorVersion</code>, <code>wBuildNumber</code></td>
+              <td>string of the form <code>major.minor.build</code></td>
+            </tr>
+            <tr>
+              <td><code>vendorInfo</code></td>
+              <td><code>szVendorInfo</code></td>
+              <td>string</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The OPC DA server status has no change notification, so <code>observeproperty</code> on the server object is
+          realized by calling <code>IOPCServer::GetStatus</code> repeatedly, at the interval given by
+          <code>opcdav:updateRate</code>, and notifying the Consumer when the result changes. An implementation MAY
+          enforce a minimum interval.
+        </p>
+      </section>
+
+      <section id="shutdown">
+        <h3>Server Shutdown</h3>
+        <p>
+          A Consumer SHOULD register an <code>IOPCShutdown</code> callback with the server [[OPC-COMMON]]. When the
+          server calls <code>ShutdownRequest</code>, the Consumer MUST release all references to the server, MUST end
+          all active observations with an error that includes the reason supplied by the server, and MAY reconnect
+          later.
+        </p>
+      </section>
+
+      <section id="action-event-mappings">
+        <h3>Action and Event Mappings</h3>
+        <p>No default mapping is defined for:</p>
+        <ul>
+          <li><code>invokeaction</code>;</li>
+          <li><code>subscribeevent</code>;</li>
+          <li><code>unsubscribeevent</code>; or</li>
+          <li>WoT Event affordances.</li>
+        </ul>
+        <p>
+          A Thing Description conforming to the profile MUST NOT advertise those operations on an
+          <code>opcda</code> Form unless it also declares and documents an additional binding extension. Alarms and
+          events of OPC Classic servers are described with the
+          <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/">OPC A&amp;E Binding</a>.
+        </p>
+      </section>
+
+      <section id="error-handling">
+        <h3>Error Handling</h3>
+        <p>
+          OPC DA reports errors per item as <code>HRESULT</code> codes. A Consumer MUST report a failed operation to the
+          application when the call or the per-item result fails. The following codes are particularly relevant:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Meaning</th>
+              <th>Consumer behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>OPC_E_UNKNOWNITEMID</code>, <code>OPC_E_INVALIDITEMID</code></td>
+              <td>The item ID is not known to the server or is syntactically invalid.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_UNKNOWNPATH</code></td>
+              <td>The access path is not known to the server.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_BADRIGHTS</code></td>
+              <td>The item is not readable or not writable.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_BADTYPE</code></td>
+              <td>The server cannot convert between the requested and the canonical data type.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_RANGE</code></td>
+              <td>The written value is out of range.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_CLAMP</code></td>
+              <td>The written value was accepted but clamped.</td>
+              <td>Succeed, and MAY warn.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_UNSUPPORTEDRATE</code></td>
+              <td>The server revised the requested update rate.</td>
+              <td>Succeed, and MAY warn.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_DEADBANDNOTSUPPORTED</code></td>
+              <td>The item does not support a deadband.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_INVALID_PID</code></td>
+              <td>The item property identifier is not valid for the item.</td>
+              <td>Fail the operation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <section id="payload-mapping">
+      <h2>Payload Mapping</h2>
+
+      <section id="plain-values">
+        <h3>Plain Values</h3>
+        <p>
+          By default, an item value is represented at the WoT Consumer boundary as the JSON value compatible with the
+          Property's WoT Data Schema, converted as described in <a href="#data-types">Data Types</a>. A Consumer MUST
+          use both the WoT Data Schema and <code>opcdav:type</code>: the WoT Data Schema describes the
+          application-facing value, while the Form term identifies the representation requested from the server.
+        </p>
+        <p>
+          Every OPC DA value carries a quality, whose two most significant bits select <code>OPC_QUALITY_GOOD</code>,
+          <code>OPC_QUALITY_UNCERTAIN</code>, or <code>OPC_QUALITY_BAD</code>. Because a plain value cannot carry the
+          quality, the following rules apply:
+        </p>
+        <ul>
+          <li>A value with good quality is delivered as is.</li>
+          <li>
+            A value with uncertain quality is delivered, and the Consumer SHOULD make the quality available to the
+            application through implementation-specific means.
+          </li>
+          <li>
+            A value with bad quality MUST NOT be delivered as a valid value. A <code>readproperty</code> operation MUST
+            fail, and a notification of an <code>observeproperty</code> operation MUST either be suppressed or be
+            reported to the application as an error.
+          </li>
+        </ul>
+      </section>
+
+      <section id="vqt-values">
+        <h3>Value, Quality, and Timestamp</h3>
+        <p>
+          When <code>opcdav:vqt</code> is <code>true</code>, the value is represented as a JSON object with the
+          following members, so that the application receives the quality and timestamp of every value:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>value</code></td>
+              <td>Item value, converted as described in <a href="#data-types">Data Types</a>.</td>
+              <td>JSON value, or <code>null</code> when the server returned <code>VT_EMPTY</code></td>
+            </tr>
+            <tr>
+              <td><code>quality</code></td>
+              <td>
+                OPC quality, including the quality, substatus, and limit bits of the 16-bit OPC quality word [[OPC-DA]].
+              </td>
+              <td>integer, from 0 to 65535</td>
+            </tr>
+            <tr>
+              <td><code>timestamp</code></td>
+              <td>Timestamp of the value, converted from the UTC <code>FILETIME</code> returned by the server.</td>
+              <td>[[RFC3339]] date-time in UTC</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          With this payload, values of every quality are delivered and the application evaluates the quality. The WoT
+          Data Schema of the Property MUST then describe the object, as shown in
+          <a href="#example-vqt">Value, Quality, and Timestamp Payload</a>.
+        </p>
+        <p>
+          When writing, <code>value</code> is required and <code>quality</code> and <code>timestamp</code> are optional.
+          An OPC DA 3.0 server receives the supplied members with <code>WriteVQT</code>; an older server cannot accept a
+          quality or timestamp, and the Consumer MUST reject such a write rather than silently drop them.
+        </p>
+        <pre class="example json" title="VQT payload">
+{
+  "value": 72.4,
+  "quality": 192,
+  "timestamp": "2026-11-17T07:42:10.125Z"
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="td-generation" class="informative">
+      <h2>Generating Thing Descriptions</h2>
+      <p>
+        OPC DA servers are browsable. A tool that generates a Thing Description can walk the server address space with
+        <code>IOPCBrowse::Browse</code> on an OPC DA 3.0 server, or with <code>IOPCBrowseServerAddressSpace</code> on an
+        OPC DA 2.0 server, and create one Property for every leaf item, using the fully qualified item ID as the
+        <code>href</code>. It can then read the item properties to fill in the Property:
+      </p>
+      <ul>
+        <li>the canonical data type (<code>1</code>) gives <code>opcdav:type</code> and the Data Schema type;</li>
+        <li>
+          the access rights (<code>5</code>) give <code>readOnly</code> when the item is not writable and
+          <code>writeOnly</code> when it is not readable;
+        </li>
+        <li>
+          the engineering units (<code>100</code>) and the item description (<code>101</code>) give
+          <code>unit</code> and <code>description</code>;
+        </li>
+        <li>
+          for an enumerated item (engineering unit type <code>2</code>), the engineering unit information
+          (<code>8</code>) is an array of labels indexed by the item value, which can be recorded in the description;
+          and
+        </li>
+        <li>the server scan rate (<code>6</code>) is a reasonable choice for <code>opcdav:updateRate</code>.</li>
+      </ul>
+      <p>
+        The high and low engineering unit limits (<code>102</code>, <code>103</code>) define the nominal range used for
+        the percent deadband, and values outside that range are allowed. They should therefore not be mapped to
+        <code>minimum</code> and <code>maximum</code> unless the server enforces them.
+      </p>
+    </section>
+
+    <section id="security-considerations" class="informative">
+      <h2>Security Considerations</h2>
+      <p>
+        OPC DA relies on the security of COM and DCOM [[MS-DCOM]]. A Thing Description MUST accurately describe the
+        security applied to the interaction endpoint.
+      </p>
+      <ul>
+        <li>
+          DCOM authenticates the client with Windows authentication, negotiated between Kerberos and NTLM, and checks
+          the launch, activation, and access permissions configured for the server. Credentials are those of the
+          Consumer's Windows account, or explicit credentials supplied through the COM security APIs.
+        </li>
+        <li>
+          Since the DCOM hardening changes of [[KB5004442]], enforced from March 2023, Windows rejects remote activation
+          requests below the authentication level <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code>. A Consumer SHOULD use
+          <code>RPC_C_AUTHN_LEVEL_PKT_PRIVACY</code>, which also encrypts the traffic, and MUST use at least
+          <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code> for remote servers.
+        </li>
+        <li>
+          Data change notifications and shutdown requests are calls from the server into the Consumer. The Consumer
+          process therefore accepts incoming DCOM calls, and it SHOULD restrict them to the account of the server rather
+          than allowing anonymous or unauthenticated callers.
+        </li>
+        <li>
+          Some servers additionally implement the OPC Security interfaces [[OPC-SECURITY]], which allow a client to log
+          on as a specific user with <code>IOPCSecurityPrivate::Logon</code>.
+        </li>
+      </ul>
+      <p>
+        Because the security parameters of DCOM are negotiated by the underlying protocols at runtime, a Thing
+        Description SHOULD describe an <code>opcda</code> endpoint with the <code>auto</code> security scheme of
+        [[WOT-THING-DESCRIPTION]], as the examples in this document do. <code>nosec</code> MUST NOT be used for a remote
+        server, because DCOM always authenticates remote callers.
+      </p>
+      <p>
+        A binding implementation MUST NOT infer that a successful connection authorizes every operation. The server
+        enforces item access rights, and it can reject a write with <code>OPC_E_BADRIGHTS</code> for the current user.
+      </p>
+      <p class="note" title="Open issue">
+        This binding does not yet define security scheme terms for selecting the DCOM authentication level and
+        impersonation level, or for passing explicit Windows or OPC Security credentials. These are expected to be added
+        once implementation experience is collected.
+      </p>
+    </section>
+
+    <section id="examples" class="informative">
+      <h2>Examples</h2>
+
+      <section id="example-observed-item">
+        <h3>Observed Analog Item</h3>
+        <pre class="example json" title="OPC DA Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "opcdav": "https://www.w3.org/2026/wot/opcda"
+    }
+  ],
+  "id": "urn:example:opcda:line1",
+  "title": "Line 1 OPC DA Server",
+  "base": "opcda://scada01.example.com/Vendor.OPCServer.1/",
+  "securityDefinitions": {
+    "auto_sc": {
+      "scheme": "auto"
+    }
+  },
+  "security": ["auto_sc"],
+  "properties": {
+    "ReactorTemperature": {
+      "title": "Reactor temperature",
+      "type": "number",
+      "unit": "degree Celsius",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "Line1.Reactor.Temperature",
+          "op": ["readproperty", "observeproperty", "unobserveproperty"],
+          "opcdav:type": "opcdav:VT_R8",
+          "opcdav:maxAge": 1000,
+          "opcdav:updateRate": 500,
+          "opcdav:deadband": 0.5
+        }
+      ]
+    }
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-writable-item">
+        <h3>Writable Setpoint with Access Path</h3>
+        <pre class="example json" title="Writable setpoint">
+{
+  "Setpoint": {
+    "type": "integer",
+    "minimum": 0,
+    "maximum": 65535,
+    "readOnly": false,
+    "observable": true,
+    "forms": [
+      {
+        "href": "./PLC1:DB10.Setpoint",
+        "op": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"],
+        "opcdav:type": "opcdav:VT_UI2",
+        "opcdav:accessPath": "Line1",
+        "opcdav:updateRate": 1000,
+        "opcdav:timeout": 3000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-vqt">
+        <h3>Value, Quality, and Timestamp Payload</h3>
+        <pre class="example json" title="VQT payload">
+{
+  "Level": {
+    "type": "object",
+    "readOnly": true,
+    "observable": true,
+    "properties": {
+      "value": { "type": "number" },
+      "quality": { "type": "integer", "minimum": 0, "maximum": 65535 },
+      "timestamp": { "type": "string", "format": "date-time" }
+    },
+    "forms": [
+      {
+        "href": "Tank3.Level",
+        "op": ["readproperty", "observeproperty", "unobserveproperty"],
+        "opcdav:type": "opcdav:VT_R4",
+        "opcdav:vqt": true,
+        "opcdav:updateRate": 2000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-array-and-property">
+        <h3>Array Item and Item Property</h3>
+        <pre class="example json" title="Array item and engineering units">
+{
+  "Profile": {
+    "type": "array",
+    "items": { "type": "number" },
+    "readOnly": true,
+    "forms": [
+      {
+        "href": "Line1.Furnace.TemperatureProfile",
+        "op": ["readproperty"],
+        "opcdav:type": "opcdav:VT_R4",
+        "opcdav:array": true
+      }
+    ]
+  },
+  "ProfileUnits": {
+    "type": "string",
+    "readOnly": true,
+    "forms": [
+      {
+        "href": "Line1.Furnace.TemperatureProfile",
+        "op": ["readproperty"],
+        "opcdav:propertyId": 100
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-server-status">
+        <h3>Server Status</h3>
+        <pre class="example json" title="Server status">
+{
+  "ServerStatus": {
+    "type": "object",
+    "readOnly": true,
+    "observable": true,
+    "properties": {
+      "state": {
+        "type": "string",
+        "enum": ["running", "failed", "noConfig", "suspended", "test", "commFault"]
+      },
+      "startTime": { "type": "string", "format": "date-time" },
+      "currentTime": { "type": "string", "format": "date-time" },
+      "lastUpdateTime": { "type": "string", "format": "date-time" },
+      "groupCount": { "type": "integer" },
+      "bandWidth": { "type": "integer" },
+      "version": { "type": "string" },
+      "vendorInfo": { "type": "string" }
+    },
+    "forms": [
+      {
+        "href": "./",
+        "op": ["readproperty", "observeproperty", "unobserveproperty"],
+        "opcdav:updateRate": 10000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="implementation-notes" class="informative">
+      <h2>Implementation Notes</h2>
+      <ul>
+        <li>
+          OPC DA uses COM and is therefore native to Microsoft Windows. Consumers on other platforms need a DCOM
+          implementation of their own, or a gateway that exposes the server through another protocol, such as an OPC UA
+          wrapper of an OPC DA server.
+        </li>
+        <li>
+          Remote access requires the OPC proxy and stub libraries of the OPC Core Components on both computers, so that
+          the OPC interfaces can be marshalled, and the OPC Server Enumerator on the server computer for ProgID
+          resolution.
+        </li>
+        <li>
+          The URI scheme follows the URL convention of the OPC Foundation's OPC .NET API, which uses <code>opcda</code>,
+          <code>opchda</code>, and <code>opcae</code> to select the OPC Classic specification and the URL path to select
+          the server.
+        </li>
+        <li>
+          OPC UA wrappers of OPC DA servers typically expose each item as an OPC UA Variable, so the item IDs, data
+          types, and quality evaluated by this binding remain recognizable when a server is later accessed through such
+          a wrapper.
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>

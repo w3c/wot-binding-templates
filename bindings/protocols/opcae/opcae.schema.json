@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "anyOf": [
+    {
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
+    }
+  ],
+  "definitions": {
+    "unsignedInt": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "severity": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "opcaeOperation": {
+      "type": "string",
+      "enum": ["subscribeevent", "unsubscribeevent", "readproperty", "invokeaction"]
+    },
+    "opcaeForm": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/opcaeOperation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/opcaeOperation"
+              }
+            }
+          ]
+        },
+        "opcaev:eventTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["simple", "tracking", "condition"]
+          }
+        },
+        "opcaev:categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/unsignedInt"
+          }
+        },
+        "opcaev:lowSeverity": {
+          "$ref": "#/definitions/severity"
+        },
+        "opcaev:highSeverity": {
+          "$ref": "#/definitions/severity"
+        },
+        "opcaev:areas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "opcaev:sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "opcaev:bufferTime": {
+          "$ref": "#/definitions/unsignedInt"
+        },
+        "opcaev:maxSize": {
+          "$ref": "#/definitions/unsignedInt"
+        },
+        "opcaev:keepAlive": {
+          "$ref": "#/definitions/unsignedInt"
+        },
+        "opcaev:returnedAttributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "opcaev:category": {
+                "$ref": "#/definitions/unsignedInt"
+              },
+              "opcaev:attributeIds": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/unsignedInt"
+                }
+              }
+            },
+            "required": ["opcaev:category", "opcaev:attributeIds"]
+          }
+        },
+        "opcaev:refresh": {
+          "type": "boolean"
+        },
+        "opcaev:method": {
+          "type": "string",
+          "enum": [
+            "GetConditionState",
+            "AckCondition",
+            "EnableConditionBySource",
+            "DisableConditionBySource",
+            "EnableConditionByArea",
+            "DisableConditionByArea"
+          ]
+        },
+        "opcaev:condition": {
+          "type": "string"
+        },
+        "opcaev:attributeIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/unsignedInt"
+          }
+        },
+        "opcaev:acknowledgerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "opcaev:timeout": {
+          "$ref": "#/definitions/unsignedInt"
+        }
+      },
+      "required": ["href", "op"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "anyOf": [
+                  {
+                    "const": "invokeaction"
+                  },
+                  {
+                    "type": "array",
+                    "contains": {
+                      "const": "invokeaction"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": ["opcaev:method"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "anyOf": [
+                  {
+                    "enum": ["subscribeevent", "unsubscribeevent"]
+                  },
+                  {
+                    "type": "array",
+                    "contains": {
+                      "enum": ["subscribeevent", "unsubscribeevent"]
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": ["opcaev:method"]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["opcaev:method"],
+            "properties": {
+              "opcaev:method": {
+                "const": "GetConditionState"
+              }
+            }
+          },
+          "then": {
+            "required": ["opcaev:condition"],
+            "properties": {
+              "op": {
+                "oneOf": [
+                  {
+                    "const": "readproperty"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "const": "readproperty"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["opcaev:method"],
+            "properties": {
+              "opcaev:method": {
+                "not": {
+                  "const": "GetConditionState"
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "oneOf": [
+                  {
+                    "const": "invokeaction"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "const": "invokeaction"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "absoluteOpcaeForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "pattern": "^opcae://"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/opcaeForm"
+      }
+    },
+    "relativeForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "not": {
+              "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
+            }
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/opcaeForm"
+      }
+    },
+    "absoluteOpcaeAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/absoluteOpcaeForm"
+            }
+          }
+        }
+      }
+    },
+    "relativeAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/relativeForm"
+            }
+          }
+        }
+      }
+    },
+    "absoluteOpcaeForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/absoluteOpcaeForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/absoluteOpcaeAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/absoluteOpcaeAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/absoluteOpcaeAffordances"
+        }
+      }
+    },
+    "relativeForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relativeForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/relativeAffordances"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "required": ["opcaev"],
+        "properties": {
+          "opcaev": {
+            "type": "string",
+            "const": "https://www.w3.org/2026/wot/opcae"
+          }
+        }
+      }
+    },
+    "base": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/absoluteOpcaeForms"
+    },
+    {
+      "if": {
+        "required": ["base"],
+        "properties": {
+          "base": {
+            "type": "string",
+            "pattern": "^opcae://"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "base": {
+                "pattern": "^opcae://([^/:?#\\[\\]]+|\\[[0-9A-Fa-f:.]+\\])/[^/?#]+/$"
+              }
+            }
+          },
+          {
+            "$ref": "#/definitions/relativeForms"
+          }
+        ]
+      }
+    }
+  ]
+}

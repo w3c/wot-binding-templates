@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "anyOf": [
+    {
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
+    }
+  ],
+  "definitions": {
+    "opcdaDataType": {
+      "type": "string",
+      "enum": [
+        "opcdav:VT_BOOL",
+        "opcdav:VT_I1",
+        "opcdav:VT_UI1",
+        "opcdav:VT_I2",
+        "opcdav:VT_UI2",
+        "opcdav:VT_I4",
+        "opcdav:VT_UI4",
+        "opcdav:VT_I8",
+        "opcdav:VT_UI8",
+        "opcdav:VT_R4",
+        "opcdav:VT_R8",
+        "opcdav:VT_CY",
+        "opcdav:VT_DATE",
+        "opcdav:VT_BSTR"
+      ]
+    },
+    "opcdaForm": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/opcdaOperation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/opcdaOperation"
+              }
+            }
+          ]
+        },
+        "opcdav:type": {
+          "$ref": "#/definitions/opcdaDataType"
+        },
+        "opcdav:array": {
+          "type": "boolean"
+        },
+        "opcdav:accessPath": {
+          "type": "string"
+        },
+        "opcdav:maxAge": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "opcdav:updateRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "opcdav:deadband": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "opcdav:vqt": {
+          "type": "boolean"
+        },
+        "opcdav:propertyId": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "opcdav:timeout": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["href", "op"],
+      "allOf": [
+        {
+          "if": {
+            "required": ["opcdav:array"],
+            "properties": {
+              "opcdav:array": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": ["opcdav:type"]
+          }
+        },
+        {
+          "if": {
+            "required": ["opcdav:propertyId"]
+          },
+          "then": {
+            "properties": {
+              "op": {
+                "oneOf": [
+                  {
+                    "const": "readproperty"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "const": "readproperty"
+                    }
+                  }
+                ]
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": ["opcdav:vqt"]
+                },
+                {
+                  "required": ["opcdav:updateRate"]
+                },
+                {
+                  "required": ["opcdav:deadband"]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "opcdaOperation": {
+      "type": "string",
+      "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"]
+    },
+    "absoluteOpcdaForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "pattern": "^opcda://"
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/opcdaForm"
+      }
+    },
+    "relativeForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "not": {
+              "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
+            }
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/opcdaForm"
+      }
+    },
+    "absoluteOpcdaAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/absoluteOpcdaForm"
+            }
+          }
+        }
+      }
+    },
+    "relativeAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/relativeForm"
+            }
+          }
+        }
+      }
+    },
+    "absoluteOpcdaForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/absoluteOpcdaForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/absoluteOpcdaAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/absoluteOpcdaAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/absoluteOpcdaAffordances"
+        }
+      }
+    },
+    "relativeForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relativeForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/relativeAffordances"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "required": ["opcdav"],
+        "properties": {
+          "opcdav": {
+            "type": "string",
+            "const": "https://www.w3.org/2026/wot/opcda"
+          }
+        }
+      }
+    },
+    "base": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/absoluteOpcdaForms"
+    },
+    {
+      "if": {
+        "required": ["base"],
+        "properties": {
+          "base": {
+            "type": "string",
+            "pattern": "^opcda://"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "base": {
+                "pattern": "^opcda://([^/:?#\\[\\]]+|\\[[0-9A-Fa-f:.]+\\])/[^/?#]+/$"
+              }
+            }
+          },
+          {
+            "$ref": "#/definitions/relativeForms"
+          }
+        ]
+      }
+    }
+  ]
+}

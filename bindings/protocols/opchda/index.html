@@ -1,0 +1,1541 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt",
+            company: "Microsoft",
+            companyURL: "https://www.microsoft.com"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/",
+        shortName: "wot-opchda-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "November 2025"
+          },
+          "OPC-HDA": {
+            title: "OPC Historical Data Access Custom Interface Standard, Version 1.20",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/historical-data-access/",
+            publisher: "OPC Foundation",
+            date: "December 2003"
+          },
+          "OPC-COMMON": {
+            title: "OPC Common Definitions and Interfaces, Version 1.00",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/data-access/",
+            publisher: "OPC Foundation",
+            date: "October 1998"
+          },
+          "OPC-SECURITY": {
+            title: "OPC Security Custom Interface, Version 1.00",
+            publisher: "OPC Foundation",
+            date: "October 2000"
+          },
+          "WOT-OPCDA-BINDING": {
+            title: "Web of Things (WoT) OPC DA Binding",
+            href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/",
+            publisher: "W3C"
+          },
+          "MS-DCOM": {
+            title: "[MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol",
+            href: "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dcom/4a893f3d-bd29-48cd-9f43-d9777a4415b0",
+            publisher: "Microsoft"
+          },
+          "KB5004442": {
+            title: "KB5004442: Manage changes for Windows DCOM Server Security Feature Bypass (CVE-2021-26414)",
+            href: "https://support.microsoft.com/en-us/topic/kb5004442-manage-changes-for-windows-dcom-server-security-feature-bypass-cve-2021-26414-f1400b52-c141-43d2-941e-37ed901c769c",
+            publisher: "Microsoft"
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "Related OPC Classic Bindings",
+            data: [
+              {
+                value: "Web of Things (WoT) OPC DA Binding",
+                href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/"
+              },
+              {
+                value: "Web of Things (WoT) OPC A&E Binding",
+                href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "OPC HDA JSON Schema",
+                href: "opchda.schema.json"
+              }
+            ]
+          }
+        ]
+      };
+    </script>
+    <title>Web of Things (WoT) OPC HDA Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        This Web of Things (WoT) protocol binding describes how a Thing Description exposes the history of the items of
+        an OPC Historical Data Access (OPC HDA) server [[OPC-HDA]], one of the COM/DCOM-based OPC Classic
+        specifications.
+      </p>
+      <p>The binding defines:</p>
+      <ul>
+        <li>the <code>opchda</code> URI scheme used to identify an OPC HDA server and the items it historizes;</li>
+        <li>absolute and relative time ranges in WoT Forms, using the relative time syntax of OPC HDA;</li>
+        <li>raw, processed, at-time, and modified history reads, and the aggregates used by processed reads;</li>
+        <li>history updates, deletions, and annotations;</li>
+        <li>subscriptions to newly historized raw or processed values;</li>
+        <li>a time series payload that carries the value, quality, and timestamp of every historical value; and</li>
+        <li>mappings between WoT operations and the OPC HDA interfaces.</li>
+      </ul>
+      <p>This protocol binding is not an OPC Foundation specification.</p>
+    </section>
+
+    <section id="sotd">
+      <p><em>This document is a work in progress.</em></p>
+      <p>
+        This initial version of the binding covers the synchronous read, update, and annotation interfaces and the
+        asynchronous advise operations of OPC HDA 1.20 servers. It shares the URI layout and security considerations of
+        the companion <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/">OPC DA Binding</a>
+        [[WOT-OPCDA-BINDING]] and
+        <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/">OPC A&amp;E Binding</a>.
+      </p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        OPC Historical Data Access is the OPC Classic specification for process historians. An OPC HDA server is a COM
+        server that runs on a Microsoft Windows computer and gives clients access to the archived values of
+        <em>items</em>, which it typically collects from OPC DA servers or directly from control systems. Clients reach
+        the server locally through COM or remotely through Distributed COM (DCOM) [[MS-DCOM]].
+      </p>
+      <p>
+        Each item is identified by an <em>item ID</em>, a server-specific string such as
+        <code>Plant1.Unit3.FlowRate</code>. A client reads the <em>raw</em> values stored for an item in a time range,
+        or lets the server compute <em>processed</em> values, such as averages or minima, over consecutive resample
+        intervals with an <em>aggregate</em>. Every historical value consists of a value, a quality, and a timestamp. A
+        server can also let clients insert, replace, and delete values, attach <em>annotations</em> to values, and
+        report the history of changes made to stored values.
+      </p>
+      <p>
+        A Thing Description [[WOT-THING-DESCRIPTION]] can describe OPC HDA items as WoT Properties that return a time
+        series for a time range fixed in the Form, and as WoT Actions that accept the time range and other parameters as
+        input. The Thing Description supplies the server, the item ID, the history method, and the parameters that an
+        implementation needs.
+      </p>
+      <p>The following topics are outside the initial scope:</p>
+      <ul>
+        <li>the OPC XML-DA and OPC HDA XML web service specifications;</li>
+        <li>the <code>IOPCHDA_Playback</code> interface;</li>
+        <li>reading several items in one Form as a normative behavior;</li>
+        <li>server configuration, such as creating or deleting historized items; and</li>
+        <li>normative discovery behavior.</li>
+      </ul>
+    </section>
+
+    <section id="conformance">
+      <p>
+        A Thing Description conforms to this binding when all Forms using the <code>opchda</code> scheme follow the
+        normative requirements in this document.
+      </p>
+      <p>An implementation conforms to this binding when it:</p>
+      <ol>
+        <li>recognizes the <code>opchda</code> URI scheme;</li>
+        <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
+        <li>supports the operation mappings it advertises;</li>
+        <li>converts between OPC HDA times and [[RFC3339]] date-time values as specified; and</li>
+        <li>delivers the quality of every historical value it returns.</li>
+      </ol>
+      <p>
+        The <dfn>interoperable profile</dfn> of this binding is the subset of its URI components, vocabulary terms, and
+        behaviors that every conforming Consumer MUST support. A Thing Description that uses only the interoperable
+        profile therefore works with every conforming Consumer, while anything outside it, such as a binding extension,
+        is only understood by Consumers that implement that extension. Unless a section states otherwise, all URI
+        components, vocabulary terms, and operation mappings defined normatively in this document belong to the
+        interoperable profile.
+      </p>
+    </section>
+
+    <section id="opc-classic-background" class="informative">
+      <h2>OPC Classic Background</h2>
+      <p>
+        OPC Data Access (DA), OPC HDA, and OPC Alarms and Events (A&amp;E) are known together as <em>OPC Classic</em>.
+        They share the following foundations, which this binding relies on:
+      </p>
+      <ul>
+        <li>
+          A server is a COM class, identified by a class identifier (CLSID) and usually also by a programmatic
+          identifier (ProgID) such as <code>Vendor.OPCHDAServer.1</code>. A client creates the server object with
+          <code>CoCreateInstanceEx</code>, on the local computer or, through DCOM, on a remote computer.
+        </li>
+        <li>
+          OPC HDA servers register themselves in the component category <code>CATID_OPCHDAServer10</code>. The OPC
+          Server Enumerator (OPCEnum), installed with the OPC Core Components, lets a remote client list the registered
+          servers and translate a ProgID into a CLSID through <code>IOPCServerList2</code> [[OPC-COMMON]].
+        </li>
+        <li>
+          All OPC Classic servers implement <code>IOPCCommon</code> and announce an orderly shutdown through the
+          <code>IOPCShutdown</code> callback interface [[OPC-COMMON]].
+        </li>
+        <li>
+          Callbacks, such as the delivery of newly historized values, are made over COM connection points, so the server
+          calls back into the client process. Over DCOM this requires both computers to accept calls from each other.
+        </li>
+      </ul>
+      <p>
+        In contrast to OPC DA, an OPC HDA client does not create groups. It obtains a <em>server handle</em> for each
+        item ID with <code>IOPCHDA_Server::GetItemHandles</code> and passes the handles to the read and update methods.
+      </p>
+    </section>
+
+    <section id="uri-scheme">
+      <h2>URI Scheme and Addressing</h2>
+
+      <section id="endpoint-uri">
+        <h3>Server URI</h3>
+        <p>An OPC HDA server is identified by an <code>opchda</code> URI:</p>
+        <pre class="nohighlight">
+opchda-URI = "opchda://" host "/" server-id "/"
+server-id  = progid / clsid
+        </pre>
+        <p>
+          The components <code>host</code>, <code>progid</code>, and <code>clsid</code>, the resolution of a ProgID on a
+          remote computer, and the prohibition of a port are defined exactly as for the <code>opcda</code> URI in
+          [[WOT-OPCDA-BINDING]]. In particular, a Consumer MUST translate the ProgID of a remote server into a CLSID on
+          the remote computer, the URI MUST NOT contain a port, and the <code>base</code> of a Thing Description MUST
+          end with <code>/</code>.
+        </p>
+        <pre class="example json" title="Server in base">
+{
+  "base": "opchda://historian.example.com/Vendor.OPCHDAServer.1/"
+}
+        </pre>
+      </section>
+
+      <section id="item-reference">
+        <h3>Item Reference</h3>
+        <p>The resolved Form target identifies an item of the server:</p>
+        <pre class="nohighlight">
+opchda-item-URI = opchda-URI [ item-id ]
+        </pre>
+        <p>
+          The <code>item-id</code> is the fully qualified item ID as defined by the server, for example
+          <code>Plant1.Unit3.FlowRate</code>. It is a single path segment and is percent-encoded and decoded as
+          specified for item IDs in [[WOT-OPCDA-BINDING]]: <code>/</code>, <code>?</code>, <code>#</code>,
+          <code>%</code>, <code>[</code>, <code>]</code>, <code>\</code>, and space MUST be percent-encoded, and a
+          relative <code>href</code> whose item ID contains a colon MUST start with <code>./</code> or percent-encode
+          the colon. An implementation MUST pass the percent-decoded item ID to the server exactly as written.
+        </p>
+        <p>
+          When the resolved target has no <code>item-id</code>, that is, when it equals the server URI, the Form
+          addresses the server object itself, see <a href="#server-status">Server Status</a>.
+        </p>
+        <pre class="example json" title="Relative Form target">
+{
+  "href": "Plant1.Unit3.FlowRate",
+  "op": ["readproperty"],
+  "opchdav:startTime": "NOW-1H"
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="vocabulary">
+      <h2>OPC HDA Vocabulary</h2>
+      <p>
+        The examples use the prefix <code>opchdav</code> for the provisional namespace. The prefix intentionally differs
+        from the <code>opchda</code> URI scheme name so that vocabulary terms are not confused with the scheme.
+      </p>
+      <pre class="example json" title="Vocabulary prefix">
+{
+  "opchdav": "https://www.w3.org/2026/wot/opchda"
+}
+      </pre>
+      <p>The namespace URI is provisional. It does not imply that a vocabulary is published at that location.</p>
+
+      <section id="form-terms">
+        <h3>Form Terms</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>href</code></td>
+              <td>Item reference, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:method</code></td>
+              <td>History method used by the Form, see <a href="#methods">Methods</a>.</td>
+              <td>optional for property operations, required for <code>invokeaction</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> (one of
+                the values in <a href="#methods">Methods</a>)
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:startTime</code></td>
+              <td>Start of the time range, see <a href="#times">Times</a>.</td>
+              <td>required for methods with a time range, unless supplied as action input</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:endTime</code></td>
+              <td>End of the time range, see <a href="#times">Times</a>.</td>
+              <td>optional, default <code>NOW</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:numValues</code></td>
+              <td>
+                Maximum number of values to return for <code>ReadRaw</code> and <code>ReadModified</code>. The value
+                <code>0</code> returns all values in the time range.
+              </td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:bounds</code></td>
+              <td>
+                For <code>ReadRaw</code>, also returns the bounding values, that is, the last value at or before the
+                start time and the first value at or after the end time.
+              </td>
+              <td>optional, default <code>false</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:aggregate</code></td>
+              <td>Aggregate used by processed methods, see <a href="#aggregates">Aggregates</a>.</td>
+              <td>required for processed methods, unless supplied as action input</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:resampleInterval</code></td>
+              <td>
+                Length of the intervals of processed methods, in milliseconds. For <code>ReadProcessed</code>, the value
+                <code>0</code> requests a single interval spanning the whole time range.
+              </td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedLong"
+                  ><code>unsignedLong</code></a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:numIntervals</code></td>
+              <td>
+                Number of resample intervals that the server returns in each callback of <code>AdviseProcessed</code>.
+              </td>
+              <td>optional, default <code>1</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:updateInterval</code></td>
+              <td>
+                Interval, in milliseconds, at which the server delivers new raw values for <code>AdviseRaw</code>.
+              </td>
+              <td>required for <code>AdviseRaw</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedLong"
+                  ><code>unsignedLong</code></a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:attributeId</code></td>
+              <td>
+                Identifier of the item attribute read by <code>ReadAttribute</code>, see
+                <a href="#item-attributes">Item Attributes</a>.
+              </td>
+              <td>required for <code>ReadAttribute</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:type</code></td>
+              <td>
+                Data type of the values written by update methods, using the values defined for
+                <code>opcdav:type</code> in [[WOT-OPCDA-BINDING]] with the prefix <code>opchdav</code>, for example
+                <code>opchdav:VT_R8</code>.
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opchdav:timeout</code></td>
+              <td>Maximum time to wait for the server response, in milliseconds.</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="methods">
+        <h3>Methods</h3>
+        <p>
+          The term <code>opchdav:method</code> selects the OPC HDA method that a Form invokes. The following values are
+          defined. The third column lists the WoT operations for which the method is allowed, and the default method of
+          each property operation is marked with an asterisk.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>OPC HDA method</th>
+              <th>Allowed WoT operations</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ReadRaw</code></td>
+              <td><code>IOPCHDA_SyncRead::ReadRaw</code></td>
+              <td><code>readproperty</code>*, <code>invokeaction</code></td>
+              <td><a href="#time-series">Time series</a> of the stored values</td>
+            </tr>
+            <tr>
+              <td><code>ReadProcessed</code></td>
+              <td><code>IOPCHDA_SyncRead::ReadProcessed</code></td>
+              <td><code>readproperty</code>, <code>invokeaction</code></td>
+              <td>Time series with one aggregate value per resample interval</td>
+            </tr>
+            <tr>
+              <td><code>ReadAtTime</code></td>
+              <td><code>IOPCHDA_SyncRead::ReadAtTime</code></td>
+              <td><code>invokeaction</code></td>
+              <td>Time series with one value, interpolated when necessary, per requested timestamp</td>
+            </tr>
+            <tr>
+              <td><code>ReadModified</code></td>
+              <td><code>IOPCHDA_SyncRead::ReadModified</code></td>
+              <td><code>readproperty</code>, <code>invokeaction</code></td>
+              <td><a href="#modified-values">Modified values</a> replaced or deleted in the time range</td>
+            </tr>
+            <tr>
+              <td><code>ReadAttribute</code></td>
+              <td><code>IOPCHDA_SyncRead::ReadAttribute</code></td>
+              <td><code>readproperty</code>, <code>invokeaction</code></td>
+              <td><a href="#attribute-values">Attribute values</a> in the time range</td>
+            </tr>
+            <tr>
+              <td><code>ReadAnnotations</code></td>
+              <td><code>IOPCHDA_SyncAnnotations::Read</code></td>
+              <td><code>readproperty</code>, <code>invokeaction</code></td>
+              <td><a href="#annotations">Annotations</a> in the time range</td>
+            </tr>
+            <tr>
+              <td><code>Insert</code></td>
+              <td><code>IOPCHDA_SyncUpdate::Insert</code></td>
+              <td><code>writeproperty</code>, <code>invokeaction</code></td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><code>Replace</code></td>
+              <td><code>IOPCHDA_SyncUpdate::Replace</code></td>
+              <td><code>writeproperty</code>, <code>invokeaction</code></td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><code>InsertReplace</code></td>
+              <td><code>IOPCHDA_SyncUpdate::InsertReplace</code></td>
+              <td><code>writeproperty</code>*, <code>invokeaction</code></td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><code>DeleteRaw</code></td>
+              <td><code>IOPCHDA_SyncUpdate::DeleteRaw</code></td>
+              <td><code>invokeaction</code></td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><code>DeleteAtTime</code></td>
+              <td><code>IOPCHDA_SyncUpdate::DeleteAtTime</code></td>
+              <td><code>invokeaction</code></td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><code>InsertAnnotations</code></td>
+              <td><code>IOPCHDA_SyncAnnotations::Insert</code></td>
+              <td><code>invokeaction</code></td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><code>AdviseRaw</code></td>
+              <td><code>IOPCHDA_AsyncRead::AdviseRaw</code></td>
+              <td><code>observeproperty</code>*, <code>unobserveproperty</code></td>
+              <td>Time series of the values historized since the previous notification</td>
+            </tr>
+            <tr>
+              <td><code>AdviseProcessed</code></td>
+              <td><code>IOPCHDA_AsyncRead::AdviseProcessed</code></td>
+              <td><code>observeproperty</code>, <code>unobserveproperty</code></td>
+              <td>Time series with the aggregate values of the completed resample intervals</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Form MUST only contain operations allowed for its method. Because the default method differs per operation,
+          a Form without <code>opchdav:method</code> MAY combine <code>readproperty</code>, <code>writeproperty</code>,
+          <code>observeproperty</code>, and <code>unobserveproperty</code>; each operation then uses its default method.
+          A Form that carries <code>opchdav:method</code> applies that method to every operation of the Form. A Form
+          containing <code>invokeaction</code> MUST carry <code>opchdav:method</code>.
+        </p>
+      </section>
+
+      <section id="times">
+        <h3>Times</h3>
+        <p>
+          OPC HDA methods accept a time either as an absolute UTC time or as a string relative to the current time of
+          the server. The terms <code>opchdav:startTime</code> and <code>opchdav:endTime</code>, and the time members of
+          action inputs, accept both forms:
+        </p>
+        <ul>
+          <li>An absolute time is an [[RFC3339]] date-time, for example <code>2026-11-17T06:00:00Z</code>.</li>
+          <li>
+            A relative time follows the relative time syntax of [[OPC-HDA]]: a base keyword, optionally followed by one
+            or more signed offsets, without white space.
+          </li>
+        </ul>
+        <pre class="nohighlight">
+relative-time = keyword *offset
+keyword       = "NOW" / "SECOND" / "MINUTE" / "HOUR" / "DAY" / "WEEK" / "MONTH" / "YEAR"
+offset        = ( "+" / "-" ) 1*( 1*DIGIT unit )
+unit          = "S" / "M" / "H" / "D" / "W" / "MO" / "Y"
+        </pre>
+        <p>
+          <code>NOW</code> is the current time of the server. The other keywords denote the start of the current second,
+          minute, hour, day, week, month, or year. The units denote seconds, minutes, hours, days, weeks, months, and
+          years. For example, <code>NOW-1H</code> is one hour ago, and <code>DAY-1D+7H30M</code> is 07:30 yesterday.
+        </p>
+        <p>
+          A Consumer MUST pass a relative time to the server unchanged in the <code>szTime</code> member of
+          <code>OPCHDA_TIME</code>, with <code>bString</code> set to <code>TRUE</code>, so that the server evaluates it.
+          A Consumer MUST convert an absolute time to a UTC <code>FILETIME</code> and pass it in the
+          <code>ftTime</code> member, with <code>bString</code> set to <code>FALSE</code>. A string that is neither an
+          [[RFC3339]] date-time nor a relative time MUST be rejected.
+        </p>
+        <p>
+          When the start time is later than the end time, the server returns the values in reverse chronological order.
+          Timestamps returned by the server are UTC <code>FILETIME</code> values and MUST be represented as [[RFC3339]]
+          date-time values in UTC.
+        </p>
+      </section>
+
+      <section id="aggregates">
+        <h3>Aggregates</h3>
+        <p>
+          Processed methods compute one value per resample interval with an aggregate. The term
+          <code>opchdav:aggregate</code> identifies the aggregate either by one of the following names or by its numeric
+          identifier. Servers can offer vendor-specific aggregates, which are identified by number only and are listed
+          by <code>IOPCHDA_Server::GetAggregates</code>.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Identifier</th>
+              <th>OPC HDA aggregate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>interpolative</code></td>
+              <td><code>1</code></td>
+              <td><code>OPCHDA_INTERPOLATIVE</code>, the interpolated value at the start of the interval</td>
+            </tr>
+            <tr>
+              <td><code>total</code></td>
+              <td><code>2</code></td>
+              <td><code>OPCHDA_TOTAL</code>, the time integral of the values</td>
+            </tr>
+            <tr>
+              <td><code>average</code></td>
+              <td><code>3</code></td>
+              <td><code>OPCHDA_AVERAGE</code>, the average of the values</td>
+            </tr>
+            <tr>
+              <td><code>timeAverage</code></td>
+              <td><code>4</code></td>
+              <td><code>OPCHDA_TIMEAVERAGE</code>, the time-weighted average</td>
+            </tr>
+            <tr>
+              <td><code>count</code></td>
+              <td><code>5</code></td>
+              <td><code>OPCHDA_COUNT</code>, the number of raw values</td>
+            </tr>
+            <tr>
+              <td><code>standardDeviation</code></td>
+              <td><code>6</code></td>
+              <td><code>OPCHDA_STDEV</code></td>
+            </tr>
+            <tr>
+              <td><code>minimumActualTime</code></td>
+              <td><code>7</code></td>
+              <td><code>OPCHDA_MINIMUMACTUALTIME</code>, the minimum, timestamped with its time of occurrence</td>
+            </tr>
+            <tr>
+              <td><code>minimum</code></td>
+              <td><code>8</code></td>
+              <td><code>OPCHDA_MINIMUM</code></td>
+            </tr>
+            <tr>
+              <td><code>maximumActualTime</code></td>
+              <td><code>9</code></td>
+              <td><code>OPCHDA_MAXIMUMACTUALTIME</code>, the maximum, timestamped with its time of occurrence</td>
+            </tr>
+            <tr>
+              <td><code>maximum</code></td>
+              <td><code>10</code></td>
+              <td><code>OPCHDA_MAXIMUM</code></td>
+            </tr>
+            <tr>
+              <td><code>start</code></td>
+              <td><code>11</code></td>
+              <td><code>OPCHDA_START</code>, the first value in the interval</td>
+            </tr>
+            <tr>
+              <td><code>end</code></td>
+              <td><code>12</code></td>
+              <td><code>OPCHDA_END</code>, the last value in the interval</td>
+            </tr>
+            <tr>
+              <td><code>delta</code></td>
+              <td><code>13</code></td>
+              <td><code>OPCHDA_DELTA</code>, the difference between the first and the last value</td>
+            </tr>
+            <tr>
+              <td><code>regressionSlope</code></td>
+              <td><code>14</code></td>
+              <td><code>OPCHDA_REGSLOPE</code></td>
+            </tr>
+            <tr>
+              <td><code>regressionConstant</code></td>
+              <td><code>15</code></td>
+              <td><code>OPCHDA_REGCONST</code></td>
+            </tr>
+            <tr>
+              <td><code>regressionDeviation</code></td>
+              <td><code>16</code></td>
+              <td><code>OPCHDA_REGDEV</code></td>
+            </tr>
+            <tr>
+              <td><code>variance</code></td>
+              <td><code>17</code></td>
+              <td><code>OPCHDA_VARIANCE</code></td>
+            </tr>
+            <tr>
+              <td><code>range</code></td>
+              <td><code>18</code></td>
+              <td><code>OPCHDA_RANGE</code>, the difference between the maximum and the minimum</td>
+            </tr>
+            <tr>
+              <td><code>durationGood</code></td>
+              <td><code>19</code></td>
+              <td><code>OPCHDA_DURATIONGOOD</code>, the duration of good quality, in seconds</td>
+            </tr>
+            <tr>
+              <td><code>durationBad</code></td>
+              <td><code>20</code></td>
+              <td><code>OPCHDA_DURATIONBAD</code>, the duration of bad quality, in seconds</td>
+            </tr>
+            <tr>
+              <td><code>percentGood</code></td>
+              <td><code>21</code></td>
+              <td><code>OPCHDA_PERCENTGOOD</code></td>
+            </tr>
+            <tr>
+              <td><code>percentBad</code></td>
+              <td><code>22</code></td>
+              <td><code>OPCHDA_PERCENTBAD</code></td>
+            </tr>
+            <tr>
+              <td><code>worstQuality</code></td>
+              <td><code>23</code></td>
+              <td><code>OPCHDA_WORSTQUALITY</code></td>
+            </tr>
+            <tr>
+              <td><code>annotations</code></td>
+              <td><code>24</code></td>
+              <td><code>OPCHDA_ANNOTATIONS</code>, the number of annotations</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Consumer MUST pass the numeric identifier of the aggregate to the server. A server that does not support the
+          aggregate fails the request with <code>OPC_E_INVALIDAGGREGATE</code>, which the Consumer MUST report as an
+          error.
+        </p>
+      </section>
+
+      <section id="item-attributes">
+        <h3>Item Attributes</h3>
+        <p>
+          Every OPC HDA item has <em>attributes</em> that describe it and that can change over time. The term
+          <code>opchdav:attributeId</code> selects the attribute read by <code>ReadAttribute</code>. The following
+          identifiers are defined by [[OPC-HDA]]; servers can offer further, vendor-specific attributes, which are
+          listed by <code>IOPCHDA_Server::GetItemAttributes</code>.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Identifier</th>
+              <th>Attribute</th>
+              <th>Typical use in a Thing Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>1</code></td>
+              <td>Data type</td>
+              <td><code>opchdav:type</code> and the Data Schema <code>type</code> of <code>value</code></td>
+            </tr>
+            <tr>
+              <td><code>2</code></td>
+              <td>Description</td>
+              <td><code>description</code></td>
+            </tr>
+            <tr>
+              <td><code>3</code></td>
+              <td>Engineering units</td>
+              <td><code>unit</code></td>
+            </tr>
+            <tr>
+              <td><code>4</code></td>
+              <td>Stepped, that is, the value is not interpolated between raw values</td>
+              <td>choice of aggregate</td>
+            </tr>
+            <tr>
+              <td><code>5</code></td>
+              <td>Archiving, that is, the server is currently collecting values</td>
+              <td>applicability of <code>AdviseRaw</code></td>
+            </tr>
+            <tr>
+              <td><code>6</code> to <code>10</code></td>
+              <td>Derive equation, node name, process name, source name, and source type</td>
+              <td>documentation</td>
+            </tr>
+            <tr>
+              <td><code>11</code>, <code>12</code></td>
+              <td>Normal maximum and normal minimum</td>
+              <td>range of the item</td>
+            </tr>
+            <tr>
+              <td><code>13</code></td>
+              <td>Item ID</td>
+              <td><code>href</code></td>
+            </tr>
+            <tr>
+              <td><code>14</code>, <code>15</code></td>
+              <td>Maximum and minimum time interval between stored values</td>
+              <td><code>opchdav:updateInterval</code> and <code>opchdav:resampleInterval</code></td>
+            </tr>
+            <tr>
+              <td><code>16</code> to <code>19</code></td>
+              <td>Exception deviation, exception deviation type, and high and low entry limits</td>
+              <td>documentation</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <section id="operation-mappings">
+      <h2>Operation Mappings</h2>
+
+      <section id="item-handles">
+        <h3>Item Handles</h3>
+        <p>
+          Before invoking a method for an item, the Consumer MUST obtain a server handle for the percent-decoded item ID
+          with <code>IOPCHDA_Server::GetItemHandles</code>. A Consumer MAY cache the handle for later operations on the
+          same item, and MUST release it with <code>IOPCHDA_Server::ReleaseItemHandles</code> when it no longer needs
+          it. An unknown or invalid item ID fails the operation.
+        </p>
+      </section>
+
+      <section id="default-mappings">
+        <h3>Property Mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>OPC HDA mapping</th>
+              <th>Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>readproperty</code></td>
+              <td>
+                Call the method selected by <code>opchdav:method</code>, <code>ReadRaw</code> by default, with the time
+                range given by <code>opchdav:startTime</code> and <code>opchdav:endTime</code> and the other parameters
+                of the method taken from the Form, and convert the result.
+              </td>
+              <td><code>opchdav:startTime</code> MUST be present.</td>
+            </tr>
+            <tr>
+              <td><code>writeproperty</code></td>
+              <td>
+                Convert the supplied <a href="#time-series">time series</a> and call the method selected by
+                <code>opchdav:method</code>, <code>InsertReplace</code> by default, passing the item handle once for
+                every value together with the value's timestamp, value, and quality.
+              </td>
+              <td>
+                The server MUST support the method, as reported by <code>IOPCHDA_SyncUpdate::QueryCapabilities</code>,
+                and the property MUST NOT be declared <code>readOnly: true</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>observeproperty</code></td>
+              <td>
+                Register an <code>IOPCHDA_DataCallback</code> through the server's
+                <code>IConnectionPointContainer</code> and call the method selected by <code>opchdav:method</code>,
+                <code>AdviseRaw</code> by default. <code>AdviseRaw</code> receives <code>opchdav:startTime</code>, or
+                <code>NOW</code> when absent, and <code>opchdav:updateInterval</code>.
+                <code>AdviseProcessed</code> receives <code>opchdav:startTime</code>, or <code>NOW</code> when absent,
+                <code>opchdav:resampleInterval</code>, <code>opchdav:aggregate</code>, and
+                <code>opchdav:numIntervals</code>. Every <code>OnDataChange</code> callback for the request is a
+                notification whose data is a <a href="#time-series">time series</a>.
+              </td>
+              <td>
+                <code>observable</code> SHOULD be <code>true</code>. The server MUST implement
+                <code>IOPCHDA_AsyncRead</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>unobserveproperty</code></td>
+              <td>
+                Call <code>IOPCHDA_AsyncRead::Cancel</code> with the cancel identifier returned by the advise method.
+              </td>
+              <td>None.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Form that carries <code>ReadProcessed</code> MUST also carry <code>opchdav:aggregate</code>, and a Form that
+          carries <code>ReadAttribute</code> MUST also carry <code>opchdav:attributeId</code>, unless the Form only
+          contains <code>invokeaction</code> and the action input supplies the parameter. A Form whose
+          <code>observeproperty</code> operation uses <code>AdviseRaw</code> MUST carry
+          <code>opchdav:updateInterval</code>, and one that uses <code>AdviseProcessed</code> MUST carry
+          <code>opchdav:aggregate</code> and a positive <code>opchdav:resampleInterval</code>.
+        </p>
+        <p>
+          A <code>readproperty</code> operation with relative times returns a sliding window of history, for example the
+          values of the last hour for <code>"opchdav:startTime": "NOW-1H"</code>. A Thing Description that needs the
+          application to choose the time range SHOULD use an Action instead.
+        </p>
+      </section>
+
+      <section id="action-mappings">
+        <h3>Action Mappings</h3>
+        <p>
+          An <code>invokeaction</code> operation calls the method given by <code>opchdav:method</code>. The parameters
+          of the method are taken from the Form terms and are overridden by members of the same name in the action
+          input, which MUST be a JSON object when present. The following input members are defined:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Used by</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>startTime</code>, <code>endTime</code></td>
+              <td>
+                <code>ReadRaw</code>, <code>ReadProcessed</code>, <code>ReadModified</code>, <code>ReadAttribute</code>,
+                <code>ReadAnnotations</code>, <code>DeleteRaw</code>
+              </td>
+              <td>string, as described in <a href="#times">Times</a></td>
+            </tr>
+            <tr>
+              <td><code>numValues</code></td>
+              <td><code>ReadRaw</code>, <code>ReadModified</code></td>
+              <td>integer</td>
+            </tr>
+            <tr>
+              <td><code>bounds</code></td>
+              <td><code>ReadRaw</code></td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>aggregate</code>, <code>resampleInterval</code></td>
+              <td><code>ReadProcessed</code></td>
+              <td>as the corresponding Form terms</td>
+            </tr>
+            <tr>
+              <td><code>attributeId</code></td>
+              <td><code>ReadAttribute</code></td>
+              <td>integer</td>
+            </tr>
+            <tr>
+              <td><code>timestamps</code></td>
+              <td><code>ReadAtTime</code>, <code>DeleteAtTime</code></td>
+              <td>array of [[RFC3339]] date-time strings</td>
+            </tr>
+            <tr>
+              <td><code>values</code></td>
+              <td><code>Insert</code>, <code>Replace</code>, <code>InsertReplace</code></td>
+              <td><a href="#time-series">time series</a></td>
+            </tr>
+            <tr>
+              <td><code>annotations</code></td>
+              <td><code>InsertAnnotations</code></td>
+              <td>array of objects with the members <code>timestamp</code> and <code>annotation</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The action output is the result listed in <a href="#methods">Methods</a>. Update, delete, and annotation
+          methods have no output. They pass the item handle once for every value, timestamp, or annotation, and the
+          action fails when the server reports an error for any of them. OPC HDA has no transactions, so the values for
+          which the server reported success remain changed; the Consumer SHOULD report which values failed.
+        </p>
+      </section>
+
+      <section id="server-status">
+        <h3>Server Status</h3>
+        <p>
+          A Form whose resolved target equals the server URI addresses the server object. Such a Form MUST only contain
+          the <code>readproperty</code> operation and MUST NOT carry <code>opchdav:method</code>.
+          <code>readproperty</code> calls <code>IOPCHDA_Server::GetHistorianStatus</code> and returns an object with the
+          following members:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Output parameter</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>state</code></td>
+              <td><code>pwStatus</code></td>
+              <td>
+                One of <code>up</code>, <code>down</code>, and <code>indeterminate</code>, for <code>OPCHDA_UP</code>,
+                <code>OPCHDA_DOWN</code>, and <code>OPCHDA_INDETERMINATE</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>currentTime</code></td>
+              <td><code>pftCurrentTime</code></td>
+              <td>[[RFC3339]] date-time</td>
+            </tr>
+            <tr>
+              <td><code>startTime</code></td>
+              <td><code>pftStartTime</code></td>
+              <td>[[RFC3339]] date-time</td>
+            </tr>
+            <tr>
+              <td><code>version</code></td>
+              <td><code>pwMajorVersion</code>, <code>pwMinorVersion</code>, <code>pwBuildNumber</code></td>
+              <td>string of the form <code>major.minor.build</code></td>
+            </tr>
+            <tr>
+              <td><code>maxReturnValues</code></td>
+              <td><code>pdwMaxReturnValues</code></td>
+              <td>integer; <code>0</code> means no limit</td>
+            </tr>
+            <tr>
+              <td><code>statusString</code></td>
+              <td><code>ppszStatusString</code></td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>vendorInfo</code></td>
+              <td><code>ppszVendorInfo</code></td>
+              <td>string</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Members whose output parameter the server does not provide MUST be omitted.</p>
+      </section>
+
+      <section id="shutdown">
+        <h3>Server Shutdown</h3>
+        <p>
+          A Consumer SHOULD register an <code>IOPCShutdown</code> callback with the server [[OPC-COMMON]]. When the
+          server calls <code>ShutdownRequest</code>, the Consumer MUST release all references to the server, MUST end
+          all active observations with an error that includes the reason supplied by the server, and MAY reconnect
+          later.
+        </p>
+      </section>
+
+      <section id="event-mappings">
+        <h3>Event Mappings</h3>
+        <p>
+          No default mapping is defined for <code>subscribeevent</code>, <code>unsubscribeevent</code>, or WoT Event
+          affordances. A Thing Description conforming to the profile MUST NOT advertise those operations on an
+          <code>opchda</code> Form unless it also declares and documents an additional binding extension.
+        </p>
+      </section>
+
+      <section id="error-handling">
+        <h3>Error Handling</h3>
+        <p>
+          OPC HDA reports errors per item, value, or attribute as <code>HRESULT</code> codes. A Consumer MUST report a
+          failed operation to the application when the call or a per-item result fails. The following codes are
+          particularly relevant:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Meaning</th>
+              <th>Consumer behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>OPC_E_UNKNOWNITEMID</code>, <code>OPC_E_INVALIDITEMID</code></td>
+              <td>The item ID is not known to the server or is syntactically invalid.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_NODATA</code></td>
+              <td>The time range contains no data.</td>
+              <td>Succeed with an empty time series.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_MOREDATA</code></td>
+              <td>The server returned fewer values than exist, because of <code>numValues</code> or its own limit.</td>
+              <td>
+                When <code>numValues</code> is <code>0</code>, continue reading as described below, or report to the
+                application that the result is incomplete. Otherwise, succeed.
+              </td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_MAXEXCEEDED</code></td>
+              <td>The request exceeds the maximum number of values that the server can return.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_INVALIDAGGREGATE</code></td>
+              <td>The aggregate is not supported for the item.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_INVALIDATTRID</code>, <code>OPC_E_UNKNOWNATTRID</code></td>
+              <td>The attribute identifier is invalid or not known to the server.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_CURRENTVALUE</code></td>
+              <td>The attribute has no history, and only its current value was returned.</td>
+              <td>Succeed.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_NOT_AVAIL</code></td>
+              <td>The method is not available for the item.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_DATAEXISTS</code>, <code>OPC_E_NODATAEXISTS</code></td>
+              <td>
+                <code>Insert</code> found a value at the timestamp, or <code>Replace</code> or a delete method found
+                none.
+              </td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_INVALIDDATATYPE</code></td>
+              <td>The written value has a data type that the server cannot store for the item.</td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_INSERTED</code>, <code>OPC_S_REPLACED</code></td>
+              <td><code>InsertReplace</code> inserted or replaced the value.</td>
+              <td>Succeed.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          To continue a <code>ReadRaw</code> or <code>ReadModified</code> after <code>OPC_S_MOREDATA</code>, the
+          Consumer repeats the call with the start time set to the timestamp of the last returned value and drops values
+          it has already returned, until the server no longer reports <code>OPC_S_MOREDATA</code>.
+        </p>
+      </section>
+    </section>
+
+    <section id="payload-mapping">
+      <h2>Payload Mapping</h2>
+
+      <section id="time-series">
+        <h3>Time Series</h3>
+        <p>
+          Historical values are represented at the WoT Consumer boundary as a JSON array of objects, one per value, in
+          the order returned by the server. Each object has the following members:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>timestamp</code></td>
+              <td>Timestamp of the value.</td>
+              <td>[[RFC3339]] date-time in UTC</td>
+            </tr>
+            <tr>
+              <td><code>value</code></td>
+              <td>
+                Value, converted from its <code>VARIANT</code> as described for OPC DA item values in
+                [[WOT-OPCDA-BINDING]].
+              </td>
+              <td>JSON value, or <code>null</code> when the server returned <code>VT_EMPTY</code></td>
+            </tr>
+            <tr>
+              <td><code>quality</code></td>
+              <td>
+                OPC HDA quality. The low 16 bits carry the OPC DA quality, and the high 16 bits carry the OPC HDA
+                quality flags, such as <code>OPCHDA_RAW</code> (<code>0x40000</code>),
+                <code>OPCHDA_INTERPOLATED</code> (<code>0x20000</code>),
+                <code>OPCHDA_CALCULATED</code> (<code>0x80000</code>), and
+                <code>OPCHDA_NODATA</code> (<code>0x200000</code>).
+              </td>
+              <td>integer, from 0 to 4294967295</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Because every value carries its quality, values of every quality are delivered and the application evaluates
+          the quality. The WoT Data Schema of the affordance MUST describe this array, as shown in the
+          <a href="#examples">Examples</a>.
+        </p>
+        <p>
+          When writing, <code>timestamp</code> and <code>value</code> are required. When <code>quality</code> is absent,
+          the Consumer MUST pass <code>OPC_QUALITY_GOOD</code> (<code>192</code>). When <code>opchdav:type</code> is
+          present, the Consumer MUST convert every value to that type before passing it to the server.
+        </p>
+        <pre class="example json" title="Time series">
+[
+  { "timestamp": "2026-11-17T06:00:00Z", "value": 41.7, "quality": 262336 },
+  { "timestamp": "2026-11-17T06:00:05Z", "value": 41.9, "quality": 262336 }
+]
+        </pre>
+        <p>The quality <code>262336</code> is <code>OPCHDA_RAW</code> combined with <code>OPC_QUALITY_GOOD</code>.</p>
+      </section>
+
+      <section id="modified-values">
+        <h3>Modified Values</h3>
+        <p>
+          <code>ReadModified</code> returns the values that were replaced or deleted, as a time series whose objects
+          additionally have the following members:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Description</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>modificationTime</code></td>
+              <td>Time at which the value was modified.</td>
+              <td>[[RFC3339]] date-time in UTC</td>
+            </tr>
+            <tr>
+              <td><code>editType</code></td>
+              <td>Kind of modification.</td>
+              <td>
+                One of <code>insert</code>, <code>replace</code>, <code>insertReplace</code>, and <code>delete</code>,
+                for <code>OPCHDA_INSERT</code> to <code>OPCHDA_DELETE</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>user</code></td>
+              <td>User who made the modification.</td>
+              <td>string</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="attribute-values">
+        <h3>Attribute Values</h3>
+        <p>
+          <code>ReadAttribute</code> returns a JSON array of objects with the members <code>timestamp</code> and
+          <code>value</code>, one for every value of the attribute in the time range. Attribute values carry no quality.
+        </p>
+      </section>
+
+      <section id="annotations">
+        <h3>Annotations</h3>
+        <p>
+          <code>ReadAnnotations</code> returns a JSON array of objects with the members <code>timestamp</code>, the
+          timestamp of the annotated value; <code>annotation</code>, the annotation text; <code>annotationTime</code>,
+          the time at which the annotation was entered; and <code>user</code>, the user who entered it. For
+          <code>InsertAnnotations</code>, only <code>timestamp</code> and <code>annotation</code> are supplied; the
+          server sets the annotation time and the user.
+        </p>
+      </section>
+    </section>
+
+    <section id="td-generation" class="informative">
+      <h2>Generating Thing Descriptions</h2>
+      <p>
+        OPC HDA servers are browsable. A tool that generates a Thing Description can walk the server address space with
+        the <code>IOPCHDA_Browser</code> object returned by <code>IOPCHDA_Server::CreateBrowse</code>, and create a
+        Property or an Action for every item, using the fully qualified item ID as the <code>href</code>. It can then
+        read the current values of the item attributes with <code>ReadAttribute</code> to fill in the affordance:
+      </p>
+      <ul>
+        <li>the data type (<code>1</code>) gives the Data Schema type of <code>value</code>;</li>
+        <li>
+          the description (<code>2</code>) and the engineering units (<code>3</code>) give <code>description</code> and
+          <code>unit</code>;
+        </li>
+        <li>
+          a stepped item (<code>4</code>) is better summarized with <code>timeAverage</code> than with
+          <code>interpolative</code>; and
+        </li>
+        <li>
+          <code>IOPCHDA_SyncUpdate::QueryCapabilities</code> and <code>IOPCHDA_SyncAnnotations::QueryCapabilities</code>
+          tell whether update and annotation methods can be offered.
+        </li>
+      </ul>
+    </section>
+
+    <section id="security-considerations" class="informative">
+      <h2>Security Considerations</h2>
+      <p>
+        OPC HDA relies on the security of COM and DCOM [[MS-DCOM]], exactly as OPC DA does. The security considerations
+        of [[WOT-OPCDA-BINDING]] apply unchanged, in particular:
+      </p>
+      <ul>
+        <li>
+          a Consumer SHOULD use the authentication level <code>RPC_C_AUTHN_LEVEL_PKT_PRIVACY</code> and MUST use at
+          least <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code> for remote servers [[KB5004442]];
+        </li>
+        <li>
+          a Consumer that observes properties accepts incoming DCOM calls, and SHOULD restrict them to the account of
+          the server;
+        </li>
+        <li>
+          a Thing Description SHOULD describe an <code>opchda</code> endpoint with the <code>auto</code> security scheme
+          of [[WOT-THING-DESCRIPTION]], and <code>nosec</code> MUST NOT be used for a remote server; and
+        </li>
+        <li>servers can additionally implement the OPC Security interfaces [[OPC-SECURITY]].</li>
+      </ul>
+      <p>
+        Historical data is often used as a record for quality assurance and regulatory purposes. Update, delete, and
+        annotation methods change that record. A Thing Description SHOULD only expose them where the application
+        requires it, and a Consumer SHOULD treat such Forms as privileged operations. A server records the user of every
+        modification, which <code>ReadModified</code> returns, so the Windows account of the Consumer becomes part of
+        the record.
+      </p>
+      <p>
+        Unbounded reads, for example <code>ReadRaw</code> over many years with <code>numValues</code> set to
+        <code>0</code>, can put heavy load on the server and the Consumer. A Consumer SHOULD limit the number of values
+        it accumulates when continuing reads after <code>OPC_S_MOREDATA</code>.
+      </p>
+      <p class="note" title="Open issue">
+        As in [[WOT-OPCDA-BINDING]], this binding does not yet define security scheme terms for selecting the DCOM
+        authentication level and impersonation level, or for passing explicit Windows or OPC Security credentials.
+      </p>
+    </section>
+
+    <section id="examples" class="informative">
+      <h2>Examples</h2>
+
+      <section id="example-sliding-window">
+        <h3>Sliding Window and Subscription</h3>
+        <pre class="example json" title="OPC HDA Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "opchdav": "https://www.w3.org/2026/wot/opchda"
+    }
+  ],
+  "id": "urn:example:opchda:plant1",
+  "title": "Plant 1 Historian",
+  "base": "opchda://historian.example.com/Vendor.OPCHDAServer.1/",
+  "securityDefinitions": {
+    "auto_sc": {
+      "scheme": "auto"
+    }
+  },
+  "security": ["auto_sc"],
+  "properties": {
+    "FlowRateLastHour": {
+      "title": "Flow rate during the last hour",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "value": { "type": "number" },
+          "quality": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+        }
+      },
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "Plant1.Unit3.FlowRate",
+          "op": ["readproperty", "observeproperty", "unobserveproperty"],
+          "opchdav:startTime": "NOW-1H",
+          "opchdav:updateInterval": 10000
+        }
+      ]
+    }
+  }
+}
+        </pre>
+        <p>
+          <code>readproperty</code> returns the raw values of the last hour, and <code>observeproperty</code> delivers
+          the newly historized raw values every ten seconds.
+        </p>
+      </section>
+
+      <section id="example-processed">
+        <h3>Hourly Averages</h3>
+        <pre class="example json" title="Processed read">
+{
+  "FlowRateHourlyAverage": {
+    "title": "Hourly average flow rate since yesterday",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "value": { "type": "number" },
+        "quality": { "type": "integer" }
+      }
+    },
+    "readOnly": true,
+    "forms": [
+      {
+        "href": "Plant1.Unit3.FlowRate",
+        "op": ["readproperty"],
+        "opchdav:method": "ReadProcessed",
+        "opchdav:startTime": "DAY-1D",
+        "opchdav:endTime": "NOW",
+        "opchdav:aggregate": "timeAverage",
+        "opchdav:resampleInterval": 3600000
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-action">
+        <h3>Raw History Query</h3>
+        <pre class="example json" title="Action with a time range input">
+{
+  "ReadFlowRateHistory": {
+    "title": "Read the raw flow rate history",
+    "input": {
+      "type": "object",
+      "properties": {
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "numValues": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["startTime"]
+    },
+    "output": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "value": { "type": "number" },
+          "quality": { "type": "integer" }
+        }
+      }
+    },
+    "safe": true,
+    "idempotent": true,
+    "forms": [
+      {
+        "href": "Plant1.Unit3.FlowRate",
+        "op": "invokeaction",
+        "opchdav:method": "ReadRaw",
+        "opchdav:numValues": 10000,
+        "opchdav:timeout": 30000
+      }
+    ]
+  }
+}
+        </pre>
+        <pre class="example json" title="Action input">
+{
+  "startTime": "2026-11-16T00:00:00Z",
+  "endTime": "2026-11-17T00:00:00Z"
+}
+        </pre>
+      </section>
+
+      <section id="example-annotations">
+        <h3>Annotations</h3>
+        <pre class="example json" title="Inserting an annotation">
+{
+  "AnnotateFlowRate": {
+    "title": "Annotate a flow rate value",
+    "input": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": { "type": "string", "format": "date-time" },
+              "annotation": { "type": "string" }
+            },
+            "required": ["timestamp", "annotation"]
+          }
+        }
+      },
+      "required": ["annotations"]
+    },
+    "forms": [
+      {
+        "href": "Plant1.Unit3.FlowRate",
+        "op": "invokeaction",
+        "opchdav:method": "InsertAnnotations"
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+
+      <section id="example-server-status">
+        <h3>Historian Status</h3>
+        <pre class="example json" title="Historian status">
+{
+  "HistorianStatus": {
+    "type": "object",
+    "readOnly": true,
+    "properties": {
+      "state": { "type": "string", "enum": ["up", "down", "indeterminate"] },
+      "currentTime": { "type": "string", "format": "date-time" },
+      "startTime": { "type": "string", "format": "date-time" },
+      "version": { "type": "string" },
+      "maxReturnValues": { "type": "integer" },
+      "statusString": { "type": "string" },
+      "vendorInfo": { "type": "string" }
+    },
+    "forms": [
+      {
+        "href": "./",
+        "op": ["readproperty"]
+      }
+    ]
+  }
+}
+        </pre>
+      </section>
+    </section>
+
+    <section id="implementation-notes" class="informative">
+      <h2>Implementation Notes</h2>
+      <ul>
+        <li>
+          OPC HDA uses COM and is therefore native to Microsoft Windows. Consumers on other platforms need a DCOM
+          implementation of their own, or a gateway that exposes the server through another protocol, such as an OPC UA
+          wrapper of an OPC HDA server.
+        </li>
+        <li>
+          Remote access requires the OPC proxy and stub libraries of the OPC Core Components on both computers, and the
+          OPC Server Enumerator on the server computer for ProgID resolution.
+        </li>
+        <li>
+          Many products offer an OPC DA server and an OPC HDA server for the same item IDs. A Thing Description can then
+          combine an <code>opcda</code> Form for the current value and an <code>opchda</code> Form for its history in
+          the same Thing, using absolute <code>href</code> values for the Forms that do not match <code>base</code>.
+        </li>
+        <li>
+          The aggregates of OPC HDA were carried over into OPC UA Part 13, so the aggregate names of this binding remain
+          recognizable when a historian is later accessed through OPC UA.
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>

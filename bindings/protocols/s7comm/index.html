@@ -167,8 +167,9 @@ s7-URI = "s7://" host [ ":" port ] [ "/" rack "," slot ] [ "/" ]
         <p>Where:</p>
         <ul>
           <li>
-            <code>host</code> is an IPv4 address, IPv6 literal, or DNS name of the controller or of the communication
-            processor in front of it;
+            <code>host</code> is an IPv4 address or a host name, such as <code>mydevice.local</code>, of the controller
+            or of the communication processor in front of it. IPv6 is not supported by S7 controllers and MUST NOT be
+            used;
           </li>
           <li>
             <code>port</code> is optional; when omitted, an implementation uses the ISO-on-TCP port 102 [[RFC1006]].
@@ -254,7 +255,7 @@ s7-URI = "s7://" host [ ":" port ] [ "/" rack "," slot ] [ "/" ]
         <p>The resolved Form target identifies one variable in the controller memory:</p>
         <pre class="nohighlight">
 s7-address-URI = s7-URI "/" address
-address        = "%" memory-area byte-offset [ "." bit-offset ] ":" data-type
+address        = "%" memory-area [ short-code ] byte-offset [ "." bit-offset ] ":" data-type
                / "%DB" db-number "." "DB" short-code byte-offset [ "." bit-offset ] ":" data-type
                / "%DB" db-number ":" byte-offset [ "." bit-offset ] ":" data-type
 data-type      = type-name [ "(" length ")" ]
@@ -263,10 +264,12 @@ short-code     = "X" / "B" / "W" / "D"
         <p>
           The <code>address</code> is the address notation of the Siemens engineering tools, so that it can be copied
           from TIA Portal, and it is the notation that the surveyed implementations parse [[PLC4X-S7]]. The third
-          alternative is the short data block notation, which is handled identically to the second. The optional
-          <code>length</code> declares the maximum length of a <code>STRING</code> or <code>WSTRING</code> value.
-          Because the percent sign is reserved in URIs, it MUST be percent-encoded as <code>%25</code>, see
-          <a href="#reserved-characters">Reserved Characters</a>.
+          alternative is the short data block notation, which is handled identically to the second. As for data blocks,
+          the address of the other memory areas MAY carry a <code>short-code</code> after the area letter, as in
+          <code>%IX0.3</code> or <code>%MW100</code>; the address with and without the short code is handled
+          identically. The optional <code>length</code> declares the maximum length of a <code>STRING</code> or
+          <code>WSTRING</code> value. Because the percent sign is reserved in URIs, it MUST be percent-encoded as
+          <code>%25</code>, see <a href="#reserved-characters">Reserved Characters</a>.
         </p>
         <table class="def">
           <thead>
@@ -279,6 +282,14 @@ short-code     = "X" / "B" / "W" / "D"
             <tr>
               <td><code>%I0.3:BOOL</code></td>
               <td>Bit 3 of input byte 0</td>
+            </tr>
+            <tr>
+              <td><code>%IX0.3:BOOL</code></td>
+              <td>The same bit with the short code, as for data blocks</td>
+            </tr>
+            <tr>
+              <td><code>%MW10:INT</code></td>
+              <td>16-bit signed integer at flag or marker byte 10</td>
             </tr>
             <tr>
               <td><code>%Q1.0:BOOL</code></td>
@@ -314,6 +325,7 @@ short-code     = "X" / "B" / "W" / "D"
 {
   "href": "./%25DB1.DBW20:INT",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "s7v:type": "s7v:INT"
 }
         </pre>
@@ -341,6 +353,7 @@ short-code     = "X" / "B" / "W" / "D"
 {
   "href": "TankLevel",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "s7v:type": "s7v:INT",
   "s7v:area": "DB",
   "s7v:dbNumber": 1,
@@ -523,7 +536,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
             <tr>
               <td><code>s7v:dbNumber</code></td>
               <td>Number of the data block.</td>
-              <td>required when <code>s7v:area</code> is <code>DB</code> or <code>DBI</code></td>
+              <td>required when <code>s7v:area</code> is <code>DB</code></td>
               <td>
                 <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#positiveInteger"
                   ><code>positiveInteger</code></a
@@ -625,13 +638,10 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
               <td><code>DB</code></td>
               <td>Data blocks</td>
               <td><code>%DB</code><em>n</em></td>
-              <td>User-defined data, addressed by data block number and byte offset</td>
-            </tr>
-            <tr>
-              <td><code>DBI</code></td>
-              <td>Instance data blocks</td>
-              <td><code>%DBI</code><em>n</em></td>
-              <td>Instance data of a function block</td>
+              <td>
+                User-defined data, addressed by data block number and byte offset. Global and instance data blocks are
+                addressed with the same syntax.
+              </td>
             </tr>
             <tr>
               <td><code>C</code></td>
@@ -858,6 +868,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
 {
   "href": "./%25IW64:INT",
   "op": ["readproperty"],
+  "contentType": "application/octet-stream",
   "s7v:type": "s7v:INT",
   "s7v:scale": 0.0036169,
   "s7v:offset": -50
@@ -963,12 +974,14 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
     {
       "href": "./%25DB1.DBD20:REAL",
       "op": ["readproperty", "observeproperty"],
+      "contentType": "application/octet-stream",
       "s7v:type": "s7v:REAL",
       "s7v:service": "ReadVariable"
     },
     {
       "href": "./%25DB1.DBD20:REAL",
       "op": ["writeproperty"],
+      "contentType": "application/octet-stream",
       "s7v:type": "s7v:REAL",
       "s7v:service": "WriteVariable"
     }
@@ -1010,6 +1023,17 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         structured value is described by one Form per member, each addressing its own byte offset, which is the access
         method that both surveyed implementations support.
       </p>
+
+      <section id="contenttype">
+        <h3>S7Comm <code>contentType</code></h3>
+        <p>
+          S7Comm transports variable values only in the binary representation of the controller memory, as described in
+          <a href="#data-types">Data Types</a>. Since there is no other option and to avoid falling back to the
+          <a href="https://www.w3.org/TR/2023/REC-wot-thing-description11-20231205/#sec-default-values">default</a>
+          of <code>application/json</code>, <code>contentType</code> MUST always be set to
+          <code>application/octet-stream</code>.
+        </p>
+      </section>
     </section>
 
     <section id="security-considerations" class="informative">
@@ -1068,6 +1092,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         {
           "href": "./%25DB1.DBD20:REAL",
           "op": ["readproperty", "observeproperty", "writeproperty"],
+          "contentType": "application/octet-stream",
           "s7v:type": "s7v:REAL",
           "s7v:pollingTime": 1000,
           "s7v:timeout": 2000
@@ -1091,6 +1116,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "./%25I0.3:BOOL",
         "op": ["readproperty", "observeproperty"],
+        "contentType": "application/octet-stream",
         "s7v:type": "s7v:BOOL",
         "s7v:pollingTime": 500
       }
@@ -1112,6 +1138,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "TankTemperature",
         "op": ["readproperty", "observeproperty"],
+        "contentType": "application/octet-stream",
         "s7v:type": "s7v:INT",
         "s7v:area": "DB",
         "s7v:dbNumber": 12,
@@ -1136,6 +1163,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
       {
         "href": "./%25DB1.DBB100:STRING(20)",
         "op": ["readproperty"],
+        "contentType": "application/octet-stream",
         "s7v:type": "s7v:STRING",
         "s7v:length": 20
       }
@@ -1177,6 +1205,7 @@ s7://192.168.0.10/0,1/%25DB1.DBX0.3:BOOL
         {
           "href": "./%25DB1.DBW310:INT",
           "op": ["readproperty", "observeproperty"],
+          "contentType": "application/octet-stream",
           "s7v:type": "s7v:INT",
           "s7v:pollingTime": 2000
         }

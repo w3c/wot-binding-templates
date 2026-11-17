@@ -22,7 +22,8 @@
 lorav: a owl:Ontology ;
     rdfs:label "LoRaWAN Binding Vocabulary" ;
     rdfs:comment "Vocabulary for describing LoRaWAN payload bindings in WoT Thing Descriptions." ;
-    owl:versionInfo "0.3.0" .
+    owl:versionInfo "2026-11-02 (w3c/wot-binding-templates#506)" ;
+    rdfs:seeAlso <https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan/#changes> .
 
 # --- Thing-level terms -------------------------------------------------------
 
@@ -158,6 +159,11 @@ lorav:frequencyPlan a owl:DatatypeProperty ;
     rdfs:label "frequency plan" ;
     rdfs:comment "LoRaWAN Network Server frequency plan identifier, e.g. 'EU_863_870_TTN'." ;
     rdfs:range xsd:string .
+
+lorav:defaultEventingFrequencyMinutes a owl:DatatypeProperty ;
+    rdfs:label "default eventing frequency (minutes)" ;
+    rdfs:comment "Default interval, in minutes, between periodic uplinks sent by the device as configured out of the box. Lets consumers estimate when the next event is expected; the actual interval may be changed by downlink configuration." ;
+    rdfs:range xsd:decimal .
 
 # --- Withdrawn terms ---------------------------------------------------------
 #

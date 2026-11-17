@@ -41,7 +41,7 @@
     },
     "s7MemoryArea": {
       "type": "string",
-      "enum": ["I", "Q", "M", "DB", "DBI", "C", "T", "D", "LD"]
+      "enum": ["I", "Q", "M", "DB", "C", "T", "D", "LD"]
     },
     "s7commForm": {
       "type": "object",
@@ -49,6 +49,9 @@
         "href": {
           "type": "string",
           "format": "uri-reference"
+        },
+        "contentType": {
+          "const": "application/octet-stream"
         },
         "op": {
           "type": "array",
@@ -102,7 +105,7 @@
           "minimum": 1
         }
       },
-      "required": ["href", "op", "s7v:type"],
+      "required": ["href", "op", "contentType", "s7v:type"],
       "anyOf": [
         {
           "description": "Address-bearing href in the TIA Portal notation, with the percent sign encoded.",
@@ -131,7 +134,7 @@
             "required": ["s7v:area"],
             "properties": {
               "s7v:area": {
-                "enum": ["DB", "DBI"]
+                "const": "DB"
               }
             }
           },

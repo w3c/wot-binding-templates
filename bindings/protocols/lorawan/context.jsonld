@@ -28,6 +28,7 @@
     "macVersion": "lorav:macVersion",
 
     "region": "lorav:region",
-    "frequencyPlan": "lorav:frequencyPlan"
+    "frequencyPlan": "lorav:frequencyPlan",
+    "defaultEventingFrequencyMinutes": "lorav:defaultEventingFrequencyMinutes"
   }
 }

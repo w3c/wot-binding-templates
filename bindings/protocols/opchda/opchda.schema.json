@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "anyOf": [
+    {
+      "$ref": "https://www.w3.org/2022/wot/td-schema/v1.1"
+    }
+  ],
+  "definitions": {
+    "opchdaOperation": {
+      "type": "string",
+      "enum": ["readproperty", "observeproperty", "unobserveproperty"]
+    },
+    "opchdaForm": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "op": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/opchdaOperation"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/opchdaOperation"
+              }
+            }
+          ]
+        },
+        "opchdav:updateInterval": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "opchdav:timeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "required": ["href", "op"],
+      "if": {
+        "properties": {
+          "op": {
+            "anyOf": [
+              {
+                "const": "observeproperty"
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "const": "observeproperty"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": ["opchdav:updateInterval"]
+      }
+    },
+    "absoluteOpchdaForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "pattern": "^opchda://"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "href": {
+                "pattern": "^opchda://localhost/[^/?#]+/[^?#]*$"
+              }
+            }
+          },
+          {
+            "$ref": "#/definitions/opchdaForm"
+          }
+        ]
+      }
+    },
+    "relativeForm": {
+      "if": {
+        "required": ["href"],
+        "properties": {
+          "href": {
+            "type": "string",
+            "not": {
+              "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
+            }
+          }
+        }
+      },
+      "then": {
+        "$ref": "#/definitions/opchdaForm"
+      }
+    },
+    "absoluteOpchdaAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/absoluteOpchdaForm"
+            }
+          }
+        }
+      }
+    },
+    "relativeAffordances": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/relativeForm"
+            }
+          }
+        }
+      }
+    },
+    "absoluteOpchdaForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/absoluteOpchdaForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/absoluteOpchdaAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/absoluteOpchdaAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/absoluteOpchdaAffordances"
+        }
+      }
+    },
+    "relativeForms": {
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/relativeForm"
+          }
+        },
+        "properties": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "actions": {
+          "$ref": "#/definitions/relativeAffordances"
+        },
+        "events": {
+          "$ref": "#/definitions/relativeAffordances"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "contains": {
+        "type": "object",
+        "required": ["opchdav"],
+        "properties": {
+          "opchdav": {
+            "type": "string",
+            "const": "https://www.w3.org/2026/wot/opchda"
+          }
+        }
+      }
+    },
+    "base": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/absoluteOpchdaForms"
+    },
+    {
+      "if": {
+        "required": ["base"],
+        "properties": {
+          "base": {
+            "type": "string",
+            "pattern": "^opchda://"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "base": {
+                "pattern": "^opchda://localhost/[^/?#]+/$"
+              }
+            }
+          },
+          {
+            "$ref": "#/definitions/relativeForms"
+          }
+        ]
+      }
+    }
+  ]
+}

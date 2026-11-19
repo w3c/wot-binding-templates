@@ -48,6 +48,9 @@ This is done through additional descriptive vocabularies, Thing Models and examp
   - [EtherNet/IP Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/ethernetip/index.html)
   - [S7Comm Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/s7comm/index.html)
   - [LoRaWAN Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/lorawan/index.html)
+  - [OPC DA Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/index.html)
+  - [OPC HDA Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/index.html)
+  - [OPC A&E Binding](https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/index.html)
   - [XML Binding](https://w3c.github.io/wot-binding-templates/bindings/payloads/xml/index.html)
 
 - Binding Publications by other organizations:

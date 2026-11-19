@@ -1,0 +1,1502 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "ED",
+        group: "wg/wot",
+        editors: [
+          {
+            name: "Erich Barnstedt",
+            company: "Microsoft",
+            companyURL: "https://www.microsoft.com"
+          }
+        ],
+        edDraftURI: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcae/",
+        shortName: "wot-opcae-binding",
+        github: "https://github.com/w3c/wot-binding-templates",
+        localBiblio: {
+          "WOT-BINDING-REGISTRY": {
+            title: "Web of Things (WoT) Binding Registry",
+            href: "https://w3c.github.io/wot-binding-registry/",
+            authors: ["Ege Korkan"],
+            publisher: "W3C",
+            date: "November 2025"
+          },
+          "OPC-AE": {
+            title: "OPC Alarms and Events Custom Interface Standard, Version 1.10",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/alarms-and-events/",
+            publisher: "OPC Foundation",
+            date: "October 2002"
+          },
+          "OPC-COMMON": {
+            title: "OPC Common Definitions and Interfaces, Version 1.00",
+            href: "https://opcfoundation.org/developer-tools/specifications-classic/data-access/",
+            publisher: "OPC Foundation",
+            date: "October 1998"
+          },
+          "OPC-SECURITY": {
+            title: "OPC Security Custom Interface, Version 1.00",
+            publisher: "OPC Foundation",
+            date: "October 2000"
+          },
+          "OPC-UA-PART5": {
+            title: "OPC Unified Architecture Part 5: Information Model",
+            href: "https://reference.opcfoundation.org/specs/OPC-10000-5",
+            publisher: "OPC Foundation"
+          },
+          "OPC-UA-PART9": {
+            title: "OPC Unified Architecture Part 9: Alarms and Conditions",
+            href: "https://reference.opcfoundation.org/specs/OPC-10000-9",
+            publisher: "OPC Foundation"
+          },
+          "WOT-OPCDA-BINDING": {
+            title: "Web of Things (WoT) OPC DA Binding",
+            href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/",
+            publisher: "W3C"
+          },
+          "MS-DCOM": {
+            title: "[MS-DCOM]: Distributed Component Object Model (DCOM) Remote Protocol",
+            href: "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dcom/4a893f3d-bd29-48cd-9f43-d9777a4415b0",
+            publisher: "Microsoft"
+          }
+        },
+        otherLinks: [
+          {
+            key: "WoT Binding Registry",
+            data: [
+              {
+                value: "Web of Things (WoT) Binding Registry",
+                href: "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            key: "Bindings Section of the TD Specification",
+            data: [
+              {
+                value: "Explanation of the binding mechanism",
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            key: "Related OPC Classic Bindings",
+            data: [
+              {
+                value: "Web of Things (WoT) OPC DA Binding",
+                href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/"
+              },
+              {
+                value: "Web of Things (WoT) OPC HDA Binding",
+                href: "https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/"
+              }
+            ]
+          },
+          {
+            key: "JSON Schema",
+            data: [
+              {
+                value: "OPC A&E JSON Schema",
+                href: "opcae.schema.json"
+              }
+            ]
+          }
+        ]
+      };
+    </script>
+    <title>Web of Things (WoT) OPC A&amp;E Binding</title>
+  </head>
+
+  <body>
+    <section id="abstract">
+      <p>
+        This Web of Things (WoT) protocol binding describes how a Thing Description exposes the alarms and events of an
+        OPC Alarms and Events (OPC A&amp;E) server [[OPC-AE]], one of the COM-based OPC Classic specifications, and how
+        those alarms and events are made available as OPC UA Alarms and Conditions [[OPC-UA-PART9]].
+      </p>
+      <p>
+        The binding is limited to local COM: the Consumer and the OPC A&amp;E server run on the same computer. Remote
+        access through Distributed COM (DCOM) is not supported, see <a href="#com-only">COM Only</a>.
+      </p>
+      <p>The binding defines:</p>
+      <ul>
+        <li>the <code>opcae</code> URI scheme used to identify a local OPC A&amp;E server and its event sources;</li>
+        <li>event subscriptions for WoT Events, filtered by event type, category, severity, area, and source;</li>
+        <li>
+          a JSON payload for event notifications whose members are the fields of the corresponding OPC UA event types;
+        </li>
+        <li>
+          the exposure of these events as OPC UA events and conditions, and the mapping of the OPC UA condition methods,
+          such as <code>Acknowledge</code> and <code>ConditionRefresh</code>, onto the OPC A&amp;E interfaces; and
+        </li>
+        <li>mappings between WoT operations and the OPC A&amp;E interfaces.</li>
+      </ul>
+      <p>This protocol binding is not an OPC Foundation specification.</p>
+    </section>
+
+    <section id="sotd">
+      <p><em>This document is a work in progress.</em></p>
+      <p>
+        This initial version of the binding covers event subscriptions and condition acknowledgement of OPC A&amp;E 1.0
+        and 1.10 servers through local COM; DCOM is not covered. It shares the URI layout, the COM-only scope, and the
+        security considerations of the companion
+        <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opcda/">OPC DA Binding</a>
+        [[WOT-OPCDA-BINDING]] and
+        <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/opchda/">OPC HDA Binding</a>.
+      </p>
+    </section>
+
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        OPC Alarms and Events is the OPC Classic specification for alarms and event notifications. An OPC A&amp;E server
+        is a COM server that runs on a Microsoft Windows computer and reports events detected by control systems,
+        operator stations, or the server itself. Clients on the same computer reach the server through COM. The OPC
+        A&amp;E specification also allows remote clients through Distributed COM (DCOM) [[MS-DCOM]], which this binding
+        does not support.
+      </p>
+      <p>OPC A&amp;E distinguishes three types of events:</p>
+      <ul>
+        <li><em>simple events</em>, such as a device failure or a batch completion;</li>
+        <li>
+          <em>tracking events</em>, which report an action of an operator or another actor, such as a setpoint change;
+          and
+        </li>
+        <li>
+          <em>condition-related events</em>, which report a change of a <em>condition</em>, such as
+          <code>LevelAlarm</code>, of a <em>source</em>, such as <code>Plant1.Tank3.Level</code>. A condition is active
+          or inactive, acknowledged or unacknowledged, and enabled or disabled, and it has <em>subconditions</em>, such
+          as <code>HI</code> and <code>HI HI</code>.
+        </li>
+      </ul>
+      <p>
+        Every event has a <em>category</em>, a server-defined classification, and a <em>severity</em> from 1 to 1000.
+        Sources are organized in a hierarchy of <em>process areas</em>. A client creates an <em>event subscription</em>,
+        sets a filter on it, and receives the matching events through a callback.
+      </p>
+      <p>
+        The OPC A&amp;E condition model was carried over into OPC UA Alarms and Conditions [[OPC-UA-PART9]]. This
+        binding therefore describes an OPC A&amp;E event stream as a WoT Event, and represents every event notification
+        with the fields of the OPC UA event type that corresponds to the OPC A&amp;E event, such as
+        <code>ExclusiveLevelAlarmType</code> for a level alarm. Condition management, such as acknowledging an alarm, is
+        made through OPC UA instead of through WoT Actions: a Consumer that exposes the WoT Event as OPC UA events, for
+        example a WoT gateway that is also an OPC UA server, reports the conditions as OPC UA conditions and maps the
+        OPC UA condition methods onto the OPC A&amp;E methods, as specified in
+        <a href="#alarms-and-conditions">OPC UA Alarms and Conditions</a>. This keeps the Thing Description simple and
+        gives OPC UA clients the same view of the alarms that OPC UA wrappers of OPC A&amp;E servers provide.
+      </p>
+      <p>The following topics are outside the initial scope:</p>
+      <ul>
+        <li>remote access through DCOM, see <a href="#com-only">COM Only</a>;</li>
+        <li>the OPC XML web service specifications;</li>
+        <li>
+          condition management through WoT Actions and condition states as WoT Properties, including
+          <code>GetConditionState</code> and the enabling and disabling of conditions by process area;
+        </li>
+        <li>event server configuration, such as defining conditions;</li>
+        <li>translating event attributes to OPC DA item IDs with <code>TranslateToItemIDs</code>; and</li>
+        <li>normative discovery behavior.</li>
+      </ul>
+    </section>
+
+    <section id="conformance">
+      <p>
+        A Thing Description conforms to this binding when all Forms using the <code>opcae</code> scheme follow the
+        normative requirements in this document.
+      </p>
+      <p>An implementation conforms to this binding when it:</p>
+      <ol>
+        <li>recognizes the <code>opcae</code> URI scheme and rejects URIs that do not address the local computer;</li>
+        <li>resolves relative Form <code>href</code> values against the Thing Description <code>base</code> URI;</li>
+        <li>supports the operation mappings it advertises;</li>
+        <li>converts event notifications into the JSON payload specified; and</li>
+        <li>
+          when it exposes Events as OPC UA events, maps the OPC UA event types and condition methods as specified in
+          <a href="#alarms-and-conditions">OPC UA Alarms and Conditions</a>.
+        </li>
+      </ol>
+      <p>
+        The <dfn>interoperable profile</dfn> of this binding is the subset of its URI components, vocabulary terms, and
+        behaviors that every conforming Consumer MUST support. A Thing Description that uses only the interoperable
+        profile therefore works with every conforming Consumer, while anything outside it, such as a binding extension,
+        is only understood by Consumers that implement that extension. Unless a section states otherwise, all URI
+        components, vocabulary terms, and operation mappings defined normatively in this document belong to the
+        interoperable profile.
+      </p>
+    </section>
+
+    <section id="opc-classic-background" class="informative">
+      <h2>OPC Classic Background</h2>
+      <p>
+        OPC Data Access (DA), OPC Historical Data Access (HDA), and OPC A&amp;E are known together as
+        <em>OPC Classic</em>. They share the following foundations, which this binding relies on:
+      </p>
+      <ul>
+        <li>
+          A server is a COM class, identified by a class identifier (CLSID) and usually also by a programmatic
+          identifier (ProgID) such as <code>Vendor.OPCAEServer.1</code>. A client creates the server object with
+          <code>CoCreateInstance</code>. Most OPC servers are out-of-process servers, that is, separate executables that
+          COM starts on demand.
+        </li>
+        <li>
+          OPC A&amp;E servers register themselves in the component category <code>CATID_OPCAEServer10</code>, which lets
+          a client list the OPC A&amp;E servers installed on the computer.
+        </li>
+        <li>
+          All OPC Classic servers implement <code>IOPCCommon</code> and announce an orderly shutdown through the
+          <code>IOPCShutdown</code> callback interface [[OPC-COMMON]].
+        </li>
+        <li>
+          Event notifications are delivered over COM connection points, so the server calls back into the client
+          process.
+        </li>
+      </ul>
+    </section>
+
+    <section id="com-only">
+      <h2>COM Only</h2>
+      <p>
+        This binding only covers access to an OPC A&amp;E server through local COM. The Consumer MUST run on the same
+        computer as the server. Access to a server on another computer through DCOM [[MS-DCOM]] is outside the scope of
+        this binding, and a Consumer MUST NOT use DCOM to realize an <code>opcae</code> Form.
+      </p>
+      <p>
+        This is a deliberate limitation, shared with the companion OPC DA and OPC HDA bindings. DCOM is generally not
+        used in industry today because of its complex firewall and permission configuration and its security issues;
+        remote access to OPC Classic servers is instead commonly provided by OPC UA wrappers or tunnelling products that
+        run next to the server. The rationale is described in more detail in [[WOT-OPCDA-BINDING]].
+      </p>
+      <p>
+        A Thing Description that is consumed on another computer therefore describes the alarms and events through such
+        a gateway with a different protocol binding, or it is used by a Consumer, such as a WoT gateway, that runs on
+        the server computer and exposes the events again through a network protocol, such as OPC UA as described in
+        <a href="#alarms-and-conditions">OPC UA Alarms and Conditions</a>.
+      </p>
+    </section>
+
+    <section id="uri-scheme">
+      <h2>URI Scheme and Addressing</h2>
+
+      <section id="endpoint-uri">
+        <h3>Server URI</h3>
+        <p>An OPC A&amp;E server is identified by an <code>opcae</code> URI:</p>
+        <pre class="nohighlight">
+opcae-URI = "opcae://localhost/" server-id "/"
+server-id = progid / clsid
+        </pre>
+        <p>
+          The host, which is always <code>localhost</code>, and the components <code>progid</code> and
+          <code>clsid</code> are defined exactly as for the <code>opcda</code> URI in [[WOT-OPCDA-BINDING]]. In
+          particular, a Consumer MUST reject an <code>opcae</code> URI with any other host, the URI MUST NOT contain a
+          port, user information, query, or fragment, and the <code>base</code> of a Thing Description MUST end with
+          <code>/</code>.
+        </p>
+        <pre class="example json" title="Server in base">
+{
+  "base": "opcae://localhost/Vendor.OPCAEServer.1/"
+}
+        </pre>
+      </section>
+
+      <section id="source-reference">
+        <h3>Source Reference</h3>
+        <p>The resolved Form target identifies the server, or an event source of the server:</p>
+        <pre class="nohighlight">
+opcae-source-URI = opcae-URI [ source-name ]
+        </pre>
+        <p>
+          The <code>source-name</code> is the fully qualified name of a source, as reported in event notifications, for
+          example <code>Plant1.Tank3.Level</code>. The name is a single path segment and is percent-encoded and decoded
+          as specified for item IDs in [[WOT-OPCDA-BINDING]]: <code>/</code>, <code>?</code>, <code>#</code>,
+          <code>%</code>, <code>[</code>, <code>]</code>, <code>\</code>, and space MUST be percent-encoded, and a
+          relative <code>href</code> whose name contains a colon MUST start with <code>./</code> or percent-encode the
+          colon. An implementation MUST pass the percent-decoded name to the server exactly as written.
+        </p>
+        <p>
+          When the resolved target has no <code>source-name</code>, that is, when it equals the server URI, the Form
+          addresses the server as a whole. Such a Form is typically written with the <code>href</code>
+          <code>"./"</code>.
+        </p>
+      </section>
+    </section>
+
+    <section id="vocabulary">
+      <h2>OPC A&amp;E Vocabulary</h2>
+      <p>
+        The examples use the prefix <code>opcaev</code> for the provisional namespace. The prefix intentionally differs
+        from the <code>opcae</code> URI scheme name so that vocabulary terms are not confused with the scheme.
+      </p>
+      <pre class="example json" title="Vocabulary prefix">
+{
+  "opcaev": "https://www.w3.org/2026/wot/opcae"
+}
+      </pre>
+      <p>The namespace URI is provisional. It does not imply that a vocabulary is published at that location.</p>
+
+      <section id="form-terms">
+        <h3>Form Terms</h3>
+        <p>
+          The following terms describe the event subscription used by <code>subscribeevent</code>. Except for
+          <code>href</code>, <code>op</code>, and <code>opcaev:timeout</code>, they MUST NOT be used in a Form that
+          contains <code>readproperty</code>.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>href</code></td>
+              <td>Server or source reference, resolved against <code>base</code> when relative.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#anyURI"><code>anyURI</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>op</code></td>
+              <td>WoT operations supported by the Form.</td>
+              <td>required</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a> or Array
+                of <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:eventTypes</code></td>
+              <td>
+                Event types to receive, any of <code>simple</code>, <code>tracking</code>, and <code>condition</code>.
+              </td>
+              <td>optional, default all event types</td>
+              <td>
+                Array of
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:categories</code></td>
+              <td>Identifiers of the event categories to receive.</td>
+              <td>optional, default all categories</td>
+              <td>
+                Array of
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:lowSeverity</code></td>
+              <td>Lowest severity to receive.</td>
+              <td>optional, default <code>1</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a
+                >, from 1 to 1000
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:highSeverity</code></td>
+              <td>Highest severity to receive.</td>
+              <td>optional, default <code>1000</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a
+                >, from 1 to 1000
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:areas</code></td>
+              <td>Process areas whose events to receive, in the syntax accepted by the server.</td>
+              <td>optional, default all areas</td>
+              <td>
+                Array of
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:sources</code></td>
+              <td>Sources whose events to receive, in the syntax accepted by the server.</td>
+              <td>optional, default all sources</td>
+              <td>
+                Array of
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#string"><code>string</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:bufferTime</code></td>
+              <td>Requested time, in milliseconds, for which the server buffers events before sending them.</td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:maxSize</code></td>
+              <td>Requested maximum number of events per callback. The value <code>0</code> means no limit.</td>
+              <td>optional, default <code>0</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:keepAlive</code></td>
+              <td>
+                Requested keep-alive time, in milliseconds, after which the server sends an empty callback when it has
+                no events to send.
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:returnedAttributes</code></td>
+              <td>
+                Event attributes returned with the events of each category, see
+                <a href="#event-attributes">Event Attributes</a>. Each element is an object with the members
+                <code>opcaev:category</code>, a category identifier, and <code>opcaev:attributeIds</code>, an array of
+                attribute identifiers.
+              </td>
+              <td>optional</td>
+              <td>Array of Object</td>
+            </tr>
+            <tr>
+              <td><code>opcaev:refresh</code></td>
+              <td>
+                Requests the current state of all active and all unacknowledged conditions when the subscription starts,
+                see <a href="#refresh">Refresh</a>.
+              </td>
+              <td>optional, default <code>false</code></td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#boolean"><code>boolean</code></a>
+              </td>
+            </tr>
+            <tr>
+              <td><code>opcaev:timeout</code></td>
+              <td>Maximum time to wait for a server response, in milliseconds.</td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/#unsignedInt"><code>unsignedInt</code></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <section id="operation-mappings">
+      <h2>Operation Mappings</h2>
+
+      <section id="event-mappings">
+        <h3>Event Mappings</h3>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>WoT operation</th>
+              <th>OPC A&amp;E mapping</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>subscribeevent</code></td>
+              <td>
+                <ol>
+                  <li>
+                    Call <code>IOPCEventServer::CreateEventSubscription</code> with <code>bActive</code> set to
+                    <code>FALSE</code>, <code>opcaev:bufferTime</code>, and <code>opcaev:maxSize</code>.
+                  </li>
+                  <li>
+                    Call <code>IOPCEventSubscriptionMgt::SetFilter</code> with the filter given by the Form terms, see
+                    below.
+                  </li>
+                  <li>
+                    For every element of <code>opcaev:returnedAttributes</code>, call
+                    <code>IOPCEventSubscriptionMgt::SelectReturnedAttributes</code>.
+                  </li>
+                  <li>
+                    When <code>opcaev:keepAlive</code> is present, call
+                    <code>IOPCEventSubscriptionMgt2::SetKeepAlive</code>.
+                  </li>
+                  <li>
+                    Register an <code>IOPCEventSink</code> through the subscription's
+                    <code>IConnectionPointContainer</code>, and activate the subscription with
+                    <code>IOPCEventSubscriptionMgt::SetState</code>.
+                  </li>
+                  <li>
+                    When <code>opcaev:refresh</code> is <code>true</code>, call
+                    <code>IOPCEventSubscriptionMgt::Refresh</code>.
+                  </li>
+                </ol>
+                Every event of every <code>IOPCEventSink::OnEvent</code> callback for the subscription is a notification
+                whose data is an <a href="#event-notifications">event notification</a>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>unsubscribeevent</code></td>
+              <td>
+                Unregister the <code>IOPCEventSink</code> and release the subscription object. When a refresh is in
+                progress, the Consumer SHOULD first call <code>IOPCEventSubscriptionMgt::CancelRefresh</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The filter passed to <code>SetFilter</code> is derived as follows:</p>
+        <ul>
+          <li>
+            the event type is the combination of <code>OPC_SIMPLE_EVENT</code> (<code>1</code>),
+            <code>OPC_TRACKING_EVENT</code> (<code>2</code>), and <code>OPC_CONDITION_EVENT</code> (<code>4</code>) for
+            the values of <code>opcaev:eventTypes</code>, or <code>OPC_ALL_EVENTS</code> (<code>7</code>) when the term
+            is absent;
+          </li>
+          <li>
+            the categories, areas, and severities are those of <code>opcaev:categories</code>,
+            <code>opcaev:areas</code>, <code>opcaev:lowSeverity</code>, and <code>opcaev:highSeverity</code>; and
+          </li>
+          <li>
+            the sources are those of <code>opcaev:sources</code>, or, when the resolved target contains a
+            <code>source-name</code>, that single source. A Form whose target contains a <code>source-name</code> MUST
+            NOT carry <code>opcaev:sources</code>.
+          </li>
+        </ul>
+        <p>
+          A server reports the filters it supports with <code>IOPCEventServer::QueryAvailableFilters</code>. A Consumer
+          MUST fail the subscription when the Form requests a filter that the server does not support, rather than
+          silently deliver unfiltered events.
+        </p>
+        <p>
+          The server MAY revise the buffer time, the maximum size, and the keep-alive time, in which case it returns
+          <code>OPC_S_INVALIDBUFFERTIME</code>, <code>OPC_S_INVALIDMAXSIZE</code>, or
+          <code>OPC_S_INVALIDKEEPALIVETIME</code>. A Consumer MUST accept revised values and MAY warn about them. A
+          Consumer MUST NOT deliver an empty keep-alive callback as a notification; it MAY use the absence of keep-alive
+          callbacks to detect a broken connection.
+        </p>
+      </section>
+
+      <section id="refresh">
+        <h3>Refresh</h3>
+        <p>
+          Event subscriptions only report changes. A Consumer that needs the current alarm situation, for example to
+          fill an alarm list, sets <code>opcaev:refresh</code> to <code>true</code>. The server then sends a
+          condition-related event for every condition that is active, or inactive and unacknowledged, and that matches
+          the filter. These events are delivered as notifications like any other event; their <code>Retain</code> member
+          is <code>true</code>, so a Consumer adds them to its alarm list. A Consumer that exposes the Event through OPC
+          UA also uses <code>Refresh</code> to implement <a href="#condition-refresh"><code>ConditionRefresh</code></a
+          >.
+        </p>
+      </section>
+
+      <section id="server-status">
+        <h3>Server Status</h3>
+        <p>
+          A Form whose resolved target equals the server URI and that contains the <code>readproperty</code> operation
+          addresses the server status. <code>readproperty</code> calls <code>IOPCEventServer::GetStatus</code> and
+          returns an object with the members <code>state</code>, <code>startTime</code>, <code>currentTime</code>,
+          <code>lastUpdateTime</code>, <code>version</code>, and <code>vendorInfo</code>, converted from the
+          <code>OPCEVENTSERVERSTATUS</code> fields as defined for the OPC DA server status in [[WOT-OPCDA-BINDING]]. The
+          values of <code>state</code> are <code>running</code>, <code>failed</code>, <code>noConfig</code>,
+          <code>suspended</code>, <code>test</code>, and <code>commFault</code>, for
+          <code>OPCAE_STATUS_RUNNING</code> to <code>OPCAE_STATUS_COMM_FAULT</code>.
+        </p>
+        <p>
+          A Form whose resolved target contains a <code>source-name</code> MUST NOT contain <code>readproperty</code>.
+          No default mapping is defined for <code>observeproperty</code>, <code>unobserveproperty</code>, or
+          <code>writeproperty</code>.
+        </p>
+      </section>
+
+      <section id="shutdown">
+        <h3>Server Shutdown</h3>
+        <p>
+          A Consumer SHOULD register an <code>IOPCShutdown</code> callback with the server [[OPC-COMMON]]. When the
+          server calls <code>ShutdownRequest</code>, the Consumer MUST release all references to the server, MUST end
+          all active subscriptions with an error that includes the reason supplied by the server, and MAY reconnect
+          later. After reconnecting, the Consumer SHOULD request a refresh, because events that occurred in the meantime
+          are lost.
+        </p>
+      </section>
+
+      <section id="action-mappings">
+        <h3>Action Mappings</h3>
+        <p>
+          No default mapping is defined for <code>invokeaction</code> or for WoT Action affordances. A Thing Description
+          conforming to the profile MUST NOT advertise that operation on an <code>opcae</code> Form unless it also
+          declares and documents an additional binding extension. Conditions are acknowledged, enabled, and disabled
+          through OPC UA, see <a href="#condition-methods">Condition Methods</a>.
+        </p>
+      </section>
+
+      <section id="error-handling">
+        <h3>Error Handling</h3>
+        <p>
+          OPC A&amp;E reports errors as <code>HRESULT</code> codes. A Consumer MUST report a failed operation to the
+          application when the call fails. The following codes are particularly relevant:
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Meaning</th>
+              <th>Consumer behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>E_INVALIDARG</code></td>
+              <td>
+                A parameter is invalid, for example an unknown category or an inverted severity range in the filter, or
+                an unknown area or source.
+              </td>
+              <td>Fail the operation.</td>
+            </tr>
+            <tr>
+              <td><code>OPC_E_BUSY</code></td>
+              <td>A refresh is already in progress for the subscription.</td>
+              <td>Fail the subscription, or retry the refresh later.</td>
+            </tr>
+            <tr>
+              <td>
+                <code>OPC_S_INVALIDBUFFERTIME</code>, <code>OPC_S_INVALIDMAXSIZE</code>,
+                <code>OPC_S_INVALIDKEEPALIVETIME</code>
+              </td>
+              <td>The server revised a subscription parameter.</td>
+              <td>Succeed, and MAY warn.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The OPC UA status codes returned for the OPC UA condition methods are specified in
+          <a href="#condition-methods">Condition Methods</a>.
+        </p>
+      </section>
+    </section>
+
+    <section id="payload-mapping">
+      <h2>Payload Mapping</h2>
+
+      <section id="event-notifications">
+        <h3>Event Notifications</h3>
+        <p>
+          Every event delivered in an <code>ONEVENTSTRUCT</code> is represented at the WoT Consumer boundary as a JSON
+          object whose members are the fields of the OPC UA event type selected in
+          <a href="#event-types">Event Types</a>. Each member is named by the browse name of the OPC UA event field
+          [[OPC-UA-PART5]] [[OPC-UA-PART9]], and the members are those listed in the following table that apply to the
+          event type, plus the <a href="#event-attributes">event attributes</a>. A member whose value is not available
+          is omitted.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Member</th>
+              <th>Event types</th>
+              <th>OPC A&amp;E source</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>EventId</code></td>
+              <td>all</td>
+              <td>
+                Generated by the Consumer from <code>szSource</code>, <code>szConditionName</code>,
+                <code>ftActiveTime</code>, and <code>dwCookie</code>, see <a href="#conditions">Conditions</a>
+              </td>
+              <td>string, the base64 encoding of the OPC UA <code>ByteString</code></td>
+            </tr>
+            <tr>
+              <td><code>EventType</code></td>
+              <td>all</td>
+              <td>
+                <code>dwEventType</code>, <code>dwEventCategory</code>, and <code>szConditionName</code>, see
+                <a href="#event-types">Event Types</a>
+              </td>
+              <td>string, the browse name of the OPC UA event type</td>
+            </tr>
+            <tr>
+              <td><code>SourceName</code></td>
+              <td>all</td>
+              <td><code>szSource</code></td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>Time</code></td>
+              <td>all</td>
+              <td><code>ftTime</code></td>
+              <td>[[RFC3339]] date-time in UTC</td>
+            </tr>
+            <tr>
+              <td><code>ReceiveTime</code></td>
+              <td>all</td>
+              <td>The time at which the Consumer received the event</td>
+              <td>[[RFC3339]] date-time in UTC</td>
+            </tr>
+            <tr>
+              <td><code>Message</code></td>
+              <td>all</td>
+              <td><code>szMessage</code></td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>Severity</code></td>
+              <td>all</td>
+              <td><code>dwSeverity</code></td>
+              <td>integer, from 1 to 1000</td>
+            </tr>
+            <tr>
+              <td><code>ActionTimeStamp</code></td>
+              <td><code>AuditEventType</code></td>
+              <td><code>ftTime</code></td>
+              <td>[[RFC3339]] date-time in UTC</td>
+            </tr>
+            <tr>
+              <td><code>Status</code></td>
+              <td><code>AuditEventType</code></td>
+              <td>Always <code>true</code>, because OPC A&amp;E only reports actions that took place</td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>ServerId</code></td>
+              <td><code>AuditEventType</code></td>
+              <td>The server URI of the Form</td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>ClientUserId</code></td>
+              <td><code>AuditEventType</code>, <code>AlarmConditionType</code></td>
+              <td>
+                <code>szActorID</code>, the actor of a tracking event, or the acknowledger of a condition-related event
+              </td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>ConditionClassName</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td>
+                The description of the category <code>dwEventCategory</code>, from <code>QueryEventCategories</code>
+              </td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>ConditionName</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td><code>szConditionName</code></td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>Quality</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td>
+                <code>wQuality</code>, converted to an OPC UA <code>StatusCode</code> as specified for OPC DA qualities
+                in [[WOT-OPCDA-BINDING]]
+              </td>
+              <td>integer, the OPC UA <code>StatusCode</code></td>
+            </tr>
+            <tr>
+              <td><code>Retain</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td>
+                <code>wNewState</code>: <code>true</code> when the condition is enabled and either active or
+                unacknowledged
+              </td>
+              <td>boolean</td>
+            </tr>
+            <tr>
+              <td><code>EnabledState</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td><code>OPC_CONDITION_ENABLED</code> (<code>1</code>) of <code>wNewState</code></td>
+              <td>Object with the boolean member <code>Id</code></td>
+            </tr>
+            <tr>
+              <td><code>ActiveState</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td>
+                <code>OPC_CONDITION_ACTIVE</code> (<code>2</code>) of <code>wNewState</code>, <code>ftActiveTime</code>,
+                and <code>szSubconditionName</code>
+              </td>
+              <td>
+                Object with the boolean member <code>Id</code>, the [[RFC3339]] date-time
+                <code>TransitionTime</code> converted from <code>ftActiveTime</code>, and the string
+                <code>EffectiveDisplayName</code>, the name of the active subcondition when it is not empty
+              </td>
+            </tr>
+            <tr>
+              <td><code>AckedState</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td><code>OPC_CONDITION_ACKED</code> (<code>4</code>) of <code>wNewState</code></td>
+              <td>Object with the boolean member <code>Id</code></td>
+            </tr>
+            <tr>
+              <td><code>Comment</code></td>
+              <td><code>AlarmConditionType</code></td>
+              <td>
+                The event attribute named <code>ACK COMMENT</code>, see <a href="#event-attributes">Event Attributes</a>
+              </td>
+              <td>string</td>
+            </tr>
+            <tr>
+              <td><code>LimitState</code></td>
+              <td>
+                <code>ExclusiveLevelAlarmType</code>
+              </td>
+              <td><code>szSubconditionName</code>, see <a href="#limit-states">Limit States</a></td>
+              <td>
+                Object with the string member <code>CurrentState</code>, one of <code>HighHigh</code>,
+                <code>High</code>, <code>Low</code>, and <code>LowLow</code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>HighHighState</code>, <code>HighState</code>, <code>LowState</code>, <code>LowLowState</code>
+              </td>
+              <td><code>NonExclusiveLevelAlarmType</code>, <code>NonExclusiveDeviationAlarmType</code></td>
+              <td>
+                <code>szSubconditionName</code> or <code>szConditionName</code>, and <code>OPC_CONDITION_ACTIVE</code>,
+                see <a href="#limit-states">Limit States</a>
+              </td>
+              <td>Object with the boolean member <code>Id</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The types in the second column include their subtypes. For example, <code>Retain</code> is present for every
+          event whose event type is <code>AlarmConditionType</code> or one of its subtypes, such as
+          <code>ExclusiveLevelAlarmType</code>.
+        </p>
+        <p>
+          The members <code>EnabledState</code>, <code>ActiveState</code>, and <code>AckedState</code> represent OPC UA
+          <code>TwoStateVariableType</code> variables. They contain the <code>Id</code> property, which carries the
+          state, and the other properties listed, so that an OPC UA client can select them with the browse paths
+          <code>ActiveState/Id</code> and <code>ActiveState/TransitionTime</code>.
+        </p>
+        <pre class="example json" title="Level alarm notification">
+{
+  "EventId": "EgAAAFBsYW50MS5UYW5rMy5MZXZlbAcAAABQVkxFVkVMZ3bdAdBHIicuSQAA",
+  "EventType": "ExclusiveLevelAlarmType",
+  "SourceName": "Plant1.Tank3.Level",
+  "Time": "2026-11-17T07:42:10.1250000Z",
+  "ReceiveTime": "2026-11-17T07:42:10.1310000Z",
+  "Message": "Tank 3 level high",
+  "Severity": 700,
+  "ConditionClassName": "Level",
+  "ConditionName": "PVLEVEL",
+  "Quality": 0,
+  "Retain": true,
+  "EnabledState": { "Id": true },
+  "ActiveState": {
+    "Id": true,
+    "TransitionTime": "2026-11-17T07:42:10.1250000Z",
+    "EffectiveDisplayName": "HI"
+  },
+  "AckedState": { "Id": false },
+  "LimitState": { "CurrentState": "High" }
+}
+        </pre>
+      </section>
+
+      <section id="event-attributes">
+        <h3>Event Attributes</h3>
+        <p>
+          The attributes selected with <code>opcaev:returnedAttributes</code> are returned in
+          <code>pEventAttributes</code>, in the order of the identifiers in <code>opcaev:attributeIds</code> for the
+          category of the event. Each attribute is represented as a member of the event notification, named by the
+          description of the attribute reported by <code>IOPCEventServer::QueryEventAttributes</code>, with the value
+          converted as described for OPC DA item values in [[WOT-OPCDA-BINDING]]. The following rules apply:
+        </p>
+        <ul>
+          <li>
+            the first attribute whose description is <code>ACK COMMENT</code> is represented as the
+            <code>Comment</code> member of a condition-related event;
+          </li>
+          <li>
+            an attribute whose description equals the name of a member defined in
+            <a href="#event-notifications">Event Notifications</a> is omitted; and
+          </li>
+          <li>an attribute whose value is <code>VT_EMPTY</code> is omitted.</li>
+        </ul>
+        <p>
+          When the event is exposed through OPC UA, every other attribute becomes an event field of the event type with
+          that browse name, in a namespace of the Consumer.
+        </p>
+      </section>
+    </section>
+
+    <section id="alarms-and-conditions">
+      <h2>OPC UA Alarms and Conditions</h2>
+      <p>
+        This section applies to a Consumer that exposes Events with <code>opcae</code> Forms as OPC UA events, for
+        example a WoT gateway that is also an OPC UA server. It specifies how the events and conditions are represented
+        in OPC UA [[OPC-UA-PART9]], and how the OPC UA condition methods are mapped onto the OPC A&amp;E interfaces of
+        the server addressed by the Form.
+      </p>
+
+      <section id="event-notifiers">
+        <h3>Event Notifiers</h3>
+        <p>For every such Event, the Consumer MUST:</p>
+        <ul>
+          <li>
+            expose an Object, typically the Object that represents the Thing, whose <code>EventNotifier</code> attribute
+            has <code>SubscribeToEvents</code> set, and that is the target of a <code>HasNotifier</code> reference from
+            the <code>Server</code> Object, directly or through other notifiers;
+          </li>
+          <li>
+            create the OPC A&amp;E event subscription, as for <code>subscribeevent</code>, while at least one OPC UA
+            monitored item for events exists on that Object or on one of its notifiers;
+          </li>
+          <li>
+            report every event notification as an OPC UA event of the event type selected in
+            <a href="#event-types">Event Types</a>, with the fields of
+            <a href="#event-notifications">Event Notifications</a>; and
+          </li>
+          <li>
+            set the <code>SourceNode</code> field to the NodeId of the Node that represents the source, when the
+            Consumer exposes one, and to the NodeId of the notifier Object otherwise.
+          </li>
+        </ul>
+        <p>
+          The Consumer evaluates the <code>EventFilter</code> of each OPC UA monitored item on the converted events. It
+          MAY narrow the OPC A&amp;E filter with the event types and severities of a <code>WhereClause</code>, but it
+          MUST NOT widen it beyond the filter given by the Form.
+        </p>
+      </section>
+
+      <section id="event-types">
+        <h3>Event Types</h3>
+        <p>
+          The OPC UA event type of an event is selected by its OPC A&amp;E event type, the description of its category,
+          and the name of its condition, as follows. The category descriptions and condition names are the recommended
+          names of [[OPC-AE]]. They are compared without regard to case, and a space in a recommended name also matches
+          an underscore or nothing, so that <code>PV LEVEL</code>, <code>PV_LEVEL</code>, and <code>pvlevel</code> all
+          match <code>PVLEVEL</code>. The first row that matches applies.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Event type</th>
+              <th>Category description</th>
+              <th>Condition name</th>
+              <th>OPC UA event type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>simple</td>
+              <td><code>Device Failure</code></td>
+              <td>-</td>
+              <td><code>DeviceFailureEventType</code></td>
+            </tr>
+            <tr>
+              <td>simple</td>
+              <td><code>System Message</code></td>
+              <td>-</td>
+              <td><code>SystemEventType</code></td>
+            </tr>
+            <tr>
+              <td>simple</td>
+              <td>any other</td>
+              <td>-</td>
+              <td><code>BaseEventType</code></td>
+            </tr>
+            <tr>
+              <td>tracking</td>
+              <td>any</td>
+              <td>-</td>
+              <td><code>AuditEventType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Level</code></td>
+              <td><code>PVLEVEL</code>, <code>SPLEVEL</code></td>
+              <td><code>ExclusiveLevelAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Level</code></td>
+              <td><code>HI HI</code>, <code>HI</code>, <code>LO</code>, <code>LO LO</code></td>
+              <td><code>NonExclusiveLevelAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Level</code></td>
+              <td>any other</td>
+              <td><code>LimitAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Deviation</code></td>
+              <td>any</td>
+              <td><code>NonExclusiveDeviationAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Discrete</code></td>
+              <td><code>CFN</code></td>
+              <td><code>OffNormalAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Discrete</code></td>
+              <td><code>TRIP</code></td>
+              <td><code>TripAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td><code>Discrete</code></td>
+              <td>any other</td>
+              <td><code>DiscreteAlarmType</code></td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td>any other</td>
+              <td>any</td>
+              <td><code>AlarmConditionType</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A Consumer MAY define a subtype of the selected OPC UA event type for every category, or for every category
+          and condition, and report the events with that subtype, for example to declare the event attributes of the
+          category as fields of the subtype. The <code>EventType</code> member of the event notification is always the
+          browse name of the type selected in the table.
+        </p>
+      </section>
+
+      <section id="conditions">
+        <h3>Conditions</h3>
+        <p>
+          Every pair of a source and a condition name identifies an OPC A&amp;E condition, which the Consumer represents
+          as an OPC UA condition with the following properties:
+        </p>
+        <ul>
+          <li>
+            the <code>ConditionId</code>, that is, the NodeId of the condition, is derived from the source and the
+            condition name, and is the same for all events of the condition;
+          </li>
+          <li>
+            the <code>ConditionClassId</code> is <code>BaseConditionClassType</code>, unless the Consumer defines a
+            condition class for the category, and the <code>ConditionClassName</code> is the description of the
+            category;
+          </li>
+          <li>the <code>BranchId</code> is null, because OPC A&amp;E has no condition branches;</li>
+          <li>
+            the <code>EventId</code> MUST allow the Consumer to recover the source, the condition name, the exact
+            <code>ftActiveTime</code>, and the <code>dwCookie</code> of the event, which
+            <code>AckCondition</code> requires. The Consumer MAY encode them in the <code>EventId</code>, as the OPC UA
+            COM wrappers of the OPC Foundation do, or keep them in a table indexed by the <code>EventId</code>; and
+          </li>
+          <li>
+            the optional <code>ConfirmedState</code>, <code>ShelvingState</code>, <code>SuppressedState</code>, and
+            <code>OutOfServiceState</code> are not exposed, because OPC A&amp;E has no counterpart for them.
+          </li>
+        </ul>
+        <p>
+          A Consumer MAY also expose the conditions as Nodes in its address space, referenced from the Node of their
+          source with <code>HasCondition</code>. The values of such a Node are those of the most recent event of the
+          condition.
+        </p>
+
+        <section id="limit-states">
+          <h4>Limit States</h4>
+          <p>
+            For limit and deviation alarms, the name of the active subcondition, or, when that name is not one of the
+            names below, the name of the condition, selects the limit that was exceeded. The names are compared as in
+            <a href="#event-types">Event Types</a>.
+          </p>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th><code>LimitState</code> of exclusive alarms</th>
+                <th>State of non-exclusive alarms</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>HI HI</code></td>
+                <td><code>HighHigh</code></td>
+                <td><code>HighHighState</code></td>
+              </tr>
+              <tr>
+                <td><code>HI</code>, <code>DV HI</code></td>
+                <td><code>High</code></td>
+                <td><code>HighState</code></td>
+              </tr>
+              <tr>
+                <td><code>LO</code>, <code>DV LO</code></td>
+                <td><code>Low</code></td>
+                <td><code>LowState</code></td>
+              </tr>
+              <tr>
+                <td><code>LO LO</code></td>
+                <td><code>LowLow</code></td>
+                <td><code>LowLowState</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            For an exclusive alarm, <code>LimitState</code> is omitted when the condition is inactive. For a
+            non-exclusive alarm, the <code>Id</code> of the selected state is the active state of the condition.
+          </p>
+        </section>
+      </section>
+
+      <section id="condition-methods">
+        <h3>Condition Methods</h3>
+        <p>
+          The Consumer MUST map the OPC UA methods of the conditions as follows. The <code>ObjectId</code> of each call
+          is the <code>ConditionId</code> of the condition.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>OPC UA method</th>
+              <th>OPC A&amp;E mapping</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Acknowledge</code></td>
+              <td>
+                Recover the source, the condition name, the active time, and the cookie from the
+                <code>EventId</code> argument, and call <code>IOPCEventServer::AckCondition</code> for that single
+                condition, with the text of the <code>Comment</code> argument as <code>szComment</code>, and with the
+                acknowledger ID described below.
+              </td>
+            </tr>
+            <tr>
+              <td><code>Enable</code>, <code>Disable</code></td>
+              <td>
+                OPC A&amp;E can only enable and disable all conditions of a source or a process area together. When
+                <code>IOPCEventServer::QuerySourceConditions</code> reports the condition as the only condition of its
+                source, the Consumer MAY call <code>EnableConditionBySource</code> or
+                <code>DisableConditionBySource</code> for that source. Otherwise, it MUST return
+                <code>BadNotSupported</code>, rather than enable or disable other conditions as well.
+              </td>
+            </tr>
+            <tr>
+              <td><code>AddComment</code></td>
+              <td>
+                OPC A&amp;E has no comments outside acknowledgements. The Consumer MUST return
+                <code>BadNotSupported</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>ConditionRefresh</code>, <code>ConditionRefresh2</code></td>
+              <td>See <a href="#condition-refresh">Condition Refresh</a>.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The acknowledger ID passed to <code>AckCondition</code> MUST NOT be empty. It SHOULD identify the OPC UA user
+          of the session that calls <code>Acknowledge</code>, for example by the display name of its user identity
+          token. For an anonymous session, the Consumer SHOULD use a configured name that identifies the Consumer.
+        </p>
+        <p>
+          The method results are converted as follows. <code>Enable</code> and <code>Disable</code> return
+          <code>BadConditionAlreadyEnabled</code> and <code>BadConditionAlreadyDisabled</code> when the most recent
+          event of the condition already reports the requested state, without calling the server.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>OPC A&amp;E result</th>
+              <th>OPC UA status code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>S_OK</code></td>
+              <td><code>Good</code></td>
+            </tr>
+            <tr>
+              <td><code>OPC_S_ALREADYACKED</code></td>
+              <td><code>BadConditionBranchAlreadyAcked</code></td>
+            </tr>
+            <tr>
+              <td>
+                <code>OPC_E_INVALIDTIME</code>, <code>E_INVALIDARG</code> of <code>AckCondition</code>, or an
+                <code>EventId</code> that the Consumer cannot resolve
+              </td>
+              <td><code>BadEventIdUnknown</code></td>
+            </tr>
+            <tr>
+              <td>
+                <code>E_INVALIDARG</code> of <code>EnableConditionBySource</code> or
+                <code>DisableConditionBySource</code>
+              </td>
+              <td><code>BadNodeIdUnknown</code></td>
+            </tr>
+            <tr>
+              <td>any other error</td>
+              <td><code>BadUnexpectedError</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A successful method call has no immediate effect on the condition Node. The OPC A&amp;E server reports the new
+          state of the condition with a condition-related event, which the Consumer reports as an OPC UA event like any
+          other.
+        </p>
+      </section>
+
+      <section id="condition-refresh">
+        <h3>Condition Refresh</h3>
+        <p>
+          For <code>ConditionRefresh</code> and <code>ConditionRefresh2</code>, the Consumer MUST, for every OPC A&amp;E
+          event subscription that backs an affected monitored item:
+        </p>
+        <ol>
+          <li>report a <code>RefreshStartEventType</code> event to the monitored item;</li>
+          <li>
+            call <code>IOPCEventSubscriptionMgt::Refresh</code>, and report every event of the refresh callbacks, whose
+            <code>bRefresh</code> parameter is <code>TRUE</code>, to the monitored item only; and
+          </li>
+          <li>
+            report a <code>RefreshEndEventType</code> event after the callback whose <code>bLastRefresh</code> parameter
+            is <code>TRUE</code>.
+          </li>
+        </ol>
+        <p>
+          When the server returns <code>OPC_E_BUSY</code>, the Consumer MUST either wait for the refresh in progress to
+          complete and start a new one, or return <code>BadRefreshInProgress</code>. A Consumer MAY cancel a refresh
+          that does not complete in time with <code>IOPCEventSubscriptionMgt::CancelRefresh</code>, in which case it
+          still reports the <code>RefreshEndEventType</code> event.
+        </p>
+      </section>
+    </section>
+
+    <section id="td-generation" class="informative">
+      <h2>Generating Thing Descriptions</h2>
+      <p>
+        OPC A&amp;E servers describe their event space. A tool that generates a Thing Description can use the following
+        methods of <code>IOPCEventServer</code>:
+      </p>
+      <ul>
+        <li>
+          <code>QueryEventCategories</code> lists the categories of each event type, which give values for
+          <code>opcaev:categories</code> and, together with <code>QueryConditionNames</code>, the OPC UA event types of
+          <a href="#event-types">Event Types</a> that the Data Schema of an Event describes;
+        </li>
+        <li>
+          <code>QueryEventAttributes</code> lists the attributes of each category with their descriptions and data
+          types, which give <code>opcaev:returnedAttributes</code> and the members of the Data Schema for
+          <a href="#event-attributes">event attributes</a>;
+        </li>
+        <li>
+          <code>CreateAreaBrowser</code> walks the process area hierarchy, which gives values for
+          <code>opcaev:areas</code>; and
+        </li>
+        <li><code>QueryAvailableFilters</code> tells which filter terms the server supports.</li>
+      </ul>
+      <p>
+        A natural structure is one WoT Event per process area or per category, and one Property for the server status. A
+        gateway that exposes the Thing through OPC UA can then report the events of every process area through its own
+        notifier Object.
+      </p>
+    </section>
+
+    <section id="security-considerations" class="informative">
+      <h2>Security Considerations</h2>
+      <p>
+        OPC A&amp;E relies on the security of local COM, exactly as OPC DA does. The security considerations of
+        [[WOT-OPCDA-BINDING]] apply unchanged, in particular:
+      </p>
+      <ul>
+        <li>
+          COM checks the launch, activation, and access permissions of the server against the Windows account of the
+          Consumer process, and a Consumer SHOULD run under a dedicated account with only the permissions it needs;
+        </li>
+        <li>
+          event notifications are calls from the server process into the Consumer, which therefore accepts incoming COM
+          calls and SHOULD restrict them to the account of the server;
+        </li>
+        <li>
+          a Thing Description SHOULD describe an <code>opcae</code> endpoint with the <code>nosec</code> security scheme
+          of [[WOT-THING-DESCRIPTION]], because the Consumer supplies no security information, while the operating
+          system and the server still enforce their permissions;
+        </li>
+        <li>
+          a Consumer that exposes events or condition methods to other computers, for example through OPC UA, becomes
+          responsible for authenticating and authorizing remote clients; and
+        </li>
+        <li>servers can additionally implement the OPC Security interfaces [[OPC-SECURITY]].</li>
+      </ul>
+      <p>
+        Alarm acknowledgement and the disabling of conditions are safety-relevant operator actions. A disabled condition
+        no longer produces alarms, and an acknowledged alarm may no longer be noticed by operators. A Consumer SHOULD
+        only allow OPC UA users that are authorized as operators to call the condition methods. The OPC A&amp;E server
+        attributes every acknowledgement to the acknowledger ID that the Consumer passes, which becomes part of the
+        alarm record, so the Consumer SHOULD pass the identity of the OPC UA user truthfully and SHOULD keep its own
+        audit trail, for example with the OPC UA audit events for condition methods.
+      </p>
+      <p>
+        Event messages and attributes are text and values chosen by the server or by operators. A Consumer that displays
+        them MUST treat them as untrusted input.
+      </p>
+      <p class="note" title="Open issue">
+        As in [[WOT-OPCDA-BINDING]], this binding does not yet define security scheme terms for passing OPC Security
+        credentials.
+      </p>
+    </section>
+
+    <section id="examples" class="informative">
+      <h2>Examples</h2>
+
+      <section id="example-alarm-stream">
+        <h3>Alarm Stream</h3>
+        <pre class="example json" title="OPC A&amp;E Thing Description">
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "opcaev": "https://www.w3.org/2026/wot/opcae"
+    }
+  ],
+  "id": "urn:example:opcae:plant1",
+  "title": "Plant 1 Alarms",
+  "base": "opcae://localhost/Vendor.OPCAEServer.1/",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "ServerStatus": {
+      "title": "Alarm server status",
+      "type": "object",
+      "readOnly": true,
+      "properties": {
+        "state": { "type": "string" },
+        "currentTime": { "type": "string", "format": "date-time" }
+      },
+      "forms": [
+        {
+          "href": "./",
+          "op": "readproperty"
+        }
+      ]
+    }
+  },
+  "events": {
+    "Alarms": {
+      "title": "Alarms of area Plant1.Unit3",
+      "data": {
+        "type": "object",
+        "properties": {
+          "EventId": { "type": "string", "contentEncoding": "base64" },
+          "EventType": { "type": "string" },
+          "SourceName": { "type": "string" },
+          "Time": { "type": "string", "format": "date-time" },
+          "Message": { "type": "string" },
+          "Severity": { "type": "integer", "minimum": 1, "maximum": 1000 },
+          "ConditionName": { "type": "string" },
+          "Retain": { "type": "boolean" },
+          "ActiveState": {
+            "type": "object",
+            "properties": {
+              "Id": { "type": "boolean" },
+              "TransitionTime": { "type": "string", "format": "date-time" },
+              "EffectiveDisplayName": { "type": "string" }
+            }
+          },
+          "AckedState": {
+            "type": "object",
+            "properties": {
+              "Id": { "type": "boolean" }
+            }
+          },
+          "EnabledState": {
+            "type": "object",
+            "properties": {
+              "Id": { "type": "boolean" }
+            }
+          }
+        }
+      },
+      "forms": [
+        {
+          "href": "./",
+          "op": ["subscribeevent", "unsubscribeevent"],
+          "opcaev:eventTypes": ["condition"],
+          "opcaev:areas": ["Plant1.Unit3"],
+          "opcaev:lowSeverity": 500,
+          "opcaev:bufferTime": 1000,
+          "opcaev:refresh": true
+        }
+      ]
+    }
+  }
+}
+        </pre>
+        <p>
+          A gateway that exposes this Thing through OPC UA reports the alarms of <code>Plant1.Unit3</code> as OPC UA
+          alarms, such as <code>ExclusiveLevelAlarmType</code> events. An OPC UA client acknowledges an alarm by calling
+          <code>Acknowledge</code> on the condition with the <code>EventId</code> of the event, and the gateway calls
+          <code>AckCondition</code> on the OPC A&amp;E server.
+        </p>
+      </section>
+
+      <section id="example-source-events">
+        <h3>Events of a Single Source with Attributes</h3>
+        <pre class="example json" title="Source filter and returned attributes">
+{
+  "Tank3Events": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "Message": { "type": "string" },
+        "Severity": { "type": "integer" },
+        "Comment": { "type": "string" },
+        "CV": { "type": "number", "description": "Current level" }
+      }
+    },
+    "forms": [
+      {
+        "href": "Plant1.Tank3.Level",
+        "op": ["subscribeevent", "unsubscribeevent"],
+        "opcaev:returnedAttributes": [{ "opcaev:category": 3, "opcaev:attributeIds": [5001, 5002] }]
+      }
+    ]
+  }
+}
+        </pre>
+        <p>
+          In this example, the server reports the descriptions <code>ACK COMMENT</code> and <code>CV</code> for the
+          attributes <code>5001</code> and <code>5002</code> of category <code>3</code>, so they appear as the members
+          <code>Comment</code> and <code>CV</code>.
+        </p>
+      </section>
+    </section>
+
+    <section id="implementation-notes" class="informative">
+      <h2>Implementation Notes</h2>
+      <ul>
+        <li>
+          OPC A&amp;E uses COM and is therefore native to Microsoft Windows. A Consumer implementing this binding runs
+          on the Windows computer of the server. Consumers on other computers or platforms access the server through a
+          gateway that exposes it through another protocol, typically OPC UA as described in
+          <a href="#alarms-and-conditions">OPC UA Alarms and Conditions</a>.
+        </li>
+        <li>
+          Out-of-process servers require the OPC proxy and stub libraries of the OPC Core Components, so that the OPC
+          interfaces can be marshalled between the Consumer and the server process.
+        </li>
+        <li>
+          Events are often delivered in bursts, for example during a plant upset or a refresh. A Consumer SHOULD return
+          from <code>OnEvent</code> quickly and process the events asynchronously, because the server waits for the
+          callback to return.
+        </li>
+        <li>
+          The mappings of event types, event fields, and condition methods in this binding follow those of the OPC UA
+          COM wrappers published by the OPC Foundation, so that OPC UA clients see the same alarms whether an OPC
+          A&amp;E server is accessed through such a wrapper or through a WoT gateway. Unlike those wrappers, this
+          binding sets <code>Retain</code> from the condition state, so that OPC UA clients remove inactive and
+          acknowledged alarms from their alarm lists.
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>

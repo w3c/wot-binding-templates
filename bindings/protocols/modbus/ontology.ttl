@@ -304,7 +304,7 @@ On the contrary, the response operation is identified with an error code or exce
 ###  https://www.w3.org/2019/wot/modbus#Request
 :Request rdf:type owl:Class ;
          rdfs:subClassOf :Message ;
-         rdfs:comment "A Request message is sent by a client device to a server device. The communication client/server stats only with a request sent by the client."@en ;
+         rdfs:comment "A Request message is sent by a client device to a server device. The communication client/server starts only with a request sent by the client."@en ;
          rdfs:label "Request"@en .
 
 
@@ -376,7 +376,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
 ###  https://www.w3.org/2019/wot/modbus#Coil
 :Coil rdf:type owl:NamedIndividual ,
                :Entity ;
-      rdfs:comment "Represent a modbus coil register.  These entities can be read or written"@en ;
+      rdfs:comment "Represent a modbus coil register. These entities can be read or written"@en ;
       rdfs:label "Coil"@en .
 
 
@@ -390,7 +390,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
 ###  https://www.w3.org/2019/wot/modbus#HoldingRegister
 :HoldingRegister rdf:type owl:NamedIndividual ,
                           :Entity ;
-                 rdfs:comment "Represent a modbus holding register.  These entities can be read or written"@en ;
+                 rdfs:comment "Represent a modbus holding register. These entities can be read or written"@en ;
                  rdfs:label "Holding Register"@en .
 
 
@@ -413,7 +413,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
 :excReadDiscreteInputs rdf:type owl:NamedIndividual ,
                                 :ExceptionFunction ;
                        :hasCodeNumber 130 ;
-                       rdfs:comment "Exception function of Read Discete Input function."@en ;
+                       rdfs:comment "Exception function of Read Discrete Input function."@en ;
                        rdfs:label "Exception Read Discrete Inputs"@en .
 
 
@@ -449,8 +449,8 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                        rdfs:label "Exception Write Multiple Coils"@en .
 
 
-###  https://www.w3.org/2019/wot/modbus#excWriteMultipleHoldiungRegisters
-:excWriteMultipleHoldiungRegisters rdf:type owl:NamedIndividual ,
+###  https://www.w3.org/2019/wot/modbus#excWriteMultipleHoldingRegisters
+:excWriteMultipleHoldingRegisters rdf:type owl:NamedIndividual ,
                                             :ExceptionFunction ;
                                    :hasCodeNumber 144 ;
                                    rdfs:comment "Exception function of Write Multiple Holding Register function."@en ;
@@ -590,14 +590,14 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                                            :ResponseCode ;
                                                   :hasCodeNumber 4 ;
                                                   rdfs:comment "An unrecoverable error occurred while the slave was attempting to perform the requested action"@en ;
-                                                  rdfs:label "SLAVEDEVICE FAILURE" .
+                                                  rdfs:label "SLAVE DEVICE FAILURE" .
 
 
 ###  https://www.w3.org/2019/wot/modbus/errorCode#05
 <https://www.w3.org/2019/wot/modbus/errorCode#05> rdf:type owl:NamedIndividual ,
                                                            :ResponseCode ;
                                                   :hasCodeNumber 5 ;
-                                                  rdfs:comment "The server has accepted the request and is processing it, but a long duration of time will be required to do so. This response is returned to prevent a timeout error from occurring in the client. The client can next issue a Poll Program Complete  message to determine if processing is completed"@en ;
+                                                  rdfs:comment "The server has accepted the request and is processing it, but a long duration of time will be required to do so. This response is returned to prevent a timeout error from occurring in the client. The client can next issue a Poll Program Complete message to determine if processing is completed"@en ;
                                                   rdfs:label "ACKNOWLEDGE" .
 
 
@@ -606,7 +606,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                                            :ResponseCode ;
                                                   :hasCodeNumber 6 ;
                                                   rdfs:comment "Slave is engaged in processing a long-duration command. Master should retry later "@en ;
-                                                  rdfs:label "SLAVEDEVICE BUSY"@en .
+                                                  rdfs:label "SLAVE DEVICE BUSY"@en .
 
 
 ###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

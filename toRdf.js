@@ -38,31 +38,33 @@ function context(obj, id) {
   Object.entries(ctx)
     .filter(([k, v]) => !k.startsWith("@"))
     .map(([k, v]) => {
-      txt += `_:${scope}context <${ld}definition> _:${scope}${k} .\r\n`;
+      // terms may be compact IRIs (e.g. "modv:entity"), which are not valid blank node labels
+      const node = `_:${scope}${k.replace(/\W/g, "_")}`;
+      txt += `_:${scope}context <${ld}definition> ${node} .\r\n`;
 
-      txt += `_:${scope}${k} <${a}> <${ld}Mapping> .\r\n`;
-      txt += `_:${scope}${k} <${ld}term> "${k}" .\r\n`;
+      txt += `${node} <${a}> <${ld}Mapping> .\r\n`;
+      txt += `${node} <${ld}term> "${k}" .\r\n`;
 
       let iri = fullIRI(v instanceof Object ? v["@id"] : v, ctx);
       if (!iri.startsWith("@")) {
-        txt += `_:${scope}${k} <${ld}iri> <${iri}> .\r\n`;
+        txt += `${node} <${ld}iri> <${iri}> .\r\n`;
       }
 
       if (v instanceof Object) {
         if (v["@container"]) {
           let container = v["@container"].replace("@", "");
-          txt += `_:${scope}${k} <${ld}container> <${ld + container}> .\r\n`;
+          txt += `${node} <${ld}container> <${ld + container}> .\r\n`;
         }
 
         if (v["@type"]) {
           let type = v["@type"];
           if (type != "@id" && type != "@vocab") {
-            txt += `_:${scope}${k} <${ld}type> <${type}> .\r\n`;
+            txt += `${node} <${ld}type> <${type}> .\r\n`;
           }
         }
 
         if (v["@context"]) {
-          txt += `_:${scope}${k} <${ld}context> _:${scopeName(iri)}context .\r\n`;
+          txt += `${node} <${ld}context> _:${scopeName(iri)}context .\r\n`;
           txt += context(v, iri);
         }
       }

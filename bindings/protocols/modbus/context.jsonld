@@ -1,14 +1,15 @@
 {
     "@context": {
+        "@version": 1.1,
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "modv":"https://www.w3.org/2019/wot/modbus#",
         "modv:address": {
             "@id": "modv:address",
-            "@type": "xsd:unsignedShort"
+            "@type": "xsd:integer"
         },
         "modv:timeout" : {
             "@id": "modv:timeout",
-            "@type": "xsd:unsignedInt"
+            "@type": "xsd:integer"
         }, 
         "modv:zeroBasedAddressing" : {
             "@id": "modv:zeroBasedAddressing",
@@ -24,15 +25,15 @@
         }, 
         "modv:quantity" : {
             "@id": "modv:quantity",
-            "@type": "xsd:unsignedShort"
+            "@type": "xsd:integer"
         }, 
         "modv:pollingTime" : {
             "@id": "modv:pollingTime",
-            "@type": "xsd:unsignedInt"
+            "@type": "xsd:integer"
         }, 
         "modv:unitID": {
             "@id": "modv:unitID",
-            "@type": "xsd:unsignedByte"
+            "@type": "xsd:integer"
         },
         "modv:entity" : {
             "@id": "modv:entity",

@@ -34,7 +34,7 @@
             data: [
               {
                 value: "Explanation of the binding mechanism",
-                href: " https://w3c.github.io/wot-thing-description/#bindings"
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
               }
             ]
           },
@@ -217,7 +217,7 @@
           interpretation being as <code>CCDDAABB</code>. For more examples, see [[[#example-read-holding-32bit]]]. Note
           that while word swapping is not part of the Modbus specification, it is a practice observed in off-the-shelf
           devices. Therefore, when creating a Thing Description (TD), users may need to account for such deviations by
-          configuring the <code>hasMostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties
+          configuring the <code>modv:mostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties
           accordingly.
         </p>
       </section>
@@ -244,7 +244,7 @@
       </section>
       <section id="functioncode">
         <h3>Function</h3>
-        <code>Function Code</code> class represents the value of the function field in a Modbus frame. The following
+        <code>FunctionCode</code> class represents the value of the function field in a Modbus frame. The following
         table lists the supported codes and their descriptions:
         <table class="def" title="Function values">
           <thead>
@@ -418,7 +418,7 @@
       first element of the <code>path</code> segment.
       <pre id="example-read-coil" class="example" title="Read a single coil">
             {
-                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "href": "modbus+tcp://127.0.0.1:60000/1/1",
                 "op": [
                     "readproperty"
                 ],
@@ -440,26 +440,26 @@
         </pre
       >
       A TD processor will interpret [[[#example-read-coil-entity]]] configuration as the following:
-      <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
+      <pre id="example-read-coil-entity-expanded" class="example" title="Read and write single coil expanded">
                             [{
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
-                                    "readproperty",
+                                    "readproperty"
                                 ],
                                 "modv:function": "readCoil"
                             },
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
-                                    "writeproperty",
+                                    "writeproperty"
                                 ],
-                                "modv:function": "writeCoil"
+                                "modv:function": "writeSingleCoil"
                             }]
         </pre
       >
       Effectively reducing the verbosity of a TD. The expressiveness of the Modbus ontology allows users to also
       describe the total number of registers read or written in a WoT operation. [[[#example-read-holding]]] shows how
-      to read or write 8 <code>HoldingRegisters</code>.
+      to read 8 <code>HoldingRegister</code>.
       <pre id="example-read-holding" class="example" title="Read 8 holding registers">
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/40001?quantity=8",
@@ -497,16 +497,16 @@
                     "readproperty"
                 ],
                 "modv:entity": "HoldingRegister",
-                "modv:type": "xsd:int"
+                "modv:type": "xsd:int",
                 "modv:mostSignificantByte": false
             }
         </pre
       >
 
       Another notable form of configuration of a form using the Modbus vocabulary is the polling mechanism. With the
-      keyword <code>pollingTime</code>, the user can indicate the intervals at which to observe a particular set of
+      keyword <code>modv:pollingTime</code>, the user can indicate the intervals at which to observe a particular set of
       registers. Supposing that the device is implemented in a way that the value of coil register 1 changes every 1000
-      ms, in [[[#example-polling]]], it suggests that the polling time should not be faster than 10 ms. WoT Consumers
+      ms, in [[[#example-polling]]], it suggests that the polling time should not be faster than 1000 ms. WoT Consumers
       may still submit requests faster than the specified time, but it should be taken as a reasonable default for
       observing a property.
       <pre id="example-polling" class="example" title="Polling">
@@ -524,7 +524,7 @@
       <pre id="full-td" class="example" title="A complete TD example">
                 {
                   "@context": [
-                      "https://www.w3.org/2019/wot/td/v1",
+                      "https://www.w3.org/2022/wot/td/v1.1",
                       {
                           "modv": "https://www.w3.org/2019/wot/modbus#"
                       }
@@ -609,7 +609,7 @@
     </section>
     <section class="appendix" id="abnf">
       <h2>Modbus URL ABNF syntax</h2>
-      <p>The following describes the [[[#url]]] using [[[RFC2234]]] with reference to [[[uri]]] specification.</p>
+      <p>The following describes the [[[#url]]] using [[[RFC5234]]] with reference to [[[uri]]] specification.</p>
       <pre class="syntax">
             MODBUS-URI = "modbus+tcp://" authority path-modbus [ "?quantity=" quantity ]
             path-modbus = "/" unitID "/" address

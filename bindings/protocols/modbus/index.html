@@ -231,6 +231,22 @@
             <!-- Generate forms terms from the ontology-->
 
             <tr>
+              <td><code>modv:zeroBasedAddressing</code></td>
+              <td>
+                DEPRECATED as TDs are expected to contain the address to be directly used by the Consumer
+                implementation. See also
+                <a href="https://github.com/w3c/wot-binding-templates/issues/187">the relevant issue</a>. Previous
+                explanation: Modbus implementations can differ in the way addressing works, as the first coil/register
+                can be either referred to as <code>true</code> or <code>false</code>. False when the first register
+                starts at address 1.
+              </td>
+              <td>optional</td>
+              <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+            </tr>
+
+            <tr></tr>
+
+            <tr>
               <td><code>modv:pollingTime</code></td>
               <td>
                 Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed
@@ -282,17 +298,19 @@
             <tr></tr>
 
             <tr>
-              <td><code>modv:zeroBasedAddressing</code></td>
-              <td>
-                DEPRECATED as TDs are expected to contain the address to be directly used by the Consumer
-                implementation. See also
-                <a href="https://github.com/w3c/wot-binding-templates/issues/187">the relevant issue</a>. Previous
-                explanation: Modbus implementations can differ in the way addressing works, as the first coil/register
-                can be either referred to as <code>true</code> or <code>false</code>. False when the first register
-                starts at address 1.
-              </td>
+              <td><code>modv:entity</code></td>
+              <td>A registry type to let the runtime automatically detect the right function code</td>
               <td>optional</td>
-              <td><a href="http://www.w3.org/2001/XMLSchema#boolean">boolean</a></td>
+              <td><a href="#entitytype">EntityType</a></td>
+            </tr>
+
+            <tr></tr>
+
+            <tr>
+              <td><code>modv:function</code></td>
+              <td>Function Code sent by the master in every request. Specifying the desired interaction.</td>
+              <td>optional</td>
+              <td><a href="#functioncode">FunctionCode</a></td>
             </tr>
 
             <tr></tr>
@@ -305,24 +323,6 @@
               </td>
               <td>optional</td>
               <td><a href="#payloaddatatype">PayloadDataType</a></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>modv:entity</code></td>
-              <td>A registry type to let the runtime automatically detect the right function code</td>
-              <td>optional</td>
-              <td><a href="#entity">Entity</a></td>
-            </tr>
-
-            <tr></tr>
-
-            <tr>
-              <td><code>modv:function</code></td>
-              <td>Function Code sent by the master in every request. Specifying the desired interaction.</td>
-              <td>optional</td>
-              <td><a href="#function">Function</a></td>
             </tr>
 
             <tr></tr>
@@ -347,10 +347,10 @@
           accordingly.
         </p>
       </section>
-      <section id="entity">
+      <section id="entitytype">
         <h3>Entity</h3>
-        A more user-friendly property to specify [[[#function]]]. The client will then determine the right function code
-        to be applied in the modbus request. Furthermore, it can be used in multi-operation forms whereas
+        A more user-friendly property to specify [[[#functioncode]]]. The client will then determine the right function
+        code to be applied in the modbus request. Furthermore, it can be used in multi-operation forms whereas
         <code>modv:function</code> cannot (See the [[[#example-read-coil-entity]]])
 
         <table class="def" title="Entity values">
@@ -395,7 +395,7 @@
         <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of
         <code>modv:function</code> property should be ignored.
       </section>
-      <section id="function">
+      <section id="functioncode">
         <h3>Function</h3>
         <code>Function Code</code> class represents the value of the function field in a Modbus frame. The following
         table lists the supported codes and their descriptions:
@@ -589,49 +589,49 @@
 
             <tr>
               <td><code>readproperty</code></td>
-              <td><code>"modv:Function": "readCoil"</code></td>
+              <td><code>"modv:function": "readCoil"</code></td>
             </tr>
 
             <tr></tr>
 
             <tr>
               <td><code>writeproperty</code></td>
-              <td><code>"modv:Function": "writeSingleCoil"</code></td>
+              <td><code>"modv:function": "writeSingleCoil"</code></td>
             </tr>
 
             <tr></tr>
 
             <tr>
               <td><code>invokeaction</code></td>
-              <td><code>"modv:Function": "writeSingleCoil"</code></td>
+              <td><code>"modv:function": "writeSingleCoil"</code></td>
             </tr>
 
             <tr></tr>
 
             <tr>
               <td><code>readallproperties</code></td>
-              <td><code>"modv:Function": "readHoldingRegisters"</code></td>
+              <td><code>"modv:function": "readHoldingRegisters"</code></td>
             </tr>
 
             <tr></tr>
 
             <tr>
               <td><code>readmultipleproperties</code></td>
-              <td><code>"modv:Function": "readHoldingRegisters"</code></td>
+              <td><code>"modv:function": "readHoldingRegisters"</code></td>
             </tr>
 
             <tr></tr>
 
             <tr>
               <td><code>writeallproperties</code></td>
-              <td><code>"modv:Function": "writeMultipleHoldingRegisters"</code></td>
+              <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
             </tr>
 
             <tr></tr>
 
             <tr>
               <td><code>writemultipleproperties</code></td>
-              <td><code>"modv:Function": "writeMultipleHoldingRegisters"</code></td>
+              <td><code>"modv:function": "writeMultipleHoldingRegisters"</code></td>
             </tr>
 
             <tr></tr>
@@ -689,8 +689,8 @@
       <section id="possible-mappings">
         <h3>Possible mappings</h3>
         <p>
-          Additional to the default mappings, users may decide to use other [[[#function]]]s for a specific operation.
-          The following table lists examples of possible mappings for some operation types.
+          Additional to the default mappings, users may decide to use other [[[#functioncode]]]s for a specific
+          operation. The following table lists examples of possible mappings for some operation types.
         </p>
         <table class="def">
           <thead>
@@ -751,8 +751,8 @@
             }
         </pre
       >
-      The [[[#entity]]] keyword can be used to describe forms with multiple operations types where the default operation
-      will apply based on the entity and intended operation by the Consumer.
+      The [[[#entitytype]]] keyword can be used to describe forms with multiple operations types where the default
+      operation will apply based on the entity and intended operation by the Consumer.
       <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
                     {
                         "href": "modbus+tcp://127.0.0.1:60000/1/1",

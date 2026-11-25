@@ -2,78 +2,55 @@
     "@context": {
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "modv":"https://www.w3.org/2019/wot/modbus#",
-        "address": {
-            "@id": "modv:hasAddress",
+        "modv:address": {
+            "@id": "modv:address",
             "@type": "xsd:unsignedShort"
         },
-        "timeout" : {
-            "@id": "modv:hasTimeout",
+        "modv:timeout" : {
+            "@id": "modv:timeout",
             "@type": "xsd:unsignedInt"
         }, 
-        "zeroBasedAddressing" : {
-            "@id": "modv:hasZeroBasedAddressingFlag",
+        "modv:zeroBasedAddressing" : {
+            "@id": "modv:zeroBasedAddressing",
             "@type": "xsd:boolean"
         }, 
-        "mostSignificantByte" : {
-            "@id": "modv:hasMostSignificantByte",
+        "modv:mostSignificantByte" : {
+            "@id": "modv:mostSignificantByte",
             "@type": "xsd:boolean"
         }, 
-        "mostSignificantWord" : {
-            "@id": "modv:hasMostSignificantWord",
+        "modv:mostSignificantWord" : {
+            "@id": "modv:mostSignificantWord",
             "@type": "xsd:boolean"
         }, 
-        "quantity" : {
-            "@id": "modv:hasQuantity",
+        "modv:quantity" : {
+            "@id": "modv:quantity",
             "@type": "xsd:unsignedShort"
         }, 
-        "pollingTime" : {
-            "@id": "modv:hasPollingTime",
+        "modv:pollingTime" : {
+            "@id": "modv:pollingTime",
             "@type": "xsd:unsignedInt"
         }, 
-        "unitID": {
-            "@id": "modv:hasUnitID",
+        "modv:unitID": {
+            "@id": "modv:unitID",
             "@type": "xsd:unsignedByte"
         },
-        "entity" : {
-            "@id": "modv:hasEntity",
-            "@type": "@vocab"
+        "modv:entity" : {
+            "@id": "modv:entity",
+            "@type": "@vocab",
+            "@context": {
+                "@vocab": "https://www.w3.org/2019/wot/modbus#"
+            }
         }, 
-        "function" : {
-            "@id": "modv:hasFunction",
-            "@type": "@vocab"
+        "modv:function" : {
+            "@id": "modv:function",
+            "@type": "@vocab",
+            "@context": {
+                "@vocab": "https://www.w3.org/2019/wot/modbus#"
+            }
         },
-        "type" : {
-            "@id": "modv:hasPayloadDataType",
-            "@type": "@vocab"
-        },
-        "Coil": "modv:Coil",
-        "DiscreteInput" : "modv:DiscreteInput",
-        "HoldingRegister": "modv:HoldingRegister",
-        "InputRegister": "modv:InputRegister",
-        "readCoil": "modv:readCoil",
-        "readDiscreteInput": "modv:readDiscreteInput",
-        "readHoldingRegisters" : "modv:readHoldingRegisters",
-        "readInputRegisters": "modv:readInputRegisters",
-        "writeSingleCoil": "modv:writeSingleCoil",
-        "writeMultipleCoils": "modv:writeMultipleCoils",
-        "writeMultipleHoldingRegisters": "modv:writeMultipleHoldingRegisters",
-        "writeSingleHoldingRegister" : "modv:writeSingleHoldingRegister",
-        "readFileRecord" : "modv:readFileRecord",
-        "readDeviceIdentification": "modv:readDeviceIdentification",
-        "integer": "xsd:integer",
-        "boolean": "xsd:boolean",
-        "string": "xsd:string",
-        "float": "xsd:float",
-        "decimal": "xsd:decimal",
-        "byte": "xsd:byte",
-        "short": "xsd:short",
-        "int": "xsd:int",
-        "long": "xsd:long",
-        "unsignedByte": "xsd:unsignedByte",
-        "unsignedShort": "xsd:unsignedShort",
-        "unsignedInt": "xsd:unsignedInt",
-        "unsignedLong": "xsd:unsignedLong",
-        "double": "xsd:double",
-        "hexBinary": "xsd:hexBinary"
+        "modv:type" : {
+            "@id": "modv:type",
+            "@type": "@id"
+        }
     }
 }

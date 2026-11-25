@@ -221,10 +221,10 @@
           accordingly.
         </p>
       </section>
-      <section id="entity">
+      <section id="entitytype">
         <h3>Entity</h3>
-        A more user-friendly property to specify [[[#function]]]. The client will then determine the right function code
-        to be applied in the modbus request. Furthermore, it can be used in multi-operation forms whereas
+        A more user-friendly property to specify [[[#functioncode]]]. The client will then determine the right function
+        code to be applied in the modbus request. Furthermore, it can be used in multi-operation forms whereas
         <code>modv:function</code> cannot (See the [[[#example-read-coil-entity]]])
 
         <table class="def" title="Entity values">
@@ -242,7 +242,7 @@
         <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of
         <code>modv:function</code> property should be ignored.
       </section>
-      <section id="function">
+      <section id="functioncode">
         <h3>Function</h3>
         <code>Function Code</code> class represents the value of the function field in a Modbus frame. The following
         table lists the supported codes and their descriptions:
@@ -364,8 +364,8 @@
       <section id="possible-mappings">
         <h3>Possible mappings</h3>
         <p>
-          Additional to the default mappings, users may decide to use other [[[#function]]]s for a specific operation.
-          The following table lists examples of possible mappings for some operation types.
+          Additional to the default mappings, users may decide to use other [[[#functioncode]]]s for a specific
+          operation. The following table lists examples of possible mappings for some operation types.
         </p>
         <table class="def">
           <thead>
@@ -426,8 +426,8 @@
             }
         </pre
       >
-      The [[[#entity]]] keyword can be used to describe forms with multiple operations types where the default operation
-      will apply based on the entity and intended operation by the Consumer.
+      The [[[#entitytype]]] keyword can be used to describe forms with multiple operations types where the default
+      operation will apply based on the entity and intended operation by the Consumer.
       <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
                     {
                         "href": "modbus+tcp://127.0.0.1:60000/1/1",

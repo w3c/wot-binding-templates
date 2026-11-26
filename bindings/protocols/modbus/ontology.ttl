@@ -565,7 +565,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
 :readFileRecord rdf:type owl:NamedIndividual ,
                                      :FunctionCode ;
                              # :readFrom :readFileRecord ; //  tbd
-                            :hasCodeNumber 14 ;
+                            :hasCodeNumber 20 ;
                             rdfs:comment "Read File Record that starts with the MBAP header and subsequently the actual file record"@en ;
                             rdfs:label "Read File Record"@en .
 

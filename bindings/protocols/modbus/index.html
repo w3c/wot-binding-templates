@@ -792,7 +792,8 @@
       This section will present a set of examples showing how the terms defined in this document can be used to describe
       and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimum set of terms needed to configure a
       single coil reading using Modbus. Notice that the <code>unitID</code> is contained in the <code>href</code> as the
-      first element of the <code>path</code> segment.
+      first element of the <code>path</code> segment. All form examples in this section assume that the Thing
+      Description includes the Modbus context as described in [[[#namespace-context]]].
       <pre id="example-read-coil" class="example" title="Read a single coil">
             {
                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
@@ -839,10 +840,9 @@
       to read 8 <code>HoldingRegister</code>.
       <pre id="example-read-holding" class="example" title="Read 8 holding registers">
                             {
-                                "href": "modbus+tcp://127.0.0.1:60000/1/40001?quantity=8",
+                                "href": "modbus+tcp://127.0.0.1:60000/1/1?quantity=8",
                                 "op": [
-                                    "readproperty",
-                                    "writeproperty"
+                                    "readproperty"
                                 ],
                                 "modv:entity": "HoldingRegister"
                             }
@@ -902,13 +902,11 @@
                 {
                   "@context": [
                       "https://www.w3.org/2022/wot/td/v1.1",
-                      {
-                          "modv": "https://www.w3.org/2019/wot/modbus#"
-                      }
+                      "https://www.w3.org/2019/wot/modbus/v1"
                   ],
                   "title": "ModbusPLC",
                   "description": "An industrial machine, retrofitted to be IoT capable.",
-                  "id": "uri:dev:ModbusTCPThing",
+                  "id": "urn:dev:ops:ModbusTCPThing",
                   "securityDefinitions": {
                       "nosec_sc": {
                           "scheme": "nosec"
@@ -924,7 +922,7 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "10003",
+                                  "href": "3",
                                   "modv:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
@@ -937,7 +935,7 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "10002",
+                                  "href": "2",
                                   "modv:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
@@ -967,7 +965,7 @@
                           "description": "Forward Motor Status (single coil). PLC output, can be written to control the motor.",
                           "forms": [
                               {
-                                   "op": [
+                                  "op": [
                                       "writeproperty",
                                       "observeproperty",
                                       "readproperty"

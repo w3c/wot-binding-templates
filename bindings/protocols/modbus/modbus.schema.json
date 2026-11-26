@@ -75,14 +75,22 @@
     "@context": {
       "type": "array",
       "contains": {
-        "type": "object",
-        "properties": {
-          "modv": {
+        "anyOf": [
+          {
             "type": "string",
-            "enum": ["https://www.w3.org/2019/wot/modbus#"]
+            "const": "https://www.w3.org/2019/wot/modbus/v1"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "modv": {
+                "type": "string",
+                "enum": ["https://www.w3.org/2019/wot/modbus#"]
+              }
+            },
+            "required": ["modv"]
           }
-        },
-        "required": ["modv"]
+        ]
       }
     },
     "properties": {

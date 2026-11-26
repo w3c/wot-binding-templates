@@ -722,8 +722,9 @@
           <h4>Read Coils</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readCoil</code></p>
           <span
-            >Read Coils (bit access). Reads the status of 1 to 2000 contiguous coils, starting at the given address.
-            Conventionally in the address range 00001-09999</span
+            >Read Coils (bit access). Reads the status of 1 to 2000 contiguous coils, starting at the given address. In
+            the Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001
+            corresponds to protocol address 0.</span
           >
           <table class="def">
             <tbody>
@@ -757,7 +758,11 @@
         <section>
           <h4>Read Discrete Inputs</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readDiscreteInput</code></p>
-          <span>Read Physical Discrete Inputs (bit access). Conventionally in the address range 10001-19999</span>
+          <span
+            >Read Discrete Inputs (bit access). Reads the status of 1 to 2000 contiguous discrete inputs, starting at
+            the given address. In the Modicon reference notation, discrete inputs are conventionally numbered
+            10001-19999, where reference 10001 corresponds to protocol address 0.</span
+          >
           <table class="def">
             <tbody>
               <tr>
@@ -787,7 +792,11 @@
         <section>
           <h4>Read Multiple Holding Registers</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readHoldingRegisters</code></p>
-          <span>Read Multiple Holding Registers (16 bit access). Conventionally in the address range 40001-49999</span>
+          <span
+            >Read Holding Registers (16-bit access). Reads the contents of 1 to 125 contiguous holding registers,
+            starting at the given address. In the Modicon reference notation, holding registers are conventionally
+            numbered 40001-49999, where reference 40001 corresponds to protocol address 0.</span
+          >
           <table class="def">
             <tbody>
               <tr>
@@ -802,7 +811,11 @@
         <section>
           <h4>Read Multiple Input Registers</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readInputRegisters</code></p>
-          <span>Read Multiple Physical Input Registers (16 bits). Conventionally in the address range 30001-39999</span>
+          <span
+            >Read Input Registers (16-bit access). Reads the contents of 1 to 125 contiguous input registers, starting
+            at the given address. In the Modicon reference notation, input registers are conventionally numbered
+            30001-39999, where reference 30001 corresponds to protocol address 0.</span
+          >
           <table class="def">
             <tbody>
               <tr>
@@ -817,7 +830,11 @@
         <section>
           <h4>Write Multiple Coils</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#writeMultipleCoils</code></p>
-          <span>Write Multiple Physical Coils (internal bits). Conventionally in the address range 00001-09999</span>
+          <span
+            >Write Multiple Coils (bit access). Sets each coil in a sequence of 1 to 1968 contiguous coils to either ON
+            or OFF, starting at the given address. In the Modicon reference notation, coils are conventionally numbered
+            00001-09999, where reference 00001 corresponds to protocol address 0.</span
+          >
           <table class="def">
             <tbody>
               <tr>
@@ -833,8 +850,9 @@
           <h4>Write Multiple Holding Registers</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#writeMultipleHoldingRegisters</code></p>
           <span
-            >Write Multiple Holding Registers (output registers, 16 bit). Conventionally in the address range
-            40001-49999</span
+            >Write Multiple Holding Registers (16-bit access). Writes a block of 1 to 123 contiguous holding registers,
+            starting at the given address. In the Modicon reference notation, holding registers are conventionally
+            numbered 40001-49999, where reference 40001 corresponds to protocol address 0.</span
           >
           <table class="def">
             <tbody>
@@ -850,7 +868,11 @@
         <section>
           <h4>Write Single Coil</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#writeSingleCoil</code></p>
-          <span>Write Single Physical Coil (internal bit). Conventionally in the address range 00001-09999</span>
+          <span
+            >Write Single Coil (bit access). Sets a single coil to either ON or OFF. In the Modicon reference notation,
+            coils are conventionally numbered 00001-09999, where reference 00001 corresponds to protocol address
+            0.</span
+          >
           <table class="def">
             <tbody>
               <tr>
@@ -865,7 +887,11 @@
         <section>
           <h4>Write Single Holding Register</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#writeSingleHoldingRegister</code></p>
-          <span>Write Single HoldingRegister (internal bits). Conventionally in the address range 40001-49999</span>
+          <span
+            >Write Single Holding Register (16-bit access). Writes a single holding register. In the Modicon reference
+            notation, holding registers are conventionally numbered 40001-49999, where reference 40001 corresponds to
+            protocol address 0.</span
+          >
           <table class="def">
             <tbody>
               <tr>

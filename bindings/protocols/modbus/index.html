@@ -469,7 +469,8 @@
               <td>1</td>
               <td>
                 Read Coils (bit access). Reads the status of 1 to 2000 contiguous coils, starting at the given address.
-                Conventionally in the address range 00001-09999
+                In the Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001
+                corresponds to protocol address 0.
               </td>
             </tr>
 
@@ -490,7 +491,11 @@
               <td><code>readDiscreteInput</code></td>
               <td>Read Discrete Inputs</td>
               <td>2</td>
-              <td>Read Physical Discrete Inputs (bit access). Conventionally in the address range 10001-19999</td>
+              <td>
+                Read Discrete Inputs (bit access). Reads the status of 1 to 2000 contiguous discrete inputs, starting at
+                the given address. In the Modicon reference notation, discrete inputs are conventionally numbered
+                10001-19999, where reference 10001 corresponds to protocol address 0.
+              </td>
             </tr>
 
             <tr></tr>
@@ -508,7 +513,11 @@
               <td><code>readHoldingRegisters</code></td>
               <td>Read Multiple Holding Registers</td>
               <td>3</td>
-              <td>Read Multiple Holding Registers (16 bit access). Conventionally in the address range 40001-49999</td>
+              <td>
+                Read Holding Registers (16-bit access). Reads the contents of 1 to 125 contiguous holding registers,
+                starting at the given address. In the Modicon reference notation, holding registers are conventionally
+                numbered 40001-49999, where reference 40001 corresponds to protocol address 0.
+              </td>
             </tr>
 
             <tr></tr>
@@ -517,7 +526,11 @@
               <td><code>readInputRegisters</code></td>
               <td>Read Multiple Input Registers</td>
               <td>4</td>
-              <td>Read Multiple Physical Input Registers (16 bits). Conventionally in the address range 30001-39999</td>
+              <td>
+                Read Input Registers (16-bit access). Reads the contents of 1 to 125 contiguous input registers,
+                starting at the given address. In the Modicon reference notation, input registers are conventionally
+                numbered 30001-39999, where reference 30001 corresponds to protocol address 0.
+              </td>
             </tr>
 
             <tr></tr>
@@ -526,7 +539,11 @@
               <td><code>writeMultipleCoils</code></td>
               <td>Write Multiple Coils</td>
               <td>15</td>
-              <td>Write Multiple Physical Coils (internal bits). Conventionally in the address range 00001-09999</td>
+              <td>
+                Write Multiple Coils (bit access). Sets each coil in a sequence of 1 to 1968 contiguous coils to either
+                ON or OFF, starting at the given address. In the Modicon reference notation, coils are conventionally
+                numbered 00001-09999, where reference 00001 corresponds to protocol address 0.
+              </td>
             </tr>
 
             <tr></tr>
@@ -536,8 +553,9 @@
               <td>Write Multiple Holding Registers</td>
               <td>16</td>
               <td>
-                Write Multiple Holding Registers (output registers, 16 bit). Conventionally in the address range
-                40001-49999
+                Write Multiple Holding Registers (16-bit access). Writes a block of 1 to 123 contiguous holding
+                registers, starting at the given address. In the Modicon reference notation, holding registers are
+                conventionally numbered 40001-49999, where reference 40001 corresponds to protocol address 0.
               </td>
             </tr>
 
@@ -547,7 +565,11 @@
               <td><code>writeSingleCoil</code></td>
               <td>Write Single Coil</td>
               <td>5</td>
-              <td>Write Single Physical Coil (internal bit). Conventionally in the address range 00001-09999</td>
+              <td>
+                Write Single Coil (bit access). Sets a single coil to either ON or OFF. In the Modicon reference
+                notation, coils are conventionally numbered 00001-09999, where reference 00001 corresponds to protocol
+                address 0.
+              </td>
             </tr>
 
             <tr></tr>
@@ -556,20 +578,25 @@
               <td><code>writeSingleHoldingRegister</code></td>
               <td>Write Single Holding Register</td>
               <td>6</td>
-              <td>Write Single HoldingRegister (internal bits). Conventionally in the address range 40001-49999</td>
+              <td>
+                Write Single Holding Register (16-bit access). Writes a single holding register. In the Modicon
+                reference notation, holding registers are conventionally numbered 40001-49999, where reference 40001
+                corresponds to protocol address 0.
+              </td>
             </tr>
 
             <tr></tr>
           </tbody>
         </table>
         <p class="warning">
-          The address ranges indicated are based on the observations of the Modbus community and are not part of the
-          official Modbus specification. While you can use any address within the 0-65535 range, it is recommended for
-          new devices to adhere to these ranges for better compatibility with existing Modbus devices and systems. A WoT
-          Consumer application should not assume that a specific address range is used for a particular type of register
-          or coil, and should always use the Thing Description as the source of truth. However, pay attention that your
-          Modbus library does not have any expectations and thus limitations on the address range. In those cases, you
-          should post-process the TD before handing it over to the Modbus library.
+          The address ranges indicated follow the Modicon reference notation, which is a convention of the Modbus
+          community and not part of the official Modbus specification. While you can use any address within the 0-65535
+          range, it is recommended for new devices to adhere to the Modicon ranges for better compatibility with
+          existing Modbus devices and systems. A WoT Consumer application should not assume that a specific address
+          range is used for a particular type of register or coil, and should always use the Thing Description as the
+          source of truth. However, pay attention that your Modbus library does not have any expectations and thus
+          limitations on the address range. In those cases, you should post-process the TD before handing it over to the
+          Modbus library.
         </p>
       </section>
       <section id="payloaddatatype">

@@ -487,7 +487,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                    :FunctionCode ;
           :readFrom :Coil ;
           :hasCodeNumber 1 ;
-          rdfs:comment "Read Coils (bit access). Reads the status of 1 to 2000 contiguous coils, starting at the given address. Conventionally in the address range 00001-09999"@en ;
+          rdfs:comment "Read Coils (bit access). Reads the status of 1 to 2000 contiguous coils, starting at the given address. In the Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001 corresponds to protocol address 0."@en ;
           rdfs:label "Read Coils"@en .
 
 
@@ -504,7 +504,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                             :FunctionCode ;
                    :readFrom :DiscreteInput ;
                    :hasCodeNumber 2 ;
-                   rdfs:comment "Read Physical Discrete Inputs (bit access). Conventionally in the address range 10001-19999"@en ;
+                   rdfs:comment "Read Discrete Inputs (bit access). Reads the status of 1 to 2000 contiguous discrete inputs, starting at the given address. In the Modicon reference notation, discrete inputs are conventionally numbered 10001-19999, where reference 10001 corresponds to protocol address 0."@en ;
                    rdfs:label "Read Discrete Inputs"@en .
 
 
@@ -513,7 +513,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                :FunctionCode ;
                       :readFrom :HoldingRegister ;
                       :hasCodeNumber 3 ;
-                      rdfs:comment "Read Multiple Holding Registers (16 bit access). Conventionally in the address range 40001-49999"@en ;
+                      rdfs:comment "Read Holding Registers (16-bit access). Reads the contents of 1 to 125 contiguous holding registers, starting at the given address. In the Modicon reference notation, holding registers are conventionally numbered 40001-49999, where reference 40001 corresponds to protocol address 0."@en ;
                       rdfs:label "Read Multiple Holding Registers"@en .
 
 
@@ -522,7 +522,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                              :FunctionCode ;
                     :readFrom :InputRegister ;
                     :hasCodeNumber 4 ;
-                    rdfs:comment "Read Multiple Physical Input Registers (16 bits). Conventionally in the address range 30001-39999"@en ;
+                    rdfs:comment "Read Input Registers (16-bit access). Reads the contents of 1 to 125 contiguous input registers, starting at the given address. In the Modicon reference notation, input registers are conventionally numbered 30001-39999, where reference 30001 corresponds to protocol address 0."@en ;
                     rdfs:label "Read Multiple Input Registers"@en .
 
 
@@ -531,7 +531,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                              :FunctionCode ;
                     :writesOn :Coil ;
                     :hasCodeNumber 15 ;
-                    rdfs:comment "Write Multiple Physical Coils (internal bits). Conventionally in the address range 00001-09999"@en ;
+                    rdfs:comment "Write Multiple Coils (bit access). Sets each coil in a sequence of 1 to 1968 contiguous coils to either ON or OFF, starting at the given address. In the Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001 corresponds to protocol address 0."@en ;
                     rdfs:label "Write Multiple Coils"@en .
 
 
@@ -540,7 +540,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                         :FunctionCode ;
                                :writesOn :HoldingRegister ;
                                :hasCodeNumber 16 ;
-                               rdfs:comment "Write Multiple Holding Registers (output registers, 16 bit). Conventionally in the address range 40001-49999"@en ;
+                               rdfs:comment "Write Multiple Holding Registers (16-bit access). Writes a block of 1 to 123 contiguous holding registers, starting at the given address. In the Modicon reference notation, holding registers are conventionally numbered 40001-49999, where reference 40001 corresponds to protocol address 0."@en ;
                                rdfs:label "Write Multiple Holding Registers"@en .
 
 
@@ -549,7 +549,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                           :FunctionCode ;
                  :writesOn :Coil ;
                  :hasCodeNumber 5 ;
-                 rdfs:comment "Write Single Physical Coil (internal bit). Conventionally in the address range 00001-09999"@en ;
+                 rdfs:comment "Write Single Coil (bit access). Sets a single coil to either ON or OFF. In the Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001 corresponds to protocol address 0."@en ;
                  rdfs:label "Write Single Coil"@en .
 
 
@@ -558,7 +558,7 @@ The data request field may be nonexistent (zero length) in certain kind of reque
                                      :FunctionCode ;
                             :writesOn :HoldingRegister ;
                             :hasCodeNumber 6 ;
-                            rdfs:comment "Write Single HoldingRegister (internal bits). Conventionally in the address range 40001-49999"@en ;
+                            rdfs:comment "Write Single Holding Register (16-bit access). Writes a single holding register. In the Modicon reference notation, holding registers are conventionally numbered 40001-49999, where reference 40001 corresponds to protocol address 0."@en ;
                             rdfs:label "Write Single Holding Register"@en .
 
 ###  https://www.w3.org/2019/wot/modbus#readFileRecord

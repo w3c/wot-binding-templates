@@ -135,6 +135,58 @@
         the <a href="modbus.schema.json">GitHub repository</a>.
       </p>
     </section>
+    <section id="namespace-context">
+      <h2>Namespace and Context</h2>
+      <p>
+        The vocabulary terms defined in this document belong to the Modbus namespace
+        <code>https://www.w3.org/2019/wot/modbus#</code>. The preferred prefix for this namespace is <code>modv</code>,
+        which is used throughout this document. For example, the term <code>modv:entity</code> expands to the IRI
+        <code>https://www.w3.org/2019/wot/modbus#entity</code>. The definitions of all terms are provided in the
+        <a href="ontology.html">Modbus ontology</a>.
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Namespace</td>
+            <td><code>https://www.w3.org/2019/wot/modbus#</code></td>
+          </tr>
+          <tr>
+            <td>Preferred prefix</td>
+            <td><code>modv</code></td>
+          </tr>
+          <tr>
+            <td>JSON-LD context</td>
+            <td><code>https://www.w3.org/2019/wot/modbus/v1</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        For the use in JSON-LD [[?JSON-LD11]], a context file is provided at
+        <code>https://www.w3.org/2019/wot/modbus/v1</code>. It defines the <code>modv</code> prefix and the datatypes of
+        the vocabulary terms. Furthermore, it maps values such as <code>"Coil"</code> or <code>"readCoil"</code> to the
+        corresponding terms of the Modbus ontology.
+      </p>
+      <p>
+        When used within a WoT Thing Description [[?WOT-THING-DESCRIPTION]], the Modbus context file should be included
+        in the <code>@context</code> array after the Thing Description context, as shown in [[[#example-context]]].
+      </p>
+      <pre id="example-context" class="example" title="Including the Modbus context in a Thing Description">
+            {
+                "@context": [
+                    "https://www.w3.org/2022/wot/td/v1.1",
+                    "https://www.w3.org/2019/wot/modbus/v1"
+                ],
+                ...
+            }
+        </pre
+      >
+    </section>
     <section id="url">
       <h2>URL format</h2>
       Historically different URL schemes have been used within the Modbus community such as <code>modbus+tcp://</code>,

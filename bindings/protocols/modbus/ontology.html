@@ -173,7 +173,7 @@
               <tr>
                 <td>Enumeration members</td>
                 <td>
-                  <code><a href="#read-single-coil">Read Single Coil</a></code
+                  <code><a href="#read-coils">Read Coils</a></code
                   ><br /><code><a href="#read-device-identification">Read Device Identification</a></code
                   ><br /><code><a href="#read-discrete-inputs">Read Discrete Inputs</a></code
                   ><br /><code><a href="#read-multiple-holding-registers">Read Multiple Holding Registers</a></code
@@ -719,10 +719,11 @@
           </table>
         </section>
         <section>
-          <h4>Read Single Coil</h4>
+          <h4>Read Coils</h4>
           <p>IRI: <code>https://www.w3.org/2019/wot/modbus#readCoil</code></p>
           <span
-            >Read a single coil (i.e., boolean/bit access) value. Conventionally in the address range 00001-09999</span
+            >Read Coils (bit access). Reads the status of 1 to 2000 contiguous coils, starting at the given address.
+            Conventionally in the address range 00001-09999</span
           >
           <table class="def">
             <tbody>

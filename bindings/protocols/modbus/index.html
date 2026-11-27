@@ -64,6 +64,11 @@
             authors: ["Ege Korkan"],
             publisher: "W3C",
             date: "November 2025"
+          },
+          "PI-MBUS-300": {
+            title: "Modicon Modbus Protocol Reference Guide (PI-MBUS-300 Rev. J)",
+            publisher: "Modicon, Inc.",
+            date: "June 1996"
           }
         }
       };
@@ -94,10 +99,10 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        The Modbus is a data communication protocol originally developed by Modicon, which is now a part of Schneider
-        Electric. The protocol was specifically designed for the remote management of the hardware devices in the
-        industrial environment. For this reason, it has a low level of abstraction and it has built-in bit handling
-        capabilities oriented to the direct control of the relays and generic contact statuses.
+        The Modbus is a data communication protocol originally developed by Modicon [[?PI-MBUS-300]], which is now a
+        part of Schneider Electric. The protocol was specifically designed for the remote management of the hardware
+        devices in the industrial environment. For this reason, it has a low level of abstraction and it has built-in
+        bit handling capabilities oriented to the direct control of the relays and generic contact statuses.
       </p>
       <p>
         All Modbus devices operate by exposing a certain set of coils (bits) and registers (group of 16 bits) over the
@@ -589,10 +594,10 @@
           </tbody>
         </table>
         <p class="warning">
-          The address ranges indicated follow the Modicon reference notation, which is a convention of the Modbus
-          community and not part of the official Modbus specification. While you can use any address within the 0-65535
-          range, it is recommended for new devices to adhere to the Modicon ranges for better compatibility with
-          existing Modbus devices and systems. A WoT Consumer application should not assume that a specific address
+          The address ranges indicated follow the Modicon reference notation [[?PI-MBUS-300]], which is a convention of
+          the Modbus community and not part of the official Modbus specification. While you can use any address within
+          the 0-65535 range, it is recommended for new devices to adhere to the Modicon ranges for better compatibility
+          with existing Modbus devices and systems. A WoT Consumer application should not assume that a specific address
           range is used for a particular type of register or coil, and should always use the Thing Description as the
           source of truth. However, pay attention that your Modbus library does not have any expectations and thus
           limitations on the address range. In those cases, you should post-process the TD before handing it over to the

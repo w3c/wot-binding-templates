@@ -31,59 +31,60 @@
 	sh:order 1 ; # Used to select the shape
     sh:closed false ;
     sh:property [
-        sh:path modv:hasEntity ;
-		sh:class modv:Entity ;
+        sh:path modv:entity ;
+		sh:class modv:EntityType ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:path modv:hasFunction ;
-		sh:class modv:Function ;
+        sh:path modv:function ;
+		sh:class modv:FunctionCode ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:path modv:hasPayloadDataType ;
+        sh:path modv:type ;
 		sh:class modv:PayloadDataType ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
-        sh:path modv:hasAddress ;
+        sh:path modv:address ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedShort ;
     ] ;
     sh:property [
-        sh:path modv:hasUnitID ;
+        sh:path modv:unitID ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedByte ;
     ] ;
     sh:property [
-        sh:path modv:hasQuantity ;
+        sh:path modv:quantity ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedShort ;
+        sh:minInclusive 1 ;
     ] ;
     sh:property [
-        sh:path modv:hasPollingTime ;
+        sh:path modv:pollingTime ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedInt ;
     ] ;
     sh:property [
-        sh:path modv:hasTimeout ;
+        sh:path modv:timeout ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedInt ;
     ] ;
     sh:property [
-        sh:path modv:hasMostSignificantByte ;
+        sh:path modv:mostSignificantByte ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
     ] ;
     sh:property [
-        sh:path modv:hasMostSignificantWord ;
+        sh:path modv:mostSignificantWord ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
     ] ;
     sh:property [
-        sh:path modv:hasZeroBasedAddressingFlag ;
+        sh:path modv:zeroBasedAddressing ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
     ] .
@@ -97,7 +98,7 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:readProperty
     ], [
-        sh:path modv:Function ;
+        sh:path modv:function ;
         sh:defaultValue modv:readCoil
     ] .
 :WriteModubsPropertyForm a sh:NodeShape ;
@@ -107,7 +108,7 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:writeProperty , td:invokeAction
     ], [
-        sh:path modv:Function ;
+        sh:path modv:function ;
         sh:defaultValue modv:writeSingleCoil
     ] .
 
@@ -118,7 +119,7 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:readAllProperties , td:readMultipleProperties
     ], [
-        sh:path modv:Function ;
+        sh:path modv:function ;
         sh:defaultValue  modv:readHoldingRegisters
     ] .
 :WriteAllModubsPropertyForm a sh:NodeShape ;
@@ -128,6 +129,6 @@
         sh:path hctl:hasOperationType ;
         sh:hasValue td:writeAllProperties , td:writeMultipleProperties
     ], [
-        sh:path modv:Function ;
+        sh:path modv:function ;
         sh:defaultValue  modv:writeMultipleHoldingRegisters
     ] .

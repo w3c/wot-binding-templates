@@ -68,7 +68,7 @@ template :urlTerms(?ns ?prefix){
     }
     
     BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
-    filter( ?term = concat(?ns,"#hasAddress" ) || ?term = concat(?ns,"#hasUnitID" ) ||  ?term = concat(?ns,"#hasQuantity" ))
+    filter( ?term = concat(?ns,"#address" ) || ?term = concat(?ns,"#unitID" ) ||  ?term = concat(?ns,"#quantity" ))
 } 
 
 template :formTerms(?ns ?prefix){
@@ -109,7 +109,7 @@ template :formTerms(?ns ?prefix){
     
     BIND ( IF (BOUND (?count), ?count, 0 )  as ?count  )
     # Filter out URL terms
-    filter( ?term != concat(?ns,"#hasAddress" ) && ?term != concat(?ns,"#hasUnitID" ) &&  ?term != concat(?ns,"#hasQuantity" ))
+    filter( ?term != concat(?ns,"#address" ) && ?term != concat(?ns,"#unitID" ) &&  ?term != concat(?ns,"#quantity" ))
    
 } 
 
@@ -117,7 +117,7 @@ template :term(?ns ?prefix ?term){
     format {
         """%s"""
     if(?isJSONLD,
-        concat(?prefix,":",?printTerm),
+        if(strstarts(?printTerm, concat(?prefix,":")), ?printTerm, concat(?prefix,":",?printTerm)),
         replace(?printTerm,concat(?ns,"#"),concat(?prefix,":"),"g")
     )
     }
@@ -157,7 +157,7 @@ template :mappings(?ns ?prefix){
         sh:defaultValue ?default.
    
    filter( ?index > 1 )
-    bind(IRI(CONCAT(STR( ?ns),"#Function")) as ?modbusFunction)
+    bind(IRI(CONCAT(STR( ?ns),"#function")) as ?modbusFunction)
 }
 
 template :entityValues(?ns ?prefix){
@@ -178,7 +178,7 @@ template :entityValues(?ns ?prefix){
          rdfs:label ?label;
          rdfs:comment ?desc
     
-    bind(IRI(CONCAT(STR( ?ns),"#Entity")) as ?entity)
+    bind(IRI(CONCAT(STR( ?ns),"#EntityType")) as ?entity)
 }
 
 template :functionValues(?ns ?prefix){
@@ -204,7 +204,7 @@ template :functionValues(?ns ?prefix){
          rdfs:label ?label;
          rdfs:comment ?desc
     
-    bind(IRI(CONCAT(STR( ?ns),"#Function")) as ?funcode)
+    bind(IRI(CONCAT(STR( ?ns),"#FunctionCode")) as ?funcode)
 }
 
 template :typesValues(?ns ?prefix){

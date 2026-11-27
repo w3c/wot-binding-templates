@@ -34,7 +34,7 @@
             data: [
               {
                 value: "Explanation of the binding mechanism",
-                href: " https://w3c.github.io/wot-thing-description/#bindings"
+                href: "https://w3c.github.io/wot-thing-description/#bindings"
               }
             ]
           },
@@ -64,6 +64,11 @@
             authors: ["Ege Korkan"],
             publisher: "W3C",
             date: "November 2025"
+          },
+          "PI-MBUS-300": {
+            title: "Modicon Modbus Protocol Reference Guide (PI-MBUS-300 Rev. J)",
+            publisher: "Modicon, Inc.",
+            date: "June 1996"
           }
         }
       };
@@ -94,10 +99,10 @@
     <section id="introduction">
       <h2>Introduction</h2>
       <p>
-        The Modbus is a data communication protocol originally developed by Modicon, which is now a part of Schneider
-        Electric. The protocol was specifically designed for the remote management of the hardware devices in the
-        industrial environment. For this reason, it has a low level of abstraction and it has built in bit handling
-        capabilities oriented to the direct control of the relays and generic contact statuses.
+        The Modbus is a data communication protocol originally developed by Modicon [[?PI-MBUS-300]], which is now a
+        part of Schneider Electric. The protocol was specifically designed for the remote management of the hardware
+        devices in the industrial environment. For this reason, it has a low level of abstraction and it has built-in
+        bit handling capabilities oriented to the direct control of the relays and generic contact statuses.
       </p>
       <p>
         All Modbus devices operate by exposing a certain set of coils (bits) and registers (group of 16 bits) over the
@@ -114,7 +119,7 @@
         over the Internet. Over the years, due to its simplicity and cost-effectiveness, the Modbus protocol has become
         a standard all over the world. This popularity, together with the advancement in microcontrollers and
         microprocessors, has led to a shift in how applications pack the information. Today, it is common to store and
-        read any type of data in the Holdings Registers, including bits, bytes, strings, floats, etc.
+        read any type of data in the Holding Registers, including bits, bytes, strings, floats, etc.
       </p>
       <p>
         Concretely, this document describes how WoT TDs can be used to describe devices that use the Modbus TCP
@@ -134,6 +139,58 @@
         A JSON Schema [[?JSON-SCHEMA]] to validate Thing Description instances containing Modbus Binding is provided in
         the <a href="modbus.schema.json">GitHub repository</a>.
       </p>
+    </section>
+    <section id="namespace-context">
+      <h2>Namespace and Context</h2>
+      <p>
+        The vocabulary terms defined in this document belong to the Modbus namespace
+        <code>https://www.w3.org/2019/wot/modbus#</code>. The preferred prefix for this namespace is <code>modv</code>,
+        which is used throughout this document. For example, the term <code>modv:entity</code> expands to the IRI
+        <code>https://www.w3.org/2019/wot/modbus#entity</code>. The definitions of all terms are provided in the
+        <a href="ontology.html">Modbus ontology</a>.
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Namespace</td>
+            <td><code>https://www.w3.org/2019/wot/modbus#</code></td>
+          </tr>
+          <tr>
+            <td>Preferred prefix</td>
+            <td><code>modv</code></td>
+          </tr>
+          <tr>
+            <td>JSON-LD context</td>
+            <td><code>https://www.w3.org/2019/wot/modbus/v1</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        For the use in JSON-LD [[?JSON-LD11]], a context file is provided at
+        <code>https://www.w3.org/2019/wot/modbus/v1</code>. It defines the <code>modv</code> prefix and the datatypes of
+        the vocabulary terms. Furthermore, it maps values such as <code>"Coil"</code> or <code>"readCoil"</code> to the
+        corresponding terms of the Modbus ontology.
+      </p>
+      <p>
+        When used within a WoT Thing Description [[?WOT-THING-DESCRIPTION]], the Modbus context file should be included
+        in the <code>@context</code> array after the Thing Description context, as shown in [[[#example-context]]].
+      </p>
+      <pre id="example-context" class="example" title="Including the Modbus context in a Thing Description">
+            {
+                "@context": [
+                    "https://www.w3.org/2022/wot/td/v1.1",
+                    "https://www.w3.org/2019/wot/modbus/v1"
+                ],
+                ...
+            }
+        </pre
+      >
     </section>
     <section id="url">
       <h2>URL format</h2>
@@ -217,14 +274,14 @@
           interpretation being as <code>CCDDAABB</code>. For more examples, see [[[#example-read-holding-32bit]]]. Note
           that while word swapping is not part of the Modbus specification, it is a practice observed in off-the-shelf
           devices. Therefore, when creating a Thing Description (TD), users may need to account for such deviations by
-          configuring the <code>hasMostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties
+          configuring the <code>modv:mostSignificantWord</code> and <code>modv:mostSignificantByte</code> properties
           accordingly.
         </p>
       </section>
-      <section id="entity">
+      <section id="entitytype">
         <h3>Entity</h3>
-        A more user-friendly property to specify [[[#function]]]. The client will then determine the right function code
-        to be applied in the modbus request. Furthermore, it can be used in multi-operation forms whereas
+        A more user-friendly property to specify [[[#functioncode]]]. The client will then determine the right function
+        code to be applied in the modbus request. Furthermore, it can be used in multi-operation forms whereas
         <code>modv:function</code> cannot (See the [[[#example-read-coil-entity]]])
 
         <table class="def" title="Entity values">
@@ -242,9 +299,9 @@
         <b>Notice</b> that when used in conjunction with <code>modv:function</code>, the value of
         <code>modv:function</code> property should be ignored.
       </section>
-      <section id="function">
+      <section id="functioncode">
         <h3>Function</h3>
-        <code>Function Code</code> class represents the value of the function field in a Modbus frame. The following
+        <code>FunctionCode</code> class represents the value of the function field in a Modbus frame. The following
         table lists the supported codes and their descriptions:
         <table class="def" title="Function values">
           <thead>
@@ -261,13 +318,14 @@
           </tbody>
         </table>
         <p class="warning">
-          The address ranges indicated are based on the observations of the Modbus community and are not part of the
-          official Modbus specification. While you can use any address within the 0-65535 range, it is recommended for
-          new devices to adhere to these ranges for better compatibility with existing Modbus devices and systems. A WoT
-          Consumer application should not assume that a specific address range is used for a particular type of register
-          or coil, and should always use the Thing Description as the source of truth. However, pay attention that your
-          Modbus library does not have any expectations and thus limitations on the address range. In those cases, you
-          should post-process the TD before handing it over to the Modbus library.
+          The address ranges indicated follow the Modicon reference notation [[?PI-MBUS-300]], which is a convention of
+          the Modbus community and not part of the official Modbus specification. While you can use any address within
+          the 0-65535 range, it is recommended for new devices to adhere to the Modicon ranges for better compatibility
+          with existing Modbus devices and systems. A WoT Consumer application should not assume that a specific address
+          range is used for a particular type of register or coil, and should always use the Thing Description as the
+          source of truth. However, pay attention that your Modbus library does not have any expectations and thus
+          limitations on the address range. In those cases, you should post-process the TD before handing it over to the
+          Modbus library.
         </p>
       </section>
       <section id="payloaddatatype">
@@ -364,8 +422,8 @@
       <section id="possible-mappings">
         <h3>Possible mappings</h3>
         <p>
-          Additional to the default mappings, users may decide to use other [[[#function]]]s for a specific operation.
-          The following table lists examples of possible mappings for some operation types.
+          Additional to the default mappings, users may decide to use other [[[#functioncode]]]s for a specific
+          operation. The following table lists examples of possible mappings for some operation types.
         </p>
         <table class="def">
           <thead>
@@ -415,10 +473,11 @@
       This section will present a set of examples showing how the terms defined in this document can be used to describe
       and configure a <a>Form</a>. The [[[#example-read-coil]]] shows the minimum set of terms needed to configure a
       single coil reading using Modbus. Notice that the <code>unitID</code> is contained in the <code>href</code> as the
-      first element of the <code>path</code> segment.
+      first element of the <code>path</code> segment. All form examples in this section assume that the Thing
+      Description includes the Modbus context as described in [[[#namespace-context]]].
       <pre id="example-read-coil" class="example" title="Read a single coil">
             {
-                "href": "modbus+tcp://127.0.0.1:60000/1",
+                "href": "modbus+tcp://127.0.0.1:60000/1/1",
                 "op": [
                     "readproperty"
                 ],
@@ -426,8 +485,8 @@
             }
         </pre
       >
-      The [[[#entity]]] keyword can be used to describe forms with multiple operations types where the default operation
-      will apply based on the entity and intended operation by the Consumer.
+      The [[[#entitytype]]] keyword can be used to describe forms with multiple operations types where the default
+      operation will apply based on the entity and intended operation by the Consumer.
       <pre id="example-read-coil-entity" class="example" title="Read and write single coil">
                     {
                         "href": "modbus+tcp://127.0.0.1:60000/1/1",
@@ -439,33 +498,32 @@
                     }
         </pre
       >
-      A TD processor will intepred [[[#example-read-coil-entity]]] configuration as the following:
-      <pre id="example-read-coil-entity" class="example" title="Read and write single coil expanded">
+      A TD processor will interpret [[[#example-read-coil-entity]]] configuration as the following:
+      <pre id="example-read-coil-entity-expanded" class="example" title="Read and write single coil expanded">
                             [{
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
-                                    "readproperty",
+                                    "readproperty"
                                 ],
                                 "modv:function": "readCoil"
                             },
                             {
                                 "href": "modbus+tcp://127.0.0.1:60000/1/1",
                                 "op": [
-                                    "writeproperty",
+                                    "writeproperty"
                                 ],
-                                "modv:function": "writeCoil"
+                                "modv:function": "writeSingleCoil"
                             }]
         </pre
       >
       Effectively reducing the verbosity of a TD. The expressiveness of the Modbus ontology allows users to also
       describe the total number of registers read or written in a WoT operation. [[[#example-read-holding]]] shows how
-      to read or write 8 <code>HoldingRegisters</code>.
+      to read 8 <code>HoldingRegister</code>.
       <pre id="example-read-holding" class="example" title="Read 8 holding registers">
                             {
-                                "href": "modbus+tcp://127.0.0.1:60000/1/40001?quantity=8",
+                                "href": "modbus+tcp://127.0.0.1:60000/1/1?quantity=8",
                                 "op": [
-                                    "readproperty",
-                                    "writeproperty"
+                                    "readproperty"
                                 ],
                                 "modv:entity": "HoldingRegister"
                             }
@@ -497,16 +555,16 @@
                     "readproperty"
                 ],
                 "modv:entity": "HoldingRegister",
-                "modv:type": "xsd:int"
+                "modv:type": "xsd:int",
                 "modv:mostSignificantByte": false
             }
         </pre
       >
 
       Another notable form of configuration of a form using the Modbus vocabulary is the polling mechanism. With the
-      keyword <code>pollingTime</code>, the user can indicate the intervals at which to observe a particular set of
+      keyword <code>modv:pollingTime</code>, the user can indicate the intervals at which to observe a particular set of
       registers. Supposing that the device is implemented in a way that the value of coil register 1 changes every 1000
-      ms, in [[[#example-polling]]], it suggests that the polling time should not be faster than 10 ms. WoT Consumers
+      ms, in [[[#example-polling]]], it suggests that the polling time should not be faster than 1000 ms. WoT Consumers
       may still submit requests faster than the specified time, but it should be taken as a reasonable default for
       observing a property.
       <pre id="example-polling" class="example" title="Polling">
@@ -524,14 +582,12 @@
       <pre id="full-td" class="example" title="A complete TD example">
                 {
                   "@context": [
-                      "https://www.w3.org/2019/wot/td/v1",
-                      {
-                          "modv": "https://www.w3.org/2019/wot/modbus"
-                      }
+                      "https://www.w3.org/2022/wot/td/v1.1",
+                      "https://www.w3.org/2019/wot/modbus/v1"
                   ],
                   "title": "ModbusPLC",
                   "description": "An industrial machine, retrofitted to be IoT capable.",
-                  "id": "uri:dev:ModbusTCPThing",
+                  "id": "urn:dev:ops:ModbusTCPThing",
                   "securityDefinitions": {
                       "nosec_sc": {
                           "scheme": "nosec"
@@ -547,7 +603,7 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "10003",
+                                  "href": "3",
                                   "modv:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
@@ -560,7 +616,7 @@
                           "forms": [
                               {
                                   "op": "readproperty",
-                                  "href": "10002",
+                                  "href": "2",
                                   "modv:function": "readDiscreteInput",
                                   "contentType": "application/octet-stream"
                               }
@@ -590,7 +646,7 @@
                           "description": "Forward Motor Status (single coil). PLC output, can be written to control the motor.",
                           "forms": [
                               {
-                                   "op": [
+                                  "op": [
                                       "writeproperty",
                                       "observeproperty",
                                       "readproperty"
@@ -609,7 +665,7 @@
     </section>
     <section class="appendix" id="abnf">
       <h2>Modbus URL ABNF syntax</h2>
-      <p>The following describes the [[[#url]]] using [[[RFC2234]]] with reference to [[[uri]]] specification.</p>
+      <p>The following describes the [[[#url]]] using [[[RFC5234]]] with reference to [[[uri]]] specification.</p>
       <pre class="syntax">
             MODBUS-URI = "modbus+tcp://" authority path-modbus [ "?quantity=" quantity ]
             path-modbus = "/" unitID "/" address

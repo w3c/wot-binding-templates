@@ -1,0 +1,4357 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="ReSpec 37.6.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <style>
+      span.example-title {
+        text-transform: none;
+      }
+      :is(aside, div).example,
+      div.illegal-example {
+        padding: 0.5em;
+        margin: 1em 0;
+        position: relative;
+        clear: both;
+      }
+      div.illegal-example {
+        color: red;
+      }
+      div.illegal-example p {
+        color: #000;
+      }
+      aside.example div.example {
+        border-left-width: 0.1em;
+        border-color: #999;
+        background: #fff;
+      }
+    </style>
+    <style>
+      .issue-label {
+        text-transform: initial;
+      }
+      .warning > p:first-child {
+        margin-top: 0;
+      }
+      .warning {
+        padding: 0.5em;
+        border-left-width: 0.5em;
+        border-left-style: solid;
+      }
+      span.warning {
+        padding: 0.1em 0.5em 0.15em;
+      }
+      .issue.closed span.issue-number {
+        text-decoration: line-through;
+      }
+      .issue.closed span.issue-number::after {
+        content: " (Closed)";
+        font-size: smaller;
+      }
+      .warning {
+        border-color: #f11;
+        border-color: var(--warning-border, #f11);
+        border-width: 0.2em;
+        border-style: solid;
+        background: #fbe9e9;
+        background: var(--warning-bg, #fbe9e9);
+        color: #000;
+        color: var(--text, #000);
+      }
+      .warning-title:before {
+        content: "⚠";
+        font-size: 1.3em;
+        float: left;
+        padding-right: 0.3em;
+        margin-top: -0.3em;
+      }
+      li.task-list-item {
+        list-style: none;
+      }
+      input.task-list-item-checkbox {
+        margin: 0 0.35em 0.25em -1.6em;
+        vertical-align: middle;
+      }
+      .issue a.respec-gh-label {
+        padding: 5px;
+        margin: 0 2px 0 2px;
+        font-size: 10px;
+        text-transform: none;
+        text-decoration: none;
+        font-weight: 700;
+        border-radius: 4px;
+        position: relative;
+        bottom: 2px;
+        border: none;
+        display: inline-block;
+      }
+    </style>
+    <style>
+      dfn {
+        cursor: pointer;
+      }
+      .dfn-panel {
+        position: absolute;
+        z-index: 35;
+        min-width: 300px;
+        max-width: 500px;
+        padding: 0.5em 0.75em;
+        margin-top: 0.6em;
+        font-family: "Helvetica Neue", sans-serif;
+        font-size: small;
+        background: #fff;
+        background: var(--indextable-hover-bg, #fff);
+        color: #000;
+        color: var(--text, #000);
+        box-shadow:
+          0 1em 3em -0.4em rgba(0, 0, 0, 0.3),
+          0 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow:
+          0 1em 3em -0.4em var(--tocsidebar-shadow, rgba(0, 0, 0, 0.3)),
+          0 0 1px 1px var(--tocsidebar-shadow, rgba(0, 0, 0, 0.05));
+        border-radius: 2px;
+      }
+      .dfn-panel:not(.docked) > .caret {
+        position: absolute;
+        top: -9px;
+      }
+      .dfn-panel:not(.docked) > .caret::after,
+      .dfn-panel:not(.docked) > .caret::before {
+        content: "";
+        position: absolute;
+        border: 10px solid transparent;
+        border-top: 0;
+        border-bottom: 10px solid #fff;
+        border-bottom-color: var(--indextable-hover-bg, #fff);
+        top: 0;
+      }
+      .dfn-panel:not(.docked) > .caret::before {
+        border-bottom: 9px solid #a2a9b1;
+        border-bottom-color: var(--indextable-hover-bg, #a2a9b1);
+      }
+      .dfn-panel * {
+        margin: 0;
+      }
+      .dfn-panel b {
+        display: block;
+        color: #000;
+        color: var(--text, #000);
+        margin-top: 0.25em;
+      }
+      .dfn-panel ul a[href] {
+        color: #333;
+        color: var(--text, #333);
+      }
+      .dfn-panel > div {
+        display: flex;
+      }
+      .dfn-panel a.self-link {
+        font-weight: 700;
+        margin-right: auto;
+      }
+      .dfn-panel .marker {
+        padding: 0.1em;
+        margin-left: 0.5em;
+        border-radius: 0.2em;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 90%;
+        color: #040b1c;
+      }
+      .dfn-panel .marker.dfn-exported {
+        background: #d1edfd;
+        box-shadow: 0 0 0 0.125em #1ca5f940;
+      }
+      .dfn-panel .marker.idl-block {
+        background: #8ccbf2;
+        box-shadow: 0 0 0 0.125em #0670b161;
+      }
+      .dfn-panel .marker.cddl-block {
+        background: #8ccbf2;
+        box-shadow: 0 0 0 0.125em #0670b161;
+      }
+      .dfn-panel a:not(:hover) {
+        text-decoration: none !important;
+        border-bottom: none !important;
+      }
+      .dfn-panel a[href]:hover {
+        border-bottom-width: 1px;
+      }
+      .dfn-panel ul {
+        padding: 0;
+      }
+      .dfn-panel li {
+        margin-left: 1em;
+      }
+      .dfn-panel.docked {
+        position: fixed;
+        left: 0.5em;
+        top: unset;
+        bottom: 2em;
+        margin: 0 auto;
+        max-width: calc(100vw - 0.75em * 2 - 0.5em - 0.2em * 2);
+        max-height: 30vh;
+        overflow: auto;
+      }
+      .dfn-panel .dfn-panel-lt {
+        list-style: none;
+        padding: 0;
+      }
+      .dfn-panel .dfn-panel-lt code {
+        -webkit-user-select: all;
+        user-select: all;
+      }
+      .dfn-panel .dfn-panel-copy-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25em;
+        padding: 0;
+        border: 0;
+        background: 0 0;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        text-align: start;
+      }
+      .dfn-panel .dfn-panel-copy-btn svg {
+        display: block;
+        box-sizing: content-box;
+        height: 0.85em;
+        width: auto;
+        padding: 0 0.2em;
+        border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+        border-radius: 0.2em;
+        fill: currentColor;
+        opacity: 0;
+      }
+      .dfn-panel .dfn-panel-copy-btn:focus svg,
+      .dfn-panel .dfn-panel-lt li:hover .dfn-panel-copy-btn svg {
+        opacity: 1;
+      }
+      .dfn-panel .dfn-panel-copy-btn:hover svg {
+        background: color-mix(in srgb, currentColor 15%, transparent);
+      }
+      .dfn-panel .dfn-panel-copy-btn:active svg {
+        background: color-mix(in srgb, currentColor 30%, transparent);
+        box-shadow: inset 0 1px 2px color-mix(in srgb, currentColor 50%, transparent);
+      }
+      .respec-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+
+    <meta name="color-scheme" content="light dark" />
+
+    <style id="respec-mainstyle">
+      @keyframes pop {
+        0% {
+          transform: scale(1, 1);
+        }
+        25% {
+          transform: scale(1.25, 1.25);
+          opacity: 0.75;
+        }
+        100% {
+          transform: scale(1, 1);
+        }
+      }
+      a.internalDFN {
+        color: inherit;
+        border-bottom: 1px solid #99c;
+        text-decoration: none;
+      }
+      a.externalDFN {
+        color: inherit;
+        border-bottom: 1px dotted #ccc;
+        text-decoration: none;
+      }
+      a.bibref {
+        text-decoration: none;
+      }
+      .respec-offending-element:target {
+        animation: pop 0.25s ease-in-out 0s 1;
+      }
+      .respec-offending-element,
+      a[href].respec-offending-element {
+        text-decoration: red wavy underline;
+      }
+      @supports not (text-decoration: red wavy underline) {
+        .respec-offending-element:not(pre) {
+          display: inline-block;
+        }
+        .respec-offending-element {
+          background: url(data:image/gif;base64,R0lGODdhBAADAPEAANv///8AAP///wAAACwAAAAABAADAEACBZQjmIAFADs=) bottom
+            repeat-x;
+        }
+      }
+      #references :target {
+        background: #eaf3ff;
+        animation: pop 0.4s ease-in-out 0s 1;
+      }
+      @media (prefers-color-scheme: dark) {
+        #references :target {
+          background: color-mix(in srgb, #eaf3ff 15%, transparent);
+        }
+      }
+      body:has(input[name="color-scheme"][value="dark"]:checked) #references :target {
+        background: color-mix(in srgb, #eaf3ff 15%, transparent);
+      }
+      cite .bibref {
+        font-style: italic;
+      }
+      a[href].orcid {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+      a[href].orcid > svg {
+        margin-bottom: -2px;
+      }
+      ol.tof,
+      ul.tof {
+        list-style: none outside none;
+      }
+      .caption {
+        margin-top: 0.5em;
+        font-style: italic;
+      }
+      #issue-summary > ul {
+        column-count: 2;
+      }
+      #issue-summary li {
+        list-style: none;
+      }
+      details.respec-tests-details {
+        margin-left: 1em;
+        display: inline-block;
+        vertical-align: top;
+      }
+      details.respec-tests-details > * {
+        padding-right: 2em;
+      }
+      details.respec-tests-details[open] {
+        z-index: 999999;
+        position: absolute;
+        border: thin solid #cad3e2;
+        border-radius: 0.3em;
+        background-color: #fff;
+        padding-bottom: 0.5em;
+      }
+      details.respec-tests-details[open] > summary {
+        border-bottom: thin solid #cad3e2;
+        padding-left: 1em;
+        margin-bottom: 1em;
+        line-height: 2em;
+      }
+      details.respec-tests-details > ul {
+        width: 100%;
+        margin-top: -0.3em;
+      }
+      details.respec-tests-details > li {
+        padding-left: 1em;
+      }
+      .self-link:hover {
+        opacity: 1;
+        text-decoration: none;
+        background-color: transparent;
+      }
+      aside.example .marker > a.self-link {
+        color: inherit;
+      }
+      .header-wrapper {
+        display: flex;
+        align-items: baseline;
+      }
+      :is(h2, h3, h4, h5, h6):not(:where(#toc > h2, #abstract > h2, #sotd > h2, .head > h2)):has(+ a.self-link) {
+        position: relative;
+        left: -0.5em;
+      }
+      :is(h2, h3, h4, h5, h6):not(:where(#toch2)) + a.self-link {
+        color: inherit;
+        order: -1;
+        position: relative;
+        left: -1.1em;
+        font-size: 1rem;
+        opacity: 0.8;
+        text-decoration: none;
+      }
+      :is(h2, h3, h4, h5, h6) + a.self-link::before {
+        content: "§";
+      }
+      :is(h2, h3) + a.self-link {
+        top: -0.2em;
+      }
+      :is(h2, h3) + a.self-link::before {
+        color: var(--heading-text);
+      }
+      @media (max-width: 767px) {
+        dd {
+          margin-left: 0;
+        }
+      }
+      @media print {
+        .removeOnSave {
+          display: none;
+        }
+      }
+      body:has(input[name="color-scheme"][value="light"]:checked),
+      head:not(:has(meta[name="color-scheme"][content~="dark"])) + body {
+        color-scheme: light;
+      }
+      body:has(input[name="color-scheme"][value="dark"]:checked) {
+        color-scheme: dark;
+      }
+    </style>
+
+    <title>Web of Things (WoT) Modbus Binding</title>
+
+    <meta
+      name="description"
+      content="In the Web of Things (WoT), a Binding is a blueprint that provides guidance toward implementing a specific IoT
+        protocol, data format, or IoT platform. The WoT Thing Description specification explains the overall mechanism,
+        and the WoT Binding Registry provides the formal requirements that any binding ought to follow. This document is
+        a binding for the Modbus protocol, which is a well-known and cost-effective IoT protocol for communication
+        between industrial control and automation devices."
+    />
+    <style>
+      .hljs,
+      body:has(input[name="color-scheme"][value="light"]:checked) .hljs,
+      head:not(:has(meta[name="color-scheme"][content~="dark"])) + body .hljs {
+        --base: #fafafa;
+        --mono-1: #383a42;
+        --mono-2: #686b77;
+        --mono-3: #717277;
+        --hue-1: #0b76c5;
+        --hue-2: #336ae3;
+        --hue-3: #a626a4;
+        --hue-4: #42803c;
+        --hue-5: #ca4706;
+        --hue-5-2: #c91243;
+        --hue-6: #986801;
+        --hue-6-2: #9a6a01;
+      }
+      @media (prefers-color-scheme: dark) {
+        .hljs {
+          --base: #282c34;
+          --mono-1: #abb2bf;
+          --mono-2: #818896;
+          --mono-3: #5c6370;
+          --hue-1: #56b6c2;
+          --hue-2: #61aeee;
+          --hue-3: #c678dd;
+          --hue-4: #98c379;
+          --hue-5: #e06c75;
+          --hue-5-2: #be5046;
+          --hue-6: #d19a66;
+          --hue-6-2: #e6c07b;
+        }
+      }
+      body:has(input[name="color-scheme"][value="dark"]:checked) .hljs {
+        --base: #282c34;
+        --mono-1: #abb2bf;
+        --mono-2: #818896;
+        --mono-3: #5c6370;
+        --hue-1: #56b6c2;
+        --hue-2: #61aeee;
+        --hue-3: #c678dd;
+        --hue-4: #98c379;
+        --hue-5: #e06c75;
+        --hue-5-2: #be5046;
+        --hue-6: #d19a66;
+        --hue-6-2: #e6c07b;
+      }
+      .hljs {
+        display: block;
+        overflow-x: auto;
+        padding: 0.5em;
+        color: #383a42;
+        color: var(--mono-1, #383a42);
+        background: #fafafa;
+        background: var(--base, #fafafa);
+      }
+      .hljs-comment,
+      .hljs-quote {
+        color: #717277;
+        color: var(--mono-3, #717277);
+        font-style: italic;
+      }
+      .hljs-doctag,
+      .hljs-formula,
+      .hljs-keyword {
+        color: #a626a4;
+        color: var(--hue-3, #a626a4);
+      }
+      .hljs-deletion,
+      .hljs-name,
+      .hljs-section,
+      .hljs-selector-tag,
+      .hljs-subst {
+        color: #ca4706;
+        color: var(--hue-5, #ca4706);
+        font-weight: 700;
+      }
+      .hljs-literal {
+        color: #0b76c5;
+        color: var(--hue-1, #0b76c5);
+      }
+      .hljs-addition,
+      .hljs-attribute,
+      .hljs-meta-string,
+      .hljs-regexp,
+      .hljs-string {
+        color: #42803c;
+        color: var(--hue-4, #42803c);
+      }
+      .hljs-built_in,
+      .hljs-class .hljs-title {
+        color: #9a6a01;
+        color: var(--hue-6-2, #9a6a01);
+      }
+      .hljs-attr,
+      .hljs-number,
+      .hljs-selector-attr,
+      .hljs-selector-class,
+      .hljs-selector-pseudo,
+      .hljs-template-variable,
+      .hljs-type,
+      .hljs-variable {
+        color: #986801;
+        color: var(--hue-6, #986801);
+      }
+      .hljs-bullet,
+      .hljs-link,
+      .hljs-meta,
+      .hljs-selector-id,
+      .hljs-symbol,
+      .hljs-title {
+        color: #336ae3;
+        color: var(--hue-2, #336ae3);
+      }
+      .hljs-emphasis {
+        font-style: italic;
+      }
+      .hljs-strong {
+        font-weight: 700;
+      }
+      .hljs-link {
+        text-decoration: underline;
+      }
+    </style>
+    <style>
+      var:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      var.respec-hl {
+        color: var(--color, #000);
+        background-color: var(--bg-color);
+        box-shadow: 0 0 0 2px var(--bg-color);
+      }
+      @media (prefers-color-scheme: dark) {
+        var.respec-hl {
+          filter: saturate(0.9) brightness(0.9);
+        }
+      }
+      var.respec-hl-c1 {
+        --bg-color: #f4d200;
+      }
+      var.respec-hl-c2 {
+        --bg-color: #ff87a2;
+      }
+      var.respec-hl-c3 {
+        --bg-color: #96e885;
+      }
+      var.respec-hl-c4 {
+        --bg-color: #3eeed2;
+      }
+      var.respec-hl-c5 {
+        --bg-color: #eacfb6;
+      }
+      var.respec-hl-c6 {
+        --bg-color: #82ddff;
+      }
+      var.respec-hl-c7 {
+        --bg-color: #ffbcf2;
+      }
+      @media print {
+        var.respec-hl {
+          background: 0 0;
+          color: #000;
+          box-shadow: unset;
+        }
+      }
+    </style>
+    <style>
+      var[data-type] {
+        position: relative;
+      }
+      var[data-type]::after,
+      var[data-type]::before {
+        position: absolute;
+        left: 50%;
+        top: -6px;
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+      }
+      var[data-type]::before {
+        content: "";
+        transform: translateX(-50%);
+        border-width: 4px 6px 0 6px;
+        border-style: solid;
+        border-color: transparent;
+        border-top-color: #222;
+      }
+      var[data-type]::after {
+        content: attr(data-type);
+        transform: translateX(-50%) translateY(-100%);
+        background: #222;
+        text-align: center;
+        font-family: "Dank Mono", "Fira Code", monospace;
+        font-style: normal;
+        padding: 6px;
+        border-radius: 3px;
+        color: #daca88;
+        text-indent: 0;
+        font-weight: 400;
+      }
+      var[data-type]:hover::after,
+      var[data-type]:hover::before {
+        opacity: 1;
+      }
+    </style>
+    <script id="initialUserConfig" type="application/json">
+      {
+        "specStatus": "ED",
+        "group": "wg/wot",
+        "editors": [
+          {
+            "name": "Cristiano Aguzzi",
+            "w3cid": "105495",
+            "company": "Invited Expert",
+            "companyURL": "https://github.com/relu91"
+          }
+        ],
+        "edDraftURI": "https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/",
+        "shortName": "wot-modbus-binding",
+        "github": "https://github.com/w3c/wot-binding-templates",
+        "otherLinks": [
+          {
+            "key": "WoT Binding Registry",
+            "data": [
+              {
+                "value": "Web of Things (WoT) Binding Registry",
+                "href": "https://w3c.github.io/wot-binding-registry/"
+              }
+            ]
+          },
+          {
+            "key": "Bindings Section of the TD Specification",
+            "data": [
+              {
+                "value": "Explanation of the binding mechanism",
+                "href": "https://w3c.github.io/wot-thing-description/#bindings"
+              }
+            ]
+          },
+          {
+            "key": "Ontology",
+            "data": [
+              {
+                "value": "Modbus in RDF",
+                "href": "ontology.html"
+              }
+            ]
+          },
+          {
+            "key": "JSON Schema",
+            "data": [
+              {
+                "value": "Modbus JSON Schema",
+                "href": "modbus.schema.json"
+              }
+            ]
+          }
+        ],
+        "localBiblio": {
+          "WOT-BINDING-REGISTRY": {
+            "title": "Web of Things (WoT) Binding Registry",
+            "href": "https://www.w3.org/TR/wot-binding-registry/",
+            "authors": ["Ege Korkan"],
+            "publisher": "W3C",
+            "date": "November 2025"
+          },
+          "PI-MBUS-300": {
+            "title": "Modicon Modbus Protocol Reference Guide (PI-MBUS-300 Rev. J)",
+            "publisher": "Modicon, Inc.",
+            "date": "June 1996",
+            "id": "pi-mbus-300"
+          }
+        },
+        "publishDate": "2026-11-27",
+        "publishISODate": "2026-11-27T00:00:00.000Z",
+        "generatedSubtitle": "W3C Editor's Draft 27 November 2026"
+      }
+    </script>
+    <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" />
+    <link
+      rel="stylesheet"
+      href="https://www.w3.org/StyleSheets/TR/2021/dark.css"
+      media="(prefers-color-scheme: dark)"
+    />
+    <style>
+      :root {
+        --diff-old-bg: #fbb;
+        --diff-chg-bg: #bfb;
+        --diff-new-bg: #ffa;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:has(meta[name="color-scheme"][content*="dark"]) {
+          --diff-old-bg: #700;
+          --diff-chg-bg: #050;
+          --diff-new-bg: #441;
+        }
+      }
+
+      .diff-new {
+        background-color: var(--diff-new-bg);
+      }
+      .diff-new.diff-group-start::before {
+        content: "(new) ";
+      }
+      .diff-chg {
+        background-color: var(--diff-chg-bg);
+      }
+      .diff-chg.diff-group-start::before {
+        content: "(new) ";
+      }
+      .diff-old {
+        text-decoration: line-through;
+        background-color: var(--diff-old-bg);
+      }
+      .diff-old.diff-group-start::before {
+        content: "(old) ";
+      }
+      :is(.diff-new, .diff-chg, .diff-old).diff-group-end::after {
+        content: "(end) ";
+      }
+
+      .diff-group-start::before {
+        position: absolute;
+        font-size: 50%;
+        background-color: inherit;
+        line-height: 1;
+        white-space: normal;
+        margin-top: -0.7em;
+        border-radius: 0.25em / 0.5em;
+      }
+      .diff-group-end::after {
+        position: absolute;
+        width: 0;
+        overflow: hidden;
+      }
+
+      .hide-diff-old .diff-old {
+        display: none;
+      }
+      .hide-diff-markers :is(.diff-new, .diff-chg, .diff-old).diff-group-start::before,
+      .hide-diff-markers :is(.diff-new, .diff-chg, .diff-old).diff-group-end::after {
+        content: none;
+      }
+    </style>
+    <script>
+      /**
+       * Group adjacent diff <ins>/<del> that are "next to each other" in inline flow,
+       * even if split by inline wrappers.
+       *
+       * Boundary rule (no computed styles):
+       * - Only the following elements are treated as inline/transparent wrappers:
+       *   img, span, a, code, var, i, em, strong, c-, dfn, cite, mark, b, sup, sub,
+       *   samp, iframe, li, kbd, bdo, small, br, q
+       * - Any other element between two diff nodes breaks adjacency.
+       * - Any non-whitespace text node between two diff nodes breaks adjacency.
+       *
+       * Marks each member with data-diff-group, plus:
+       * - .diff-group-start on first
+       * - .diff-group-end on last
+       */
+      function groupInlineDiffsSimple(root = document) {
+        const DIFF_SEL = "ins.diff-new, ins.diff-chg, del.diff-old, ins.diff-old, del.diff-new, del.diff-chg";
+
+        // Inline/transparent tag allowlist.
+        const INLINE_TAGS = new Set([
+          "IMG",
+          "SPAN",
+          "A",
+          "C-",
+          "CODE",
+          "VAR",
+          "I",
+          "EM",
+          "STRONG",
+          "DFN",
+          "CITE",
+          "MARK",
+          "B",
+          "SUP",
+          "SUB",
+          "SAMP",
+          "KBD",
+          "BDO",
+          "SMALL",
+          "BR",
+          "Q"
+        ]);
+
+        const isInlineElement = (el) => {
+          if (!el || el.nodeType !== Node.ELEMENT_NODE) return false;
+          const tn = el.tagName;
+          return INLINE_TAGS.has(tn);
+        };
+
+        const isWhitespaceText = (n) => n.nodeType === Node.TEXT_NODE && !/\S/.test(n.nodeValue || "");
+
+        const isDiffEl = (n) =>
+          n?.nodeType === Node.ELEMENT_NODE && n.matches("ins.diff-new, ins.diff-chg, del.diff-old");
+
+        const diffKey = (el) => {
+          const cls = el.classList.contains("diff-new")
+            ? "diff-new"
+            : el.classList.contains("diff-chg")
+            ? "diff-chg"
+            : el.classList.contains("diff-old")
+            ? "diff-old"
+            : "diff";
+          return `${el.tagName}|${cls}`;
+        };
+
+        const diffs = Array.from(root.querySelectorAll(DIFF_SEL));
+        if (!diffs.length) return [];
+
+        // Reset if re-run
+        for (const el of diffs) {
+          el.classList.remove("diff-group-start", "diff-group-end");
+          el.removeAttribute("data-diff-group");
+        }
+
+        const stopRoot = root instanceof Document ? root.documentElement : root;
+
+        const nextNode = (node) => {
+          if (node.firstChild) return node.firstChild;
+          while (node && node !== stopRoot) {
+            if (node.nextSibling) return node.nextSibling;
+            node = node.parentNode;
+          }
+          return null;
+        };
+
+        const nextAfterSubtree = (node) => {
+          while (node && node !== stopRoot) {
+            if (node.nextSibling) return node.nextSibling;
+            node = node.parentNode;
+          }
+          return null;
+        };
+
+        // True iff b is the next significant diff after a, with only inline wrappers
+        // and whitespace between them.
+        const adjacent = (a, b) => {
+          let n = nextAfterSubtree(a);
+          while (n) {
+            if (n === b) return true;
+
+            if (n.nodeType === Node.TEXT_NODE) {
+              if (!isWhitespaceText(n)) return false;
+            } else if (n.nodeType === Node.ELEMENT_NODE) {
+              if (isDiffEl(n)) return false; // another diff blocks
+              if (!isInlineElement(n)) return false; // boundary element blocks
+
+              // If this inline element contains b, descend into it to see what comes first.
+              if (n.contains(b)) {
+                n = n.firstChild;
+                continue;
+              }
+            }
+
+            n = nextNode(n);
+          }
+          return false;
+        };
+
+        const groups = [];
+        let current = [];
+        let groupId = 0;
+
+        const commit = () => {
+          if (!current.length) return;
+          const id = String(++groupId);
+          current.forEach((el) => el.setAttribute("data-diff-group", id));
+          current[0].classList.add("diff-group-start");
+          current[current.length - 1].classList.add("diff-group-end");
+          groups.push(current);
+          current = [];
+        };
+
+        let prev = null;
+        let prevKey = "";
+
+        for (const el of diffs) {
+          const key = diffKey(el);
+
+          if (prev && key === prevKey && adjacent(prev, el)) {
+            current.push(el);
+          } else {
+            commit();
+            current.push(el);
+          }
+
+          prev = el;
+          prevKey = key;
+        }
+        commit();
+
+        return groups;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => groupInlineDiffsSimple());
+    </script>
+    <script src="https://w3c.github.io/htmldiff-nav/index.js"></script>
+  </head>
+  <body class="h-entry">
+    <div class="head">
+      <p class="logos">
+        <a class="logo" href="https://www.w3.org/">
+          <img crossorigin="" alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72" />
+        </a>
+      </p>
+      <h1 id="title" class="title">Web of Things (WoT) Modbus Binding</h1>
+      <p id="w3c-state">
+        <a href="https://www.w3.org/standards/types#ED"> W3C Editor's Draft </a>
+        <time class="dt-published" datetime="2026-11-27"> 27 November 2026 </time>
+      </p>
+      <details open="">
+        <summary>More details about this document</summary>
+        <dl>
+          <dt>This version:</dt>
+          <dd>
+            <a class="u-url" href="https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/">
+              https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/
+            </a>
+          </dd>
+          <dt>Latest published version:</dt>
+          <dd>
+            <a href="https://www.w3.org/TR/wot-modbus-binding/"> https://www.w3.org/TR/wot-modbus-binding/ </a>
+          </dd>
+          <dt>Latest editor's draft:</dt>
+          <dd>
+            <a href="https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/">
+              https://w3c.github.io/wot-binding-templates/bindings/protocols/modbus/
+            </a>
+          </dd>
+          <dt>History:</dt>
+          <dd>
+            <a href="https://www.w3.org/standards/history/wot-modbus-binding/">
+              https://www.w3.org/standards/history/wot-modbus-binding/
+            </a>
+          </dd>
+          <dd>
+            <a href="https://github.com/w3c/wot-binding-templates/commits/"> Commit history </a>
+          </dd>
+          <dt>Editor:</dt>
+          <dd class="editor p-author h-card vcard" data-editor-id="105495">
+            <span class="p-name fn"> Cristiano Aguzzi </span>
+            (
+            <a class="p-org org h-org" href="https://github.com/relu91"> Invited Expert </a>
+            )
+          </dd>
+          <dt>Feedback:</dt>
+          <dd>
+            <a href="https://github.com/w3c/wot-binding-templates/"> GitHub w3c/wot-binding-templates </a>
+            (
+            <a href="https://github.com/w3c/wot-binding-templates/pulls/"> pull requests </a>,
+            <a href="https://github.com/w3c/wot-binding-templates/issues/new/choose"> new issue </a>,
+            <a href="https://github.com/w3c/wot-binding-templates/issues/"> open issues </a>
+            )
+          </dd>
+          <dt>WoT Binding Registry</dt>
+          <dd>
+            <a href="https://w3c.github.io/wot-binding-registry/"> Web of Things (WoT) Binding Registry </a>
+          </dd>
+          <dt>Bindings Section of the TD Specification</dt>
+          <dd>
+            <a href="https://w3c.github.io/wot-thing-description/#bindings"> Explanation of the binding mechanism </a>
+          </dd>
+          <dt>Ontology</dt>
+          <dd>
+            <a href="https://www.w3.org/publications/spec-generator/ontology.html"> Modbus in RDF </a>
+          </dd>
+          <dt>JSON Schema</dt>
+          <dd>
+            <a href="https://www.w3.org/publications/spec-generator/modbus.schema.json"> Modbus JSON Schema </a>
+          </dd>
+        </dl>
+      </details>
+      <p class="copyright">
+        <a href="https://www.w3.org/policies/#copyright"> Copyright </a>
+        © 2026
+        <a href="https://www.w3.org/"> World Wide Web Consortium </a>.
+        <abbr title="World Wide Web Consortium"> W3C </abbr>
+        <sup> ® </sup>
+        <a href="https://www.w3.org/policies/#Legal_Disclaimer"> liability </a>,
+        <a href="https://www.w3.org/policies/#W3C_Trademarks"> trademark </a>
+        and
+        <a
+          rel="license"
+          href="https://www.w3.org/copyright/software-license-2023/"
+          title="W3C Software and Document Notice and License"
+        >
+          permissive document license
+        </a>
+        rules apply.
+      </p>
+      <hr title="Separator for header" />
+    </div>
+    <section id="abstract" class="introductory">
+      <h2>Abstract</h2>
+      <p>
+        In the Web of Things (WoT), a Binding is a blueprint that provides guidance toward implementing a specific IoT
+        protocol, data format, or IoT platform. The WoT Thing Description specification explains the overall mechanism,
+        and the WoT Binding Registry provides the formal requirements that any binding ought to follow. This document is
+        a binding for the Modbus protocol, which is a well-known and cost-effective IoT protocol for communication
+        between industrial control and automation devices.
+      </p>
+      <p>
+        More specifically, this document defines a set of vocabulary terms that can be used inside a Thing Description
+        document, and associated rules which allow description of WoT operations using the Modbus protocol over the
+        network. Relevant examples showcasing different vocabulary terms and the associated behaviors are also provided.
+      </p>
+    </section>
+    <section id="sotd" class="introductory">
+      <h2>Status of This Document</h2>
+      <p>
+        <em>
+          This section describes the status of this document at the time of its publication. A list of current
+          <abbr title="World Wide Web Consortium"> W3C </abbr>
+          publications and the latest revision of this technical report can be found in the
+          <a href="https://www.w3.org/TR/">
+            <abbr title="World Wide Web Consortium"> W3C </abbr>
+            standards and drafts index </a
+          >.
+        </em>
+      </p>
+      <p>
+        <em> This document is a work in progress </em>
+      </p>
+      <p>
+        This document was published by the
+        <a href="https://www.w3.org/groups/wg/wot"> Web of Things Working Group </a>
+        as an Editor's Draft.
+      </p>
+      <p>
+        Publication as an Editor's Draft does not imply endorsement by
+        <abbr title="World Wide Web Consortium"> W3C </abbr>
+        and its Members.
+      </p>
+      <p>
+        This is a draft document and may be updated, replaced, or obsoleted by other documents at any time. It is
+        inappropriate to cite this document as other than a work in progress.
+      </p>
+      <p>
+        This document was produced by a group operating under the
+        <a href="https://www.w3.org/policies/patent-policy/">
+          <abbr title="World Wide Web Consortium"> W3C </abbr>
+          Patent Policy </a
+        >.
+        <abbr title="World Wide Web Consortium"> W3C </abbr>
+        maintains a
+        <a rel="disclosure" href="https://www.w3.org/groups/wg/wot/ipr"> public list of any patent disclosures </a>
+        made in connection with the deliverables of the group; that page also includes instructions for disclosing a
+        patent. An individual who has actual knowledge of a patent that the individual believes contains
+        <a href="https://www.w3.org/policies/patent-policy/#def-essential"> Essential Claim(s) </a>
+        must disclose the information in accordance with
+        <a href="https://www.w3.org/policies/patent-policy/#sec-Disclosure">
+          section 6 of the
+          <abbr title="World Wide Web Consortium"> W3C </abbr>
+          Patent Policy </a
+        >.
+      </p>
+      <p>
+        This document is governed by the
+        <a id="w3c_process_revision" href="https://www.w3.org/policies/process/20250818/">
+          18 August 2025
+          <abbr title="World Wide Web Consortium"> W3C </abbr>
+          Process Document </a
+        >.
+      </p>
+    </section>
+    <nav id="toc">
+      <h2 class="introductory" id="table-of-contents">Table of Contents</h2>
+      <ol class="toc">
+        <li class="tocline">
+          <a class="tocxref" href="#abstract"> Abstract </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#sotd"> Status of This Document </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#introduction">
+            <bdi class="secno"> 1. </bdi>
+            Introduction
+          </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#conformance">
+            <bdi class="secno"> 2. </bdi>
+            Conformance
+          </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#namespace-context">
+            <bdi class="secno"> 3. </bdi>
+            <ins class="diff-new">Namespace and Context </ins></a
+          >
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#url"
+            ><bdi class="secno"><ins class="diff-new"> 4. </ins></bdi>
+            URL format
+          </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#vocabulary">
+            <bdi class="secno">
+              <del class="diff-old">4. </del>
+              <ins class="diff-chg">5. </ins>
+            </bdi>
+            Modbus Vocabulary
+          </a>
+          <ol class="toc">
+            <li class="tocline">
+              <a class="tocxref" href="#url-terms">
+                <bdi class="secno">
+                  <del class="diff-old">4.1 </del>
+                  <ins class="diff-chg">5.1 </ins>
+                </bdi>
+                URL terms
+              </a>
+            </li>
+            <li class="tocline">
+              <a class="tocxref" href="#form-terms">
+                <bdi class="secno">
+                  <del class="diff-old">4.2 </del>
+                  <ins class="diff-chg">5.2 </ins>
+                </bdi>
+                Form terms
+              </a>
+            </li>
+            <li class="tocline">
+              <a class="tocxref" href="#entitytype">
+                <bdi class="secno">
+                  <del class="diff-old">4.3 </del>
+                  <ins class="diff-chg">5.3 </ins>
+                </bdi>
+                Entity
+              </a>
+            </li>
+            <li class="tocline">
+              <a class="tocxref" href="#functioncode">
+                <bdi class="secno">
+                  <del class="diff-old">4.4 </del>
+                  <ins class="diff-chg">5.4 </ins>
+                </bdi>
+                Function
+              </a>
+            </li>
+            <li class="tocline">
+              <a class="tocxref" href="#payloaddatatype">
+                <bdi class="secno">
+                  <del class="diff-old">4.5 </del>
+                  <ins class="diff-chg">5.5 </ins>
+                </bdi>
+                Payload DataType
+              </a>
+            </li>
+          </ol>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#mappings">
+            <bdi class="secno">
+              <del class="diff-old">5. </del>
+              <ins class="diff-chg">6. </ins>
+            </bdi>
+            Mappings
+          </a>
+          <ol class="toc">
+            <li class="tocline">
+              <a class="tocxref" href="#default-mappings">
+                <bdi class="secno">
+                  <del class="diff-old">5.1 </del>
+                  <ins class="diff-chg">6.1 </ins>
+                </bdi>
+                Default mappings
+              </a>
+            </li>
+            <li class="tocline">
+              <a class="tocxref" href="#possible-mappings">
+                <bdi class="secno">
+                  <del class="diff-old">5.2 </del>
+                  <ins class="diff-chg">6.2 </ins>
+                </bdi>
+                Possible mappings
+              </a>
+            </li>
+          </ol>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#examples">
+            <bdi class="secno">
+              <del class="diff-old">6. </del>
+              <ins class="diff-chg">7. </ins>
+            </bdi>
+            Examples
+          </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#abnf">
+            <bdi class="secno"> A. </bdi>
+            Modbus URL ABNF syntax
+          </a>
+        </li>
+        <li class="tocline">
+          <a class="tocxref" href="#references">
+            <bdi class="secno"> B. </bdi>
+            References
+          </a>
+          <ol class="toc">
+            <li class="tocline">
+              <a class="tocxref" href="#normative-references">
+                <bdi class="secno"> B.1 </bdi>
+                Normative references
+              </a>
+            </li>
+            <li class="tocline">
+              <a class="tocxref" href="#informative-references">
+                <bdi class="secno"> B.2 </bdi>
+                Informative references
+              </a>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </nav>
+    <section id="introduction">
+      <div class="header-wrapper">
+        <h2 id="x1-introduction">
+          <bdi class="secno"> 1. </bdi>
+          Introduction
+        </h2>
+        <a class="self-link" href="#introduction" aria-label="Permalink for Section 1."> </a>
+      </div>
+      <p>
+        The Modbus is a data communication protocol originally developed by
+        <del class="diff-old">Modicon, </del>
+        <ins class="diff-chg">Modicon [ </ins
+        ><cite
+          ><a
+            class="bibref"
+            data-link-type="biblio"
+            href="#bib-pi-mbus-300"
+            title="Modicon Modbus Protocol Reference Guide (PI-MBUS-300 Rev. J)"
+            ><ins class="diff-chg"> PI-MBUS-300 </ins></a
+          ></cite
+        ><ins class="diff-chg"> ], </ins>
+        which is now a part of Schneider Electric. The protocol was specifically designed for the remote management of
+        the hardware devices in the industrial environment. For this reason, it has a low level of abstraction and it
+        has
+        <del class="diff-old">built in </del>
+        <ins class="diff-chg">built-in </ins>
+        bit handling capabilities oriented to the direct control of the relays and generic contact statuses.
+      </p>
+      <p>
+        All Modbus devices operate by exposing a certain set of coils (bits) and registers (group of 16 bits) over the
+        network. These coils or registers can be read or written with a simple request-response mechanism. Very
+        typically, registers are also combined to represent data that is larger than 16 bits, i.e. two registers can be
+        used together to represent a 32 bit integer. Thus, a Modbus client can read a set of registers at once and
+        obtain a larger value.
+      </p>
+      <p>
+        The physical layer can be RS485 differential bus which has limited susceptibility to EMC interference. However,
+        this limits the usability of the protocol to short distance networks, typically within a kilometer. When
+        Internet access is needed, it is encapsulated in TCP (called Modbus TCP) with Ethernet as the physical layer. By
+        using this encapsulation strategy, the Modbus protocol can reach remote nodes deployed in distant facilities
+        over the Internet. Over the years, due to its simplicity and cost-effectiveness, the Modbus protocol has become
+        a standard all over the world. This popularity, together with the advancement in microcontrollers and
+        microprocessors, has led to a shift in how applications pack the information. Today, it is common to store and
+        read any type of data in the
+        <del class="diff-old">Holdings </del>
+        <ins class="diff-chg">Holding </ins>
+        Registers, including bits, bytes, strings, floats, etc.
+      </p>
+      <p>
+        Concretely, this document describes how WoT TDs can be used to describe devices that use the Modbus TCP
+        protocol. Other versions of Modbus can be incorporated into this document in the future. Particularly, this
+        document explains how to create valid URLs and Forms for the different operations that can be performed via the
+        Modbus TCP protocol. Developers are encouraged to use this document as an implementation guideline and as a
+        reference for the creation of their own binding implementations. The following sections will cover the URL
+        format, the vocabulary, and a list of Form examples.
+      </p>
+    </section>
+    <section id="conformance">
+      <div class="header-wrapper">
+        <h2 id="x2-conformance">
+          <bdi class="secno"> 2. </bdi>
+          Conformance
+        </h2>
+        <a class="self-link" href="#conformance" aria-label="Permalink for Section 2."> </a>
+      </div>
+      <p>
+        As well as sections marked as non-normative, all authoring guidelines, diagrams, examples, and notes in this
+        specification are non-normative. Everything else in this specification is normative.
+      </p>
+      <p>
+        The key word
+        <em class="rfc2119"> MUST </em>
+        in this document is to be interpreted as described in
+        <a href="https://www.rfc-editor.org/info/bcp14"> BCP 14 </a>
+        [
+        <cite>
+          <a
+            class="bibref"
+            data-link-type="biblio"
+            href="#bib-rfc2119"
+            title="Key words for use in RFCs to Indicate Requirement Levels"
+          >
+            RFC2119
+          </a>
+        </cite>
+        ] [
+        <cite>
+          <a
+            class="bibref"
+            data-link-type="biblio"
+            href="#bib-rfc8174"
+            title="Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"
+          >
+            RFC8174
+          </a>
+        </cite>
+        ] when, and only when, it appears in all capitals, as shown here.
+      </p>
+      <p>
+        Forms of a Thing Description instance with Modbus Binding complies with this specification if it follows the
+        normative statements in
+        <a href="#vocabulary" class="sec-ref">
+          <bdi class="secno">
+            <del class="diff-old">4. </del>
+            <ins class="diff-chg">5. </ins>
+          </bdi>
+          Modbus Vocabulary
+        </a>
+        and
+        <a href="#mappings" class="sec-ref">
+          <bdi class="secno">
+            <del class="diff-old">5. </del>
+            <ins class="diff-chg">6. </ins>
+          </bdi>
+          Mappings </a
+        >.
+      </p>
+      <p>
+        A JSON Schema [
+        <cite>
+          <a
+            class="bibref"
+            data-link-type="biblio"
+            href="#bib-json-schema"
+            title="JSON Schema: A Media Type for Describing JSON Documents"
+          >
+            JSON-SCHEMA
+          </a>
+        </cite>
+        ] to validate Thing Description instances containing Modbus Binding is provided in the
+        <a href="https://www.w3.org/publications/spec-generator/modbus.schema.json"> GitHub repository </a>.
+      </p>
+    </section>
+    <section id="namespace-context">
+      <div class="header-wrapper">
+        <h2 id="x3-namespace-and-context">
+          <bdi class="secno"> 3. </bdi>
+          <ins class="diff-new">Namespace and Context </ins>
+        </h2>
+        <a class="self-link" href="#namespace-context" aria-label="Permalink for Section 3."></a>
+      </div>
+      <p>
+        <ins class="diff-new"> The vocabulary terms defined in this document belong to the Modbus namespace </ins
+        ><code><ins class="diff-new"> https://www.w3.org/2019/wot/modbus# </ins></code>.<ins class="diff-new">
+          The preferred prefix for this namespace is </ins
+        ><code><ins class="diff-new"> modv </ins></code>,<ins class="diff-new">
+          which is used throughout this document. For example, the term </ins
+        ><code><ins class="diff-new"> modv:entity </ins></code><ins class="diff-new"> expands to the IRI </ins
+        ><code><ins class="diff-new"> https://www.w3.org/2019/wot/modbus#entity </ins></code>.<ins class="diff-new">
+          The definitions of all terms are provided in the </ins
+        ><a href="https://www.w3.org/bindings/protocols/modbus/ontology"
+          ><ins class="diff-new"> Modbus ontology </ins></a
+        >.
+      </p>
+      <table class="def">
+        <thead>
+          <tr>
+            <th><ins class="diff-new"> Item </ins></th>
+            <th><ins class="diff-new"> Value </ins></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><ins class="diff-new"> Namespace </ins></td>
+            <td>
+              <code><ins class="diff-new"> https://www.w3.org/2019/wot/modbus# </ins></code>
+            </td>
+          </tr>
+          <tr>
+            <td><ins class="diff-new"> Preferred prefix </ins></td>
+            <td>
+              <code><ins class="diff-new"> modv </ins></code>
+            </td>
+          </tr>
+          <tr>
+            <td><ins class="diff-new"> JSON-LD context </ins></td>
+            <td>
+              <code><ins class="diff-new"> https://www.w3.org/2019/wot/modbus/v1 </ins></code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <ins class="diff-new"> For the use in JSON-LD [ </ins
+        ><cite
+          ><a class="bibref" data-link-type="biblio" href="#bib-json-ld11" title="JSON-LD 1.1"
+            ><ins class="diff-new"> JSON-LD11 </ins></a
+          ></cite
+        ><ins class="diff-new"> ], a context file is provided at </ins
+        ><code><ins class="diff-new"> https://www.w3.org/2019/wot/modbus/v1 </ins></code>.<ins class="diff-new">
+          It defines the </ins
+        ><code><ins class="diff-new"> modv </ins></code
+        ><ins class="diff-new">
+          prefix and the datatypes of the vocabulary terms. Furthermore, it maps values such as </ins
+        ><code><ins class="diff-new"> "Coil" </ins></code><ins class="diff-new"> or </ins
+        ><code><ins class="diff-new"> "readCoil" </ins></code
+        ><ins class="diff-new"> to the corresponding terms of the Modbus ontology. </ins>
+      </p>
+      <p>
+        <ins class="diff-new"> When used within a WoT Thing Description [ </ins
+        ><cite
+          ><a
+            class="bibref"
+            data-link-type="biblio"
+            href="#bib-wot-thing-description"
+            title="Web of Things (WoT) Thing Description"
+            ><ins class="diff-new"> WOT-THING-DESCRIPTION </ins></a
+          ></cite
+        ><ins class="diff-new"> ], the Modbus context file should be included in the </ins
+        ><code><ins class="diff-new"> @context </ins></code
+        ><ins class="diff-new"> array after the Thing Description context, as shown in </ins
+        ><a href="#example-context" data-matched-text="[[[#example-context]]]" class="box-ref"
+          ><ins class="diff-new"> Example </ins><bdi><ins class="diff-new"> 1 </ins></bdi></a
+        >.
+      </p>
+      <div class="example" id="example-context">
+        <div class="marker">
+          <a class="self-link" href="#example-context"
+            ><ins class="diff-new"> Example </ins><bdi><ins class="diff-new"> 1 </ins></bdi></a
+          ><span class="example-title"
+            >:<ins class="diff-new"> Including the Modbus context in a Thing Description </ins></span
+          >
+        </div>
+        <pre
+          aria-busy="false"
+        ><code class="hljs javascript">{    <span class="hljs-string">"@context"</span>: [        <span class="hljs-string">"https://www.w3.org/2022/wot/td/v1.1"</span>,        <span class="hljs-string">"https://www.w3.org/2019/wot/modbus/v1"</span><ins class="diff-new">
+    ],
+    ...
+}
+</ins></code></pre>
+      </div>
+    </section>
+    <section id="url">
+      <div class="header-wrapper">
+        <h2 id="x4-url-format">
+          <bdi class="secno"><ins class="diff-new"> 4. </ins></bdi>
+          URL format
+        </h2>
+        <a class="self-link" href="#url" aria-label="Permalink for Section 4."> </a>
+      </div>
+      Historically different URL schemes have been used within the Modbus community such as
+      <code> modbus+tcp:// </code>,
+      <code> modbus+ascii:// </code>
+      and
+      <code> modbus+rtu:// </code>. Since this document focuses on the Modbus TCP protocol,
+      <code> modbus+tcp:// </code>
+      is the only valid URL scheme at the moment. The following shows the typical structure of an URL of the Modbus TCP
+      protocol:
+      <pre aria-busy="false">
+<code class="hljs javascript">
+modbus+
+<span class="hljs-attr">
+tcp
+</span>:
+<span class="hljs-comment">
+//{deviceAddress}:{port}/{unitID}/{address}?quantity={?quantity}
+</span>
+</code>
+</pre>
+      <p>Where:</p>
+      <ul>
+        <li>
+          <code> {deviceAddress} </code>
+          is the IP address of the Modbus device
+        </li>
+        <li>
+          <code> {port} </code>
+          is the port of the Modbus device
+        </li>
+        <li>
+          <code> {unitID} </code>
+          is the unit ID of the Modbus device. See
+          <a href="#vocabulary"> vocabulary </a>
+        </li>
+        <li>
+          <code> {address} </code>
+          is the address of the register/coil referenced in this URL. See
+          <a href="#vocabulary"> vocabulary </a>
+        </li>
+        <li>
+          <code> {quantity} </code>
+          the amount of registers/coils referenced in this URL. See
+          <a href="#vocabulary"> vocabulary </a>
+        </li>
+      </ul>
+      <p>
+        For the full syntax see
+        <a href="#abnf" data-matched-text="[[[#abnf]]]" class="sec-ref">
+          <bdi class="secno"> A. </bdi>
+          Modbus URL ABNF syntax </a
+        >.
+      </p>
+    </section>
+    <section id="vocabulary">
+      <div class="header-wrapper">
+        <h2 id="x5-modbus-vocabulary">
+          <bdi class="secno">
+            <del class="diff-old">4. </del>
+            <ins class="diff-chg">5. </ins>
+          </bdi>
+          Modbus Vocabulary
+        </h2>
+        <a class="self-link" href="#vocabulary" aria-label="Permalink for Section 5."> </a>
+      </div>
+      This section describes the vocabulary used in the Modbus protocol. A Modbus binding implementation should use the
+      vocabulary defined in this section to describe the different configurations that can be used to exchange data
+      between a Web of Things implementation and a Modbus device.
+      <section id="url-terms">
+        <div class="header-wrapper">
+          <h3 id="x5-1-url-terms">
+            <bdi class="secno">
+              <del class="diff-old">4.1 </del>
+              <ins class="diff-chg">5.1 </ins>
+            </bdi>
+            URL terms
+          </h3>
+          <a class="self-link" href="#url-terms" aria-label="Permalink for Section 5.1"> </a>
+        </div>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> modv:address </code>
+              </td>
+              <td>Specifies the starting address of the Modbus operations. Between 0 and 65535</td>
+              <td>required</td>
+              <td>
+                <del class="diff-old">integer </del>
+                <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">
+                  <ins class="diff-chg">unsignedShort </ins>
+                </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> modv:unitID </code>
+              </td>
+              <td>
+                Sometimes also called the Slave or Server ID, the Unit ID is technically not needed for ModbusTCP, since
+                the IP-address works as unique identifier, but for compatibility reasons it
+                <em class="rfc2119"> MUST </em>
+                be included. Mostly between 1 and 247 but 255 is technically possible
+              </td>
+              <td>required</td>
+              <td>
+                <del class="diff-old">integer </del>
+                <a href="http://www.w3.org/2001/XMLSchema#unsignedByte">
+                  <ins class="diff-chg">unsignedByte </ins>
+                </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> modv:quantity </code>
+              </td>
+              <td>Specifies the amount of either registers or coils to be read or written to</td>
+              <td>optional</td>
+              <td>
+                <del class="diff-old">integer </del>
+                <a href="http://www.w3.org/2001/XMLSchema#unsignedShort">
+                  <ins class="diff-chg">unsignedShort </ins>
+                </a>
+              </td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="form-terms">
+        <div class="header-wrapper">
+          <h3 id="x5-2-form-terms">
+            <bdi class="secno">
+              <del class="diff-old">4.2 </del>
+              <ins class="diff-chg">5.2 </ins>
+            </bdi>
+            Form terms
+          </h3>
+          <a class="self-link" href="#form-terms" aria-label="Permalink for Section 5.2"> </a>
+        </div>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Vocabulary term</th>
+              <th>Description</th>
+              <th>Assignment</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> <ins class="diff-new">modv:zeroBasedAddressing </ins></code>
+              </td>
+              <td>
+                <ins class="diff-new">
+                  DEPRECATED as TDs are expected to contain the address to be directly used by the Consumer
+                  implementation. See also </ins
+                ><a href="https://github.com/w3c/wot-binding-templates/issues/187"
+                  ><ins class="diff-new"> the relevant issue </ins></a
+                >.<ins class="diff-new">
+                  Previous explanation: Modbus implementations can differ in the way addressing works, as the first
+                  coil/register can be either referred to as </ins
+                ><code><ins class="diff-new"> true </ins></code><ins class="diff-new"> or </ins
+                ><code><ins class="diff-new"> false </ins></code>.<ins class="diff-new">
+                  False when the first register starts at address 1.
+                </ins>
+              </td>
+              <td><ins class="diff-new"> optional </ins></td>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#boolean"><ins class="diff-new"> boolean </ins></a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td><code> modv:pollingTime </code></td>
+              <td>
+                Modbus TCP maximum polling rate. The Modbus specification does not define a maximum or minimum allowed
+                polling rate, however specific implementations might introduce such limits. Defined as integer of
+                milliseconds.
+              </td>
+              <td>optional</td>
+              <td>
+                <del class="diff-old">integer </del>
+                <a href="http://www.w3.org/2001/XMLSchema#unsignedInt">
+                  <ins class="diff-chg">unsignedInt </ins>
+                </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> modv:timeout </code>
+              </td>
+              <td>
+                Maximum waiting time for a response. Defines how much time the runtime should wait until it receives a
+                reply from the device. Defined as integer of milliseconds.
+              </td>
+              <td>optional</td>
+              <td>
+                <del class="diff-old">integer </del>
+                <a href="http://www.w3.org/2001/XMLSchema#unsignedInt">
+                  <ins class="diff-chg">unsignedInt </ins>
+                </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> modv:mostSignificantByte </code>
+              </td>
+              <td>
+                When
+                <code> true </code>, it describes that the byte order of the data in the Modbus message is the most
+                significant byte first (i.e., Big-Endian). When <code> false </code>, it describes the least significant
+                byte first (i.e., Little-Endian).
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#boolean"> boolean </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> modv:mostSignificantWord </code>
+              </td>
+              <td>
+                When
+                <code> true </code>, it describes that the word order of the data in the Modbus message is the most
+                significant word first (i.e., no word swapping). When <code> false </code>, it describes the least
+                significant word first (i.e. word swapping)
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="http://www.w3.org/2001/XMLSchema#boolean"> boolean </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code>
+                  <del class="diff-old">modv:zeroBasedAddressing </del>
+                  <ins class="diff-chg">modv:entity </ins>
+                </code>
+              </td>
+              <td>
+                <del class="diff-old">DEPRECATED as TDs are expected to contain the address </del>
+                <ins class="diff-chg">A registry type </ins>
+                to
+                <del class="diff-old"
+                  >be directly used by the Consumer implementation. See also the relevant issue . Previous explanation:
+                  Modbus implementations can differ in
+                </del>
+                <ins class="diff-chg">let </ins>
+                the
+                <del class="diff-old">way addressing works, as </del>
+                <ins class="diff-chg">runtime automatically detect </ins>
+                the
+                <del class="diff-old">first coil/register can be either referred to as </del>
+                <ins class="diff-chg">right function code </ins>
+              </td>
+              <td><ins class="diff-chg"> optional </ins></td>
+              <td>
+                <a href="#entitytype"><ins class="diff-chg"> EntityType </ins></a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code>
+                  <del class="diff-old">true </del>
+                  <ins class="diff-chg">modv:function </ins>
+                </code>
+                <del class="diff-old">or false . False when </del>
+              </td>
+              <td>
+                <ins class="diff-chg">Function Code sent by </ins>
+                the
+                <del class="diff-old">first register starts at address 1. </del>
+                <ins class="diff-chg">master in every request. Specifying the desired interaction. </ins>
+              </td>
+              <td>optional</td>
+              <td>
+                <del class="diff-old">boolean </del>
+                <a href="#functioncode">
+                  <ins class="diff-chg">FunctionCode </ins>
+                </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> modv:type </code>
+              </td>
+              <td>
+                Specifies the data type contained in the request or response payload. Users can define the specific data
+                type using a sub type of
+                <code> xsd:decimal </code>.
+              </td>
+              <td>optional</td>
+              <td>
+                <a href="#payloaddatatype"> PayloadDataType </a>
+              </td>
+            </tr>
+            <tr></tr>
+            <del class="diff-old"
+              >modv:entity A registry type to let the runtime automatically detect the right function code optional
+              Entity modv:function Function Code sent by the master in every request. Specifying the desired
+              interaction. optional Function
+            </del>
+          </tbody>
+        </table>
+        <p>
+          The
+          <code> modv:mostSignificantByte </code>
+          and
+          <code> modv:mostSignificantWord </code>
+          properties within the Modbus binding define the byte and word order of data within Modbus messages. In Modbus
+          communication, the arrangement of bytes and words may vary between systems, and these properties provide a
+          declarative way to capture such configurations. For instance, in Big-Endian byte order (e.g., AABBCC), the
+          most significant byte comes first, and setting
+          <code> modv:mostSignificantByte </code>
+          to true ensures the correct interpretation of the data as AABBCC. Conversely, in Little-Endian byte order
+          (e.g., CCBBAA), the least significant byte comes first, therefore
+          <code> modv:mostSignificantByte </code>
+          has to be set to false. On the other hand, the
+          <code> modv:mostSignificantWord </code>
+          property extends this functionality to message payloads composed by more than two registers. For example,
+          given a message payload composed with four registers (e.g.,
+          <code> AABBCCDD </code>
+          ), with
+          <code> modv:mostSignificantWord </code>
+          set to true, the client can correctly interpret the data as
+          <code> AABBCCDD </code>, while setting the property to false will result in the interpretation being as
+          <code> CCDDAABB </code>. For more examples, see
+          <a href="#example-read-holding-32bit" data-matched-text="[[[#example-read-holding-32bit]]]" class="box-ref">
+            Example
+            <bdi>
+              <del class="diff-old">6 </del>
+              <ins class="diff-chg">7 </ins>
+            </bdi> </a
+          >. Note that while word swapping is not part of the Modbus specification, it is a practice observed in
+          off-the-shelf devices. Therefore, when creating a Thing Description (TD), users may need to account for such
+          deviations by configuring the
+          <code>
+            <del class="diff-old">hasMostSignificantWord </del>
+            <ins class="diff-chg">modv:mostSignificantWord </ins>
+          </code>
+          and
+          <code> modv:mostSignificantByte </code>
+          properties accordingly.
+        </p>
+      </section>
+      <section id="entitytype">
+        <div class="header-wrapper">
+          <h3 id="x5-3-entity">
+            <bdi class="secno">
+              <del class="diff-old">4.3 </del>
+              <ins class="diff-chg">5.3 </ins>
+            </bdi>
+            Entity
+          </h3>
+          <a class="self-link" href="#entitytype" aria-label="Permalink for Section 5.3"> </a>
+        </div>
+        A more user-friendly property to specify
+        <a href="#functioncode" data-matched-text="[[[#functioncode]]]" class="sec-ref">
+          <bdi class="secno">
+            <del class="diff-old">4.4 </del>
+            <ins class="diff-chg">5.4 </ins>
+          </bdi>
+          Function </a
+        >. The client will then determine the right function code to be applied in the modbus request. Furthermore, it
+        can be used in multi-operation forms whereas
+        <code> modv:function </code>
+        cannot (See the
+        <a href="#example-read-coil-entity" data-matched-text="[[[#example-read-coil-entity]]]" class="box-ref">
+          Example
+          <bdi>
+            <del class="diff-old">2 </del>
+            <ins class="diff-chg">3 </ins>
+          </bdi>
+        </a>
+        )
+        <table class="def" title="Entity values">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> Coil </code>
+              </td>
+              <td>Represent a modbus coil register. These entities can be read or written</td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> DiscreteInput </code>
+              </td>
+              <td>Represent a modbus discrete input. These entities can only be read</td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> HoldingRegister </code>
+              </td>
+              <td>Represent a modbus holding register. These entities can be read or written</td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> InputRegister </code>
+              </td>
+              <td>Represent a modbus input register. These entities can only be read</td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        </table>
+        <b> Notice </b>
+        that when used in conjunction with
+        <code> modv:function </code>, the value of
+        <code> modv:function </code>
+        property should be ignored.
+      </section>
+      <section id="functioncode">
+        <div class="header-wrapper">
+          <h3 id="x5-4-function">
+            <bdi class="secno">
+              <del class="diff-old">4.4 </del>
+              <ins class="diff-chg">5.4 </ins>
+            </bdi>
+            Function
+          </h3>
+          <a class="self-link" href="#functioncode" aria-label="Permalink for Section 5.4"> </a>
+        </div>
+        <code>
+          <del class="diff-old">Function Code </del>
+          <ins class="diff-chg">FunctionCode </ins>
+        </code>
+        class represents the value of the function field in a Modbus frame. The following table lists the supported
+        codes and their descriptions:
+        <table class="def" title="Function values">
+          <thead>
+            <tr>
+              <th>Value</th>
+              <th>Label</th>
+              <th>Code</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> readCoil </code>
+              </td>
+              <td>
+                Read
+                <del class="diff-old">Single Coil </del>
+                <ins class="diff-chg">Coils </ins>
+              </td>
+              <td>1</td>
+              <td>
+                Read
+                <del class="diff-old">a single coil (i.e., boolean/bit access) value. Conventionally in </del>
+                <ins class="diff-chg">Coils (bit access). Reads </ins>
+                the
+                <ins class="diff-new"
+                  >status of 1 to 2000 contiguous coils, starting at the given address. In the Modicon reference
+                  notation, coils are conventionally numbered 00001-09999, where reference 00001 corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 00001-09999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readDeviceIdentification </code>
+              </td>
+              <td>Read Device Identification</td>
+              <td>43</td>
+              <td>
+                Read Device Identification for diagnostic purposes. Available in the majority of Modbus implementations.
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readDiscreteInput </code>
+              </td>
+              <td>Read Discrete Inputs</td>
+              <td>2</td>
+              <td>
+                Read
+                <del class="diff-old">Physical </del>
+                Discrete Inputs (bit access).
+                <del class="diff-old">Conventionally in </del>
+                <ins class="diff-chg">Reads </ins>
+                the
+                <ins class="diff-new"
+                  >status of 1 to 2000 contiguous discrete inputs, starting at the given address. In the Modicon
+                  reference notation, discrete inputs are conventionally numbered 10001-19999, where reference 10001
+                  corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 10001-19999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readFileRecord </code>
+              </td>
+              <td>Read File Record</td>
+              <td>
+                <del class="diff-old">14 </del>
+                <ins class="diff-chg">20 </ins>
+              </td>
+              <td>Read File Record that starts with the MBAP header and subsequently the actual file record</td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readHoldingRegisters </code>
+              </td>
+              <td>Read Multiple Holding Registers</td>
+              <td>3</td>
+              <td>
+                Read
+                <del class="diff-old">Multiple </del>
+                Holding Registers
+                <del class="diff-old">(16 bit </del>
+                <ins class="diff-chg">(16-bit </ins>
+                access).
+                <del class="diff-old">Conventionally in </del>
+                <ins class="diff-chg"
+                  >Reads the contents of 1 to 125 contiguous holding registers, starting at the given address. In
+                </ins>
+                the
+                <ins class="diff-new"
+                  >Modicon reference notation, holding registers are conventionally numbered 40001-49999, where
+                  reference 40001 corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 40001-49999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readInputRegisters </code>
+              </td>
+              <td>Read Multiple Input Registers</td>
+              <td>4</td>
+              <td>
+                Read
+                <del class="diff-old">Multiple Physical </del>
+                Input Registers
+                <del class="diff-old">(16 bits). Conventionally in </del>
+                <ins class="diff-chg"
+                  >(16-bit access). Reads the contents of 1 to 125 contiguous input registers, starting at
+                </ins>
+                the
+                <ins class="diff-new"
+                  >given address. In the Modicon reference notation, input registers are conventionally numbered
+                  30001-39999, where reference 30001 corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 30001-39999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writeMultipleCoils </code>
+              </td>
+              <td>Write Multiple Coils</td>
+              <td>15</td>
+              <td>
+                Write Multiple
+                <del class="diff-old">Physical </del>
+                Coils
+                <del class="diff-old">(internal bits). Conventionally </del>
+                <ins class="diff-chg">(bit access). Sets each coil </ins>
+                in
+                <ins class="diff-new"
+                  >a sequence of 1 to 1968 contiguous coils to either ON or OFF, starting at the given address. In
+                </ins>
+                the
+                <ins class="diff-new"
+                  >Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001
+                  corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 00001-09999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writeMultipleHoldingRegisters </code>
+              </td>
+              <td>Write Multiple Holding Registers</td>
+              <td>16</td>
+              <td>
+                Write Multiple Holding Registers
+                <del class="diff-old">(output </del>
+                <ins class="diff-chg">(16-bit access). Writes a block of 1 to 123 contiguous holding </ins>
+                registers,
+                <del class="diff-old">16 bit). Conventionally in </del>
+                <ins class="diff-chg">starting at the given address. In </ins>
+                the
+                <ins class="diff-new"
+                  >Modicon reference notation, holding registers are conventionally numbered 40001-49999, where
+                  reference 40001 corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 40001-49999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writeSingleCoil </code>
+              </td>
+              <td>Write Single Coil</td>
+              <td>5</td>
+              <td>
+                Write Single
+                <del class="diff-old">Physical </del>
+                Coil
+                <del class="diff-old">(internal bit). Conventionally in </del>
+                <ins class="diff-chg">(bit access). Sets a single coil to either ON or OFF. In </ins>
+                the
+                <ins class="diff-new"
+                  >Modicon reference notation, coils are conventionally numbered 00001-09999, where reference 00001
+                  corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 00001-09999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writeSingleHoldingRegister </code>
+              </td>
+              <td>Write Single Holding Register</td>
+              <td>6</td>
+              <td>
+                Write Single
+                <del class="diff-old">HoldingRegister (internal bits). Conventionally in </del>
+                <ins class="diff-chg">Holding Register (16-bit access). Writes a single holding register. In </ins>
+                the
+                <ins class="diff-new"
+                  >Modicon reference notation, holding registers are conventionally numbered 40001-49999, where
+                  reference 40001 corresponds to protocol
+                </ins>
+                address
+                <del class="diff-old">range 40001-49999 </del>
+                <ins class="diff-chg">0. </ins>
+              </td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        </table>
+        <div class="warning" id="issue-container-generatedID">
+          <div class="warning-title marker" id="h-warning">
+            <span> Warning </span>
+          </div>
+          <p class="">
+            The address ranges indicated
+            <del class="diff-old">are based on </del>
+            <ins class="diff-chg">follow </ins>
+            the
+            <del class="diff-old">observations </del>
+            <ins class="diff-chg">Modicon reference notation [ </ins
+            ><cite
+              ><a
+                class="bibref"
+                data-link-type="biblio"
+                href="#bib-pi-mbus-300"
+                title="Modicon Modbus Protocol Reference Guide (PI-MBUS-300 Rev. J)"
+                ><ins class="diff-chg"> PI-MBUS-300 </ins></a
+              ></cite
+            ><ins class="diff-chg"> ], which is a convention </ins>
+            of the Modbus community and
+            <del class="diff-old">are </del>
+            not part of the official Modbus specification. While you can use any address within the 0-65535 range, it is
+            recommended for new devices to adhere to
+            <del class="diff-old">these </del>
+            <ins class="diff-chg">the Modicon </ins>
+            ranges for better compatibility with existing Modbus devices and systems. A WoT Consumer application should
+            not assume that a specific address range is used for a particular type of register or coil, and should
+            always use the Thing Description as the source of truth. However, pay attention that your Modbus library
+            does not have any expectations and thus limitations on the address range. In those cases, you should
+            post-process the TD before handing it over to the Modbus library.
+          </p>
+        </div>
+      </section>
+      <section id="payloaddatatype">
+        <div class="header-wrapper">
+          <h3 id="x5-5-payload-datatype">
+            <bdi class="secno">
+              <del class="diff-old">4.5 </del>
+              <ins class="diff-chg">5.5 </ins>
+            </bdi>
+            Payload DataType
+          </h3>
+          <a class="self-link" href="#payloaddatatype" aria-label="Permalink for Section 5.5"> </a>
+        </div>
+        <p>
+          The
+          <code> PayloadDataType </code>
+          class within a Modbus binding instance serves as value for the
+          <code> modv:type </code>
+          property to specify the expected data types of payload content in Modbus messages. It offers a set of terms
+          taken from XML Schema [
+          <cite>
+            <a
+              class="bibref"
+              data-link-type="biblio"
+              href="#bib-xmlschema11-2-20120405"
+              title="W3C XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes"
+            >
+              XMLSCHEMA11-2-20120405
+            </a>
+          </cite>
+          ] to cover the most common data types used in Modbus messages. Note that the
+          <code> PayloadDataType </code>
+          entity is designed for describing established conventions in the Modbus ecosystem; future development might
+          remove this functionality or add new terms. Currently, the
+          <code> PayloadDataType </code>
+          class contains the following data types:
+        </p>
+        <ul>
+          <li>
+            <code> xsd:integer </code>
+          </li>
+          <li>
+            <code> xsd:boolean </code>
+          </li>
+          <li>
+            <code> xsd:string </code>
+          </li>
+          <li>
+            <code> xsd:float </code>
+          </li>
+          <li>
+            <code> xsd:decimal </code>
+          </li>
+          <li>
+            <code> xsd:byte </code>
+          </li>
+          <li>
+            <code> xsd:short </code>
+          </li>
+          <li>
+            <code> xsd:int </code>
+          </li>
+          <li>
+            <code> xsd:long </code>
+          </li>
+          <li>
+            <code> xsd:unsignedByte </code>
+          </li>
+          <li>
+            <code> xsd:unsignedShort </code>
+          </li>
+          <li>
+            <code> xsd:unsignedInt </code>
+          </li>
+          <li>
+            <code> xsd:unsignedLong </code>
+          </li>
+          <li>
+            <code> xsd:double </code>
+          </li>
+          <li>
+            <code> xsd:hexBinary </code>
+          </li>
+        </ul>
+      </section>
+    </section>
+    <section id="mappings">
+      <div class="header-wrapper">
+        <h2 id="x6-mappings">
+          <bdi class="secno">
+            <del class="diff-old">5. </del>
+            <ins class="diff-chg">6. </ins>
+          </bdi>
+          Mappings
+        </h2>
+        <a class="self-link" href="#mappings" aria-label="Permalink for Section 6."> </a>
+      </div>
+      <p>
+        This section describes strategies and default values to employ protocol specific concepts within the
+        <a href="https://w3c.github.io/wot-architecture/#dfn-interaction-model"> WoT Interaction model </a>.
+      </p>
+      <section id="default-mappings">
+        <div class="header-wrapper">
+          <h3 id="x6-1-default-mappings">
+            <bdi class="secno">
+              <del class="diff-old">5.1 </del>
+              <ins class="diff-chg">6.1 </ins>
+            </bdi>
+            Default mappings
+          </h3>
+          <a class="self-link" href="#default-mappings" aria-label="Permalink for Section 6.1"> </a>
+        </div>
+        <p>
+          The following table lists the default mappings between the protocol specific concepts and the WoT concepts.
+          Please note that operations that are not listed in the table are not supported by this binding. For example,
+          since the Modbus protocol is a request-response based protocol, the
+          <code> subscribeevent </code>
+          operation is not supported.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default Binding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> readproperty </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "readCoil"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writeproperty </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "writeSingleCoil"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> invokeaction </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "writeSingleCoil"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readallproperties </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "readHoldingRegisters"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> readmultipleproperties </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "readHoldingRegisters"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writeallproperties </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "writeMultipleHoldingRegisters"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td>
+                <code> writemultipleproperties </code>
+              </td>
+              <td>
+                <code>
+                  <del class="diff-old">"modv:Function": </del>
+                  <ins class="diff-chg">"modv:function": </ins>
+                  "writeMultipleHoldingRegisters"
+                </code>
+              </td>
+            </tr>
+            <tr></tr>
+          </tbody>
+        </table>
+        The next table defines default values for other terms, regardless of their use in combination with one of the
+        operations listed in the table above.
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Default</th>
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> modv:quantity </code>
+              </td>
+              <td>
+                <code> 1 </code>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <code> modv:zeroBasedAddressing </code>
+              </td>
+              <td>
+                <code> false </code>
+              </td>
+              <td>The term is deprecated and should not be used anymore.</td>
+            </tr>
+            <tr>
+              <td>
+                <code> modv:mostSignificantByte </code>
+              </td>
+              <td>
+                <code> true </code>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <code> modv:mostSignificantWord </code>
+              </td>
+              <td>
+                <code> true </code>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <code> modv:timeout </code>
+              </td>
+              <td>
+                <code> infinite </code>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="possible-mappings">
+        <div class="header-wrapper">
+          <h3 id="x6-2-possible-mappings">
+            <bdi class="secno">
+              <del class="diff-old">5.2 </del>
+              <ins class="diff-chg">6.2 </ins>
+            </bdi>
+            Possible mappings
+          </h3>
+          <a class="self-link" href="#possible-mappings" aria-label="Permalink for Section 6.2"> </a>
+        </div>
+        <p>
+          Additional to the default mappings, users may decide to use other
+          <a href="#functioncode" data-matched-text="[[[#functioncode]]]" class="sec-ref">
+            <bdi class="secno">
+              <del class="diff-old">4.4 </del>
+              <ins class="diff-chg">5.4 </ins>
+            </bdi>
+            Function
+          </a>
+          s for a specific operation. The following table lists examples of possible mappings for some operation types.
+        </p>
+        <table class="def">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Possible Binding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code> writeproperty </code>
+              </td>
+              <td>
+                <code> "modv:function":"writeMultipleCoils" </code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code> writeproperty </code>
+              </td>
+              <td>
+                <code> "modv:function":"writeSingleHoldingRegister" </code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code> readproperty </code>
+              </td>
+              <td>
+                <code> "modv:function":"readDeviceIdentification" </code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code> readproperty </code>
+              </td>
+              <td>
+                <code> "modv:function":"readDiscreteInput" </code>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code> observeproperty </code>
+              </td>
+              <td>
+                <code> "modv:function":"readCoil" </code>
+                ;
+                <code> "modv:pollingTime": 1000 </code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+    <section id="examples">
+      <div class="header-wrapper">
+        <h2 id="x7-examples">
+          <bdi class="secno">
+            <del class="diff-old">6. </del>
+            <ins class="diff-chg">7. </ins>
+          </bdi>
+          Examples
+        </h2>
+        <a class="self-link" href="#examples" aria-label="Permalink for Section 7."> </a>
+      </div>
+      This section will present a set of examples showing how the terms defined in this document can be used to describe
+      and configure a
+      <a data-link-type="element" href="https://html.spec.whatwg.org/multipage/forms.html#the-form-element"> Form </a>.
+      The
+      <a href="#example-read-coil" data-matched-text="[[[#example-read-coil]]]" class="box-ref">
+        Example
+        <bdi>
+          <del class="diff-old">1 </del>
+          <ins class="diff-chg">2 </ins>
+        </bdi>
+      </a>
+      shows the minimum set of terms needed to configure a single coil reading using Modbus. Notice that the
+      <code> unitID </code>
+      is contained in the
+      <code> href </code>
+      as the first element of the
+      <code> path </code>
+      segment.
+      <ins class="diff-new"
+        >All form examples in this section assume that the Thing Description includes the Modbus context as described in </ins
+      ><a href="#namespace-context" data-matched-text="[[[#namespace-context]]]" class="sec-ref"
+        ><bdi class="secno"><ins class="diff-new"> 3. </ins></bdi><ins class="diff-new"> Namespace and Context </ins></a
+      >.
+      <div class="example" id="example-read-coil">
+        <div class="marker">
+          <a class="self-link" href="#example-read-coil">
+            Example
+            <bdi>
+              <del class="diff-old">1 </del>
+              <ins class="diff-chg">2 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Read a single coil </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json"><span class="hljs-punctuation">{</span>
+<del class="diff-old">    
+</del>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"readproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:function"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"readCoil"</span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+      The
+      <a href="#entitytype" data-matched-text="[[[#entitytype]]]" class="sec-ref">
+        <bdi class="secno">
+          <del class="diff-old">4.3 </del>
+          <ins class="diff-chg">5.3 </ins>
+        </bdi>
+        Entity
+      </a>
+      keyword can be used to describe forms with multiple operations types where the default operation will apply based
+      on the entity and intended operation by the Consumer.
+      <div class="example" id="example-read-coil-entity">
+        <div class="marker">
+          <a class="self-link" href="#example-read-coil-entity">
+            Example
+            <bdi>
+              <del class="diff-old">2 </del>
+              <ins class="diff-chg">3 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Read and write single coil </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"readproperty"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"writeproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Coil"</span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+      A TD processor will
+      <del class="diff-old">intepred </del>
+      <ins class="diff-chg">interpret </ins>
+      <a href="#example-read-coil-entity" data-matched-text="[[[#example-read-coil-entity]]]" class="box-ref">
+        Example
+        <bdi>
+          <del class="diff-old">2 </del>
+          <ins class="diff-chg">3 </ins>
+        </bdi>
+      </a>
+      configuration as the following:
+      <div class="example" id="example-read-coil-entity-expanded">
+        <div class="marker">
+          <a class="self-link" href="#example-read-coil-entity-expanded">
+            Example
+            <bdi>
+              <del class="diff-old">3 </del>
+              <ins class="diff-chg">4 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Read and write single coil expanded </span>
+        </div>
+        <pre
+          aria-busy="false"
+        ><code class="hljs json"><span class="hljs-punctuation">[</span><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+<del class="diff-old">        
+</del>
+        <span class="hljs-string">"readproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:function"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"readCoil"</span>
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+<del class="diff-old">        
+</del>
+        <span class="hljs-string">"writeproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+<del class="diff-old">    
+</del>
+    <span class="hljs-attr">"modv:function"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"writeSingleCoil"</span>
+<span class="hljs-punctuation">
+}
+</span>
+<span class="hljs-punctuation">
+]
+</span>
+</code>
+</pre>
+      </div>
+      Effectively reducing the verbosity of a TD. The expressiveness of the Modbus ontology allows users to also
+      describe the total number of registers read or written in a WoT operation.
+      <a href="#example-read-holding" data-matched-text="[[[#example-read-holding]]]" class="box-ref">
+        Example
+        <bdi>
+          <del class="diff-old">4 </del>
+          <ins class="diff-chg">5 </ins>
+        </bdi>
+      </a>
+      shows how to read
+      <del class="diff-old">or write </del>
+      8
+      <code>
+        <del class="diff-old">HoldingRegisters </del>
+        <ins class="diff-chg">HoldingRegister </ins> </code
+      >.
+      <div class="example" id="example-read-holding">
+        <div class="marker">
+          <a class="self-link" href="#example-read-holding">
+            Example
+            <bdi>
+              <del class="diff-old">4 </del>
+              <ins class="diff-chg">5 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Read 8 holding registers </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json"><span class="hljs-punctuation">{</span>
+<del class="diff-old">    
+</del>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1?quantity=8"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+<del class="diff-old">        
+        
+</del>
+        <span class="hljs-string">"readproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"HoldingRegister"</span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+      When possible, WoT consumers will use Modbus features to read the desired amount of data with a single protocol
+      request. However, it may be possible to specify a total length for Modbus operations that do not support reading
+      or writing on a range of registers (see
+      <a href="#example-read-coil-range" data-matched-text="[[[#example-read-coil-range]]]" class="box-ref">
+        Example
+        <bdi>
+          <del class="diff-old">5 </del>
+          <ins class="diff-chg">6 </ins>
+        </bdi>
+      </a>
+      ). In these circumstances consumers will make multiple requests to satisfy their configuration requirements.
+      <div class="example" id="example-read-coil-range">
+        <div class="marker">
+          <a class="self-link" href="#example-read-coil-range">
+            Example
+            <bdi>
+              <del class="diff-old">5 </del>
+              <ins class="diff-chg">6 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Read and write 8 single coils with one form </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1?quantity=8"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"readproperty"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"writeproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Coil"</span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+      When dealing with multi registers payloads, it is possible to specify further details about the data type sent on
+      the wire in the payload request. The following example shows how to read a 32bit integer Little-Endian value
+      stored in two HoldingRegisters.
+      <div class="example" id="example-read-holding-32bit">
+        <div class="marker">
+          <a class="self-link" href="#example-read-holding-32bit">
+            Example
+            <bdi>
+              <del class="diff-old">6 </del>
+              <ins class="diff-chg">7 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Read a 32bit integer </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1?quantity=2"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"readproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"HoldingRegister"</span><span class="hljs-punctuation">,</span>
+<del class="diff-old">    
+</del>
+    <span class="hljs-attr">"modv:type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xsd:int"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:mostSignificantByte"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+      Another notable form of configuration of a form using the Modbus vocabulary is the polling mechanism. With the
+      keyword
+      <code>
+        <del class="diff-old">pollingTime </del>
+        <ins class="diff-chg">modv:pollingTime </ins> </code
+      >, the user can indicate the intervals at which to observe a particular set of registers. Supposing that the
+      device is implemented in a way that the value of coil register 1 changes every 1000 ms, in
+      <a href="#example-polling" data-matched-text="[[[#example-polling]]]" class="box-ref">
+        Example
+        <bdi>
+          <del class="diff-old">7 </del>
+          <ins class="diff-chg">8 </ins>
+        </bdi> </a
+      >, it suggests that the polling time should not be faster than
+      <del class="diff-old">10 </del>
+      <ins class="diff-chg">1000 </ins>
+      ms. WoT Consumers may still submit requests faster than the specified time, but it should be taken as a reasonable
+      default for observing a property.
+      <div class="example" id="example-polling">
+        <div class="marker">
+          <a class="self-link" href="#example-polling">
+            Example
+            <bdi>
+              <del class="diff-old">7 </del>
+              <ins class="diff-chg">8 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: Polling </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://127.0.0.1:60000/1/1"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"observeproperty"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Coil"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"modv:pollingTime"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1000</span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+      Finally,
+      <a href="#full-td" data-matched-text="[[[#full-td]]]" class="box-ref">
+        Example
+        <bdi>
+          <del class="diff-old">8 </del>
+          <ins class="diff-chg">9 </ins>
+        </bdi>
+      </a>
+      shows a complete device described using Modbus ontology.
+      <div class="example" id="full-td">
+        <div class="marker">
+          <a class="self-link" href="#full-td">
+            Example
+            <bdi>
+              <del class="diff-old">8 </del>
+              <ins class="diff-chg">9 </ins>
+            </bdi>
+          </a>
+          <span class="example-title">: A complete TD example </span>
+        </div>
+        <pre aria-busy="false"><code class="hljs json">  <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"@context"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+<del class="diff-old">        
+        
+            
+        
+</del>
+        <span class="hljs-string">"https://www.w3.org/2022/wot/td/v1.1"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"https://www.w3.org/2019/wot/modbus/v1"</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"title"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ModbusPLC"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"description"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"An industrial machine, retrofitted to be IoT capable."</span><span class="hljs-punctuation">,</span>
+<del class="diff-old">    
+</del>
+    <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"urn:dev:ops:ModbusTCPThing"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"securityDefinitions"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"nosec_sc"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"scheme"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"nosec"</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"security"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"nosec_sc"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"base"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"modbus+tcp://192.168.178.32:502/1/"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"properties"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"limitSwitch1"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"title"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"downLimitSwitch"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"boolean"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"description"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Limit switch moving downwards"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"forms"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-punctuation">{</span>
+                    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"readproperty"</span><span class="hljs-punctuation">,</span>
+<del class="diff-old">                    
+</del>
+                    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"3"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"modv:function"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"readDiscreteInput"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"contentType"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"application/octet-stream"</span>
+                <span class="hljs-punctuation">}</span>
+            <span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"limitSwitch2"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"title"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"forwardLimitSwitch"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"boolean"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"description"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Limit Switch moving forward"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"forms"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-punctuation">{</span>
+                    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"readproperty"</span><span class="hljs-punctuation">,</span>
+<del class="diff-old">                    
+</del>
+                    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"modv:function"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"readDiscreteInput"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"contentType"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"application/octet-stream"</span>
+                <span class="hljs-punctuation">}</span>
+            <span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"moveDown"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"title"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"moveDown"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"boolean"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"description"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Down Motor Status (single coil). PLC output, can be written to control the motor."</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"forms"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-punctuation">{</span>
+                    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                        <span class="hljs-string">"writeproperty"</span><span class="hljs-punctuation">,</span>
+                        <span class="hljs-string">"observeproperty"</span><span class="hljs-punctuation">,</span>
+                        <span class="hljs-string">"readproperty"</span>
+                    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"6"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Coil"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"modv:pollingTime"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"contentType"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"application/octet-stream"</span>
+                <span class="hljs-punctuation">}</span>
+            <span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"moveForward"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"title"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"moveForward"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"boolean"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"description"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Forward Motor Status (single coil). PLC output, can be written to control the motor."</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"forms"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-punctuation">{</span>
+<del class="diff-old">                     
+</del>
+                    <span class="hljs-attr">"op"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                        <span class="hljs-string">"writeproperty"</span><span class="hljs-punctuation">,</span>
+                        <span class="hljs-string">"observeproperty"</span><span class="hljs-punctuation">,</span>
+                        <span class="hljs-string">"readproperty"</span>
+                    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"href"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"3"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"modv:entity"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Coil"</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"modv:pollingTime"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span>
+                    <span class="hljs-attr">"contentType"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"application/octet-stream"</span>
+                <span class="hljs-punctuation">}</span>
+            <span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">
+}
+</span>
+</code>
+</pre>
+      </div>
+    </section>
+    <section class="appendix" id="abnf">
+      <div class="header-wrapper">
+        <h2 id="a-modbus-url-abnf-syntax">
+          <bdi class="secno"> A. </bdi>
+          Modbus URL ABNF syntax
+        </h2>
+        <a class="self-link" href="#abnf" aria-label="Permalink for Appendix A."> </a>
+      </div>
+      <p>
+        The following describes the
+        <a href="#url" data-matched-text="[[[#url]]]" class="sec-ref">
+          <bdi class="secno">
+            <del class="diff-old">3. </del>
+            <ins class="diff-chg">4. </ins>
+          </bdi>
+          URL format
+        </a>
+        using
+        <cite>
+          <a data-matched-text="[[[RFC5234]]]" href="https://www.rfc-editor.org/info/rfc5234/">
+            Augmented BNF for Syntax Specifications: ABNF
+          </a>
+        </cite>
+        with reference to
+        <cite>
+          <a data-matched-text="[[[uri]]]" href="https://www.rfc-editor.org/info/rfc3986/">
+            Uniform Resource Identifier (URI): Generic Syntax
+          </a>
+        </cite>
+        specification.
+      </p>
+      <pre
+        class="syntax"
+        aria-busy="false"
+      ><code class="hljs">MODBUS-URI = "modbus+tcp://" authority path-modbus [ "?quantity=" quantity ]
+path-modbus = "/" unitID "/" address
+unitID=1*DIGIT
+address=1*DIGIT
+quantity=1*DIGIT
+</code>
+</pre>
+    </section>
+    <center>
+      <a href="https://www.netlify.com">
+        <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" alt="Deploys by Netlify" />
+      </a>
+    </center>
+    <div
+      data-netlify-deploy-id="6b09aaf25304363305b3cb8f"
+      data-netlify-site-id="6374ba5c-cfe8-470a-a88d-2de8cf805c37"
+      data-vcs="github"
+      style="
+        background: transparent;
+        bottom: 0px;
+        color-scheme: normal;
+        margin: 0px;
+        padding: 0px;
+        position: fixed;
+        z-index: 2147483647;
+        left: calc(50% - 390px);
+      "
+    >
+      <script async="" src="https://www.w3.org/.netlify/scripts/cdp"></script>
+      <iframe
+        allow="microphone; camera; clipboard-write; display-capture"
+        src="https://app.netlify.com/cdp/?deployID=6b09aaf25304363305b3cb8f&amp;siteID=6374ba5c-cfe8-470a-a88d-2de8cf805c37&amp;vcs=github"
+        title="Netlify Drawer"
+        style="
+          height: 48px;
+          min-height: initial;
+          max-height: initial;
+          transform: initial;
+          background: transparent !important;
+          border: 0px !important;
+          display: block !important;
+          width: 780px;
+        "
+      >
+      </iframe>
+    </div>
+    <section id="references" class="appendix">
+      <div class="header-wrapper">
+        <h2 id="b-references">
+          <bdi class="secno"> B. </bdi>
+          References
+        </h2>
+        <a class="self-link" href="#references" aria-label="Permalink for Appendix B."> </a>
+      </div>
+      <section id="normative-references">
+        <div class="header-wrapper">
+          <h3 id="b-1-normative-references">
+            <bdi class="secno"> B.1 </bdi>
+            Normative references
+          </h3>
+          <a class="self-link" href="#normative-references" aria-label="Permalink for Appendix B.1"> </a>
+        </div>
+        <dl class="bibliography">
+          <dt id="bib-html">[html]</dt>
+          <dd>
+            <a href="https://html.spec.whatwg.org/multipage/"> <cite> HTML Standard </cite> </a>. Anne van Kesteren;
+            Domenic Denicola; Dominic Farolino; Ian Hickson; Philip Jägenstedt; Simon Pieters. WHATWG. Living Standard.
+            URL:
+            <a href="https://html.spec.whatwg.org/multipage/"> https://html.spec.whatwg.org/multipage/ </a>
+          </dd>
+          <dt id="bib-rfc2119">[RFC2119]</dt>
+          <dd>
+            <a href="https://www.rfc-editor.org/info/rfc2119/">
+              <cite> Key words for use in RFCs to Indicate Requirement Levels </cite> </a
+            >. S. Bradner. IETF. March 1997. Best Current Practice. URL:
+            <a href="https://www.rfc-editor.org/info/rfc2119/"> https://www.rfc-editor.org/info/rfc2119/ </a>
+          </dd>
+          <del class="diff-old">[RFC2234] </del>
+          <dt id="bib-rfc5234">
+            <ins class="diff-chg">[RFC5234] </ins>
+          </dt>
+          <dd>
+            <a href="https://www.rfc-editor.org/info/rfc5234/">
+              <cite> Augmented BNF for Syntax Specifications: ABNF </cite> </a
+            >. D. Crocker, Ed.; P. Overell. IETF.
+            <del class="diff-old">November 1997. Proposed </del>
+            <ins class="diff-chg">January 2008. Internet </ins>
+            Standard. URL:
+            <del class="diff-old">https://www.rfc-editor.org/info/rfc2234/ </del>
+            <a href="https://www.rfc-editor.org/info/rfc5234/">
+              <ins class="diff-chg">https://www.rfc-editor.org/info/rfc5234/ </ins>
+            </a>
+          </dd>
+          <dt id="bib-rfc8174">[RFC8174]</dt>
+          <dd>
+            <a href="https://www.rfc-editor.org/info/rfc8174/">
+              <cite> Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words </cite> </a
+            >. B. Leiba. IETF. May 2017. Best Current Practice. URL:
+            <a href="https://www.rfc-editor.org/info/rfc8174/"> https://www.rfc-editor.org/info/rfc8174/ </a>
+          </dd>
+          <dt id="bib-uri">[uri]</dt>
+          <dd>
+            <a href="https://www.rfc-editor.org/info/rfc3986/">
+              <cite> Uniform Resource Identifier (URI): Generic Syntax </cite> </a
+            >. T. Berners-Lee; R. Fielding; L. Masinter. IETF. January 2005. Internet Standard. URL:
+            <a href="https://www.rfc-editor.org/info/rfc3986/"> https://www.rfc-editor.org/info/rfc3986/ </a>
+          </dd>
+          <dt id="bib-xmlschema11-2-20120405">[XMLSCHEMA11-2-20120405]</dt>
+          <dd>
+            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/">
+              <cite> W3C XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes </cite> </a
+            >. David Peterson; Sandy Gao; Ashok Malhotra; Michael Sperberg-McQueen; Henry Thompson; Paul V. Biron et al.
+            W3C. 5 April 2012. W3C Recommendation. URL:
+            <a href="https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/">
+              https://www.w3.org/TR/2012/REC-xmlschema11-2-20120405/
+            </a>
+          </dd>
+        </dl>
+      </section>
+      <section id="informative-references">
+        <div class="header-wrapper">
+          <h3 id="b-2-informative-references">
+            <bdi class="secno"> B.2 </bdi>
+            Informative references
+          </h3>
+          <a class="self-link" href="#informative-references" aria-label="Permalink for Appendix B.2"> </a>
+        </div>
+        <dl class="bibliography">
+          <dt id="bib-json-ld11">
+            <ins class="diff-new">[JSON-LD11] </ins>
+          </dt>
+          <dd>
+            <a href="https://www.w3.org/TR/json-ld11/"
+              ><cite><ins class="diff-new"> JSON-LD 1.1 </ins></cite></a
+            >.<ins class="diff-new">
+              Gregg Kellogg; Pierre-Antoine Champin; Dave Longley. W3C. 16 July 2020. W3C Recommendation. URL: </ins
+            ><a href="https://www.w3.org/TR/json-ld11/"
+              ><ins class="diff-new"> https://www.w3.org/TR/json-ld11/ </ins></a
+            >
+          </dd>
+          <dt id="bib-json-schema">[JSON-SCHEMA]</dt>
+          <dd>
+            <a href="https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema">
+              <cite> JSON Schema: A Media Type for Describing JSON Documents </cite> </a
+            >. Austin Wright; Henry Andrews; Ben Hutton; Greg Dennis. Internet Engineering Task Force (IETF). 10 June
+            2022. Internet-Draft. URL:
+            <a href="https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema">
+              https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema
+            </a>
+          </dd>
+          <dt id="bib-pi-mbus-300">
+            <ins class="diff-new">[PI-MBUS-300] </ins>
+          </dt>
+          <dd>
+            <cite><ins class="diff-new"> Modicon Modbus Protocol Reference Guide (PI-MBUS-300 Rev. J) </ins></cite>.<ins
+              class="diff-new"
+            >
+              Modicon, Inc. June 1996.
+            </ins>
+          </dd>
+          <dt id="bib-wot-thing-description"><ins class="diff-new"> [WOT-THING-DESCRIPTION] </ins></dt>
+          <dd>
+            <a href="https://www.w3.org/TR/wot-thing-description/"
+              ><cite><ins class="diff-new"> Web of Things (WoT) Thing Description </ins></cite></a
+            >.<ins class="diff-new">
+              Sebastian Käbisch; Takuki Kamiya; Michael McCool; Victor Charpenay; Matthias Kovatsch. W3C. 9 April 2020.
+              W3C Recommendation. URL: </ins
+            ><a href="https://www.w3.org/TR/wot-thing-description/"
+              ><ins class="diff-new"> https://www.w3.org/TR/wot-thing-description/ </ins>
+            </a>
+          </dd>
+        </dl>
+      </section>
+    </section>
+    <p role="navigation" id="back-to-top">
+      <a href="#title">
+        <abbr title="Back to Top"> ↑ </abbr>
+      </a>
+    </p>
+    <script id="respec-highlight-vars">
+      (()
+      =>
+      {
+      //
+      @ts-check
+      if
+      (document.respec)
+      {
+      document.respec.ready.then(setupVarHighlighter);
+      }
+      else
+      {
+      setupVarHighlighter();
+      }
+      function
+      setupVarHighlighter()
+      {
+      document
+      .querySelectorAll("var")
+      .forEach(varElem
+      =>
+      varElem.addEventListener("click",
+      highlightListener));
+      }
+      /**
+      *
+      @param
+      {MouseEvent}
+      ev
+      */
+      function
+      highlightListener(ev)
+      {
+      ev.stopPropagation();
+      const
+      varElem
+      =
+      /**
+      @type
+      {HTMLElement}
+      */
+      (ev.target);
+      const
+      hightligtedElems
+      =
+      highlightVars(varElem);
+      const
+      resetListener
+      =
+      ()
+      =>
+      {
+      const
+      hlColor
+      =
+      getHighlightColor(varElem);
+      hightligtedElems.forEach(el
+      =>
+      removeHighlight(el,
+      hlColor));
+      [...HL_COLORS.keys()].forEach(key
+      =>
+      HL_COLORS.set(key,
+      true));
+      };
+      if
+      (hightligtedElems.length)
+      {
+      document.body.addEventListener("click",
+      resetListener,
+      {
+      once:
+      true
+      });
+      }
+      }
+      //
+      availability
+      of
+      highlight
+      colors.
+      colors
+      from
+      var.css
+      const
+      HL_COLORS
+      =
+      new
+      Map([
+      ["respec-hl-c1",
+      true],
+      ["respec-hl-c2",
+      true],
+      ["respec-hl-c3",
+      true],
+      ["respec-hl-c4",
+      true],
+      ["respec-hl-c5",
+      true],
+      ["respec-hl-c6",
+      true],
+      ["respec-hl-c7",
+      true],
+      ]);
+      /**
+      *
+      @param
+      {HTMLElement}
+      target
+      */
+      function
+      getHighlightColor(target)
+      {
+      //
+      return
+      current
+      colors
+      if
+      applicable
+      const
+      {
+      value
+      }
+      =
+      target.classList;
+      const
+      re
+      =
+      /respec-hl-\w+/;
+      const
+      activeClass
+      =
+      re.test(value)
+      &&
+      value.match(re);
+      if
+      (activeClass)
+      return
+      activeClass[0];
+      //
+      first
+      color
+      preference
+      if
+      (HL_COLORS.get("respec-hl-c1")
+      ===
+      true)
+      return
+      "respec-hl-c1";
+      //
+      otherwise
+      get
+      some
+      other
+      available
+      color
+      return
+      [...HL_COLORS.keys()].find(c
+      =>
+      HL_COLORS.get(c))
+      ||
+      "respec-hl-c1";
+      }
+      /**
+      *
+      @param
+      {HTMLElement}
+      varElem
+      */
+      function
+      highlightVars(varElem)
+      {
+      const
+      textContent
+      =
+      norm(varElem.textContent);
+      const
+      parent
+      =
+      /**
+      @type
+      {HTMLElement}
+      */
+      (
+      varElem.closest(".algorithm,
+      section")
+      );
+      if
+      (!parent)
+      return
+      [];
+      const
+      highlightColor
+      =
+      getHighlightColor(varElem);
+      const
+      varsToHighlight
+      =
+      [...parent.querySelectorAll("var")].filter(
+      el
+      =>
+      norm(el.textContent)
+      ===
+      textContent
+      &&
+      el.closest(".algorithm,
+      section")
+      ===
+      parent
+      );
+      //
+      update
+      availability
+      of
+      highlight
+      color
+      const
+      colorStatus
+      =
+      varsToHighlight[0].classList.contains("respec-hl");
+      HL_COLORS.set(highlightColor,
+      colorStatus);
+      //
+      highlight
+      vars
+      if
+      (colorStatus)
+      {
+      varsToHighlight.forEach(el
+      =>
+      removeHighlight(el,
+      highlightColor));
+      return
+      [];
+      }
+      else
+      {
+      varsToHighlight.forEach(el
+      =>
+      addHighlight(el,
+      highlightColor));
+      }
+      return
+      varsToHighlight;
+      }
+      /**
+      *
+      @param
+      {HTMLElement}
+      el
+      *
+      @param
+      {string}
+      highlightColor
+      */
+      function
+      removeHighlight(el,
+      highlightColor)
+      {
+      el.classList.remove("respec-hl",
+      highlightColor);
+      //
+      clean
+      up
+      empty
+      class
+      attributes
+      so
+      they
+      don't
+      come
+      in
+      export
+      if
+      (!el.classList.length)
+      el.removeAttribute("class");
+      }
+      /**
+      *
+      @param
+      {HTMLElement}
+      elem
+      *
+      @param
+      {string}
+      highlightColor
+      */
+      function
+      addHighlight(elem,
+      highlightColor)
+      {
+      elem.classList.add("respec-hl",
+      highlightColor);
+      }
+      /**
+      *
+      Same
+      as
+      `norm`
+      from
+      src/core/utils,
+      but
+      our
+      build
+      process
+      doesn't
+      allow
+      *
+      imports
+      in
+      runtime
+      scripts,
+      so
+      duplicated
+      here.
+      *
+      @param
+      {string}
+      str
+      */
+      function
+      norm(str)
+      {
+      return
+      str.trim().replace(/\s+/g,
+      "
+      ");
+      }
+      })()
+    </script>
+    <script id="respec-dfn-panel">
+      (()
+      =>
+      {
+      //
+      @ts-check
+      if
+      (document.respec)
+      {
+      document.respec.ready.then(setupPanel);
+      }
+      else
+      {
+      setupPanel();
+      }
+      function
+      setupPanel()
+      {
+      const
+      listener
+      =
+      panelListener();
+      document.body.addEventListener("keydown",
+      listener);
+      document.body.addEventListener("click",
+      listener);
+      setupCopyButtons();
+      }
+      function
+      panelListener()
+      {
+      /**
+      @type
+      {HTMLElement
+      |
+      null}
+      */
+      let
+      panel
+      =
+      null;
+      /**
+      *
+      @param
+      {KeyboardEvent|MouseEvent}
+      event
+      */
+      return
+      event
+      =>
+      {
+      const
+      {
+      target,
+      type
+      }
+      =
+      event;
+      if
+      (!(target
+      instanceof
+      HTMLElement))
+      return;
+      //
+      For
+      keys,
+      we
+      only
+      care
+      about
+      Enter
+      key
+      to
+      activate
+      the
+      panel
+      //
+      otherwise
+      it's
+      activated
+      via
+      a
+      click.
+      if
+      (
+      type
+      ===
+      "keydown"
+      &&
+      /**
+      @type
+      {KeyboardEvent}
+      */
+      (event).key
+      !==
+      "Enter"
+      )
+      return;
+      const
+      action
+      =
+      deriveAction(event);
+      switch
+      (action)
+      {
+      case
+      "show":
+      {
+      hidePanel(panel);
+      /**
+      @type
+      {HTMLElement
+      |
+      null}
+      */
+      const
+      dfn
+      =
+      target.closest("dfn,
+      .index-term");
+      if
+      (!dfn?.id)
+      break;
+      panel
+      =
+      document.getElementById(`dfn-panel-for-${dfn.id}`);
+      if
+      (!panel)
+      break;
+      const
+      coords
+      =
+      deriveCoordinates(
+      /**
+      @type
+      {MouseEvent|KeyboardEvent}
+      */
+      (event)
+      );
+      displayPanel(dfn,
+      panel,
+      coords);
+      break;
+      }
+      case
+      "dock":
+      {
+      if
+      (panel)
+      {
+      panel.style.left
+      =
+      "";
+      panel.style.top
+      =
+      "";
+      panel.classList.add("docked");
+      }
+      break;
+      }
+      case
+      "hide":
+      {
+      hidePanel(panel);
+      panel
+      =
+      null;
+      break;
+      }
+      }
+      };
+      }
+      /**
+      *
+      @param
+      {MouseEvent|KeyboardEvent}
+      event
+      */
+      function
+      deriveCoordinates(event)
+      {
+      const
+      target
+      =
+      /**
+      @type
+      HTMLElement
+      */
+      (event.target);
+      //
+      We
+      prevent
+      synthetic
+      AT
+      clicks
+      from
+      putting
+      //
+      the
+      dialog
+      in
+      a
+      weird
+      place.
+      The
+      AT
+      events
+      sometimes
+      //
+      lack
+      coordinates,
+      so
+      they
+      have
+      clientX/Y
+      =
+      0
+      const
+      rect
+      =
+      target.getBoundingClientRect();
+      if
+      (
+      event
+      instanceof
+      MouseEvent
+      &&
+      event.clientX
+      >
+      =
+      rect.left
+      &&
+      event.clientY
+      >
+      =
+      rect.top
+      )
+      {
+      //
+      The
+      event
+      probably
+      happened
+      inside
+      the
+      bounding
+      rect...
+      return
+      {
+      x:
+      event.clientX,
+      y:
+      event.clientY
+      };
+      }
+      //
+      Offset
+      to
+      the
+      middle
+      of
+      the
+      element
+      const
+      x
+      =
+      rect.x
+      +
+      rect.width
+      /
+      2;
+      //
+      Placed
+      at
+      the
+      bottom
+      of
+      the
+      element
+      const
+      y
+      =
+      rect.y
+      +
+      rect.height;
+      return
+      {
+      x,
+      y
+      };
+      }
+      /**
+      *
+      @param
+      {Event}
+      event
+      */
+      function
+      deriveAction(event)
+      {
+      const
+      target
+      =
+      /**
+      @type
+      {HTMLElement}
+      */
+      (event.target);
+      const
+      hitALink
+      =
+      !!target.closest("a");
+      if
+      (target.closest("dfn:not([data-cite]),
+      .index-term"))
+      {
+      return
+      hitALink
+      ?
+      "none"
+      :
+      "show";
+      }
+      if
+      (target.closest(".dfn-panel"))
+      {
+      //
+      Copy
+      buttons
+      keep
+      the
+      panel
+      open
+      regardless
+      of
+      docked
+      state.
+      if
+      (target.closest(".dfn-panel-copy-btn"))
+      {
+      return
+      "none";
+      }
+      if
+      (hitALink)
+      {
+      return
+      target.classList.contains("self-link")
+      ?
+      "hide"
+      :
+      "dock";
+      }
+      const
+      panel
+      =
+      /**
+      @type
+      {HTMLElement}
+      */
+      (target.closest(".dfn-panel"));
+      return
+      panel.classList.contains("docked")
+      ?
+      "hide"
+      :
+      "none";
+      }
+      if
+      (document.querySelector(".dfn-panel:not([hidden])"))
+      {
+      return
+      "hide";
+      }
+      return
+      "none";
+      }
+      /**
+      *
+      @param
+      {HTMLElement}
+      dfn
+      *
+      @param
+      {HTMLElement}
+      panel
+      *
+      @param
+      {{
+      x:
+      number,
+      y:
+      number
+      }}
+      clickPosition
+      */
+      function
+      displayPanel(dfn,
+      panel,
+      {
+      x,
+      y
+      })
+      {
+      panel.hidden
+      =
+      false;
+      //
+      distance
+      (px)
+      between
+      edge
+      of
+      panel
+      and
+      the
+      pointing
+      triangle
+      (caret)
+      const
+      MARGIN
+      =
+      20;
+      const
+      dfnRects
+      =
+      dfn.getClientRects();
+      //
+      Find
+      the
+      `top`
+      offset
+      when
+      the
+      `dfn`
+      can
+      be
+      spread
+      across
+      multiple
+      lines
+      let
+      closestTop
+      =
+      0;
+      let
+      minDiff
+      =
+      Infinity;
+      for
+      (const
+      rect
+      of
+      dfnRects)
+      {
+      const
+      {
+      top,
+      bottom
+      }
+      =
+      rect;
+      const
+      diffFromClickY
+      =
+      Math.abs((top
+      +
+      bottom)
+      /
+      2
+      -
+      y);
+      if
+      (diffFromClickY
+      < minDiff) { minDiff = diffFromClickY; closestTop = top; } } const top = window.scrollY + closestTop + dfnRects[0].height; const left = x - MARGIN; panel.style.left = `${left}px`; panel.style.top = `${top}px`; // Find if the panel is flowing out of the window const panelRect = panel.getBoundingClientRect(); const SCREEN_WIDTH = Math.min(window.innerWidth, window.screen.width); if (panelRect.right >
+      SCREEN_WIDTH)
+      {
+      const
+      newLeft
+      =
+      Math.max(MARGIN,
+      x
+      +
+      MARGIN
+      -
+      panelRect.width);
+      const
+      newCaretOffset
+      =
+      left
+      -
+      newLeft;
+      panel.style.left
+      =
+      `${newLeft}px`;
+      /**
+      @type
+      {HTMLElement
+      |
+      null}
+      */
+      const
+      caret
+      =
+      panel.querySelector(".caret");
+      if
+      (caret)
+      caret.style.left
+      =
+      `${newCaretOffset}px`;
+      }
+      //
+      As
+      it's
+      a
+      dialog,
+      we
+      trap
+      focus.
+      //
+      TODO:
+      when
+      <dialog>
+      becomes
+      a
+      implemented,
+      we
+      should
+      really
+      //
+      use
+      that.
+      trapFocus(panel,
+      dfn);
+      }
+      /**
+      *
+      @param
+      {HTMLElement}
+      panel
+      *
+      @param
+      {HTMLElement}
+      dfn
+      *
+      @returns
+      */
+      function
+      trapFocus(panel,
+      dfn)
+      {
+      /**
+      @type
+      NodeListOf
+      <HTMLElement>
+      */
+      const
+      focusableElements
+      =
+      panel.querySelectorAll(
+      "a[href],
+      button:not([disabled])"
+      );
+      //
+      No
+      need
+      to
+      trap
+      focus
+      if
+      (!focusableElements.length)
+      return;
+      //
+      Move
+      focus
+      to
+      first
+      anchor
+      element
+      const
+      first
+      =
+      focusableElements.item(0);
+      first.focus();
+      const
+      trapListener
+      =
+      createTrapListener(focusableElements,
+      panel,
+      dfn);
+      panel.addEventListener("keydown",
+      trapListener);
+      //
+      Hiding
+      the
+      panel
+      releases
+      the
+      trap
+      const
+      mo
+      =
+      new
+      MutationObserver(records
+      =>
+      {
+      const
+      [record]
+      =
+      records;
+      const
+      target
+      =
+      /**
+      @type
+      HTMLElement
+      */
+      (record.target);
+      if
+      (target.hidden)
+      {
+      panel.removeEventListener("keydown",
+      trapListener);
+      mo.disconnect();
+      }
+      });
+      mo.observe(panel,
+      {
+      attributes:
+      true,
+      attributeFilter:
+      ["hidden"]
+      });
+      }
+      /**
+      *
+      *
+      @param
+      {NodeListOf
+      <HTMLElement>
+      }
+      focusableElements
+      *
+      @param
+      {HTMLElement}
+      panel
+      *
+      @param
+      {HTMLElement}
+      dfn
+      *
+      @returns
+      */
+      function
+      createTrapListener(focusableElements,
+      panel,
+      dfn)
+      {
+      const
+      lastIndex
+      =
+      focusableElements.length
+      -
+      1;
+      /**
+      *
+      @param
+      {KeyboardEvent}
+      event
+      */
+      return
+      event
+      =>
+      {
+      switch
+      (event.key)
+      {
+      //
+      Hitting
+      "Tab"
+      traps
+      us
+      in
+      a
+      nice
+      loop
+      around
+      elements.
+      case
+      "Tab":
+      {
+      event.preventDefault();
+      let
+      index
+      =
+      [...focusableElements].indexOf(
+      /**
+      @type
+      {HTMLElement}
+      */
+      (document.activeElement)
+      );
+      index
+      +=
+      event.shiftKey
+      ?
+      -1
+      :
+      +1;
+      if
+      (index
+      < 0) { index = lastIndex; } else if (index >
+      lastIndex)
+      {
+      index
+      =
+      0;
+      }
+      focusableElements.item(index).focus();
+      break;
+      }
+      //
+      Hitting
+      "Enter"
+      on
+      an
+      anchor
+      releases
+      the
+      trap.
+      case
+      "Enter":
+      if
+      (
+      event.target
+      instanceof
+      HTMLElement
+      &&
+      event.target.closest("a[href]")
+      )
+      {
+      hidePanel(panel);
+      }
+      break;
+      //
+      Hitting
+      "Escape"
+      returns
+      focus
+      to
+      dfn.
+      case
+      "Escape":
+      hidePanel(panel);
+      dfn.focus();
+      return;
+      }
+      };
+      }
+      /**
+      @param
+      {HTMLElement
+      |
+      null}
+      panel
+      */
+      function
+      hidePanel(panel)
+      {
+      if
+      (!panel)
+      return;
+      panel.hidden
+      =
+      true;
+      panel.classList.remove("docked");
+      }
+      function
+      setupCopyButtons()
+      {
+      document.body.addEventListener("click",
+      event
+      =>
+      {
+      //
+      The
+      icon
+      is
+      an
+      SVG,
+      which
+      is
+      an
+      Element
+      but
+      not
+      an
+      HTMLElement.
+      const
+      target
+      =
+      event.target;
+      const
+      btn
+      =
+      target
+      instanceof
+      Element
+      &&
+      target.closest(".dfn-panel-copy-btn");
+      if
+      (!btn)
+      return;
+      const
+      text
+      =
+      btn.querySelector("code")?.textContent;
+      if
+      (!text)
+      return;
+      navigator.clipboard?.writeText(text).then(
+      ()
+      =>
+      btn.ariaNotify?.("Copied"),
+      ()
+      =>
+      {}
+      );
+      });
+      }
+      })()
+    </script>
+    <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  </body>
+</html>

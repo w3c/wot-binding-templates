@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft-07/schema#",
   "$id": "https://www.w3.org/2026/wot/lorawan/lorawan.schema.json",
   "title": "LoRaWAN WoT Binding Schema Bundle",
   "description": "Bundle of validation rules for LoRaWAN Thing-level terms and LoRaWAN event-form terms. The Thing Description core model is validated elsewhere; this file documents and validates the binding-specific additions.",

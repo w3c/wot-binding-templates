@@ -49,28 +49,29 @@
         sh:path modv:address ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedShort ;
     ] ;
     sh:property [
         sh:path modv:unitID ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedByte ;
     ] ;
     sh:property [
         sh:path modv:quantity ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedShort ;
+        sh:minInclusive 1 ;
     ] ;
     sh:property [
         sh:path modv:pollingTime ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedInt ;
     ] ;
     sh:property [
         sh:path modv:timeout ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
+        sh:datatype xsd:unsignedInt ;
     ] ;
     sh:property [
         sh:path modv:mostSignificantByte ;

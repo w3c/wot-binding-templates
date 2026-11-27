@@ -5,11 +5,11 @@
         "modv":"https://www.w3.org/2019/wot/modbus#",
         "modv:address": {
             "@id": "modv:address",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedShort"
         },
         "modv:timeout" : {
             "@id": "modv:timeout",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedInt"
         }, 
         "modv:zeroBasedAddressing" : {
             "@id": "modv:zeroBasedAddressing",
@@ -25,15 +25,15 @@
         }, 
         "modv:quantity" : {
             "@id": "modv:quantity",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedShort"
         }, 
         "modv:pollingTime" : {
             "@id": "modv:pollingTime",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedInt"
         }, 
         "modv:unitID": {
             "@id": "modv:unitID",
-            "@type": "xsd:integer"
+            "@type": "xsd:unsignedByte"
         },
         "modv:entity" : {
             "@id": "modv:entity",

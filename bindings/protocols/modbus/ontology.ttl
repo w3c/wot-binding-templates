@@ -163,7 +163,7 @@ binding:assignment rdf:type owl:AnnotationProperty .
                rdfs:domain :FunctionCode ,
                            :ResponseCode ,
                            :ExceptionFunction ;
-               rdfs:range xsd:integer ;
+               rdfs:range xsd:unsignedByte ;
                rdfs:comment "Specifies the Modbus function/exception code number"@en ;
                rdfs:label "hasCodeNumber"@en .
 
